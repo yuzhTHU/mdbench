@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mdbench"
+version = "0.1.0"
+description = "A benchmark for discovering scientific mechanisms"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.24",
+    "PyYAML>=6.0",
+    "nd2py>=3.2.3",
+    "openai>=1.0",
+    "google-genai>=1.0",
+    "requests>=2.28",
+    "python-dotenv>=1.0",
+    "sympy>=1.13",
+    "scipy>=1.14",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "sphinx>=7.0",
+    "sphinx-book-theme>=1.1",
+    "myst-parser>=3.0",
+    "sphinx-autodoc-typehints>=2.0",
+    "build>=1.2",
+]
+
+[project.scripts]
+mdbench = "src.cli.run:cli"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+include = ["src*"]

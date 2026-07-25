@@ -1,0 +1,29 @@
+problem_name: Invalid example - no unresolved variable
+problem_description: The second mechanism equation constrains an already resolved variable without introducing a new one.
+phenomenological_formula: y = 2 * x
+
+variable_description:
+  target:
+    name: y
+    description: Target value
+    unit: 1 (dimensionless)
+  inputs:
+    - name: x
+      description: Input value
+      unit: 1 (dimensionless)
+      sampling: {min: 1.0, max: 10.0, ood_boundary: 8.0, distribution: uniform}
+
+  intermediates:
+    - name: a
+      description: Intermediate value
+      unit: 1 (dimensionless)
+
+
+  auxiliary_inputs: []
+mechanism:
+- formula: a = x
+  formula_description: First definition of a
+- formula: a = 2 * x
+  formula_description: Invalid second definition of a
+- formula: y = a
+  formula_description: Target relation

@@ -1,0 +1,74 @@
+# 问题名称
+problem_name: 毛细上升 - 圆管原版
+
+# 唯象方程
+phenomenological_formula: h = 2 * gamma * cos(theta) / (rho * g * r)
+
+# 问题背景
+problem_description: |
+  这是一个液体在细圆管中毛细上升的问题。公式给出平衡上升高度 h 与表面张力 gamma、接触角 theta、液体密度 rho、重力加速度 g 和管半径 r 的关系。
+
+# 变量描述
+# 变量列表
+variable_description:
+  target:
+    name: h
+    description: 毛细上升高度
+    unit: m
+  inputs:
+    - name: gamma
+      description: 液体表面张力
+      unit: kg s^-2
+      sampling: {min: 0.01, max: 0.1, ood_boundary: 0.05, distribution: uniform}
+    - name: theta
+      description: 接触角
+      unit: 1 (dimensionless)
+      sampling: {min: 0.0, max: 1.3, ood_boundary: 0.8, distribution: uniform}
+    - name: rho
+      description: 液体密度
+      unit: kg m^-3
+      sampling: {min: 5.0e2, max: 1.5e3, ood_boundary: 1.0e3, distribution: uniform}
+    - name: g
+      description: 重力加速度
+      unit: m s^-2
+      sampling: {min: 1.0, max: 20.0, ood_boundary: 10.0, distribution: uniform}
+    - name: r
+      description: 毛细管半径
+      unit: m
+      sampling: {min: 1.0e-5, max: 1.0e-3, ood_boundary: 3.0e-4, distribution: log_uniform}
+
+  intermediates:
+    - name: C
+      description: 液体接触线长度
+      unit: m
+    - name: A
+      description: 液柱截面积
+      unit: m^2
+    - name: F_s
+      description: 向上的表面张力合力
+      unit: kg m s^-2
+    - name: W_h
+      description: 单位高度液柱重量
+      unit: kg s^-2
+
+    # 常数描述
+
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: 圆周率
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+
+# 机制
+mechanism:
+- formula: C = 2 * π * r
+  formula_description: 圆周长公式
+- formula: A = π * r^2
+  formula_description: 圆截面积公式
+- formula: F_s = C * gamma * cos(theta)
+  formula_description: 表面张力竖直分量公式
+- formula: W_h = rho * A * g
+  formula_description: 单位高度液柱重量公式
+- formula: h = F_s / W_h
+  formula_description: 表面张力与液柱重量平衡

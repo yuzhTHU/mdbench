@@ -1,0 +1,70 @@
+# 问题名称
+problem_name: 泊肃叶圆管流量 - 锥形管改版
+
+# 唯象方程
+phenomenological_formula: Q = 3 * π * dP * r1^3 * r2^3 / (8 * u * L * (r1^2 + r1 *
+  r2 + r2^2))
+
+# 问题背景
+problem_description: |
+  这是一个牛顿流体通过半径沿轴向线性变化的锥形管的问题。相对于原版，本改版只将定半径几何阻力积木改为沿管长积分的变半径阻力。
+
+# 变量描述
+# 变量列表
+variable_description:
+  target:
+    name: Q
+    description: 体积流量
+    unit: m^3 s^-1
+  inputs:
+    - name: r1
+      description: 管入口半径
+      unit: m
+      sampling: {min: 1.0e-5, max: 1.0e-3, ood_boundary: 3.0e-4, distribution: log_uniform}
+    - name: r2
+      description: 管出口半径
+      unit: m
+      sampling: {min: 1.0e-5, max: 1.0e-3, ood_boundary: 3.0e-4, distribution: log_uniform}
+    - name: dP
+      description: 管两端压差
+      unit: kg m^-1 s^-2
+      sampling: {min: 1.0e2, max: 1.0e6, ood_boundary: 1.0e4, distribution: log_uniform}
+    - name: u
+      description: 流体动力黏度
+      unit: kg m^-1 s^-1
+      sampling: {min: 1.0e-4, max: 1.0, ood_boundary: 1.0e-2, distribution: log_uniform}
+    - name: L
+      description: 圆管长度
+      unit: m
+      sampling: {min: 0.01, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}
+
+  intermediates:
+    - name: R0
+      description: 黏性阻力系数
+      unit: kg s^-1
+    - name: G
+      description: 几何阻力因子
+      unit: m^-4
+    - name: R_h
+      description: 水力阻力
+      unit: kg m^-4 s^-1
+
+    # 常数描述
+
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: 圆周率
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+
+# 机制
+mechanism:
+- formula: R0 = 8 * u * L / π
+  formula_description: 管道黏性阻力公共系数
+- formula: G = (r1^2 + r1 * r2 + r2^2) / (3 * r1^3 * r2^3)
+  formula_description: 线性变半径管道的几何阻力因子；替换原版定半径几何积木
+- formula: R_h = R0 * G
+  formula_description: 锥形管总水力阻力公式
+- formula: Q = dP / R_h
+  formula_description: 压差驱动流量公式

@@ -1,0 +1,27 @@
+problem_name: Invalid example - mechanism unit mismatch
+problem_description: An intermediate variable deliberately declares a unit incompatible with its mechanism relationship.
+phenomenological_formula: y = x
+
+variable_description:
+  target:
+    name: y
+    description: Target length
+    unit: m
+  inputs:
+    - name: x
+      description: Input length
+      unit: m
+      sampling: {min: 1.0, max: 10.0, ood_boundary: 8.0, distribution: uniform}
+
+  intermediates:
+    - name: z
+      description: Intermediate value with an intentionally incorrect unit
+      unit: s
+
+
+  auxiliary_inputs: []
+mechanism:
+- formula: z = x
+  formula_description: Identity relation with an incorrect target unit
+- formula: y = x
+  formula_description: Correct target relationship

@@ -1,0 +1,303 @@
+# Copyright (c) 2024-present, Yumeow. Licensed under the MIT License.
+import os
+from copy import deepcopy
+from openai import AzureOpenAI
+from openai.types.responses import Response
+from openai.types.chat import ChatCompletion
+from collections import defaultdict
+from typing import Generator, List, Dict
+from .llm_api import LLMAPI
+from .. import log_exception
+from ..logger import logger
+
+
+class OpenAIAPI(LLMAPI):
+    supported_models = [
+        "gpt-4o-mini",
+        "gpt-5-mini",
+    ]
+
+    def __init__(self, model='gpt-5-mini', **kwargs):
+        super().__init__(model=model, **kwargs)
+        self.dummy_message = 'Please proofread the message above and say "I have received it."'
+
+    def _request(
+        self,
+        messages: List[Dict[str, str]],
+        n=1,
+        max_tokens=4096,
+        temperature=1.0,
+        top_p=1.0,
+        use_chat_completions=False,
+    ) -> Generator[str, None, Dict]:
+        """
+        Keyword Args:
+            model (str): The model name to use. Default is 'gpt-4o-mini'.
+            max_tokens (int): The maximum number of tokens to generate. Default is 1024.
+            temperature (float): Sampling temperature. Default is 1.0.
+            top_p (float): Nucleus sampling probability. Default is 1.0.
+            n (int): Number of completions to generate. Default is 1.
+        """
+        if self.model == 'gpt-4o-mini' and not use_chat_completions:
+            use_chat_completions = True
+            logger.warning("Turn to use create_chat_completions for gpt-4o-mini model to save token cost.")
+
+        if use_chat_completions:
+            results = yield from self.create_chat_completions(
+                messages, n=n, max_tokens=max_tokens, temperature=temperature, top_p=top_p
+            )
+            return results
+        else:
+            results = yield from self.create_responses(
+                messages, n=n, max_tokens=max_tokens, temperature=temperature, top_p=top_p
+            )
+            return results
+
+    def build_native_tool_description(self, use_chat_completions=False) -> List[Dict]:
+        tools = self.tool_description_json
+        if use_chat_completions:
+            return tools
+        return [
+            {
+                "type": "function",
+                "name": tool["function"]["name"],
+                "description": tool["function"].get("description", ""),
+                "parameters": tool["function"].get("parameters", {"type": "object", "properties": {}}),
+            }
+            for tool in tools
+        ]
+
+    def create_responses(
+        self,
+        messages: List[Dict[str, str]],
+        n=1,
+        max_tokens=4096,
+        temperature=1.0,
+        top_p=1.0,
+    ) -> Generator[str, None, Dict]:
+        """Call the current OpenAI Responses API.
+
+        Chat Completions remains available for unsupported features such as
+        multiple responses and model-specific prompt caching.
+        """
+        ## Ensure this is a generator
+        yield from []
+        client = AzureOpenAI(
+            api_version=os.environ["OPENAI_API_VERSION"],
+            azure_endpoint=os.environ["OPENAI_ENDPOINT"],
+            api_key=os.environ["OPENAI_API_KEY"],
+        )
+        payload = {
+            "input": deepcopy(messages),  # The request may remove messages later.
+            "reasoning": {"summary": "auto"},
+            "model": (model := self.model),
+            "top_p": top_p,
+            "max_output_tokens": max_tokens,
+            "temperature": temperature,
+            # "prompt_cache_retention": "24h"  # Unsupported by this endpoint.
+            # "n": n,  # The Responses API does not support n.
+        }
+        if not self.tool_list:
+            pass
+        elif self.tool_parser:
+            payload["input"] = self.add_tool_description(payload["input"])
+        else:
+            payload["tools"] = self.build_native_tool_description()
+            payload["tool_choice"] = "auto"
+        if payload['input'][0]['role'] == 'system':
+            # Instructions do not persist across this multi-turn workflow.
+            # payload['instructions'] = payload['input'].pop(0)['content']
+            # Use the equivalent developer role instead.
+            payload['input'][0]['role'] = 'developer'
+
+        if n == 1:
+            try:
+                response = client.responses.create(**payload)
+                response_dict = response.to_dict()
+                usage = self.parse_usage(response)
+                message = response.choices[0].message
+                content = response.output_text
+                if not self.tool_list:
+                    tool_call = []
+                elif self.tool_parser:
+                    tool_call = self.tool_parser.parse_response(content)
+                else:
+                    tool_call = self.normalize_openai_tool_calls(message["tool_calls"])
+                    message["tool_calls"] = [call.raw for call in tool_call]
+                yield {'content': content, 'tool_call': tool_call, 'message': message}
+                results = {
+                    'usage': usage,
+                    'contents': [content],
+                    'tool_calls': [tool_call],
+                    'responses': [response_dict],
+                }
+            except Exception as e:
+                logger.error(f"Error requesting {type(self).__name__}({model}) since: {log_exception(e)}")
+                results = {"usage": {"token": {}, "price": {}}, "contents": [], "tool_calls": [], "responses": []}
+            finally:
+                return results
+        else:
+            try:
+                responses = []
+                details = []
+                # Send the shared prefix before branching responses.
+                assert payload['input'][-1]['role'] == 'user', "When n > 1, the last message must be from user."
+                last_message = payload['input'].pop(-1)
+                payload['input'].append({'role': 'user', 'content': self.dummy_message})
+                response = client.responses.create(**payload)
+                usage = self.parse_usage(response)
+                responses.append(response)
+                # Reuse the prefix and submit the final message for each branch.
+                child_payload = deepcopy(payload)
+                child_payload['previous_response_id'] = response.id
+                child_payload['input'] = [last_message]
+                for _ in range(n):
+                    child_response = client.responses.create(**child_payload)
+                    responses.append(child_response)
+                    child_response_dict = child_response.to_dict()
+                    message = child_response.choices[0].message.to_dict()
+                    content = message["content"]
+                    if not self.tool_list:
+                        tool_call = []
+                    elif self.tool_parser:
+                        tool_call = self.tool_parser.parse_response(content)
+                    else:
+                        tool_call = self.normalize_openai_tool_calls(message["tool_calls"])
+                        message["tool_calls"] = [call.raw for call in tool_call]
+                    yield {'content': content, 'tool_call': tool_call, 'message': message}
+                    new_usage = self.parse_usage(child_response)
+                    for k, v in new_usage['token'].items():
+                        usage['token'][k] = usage['token'].get(k, 0) + v
+                    for k, v in new_usage['price'].items():
+                        usage['price'][k] = usage['price'].get(k, 0) + v
+                    details.append({
+                        'content': content,
+                        'tool_call': tool_call,
+                        'token_usage': dict(new_usage.get('token', {})),
+                        'price_usage': dict(new_usage.get('price', {})),
+                        'response': child_response_dict,
+                    })
+                results = {
+                    'usage': usage,
+                    'contents': [detail['content'] for detail in details],
+                    'tool_calls': [detail['tool_call'] for detail in details],
+                    'responses': [resp.to_dict() for resp in responses],
+                }
+            except Exception as e:
+                logger.error(f"Error requesting {type(self).__name__}({model}) since: {log_exception(e)}")
+                results = {"usage": {"token": {}, "price": {}}, "contents": [], "tool_calls": [], "responses": []}
+            finally:
+                return results
+
+    def create_chat_completions(
+        self,
+        messages: List[Dict[str, str]],
+        n=1,
+        max_tokens=4096,
+        temperature=1.0,
+        top_p=1.0,
+    ) -> Generator[str, None, Dict]:
+        """Call the legacy Chat Completions API."""
+        ## Ensure this is a generator
+        yield from []
+        client = AzureOpenAI(
+            api_version=os.environ['OPENAI_API_VERSION'],
+            azure_endpoint=os.environ["OPENAI_OLDTIME_ENDPOINT"],
+            api_key=os.environ["OPENAI_API_KEY"],
+        )
+        payload = {
+            "messages": messages,
+            "n": n,
+            "model": (model := self.model),
+            "top_p": top_p,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        }
+        if not self.tool_list:
+            pass
+        elif self.tool_parser:
+            payload["messages"] = self.add_tool_description(payload["messages"])
+        else:
+            payload["tools"] = self.tool_description_json
+            payload["tool_choice"] = "auto"
+        assert model == 'gpt-4o-mini', "Only gpt-4o-mini model is supported in chat_completions."
+
+        try:
+            response = client.chat.completions.create(**payload)
+            details = []
+            for choice in response.choices:
+                response_dict = {"choices": [{"message": choice.message.to_dict()}]}
+                message = choice.message.to_dict()
+                content = message['content']
+                if not self.tool_list:
+                    tool_call = []
+                elif self.tool_parser:
+                    tool_call = self.tool_parser.parse_response(content)
+                else:
+                    tool_call = self.normalize_openai_tool_calls(message["tool_calls"])
+                    message["tool_calls"] = [call.raw for call in tool_call]
+                details.append({
+                    'content': content,
+                    'tool_call': tool_call,
+                    'token_usage': {},
+                    'price_usage': {},
+                    'response': response_dict,
+                })
+                yield {'content': content, 'tool_call': tool_call, 'message': message}
+            usage = self.parse_chat_completions_usage(response)
+            for detail in details:
+                detail['token_usage'] = dict(usage.get('token', {}))
+                detail['price_usage'] = dict(usage.get('price', {}))
+            results = {
+                'usage': usage,
+                'contents': [detail['content'] for detail in details],
+                'tool_calls': [detail['tool_call'] for detail in details],
+                'responses': [response.to_dict()],
+            }
+        except Exception as e:
+            logger.error(f"Error requesting {type(self).__name__}({model}) since: {log_exception(e)}")
+            results = {"usage": {"token": {}, "price": {}}, "contents": [], "tool_calls": [], "responses": []}
+        finally:
+            return results
+
+    def parse_usage(self, response: Response) -> Dict:
+        usage = {'token': defaultdict(float), 'price': defaultdict(float)}
+        if response.model.startswith('gpt-5-mini'):
+            usage['token']['cached'] = (cached_tokens := response.usage.input_tokens_details.cached_tokens)
+            usage['token']['prompt'] = (prompt_tokens := response.usage.input_tokens - cached_tokens)
+            usage['token']['reason'] = (reason_tokens := response.usage.output_tokens_details.reasoning_tokens)
+            usage['token']['answer'] = (answer_tokens := response.usage.output_tokens - reason_tokens)
+            if (other := response.usage.total_tokens - cached_tokens - prompt_tokens - reason_tokens - answer_tokens) != 0:
+                usage['token']['other'] = other
+            usage['price']['cached'] = 0.025 * cached_tokens / 1e6
+            usage['price']['prompt'] = 0.25  * prompt_tokens / 1e6
+            usage['price']['reason'] = 2.0   * reason_tokens / 1e6
+            usage['price']['answer'] = 2.0   * answer_tokens / 1e6
+        elif response.model.startswith('gpt-4o-mini'):
+            cached_tokens = 0
+            usage['token']['prompt'] += (prompt_tokens := response.usage.prompt_tokens)
+            usage['token']['reason'] += (reason_tokens := response.usage.completion_tokens_details.reasoning_tokens)
+            usage['token']['answer'] += (answer_tokens := response.usage.completion_tokens - reason_tokens)
+            if (other := response.usage.total_tokens - cached_tokens - prompt_tokens - reason_tokens - answer_tokens) != 0:
+                usage['token']['other'] = other
+            usage['price']['prompt'] += 0.15 * prompt_tokens / 1e6
+            usage['price']['reason'] += 0.60 * reason_tokens / 1e6
+            usage['price']['answer'] += 0.60 * answer_tokens / 1e6
+        else:
+            raise NotImplementedError(f"Usage parsing for model {response.model} is not implemented.")
+        return usage
+
+    def parse_chat_completions_usage(self, response: ChatCompletion) -> Dict:
+        usage = {'token': defaultdict(float), 'price': defaultdict(float)}
+        if response.model.startswith('gpt-4o-mini'):
+            usage['token']['prompt'] += (prompt_tokens := response.usage.prompt_tokens)
+            usage['token']['reason'] += (reason_tokens := response.usage.completion_tokens_details.reasoning_tokens)
+            usage['token']['answer'] += (answer_tokens := response.usage.completion_tokens - reason_tokens)
+            if (other := response.usage.total_tokens - prompt_tokens - reason_tokens - answer_tokens) > 0:
+                usage['token']['other'] = other
+            usage['price']['prompt'] += 0.15 * prompt_tokens / 1e6
+            usage['price']['reason'] += 0.60 * reason_tokens / 1e6
+            usage['price']['answer'] += 0.60 * answer_tokens / 1e6
+        else:
+            raise NotImplementedError(f"Usage parsing for model {response.model} is not implemented.")
+        return usage
