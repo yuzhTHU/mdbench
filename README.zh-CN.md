@@ -1,9 +1,9 @@
 # MDBench
 
-[![PyPI](https://img.shields.io/pypi/v/mdbench?logo=pypi&logoColor=white&label=PyPI&color=3775A9)](https://pypi.org/project/mdbench/)
-[![Python](https://img.shields.io/pypi/pyversions/mdbench?logo=python&logoColor=white&label=Python&color=3776AB)](https://pypi.org/project/mdbench/)
+[![PyPI](https://img.shields.io/pypi/v/mdbench.svg?logo=pypi&logoColor=white&label=PyPI&color=3775A9&cacheSeconds=300)](https://pypi.org/project/mdbench/)
+[![Python](https://img.shields.io/pypi/pyversions/mdbench.svg?logo=python&logoColor=white&label=Python&color=3776AB&cacheSeconds=300)](https://pypi.org/project/mdbench/)
 [![Documentation](https://img.shields.io/badge/Documentation-online-0A7B83?logo=readthedocs&logoColor=white)](https://yuzhthu.github.io/mdbench/)
-[![License](https://img.shields.io/pypi/l/mdbench?label=License&color=2E8B57)](LICENSE)
+[![License](https://img.shields.io/pypi/l/mdbench.svg?label=License&color=2E8B57&cacheSeconds=300)](LICENSE)
 
 [English](README.md)
 
