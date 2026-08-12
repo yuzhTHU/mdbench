@@ -73,6 +73,8 @@ MDBench 的发行包包含参考问题库，无需下载仓库文件即可将其
 mdbench export --output-dir problems/
 ```
 
+也可以从 [GitHub Releases](https://github.com/yuzhthu/mdbench/releases) 下载预先打包的问题集。Release 还提供完整公开的机制发现数据集，其中包含每个问题的 `problem.json`、`answer.json`、训练集、样本内测试集和样本外测试集。
+
 覆盖已有文件前需要确认；非交互式运行可以指定 `--force`。目标目录中的其它文件不会被删除。
 
 下面的生命周期命令通过 `--problems` 接收一个或多个 YAML 文件或目录，默认使用 `./problems`。

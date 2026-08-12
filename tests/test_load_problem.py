@@ -109,7 +109,7 @@ def test_load_problem_rejects_legacy_unified_variable_section(tmp_path):
             "Invalid variable_description item",
         ),
         (
-            "    description: 行星绕恒星公转的周期\n",
+            "    description: Orbital period of the planet around the star\n",
             "",
             "Invalid variable_description item",
         ),
@@ -157,8 +157,8 @@ mechanism:
 def test_mechanism_item_rejects_legacy_variable_metadata(tmp_path):
     source = open("problems/demo_problem.yaml", encoding="utf-8").read()
     source = source.replace(
-        "  formula_description: 圆轨道下轨道半径等于半长轴",
-        "  formula_description: 圆轨道下轨道半径等于半长轴\n  unit: m",
+        "  formula_description: The orbital radius equals the semi-major axis for a circular orbit",
+        "  formula_description: The orbital radius equals the semi-major axis for a circular orbit\n  unit: m",
         1,
     )
     path = tmp_path / "legacy-mechanism-metadata.yaml"

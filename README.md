@@ -96,6 +96,12 @@ without downloading repository files:
 mdbench export --output-dir problems/
 ```
 
+The same YAML collection is also available as a prebuilt archive from
+[GitHub Releases](https://github.com/yuzhthu/mdbench/releases). Releases also
+provide a complete public mechanism-discovery dataset containing `problem.json`,
+`answer.json`, and the train, in-domain-test, and out-of-domain-test arrays for
+every problem.
+
 Existing files require confirmation; use `--force` for non-interactive
 overwrites. Other files in the destination directory are never removed.
 

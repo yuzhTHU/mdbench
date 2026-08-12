@@ -1,71 +1,71 @@
-# 问题名称，这里为了方便理解使用中文，实际使用中建议使用英文
-problem_name: 开普勒第三定律 - 原版
+# Problem name
+problem_name: Kepler's Third Law - Original
 
-# 唯象方程，写成 y = f(x) 的形式
+# Phenomenological equation in the form y = f(x)
 phenomenological_formula: T = sqrt((4 * π^2 / G / M) * a^3)
 
-# 对 phenomenological_formula 所处问题背景的描述
+# Physical context of the phenomenological equation
 problem_description: |
-  一颗围绕恒星沿正圆轨道公转的行星，其公转周期 T 与轨道半径 a、恒星质量 M 之间存在关系
+  A planet moves around a star in a circular orbit. Its orbital period T is related to the orbital semi-major axis a and the stellar mass M.
 
-# 唯象方程的因变量和自变量。
+# Target, input, intermediate, and auxiliary input variables
 variable_description:
   target:
     name: T
-    description: 行星绕恒星公转的周期
+    description: Orbital period of the planet around the star
     unit: s
   inputs:
     - name: a
-      description: 行星轨道半长轴
+      description: Semi-major axis of the planetary orbit
       unit: m
       sampling: {min: 1.0e9, max: 1.0e12, ood_boundary: 5.0e11, distribution: log_uniform}
     - name: M
-      description: 恒星质量
+      description: Mass of the star
       unit: kg
       sampling: {min: 1.0e28, max: 1.0e31, ood_boundary: 5.0e30, distribution: log_uniform}
 
   intermediates:
     - name: r
-      description: 行星圆轨道半径
+      description: Radius of the circular planetary orbit
       unit: m
     - name: F
-      description: 恒星对行星的引力
+      description: Gravitational force exerted by the star on the planet
       unit: kg m s^-2
     - name: acc
-      description: 行星的加速度
+      description: Acceleration of the planet
       unit: m s^-2
     - name: v
-      description: 行星的公转速度
+      description: Orbital speed of the planet
       unit: m s^-1
 
   auxiliary_inputs:
     - name: m
-      description: 行星质量
+      description: Mass of the planet
       unit: kg
       sampling: {min: 1.0e20, max: 1.0e28, ood_boundary: 1.0e24, distribution: log_uniform}
 
-# 常数描述，包括在 phenomenological_formula 中出现的常数，以及 mechanism 依赖，但是在推导过程中消去，最终没有出现在 phenomenological_formula 中的常数
-
+# Constants used by the phenomenological equation or mechanism
 constants:
 - name: π
-  description: 圆周率
+  description: Pi
   value: 3.141592653589793
   unit: 1 (dimensionless)
 - name: G
-  description: 万有引力常数
+  description: Gravitational constant
   value: 6.67430e-11
   unit: m^3 kg^-1 s^-2
 
-# 唯象方程背后的基本关系。每个 item 保存原始 relationship，不要求作者为了
-# 计算顺序手工反解；程序会自动将连续方程块规范化为显式或数值计算函数。
+# Fundamental relationships behind the phenomenological equation. Each item
+# preserves the original physical relationship; MDBench resolves the equations
+# into an executable order automatically.
 mechanism:
 - formula: r = a
-  formula_description: 圆轨道下轨道半径等于半长轴
+  formula_description: The orbital radius equals the semi-major axis for a circular orbit
 - formula: F = G * M * m / r^2
-  formula_description: 万有引力公式
+  formula_description: Newton's law of universal gravitation
 - formula: acc = F / m
-  formula_description: 牛顿第二定律
+  formula_description: Newton's second law of motion
 - formula: v = sqrt(r * acc)
-  formula_description: 圆周运动的速度公式
+  formula_description: Orbital speed for uniform circular motion
 - formula: T = 2 * π * r / v
-  formula_description: 圆周运动的周期公式
+  formula_description: Period of uniform circular motion

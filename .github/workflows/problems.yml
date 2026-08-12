@@ -1,0 +1,131 @@
+name: Publish benchmark problems
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - problems/*.yaml
+      - problems/*.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: benchmark-problems-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Read release version
+        id: version
+        run: |
+          python - <<'PY'
+          import os
+          import tomllib
+          from pathlib import Path
+
+          version = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"version={version}\n")
+              output.write(f"tag=v{version}\n")
+          PY
+
+      - name: Verify release tag consistency
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if git rev-parse --verify --quiet "refs/tags/$TAG"; then
+            tag_commit=$(git rev-list -n 1 "$TAG")
+            if [ "$tag_commit" != "$GITHUB_SHA" ]; then
+              echo "$TAG already points to $tag_commit."
+              echo "::error::Problem definitions changed after $TAG was released. Bump project.version before publishing new benchmark data."
+              exit 1
+            fi
+          fi
+
+      - name: Install MDBench
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Validate problem definitions
+        run: mdbench validate --problems problems
+
+      - name: Generate public datasets and answers
+        run: |
+          mdbench synthetic \
+            --problems problems \
+            --output-dir release-work/synthetic
+          mdbench prepare \
+            --problems problems \
+            --synthetic-data-dir release-work/synthetic \
+            --output-dir release-work/synthetic_data \
+            --task mechanism_discovery \
+            --format directory \
+            --save-answer \
+            --force
+
+      - name: Build release archives
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          mkdir -p dist
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from zipfile import ZIP_DEFLATED, ZipFile
+
+          source = Path("problems")
+          files = sorted(
+              path for path in source.iterdir()
+              if path.is_file() and path.suffix in {".yaml", ".yml"}
+          )
+          output = Path("dist") / f"mdbench-problems-{os.environ['VERSION']}.zip"
+          with ZipFile(output, "w", compression=ZIP_DEFLATED, compresslevel=9) as archive:
+              for path in files:
+                  archive.write(path, path.name)
+          PY
+          (cd release-work && zip -9 -r "../dist/mdbench-synthetic-data-$VERSION.zip" synthetic_data)
+          unzip -t "dist/mdbench-problems-$VERSION.zip"
+          unzip -t "dist/mdbench-synthetic-data-$VERSION.zip"
+          sha256sum dist/*.zip
+
+      - name: Create GitHub Release when needed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" \
+              --target "$GITHUB_SHA" \
+              --title "MDBench $VERSION" \
+              --generate-notes
+          fi
+
+      - name: Upload release archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh release upload "$TAG" \
+            "dist/mdbench-problems-$VERSION.zip" \
+            "dist/mdbench-synthetic-data-$VERSION.zip" \
+            --clobber

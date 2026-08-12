@@ -72,7 +72,6 @@ def test_llm_checker_sends_complete_physical_context():
     assert "hidden reference" not in api.prompt
     assert "Other metrics" not in api.prompt
     assert "Newtonian" not in api.prompt
-    assert "Kepler" not in api.prompt
 
 
 def test_llm_checker_rejects_incomplete_results():

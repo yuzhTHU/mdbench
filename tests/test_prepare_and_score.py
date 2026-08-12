@@ -197,7 +197,7 @@ def test_batch_operations_accept_directories(tmp_path):
         assert set(data.files) == {
             "train", "id_test", "ood_test", "variables", "generation_config"
         }
-    assert (tmp_path / "prepared" / "开普勒第三定律_-_原版" / "problem.json").is_file()
+    assert (tmp_path / "prepared" / "Kepler_s_Third_Law_-_Original" / "problem.json").is_file()
 
 
 def test_answer_is_private_by_default_and_constants_keep_metadata(tmp_path):
@@ -224,7 +224,7 @@ def test_prepare_does_not_delete_redundant_files_and_requires_overwrite(tmp_path
         "--task", "mechanism_explanation",
     ]
     assert prepare_main(get_prepare_parser().parse_args(argv)) == 0
-    output = tmp_path / "prepared" / "开普勒第三定律_-_原版"
+    output = tmp_path / "prepared" / "Kepler_s_Third_Law_-_Original"
     extra = output / "keep-me.txt"
     extra.write_text("user data")
     assert prepare_main(get_prepare_parser().parse_args(argv)) == 1
