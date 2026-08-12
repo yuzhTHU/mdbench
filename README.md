@@ -87,8 +87,20 @@ make html
 
 ## Commands
 
-All lifecycle commands accept one or more YAML files or directories through
-`--problems`; the default is `./problems`.
+### Export bundled problems
+
+MDBench includes its reference problem library. Export it to a local directory
+without downloading repository files:
+
+```bash
+mdbench export --output-dir problems/
+```
+
+Existing files require confirmation; use `--force` for non-interactive
+overwrites. Other files in the destination directory are never removed.
+
+The lifecycle commands below accept one or more YAML files or directories
+through `--problems`; the default is `./problems`.
 
 ### Validate problems
 

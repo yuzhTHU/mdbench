@@ -55,11 +55,13 @@ variable.
 
 ### Prepare a local task
 
-The following commands validate the source definitions, generate data, and
-prepare mechanism-explanation tasks. `--save-answer` creates the private files
-needed for a local evaluation.
+First export the problem definitions bundled with the installed package. The
+remaining commands validate those definitions, generate data, and prepare
+mechanism-explanation tasks. `--save-answer` creates the private files needed
+for a local evaluation.
 
 ```bash
+mdbench export --output-dir problems
 mdbench validate
 mdbench synthetic --output-dir data/synthetic_data
 mdbench prepare \
@@ -333,6 +335,19 @@ The problem definition keeps the original, physically readable equations.
 The derived explicit formulas or numerical functions are stored separately as
 ordered solution steps and are used by validation, data generation, evaluation,
 and visualization.
+
+## Problem library
+
+The installed MDBench distribution includes all reference problem YAML files.
+Export them before authoring or running local benchmark tasks:
+
+```bash
+mdbench export --output-dir problems
+```
+
+The command creates the destination directory when necessary. It refuses to
+overwrite existing problem files unless the user confirms the operation or
+passes `--force`; it never clears the directory or removes unrelated files.
 
 ## Validation
 

@@ -8,7 +8,7 @@ def get_parser() -> argparse.ArgumentParser:
     preliminary_parser.add_argument(
         "command",
         nargs="?",
-        choices=("validate", "synthetic", "prepare", "evaluate"),
+        choices=("validate", "synthetic", "prepare", "evaluate", "export"),
     )
     tmp_args, _ = preliminary_parser.parse_known_args()
 
@@ -30,11 +30,15 @@ def get_parser() -> argparse.ArgumentParser:
     elif tmp_args.command == "evaluate":
         from ..evaluate_result import get_parser as update_parser
         update_parser(commands.add_parser("evaluate"))
+    elif tmp_args.command == "export":
+        from ..export_problems import get_parser as update_parser
+        update_parser(commands.add_parser("export"))
     else:
         commands.add_parser("validate", help="Validate benchmark problem files")
         commands.add_parser("synthetic", help="Generate synthetic benchmark data")
         commands.add_parser("prepare", help="Prepare benchmark task packages")
         commands.add_parser("evaluate", help="Evaluate benchmark submissions")
+        commands.add_parser("export", help="Export bundled problem YAML files")
     return parser
 
 
@@ -50,6 +54,9 @@ def main(args) -> int:
         return command_main(args)
     elif args.command == "evaluate":
         from ..evaluate_result import main as command_main
+        return command_main(args)
+    elif args.command == "export":
+        from ..export_problems import main as command_main
         return command_main(args)
     else:
         raise ValueError(f"Unknown command: {args.command}")

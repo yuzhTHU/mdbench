@@ -65,7 +65,17 @@ make html
 
 ## 命令
 
-四个生命周期命令都通过 `--problems` 接收一个或多个 YAML 文件或目录，默认使用 `./problems`。
+### 导出内置问题
+
+MDBench 的发行包包含参考问题库，无需下载仓库文件即可将其导出到本地：
+
+```bash
+mdbench export --output-dir problems/
+```
+
+覆盖已有文件前需要确认；非交互式运行可以指定 `--force`。目标目录中的其它文件不会被删除。
+
+下面的生命周期命令通过 `--problems` 接收一个或多个 YAML 文件或目录，默认使用 `./problems`。
 
 ### 验证问题
 
