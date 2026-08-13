@@ -112,7 +112,6 @@ def test_feedback_mechanism_explanation_checks_public_derivation_without_predict
         def compare(self, candidate, reference, values):
             assert candidate.startswith("T =")
             assert reference == public["phenomenological_formula"]
-            assert "T" in values
             return {
                 "equivalent": True,
                 "score": 1.0,
@@ -124,7 +123,7 @@ def test_feedback_mechanism_explanation_checks_public_derivation_without_predict
     report = evaluate_feedback(
         submission,
         public,
-        artifacts["data_train"],
+        None,
         derivation_checker=DerivationChecker(),
     )
 

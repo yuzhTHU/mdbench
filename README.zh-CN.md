@@ -52,7 +52,7 @@ MDBench 包含三类任务：
 安装要求 Python 3.12 或更高版本：
 
 ```bash
-pip install -e ".[dev]"
+pip install mdbench
 mdbench --help
 ```
 
@@ -84,14 +84,14 @@ mdbench export --output-dir problems/
 检查配置格式、变量使用、物理单位、采样设置、显式或隐式方程求解，以及机制能否导出目标唯象方程：
 
 ```bash
-mdbench validate
+mdbench validate --problems problems
 mdbench validate --problems problems/demo_problem.yaml
 ```
 
 可以选择调用 LLM 判断每条机制关系是否足够基础。API 或响应错误会直接报告，不会退回启发式规则：
 
 ```bash
-mdbench validate --check-fundamentality \
+mdbench validate --problems problems --check-fundamentality \
   --llm-provider deepseek --llm-model deepseek-v4-flash
 ```
 
@@ -180,10 +180,10 @@ tests/                     单元测试和验证样例
 
 ```text
 problem.json               公开的问题描述
-data_train.npy             公开的训练数据
+data_train.npy             数据输入任务的公开训练数据
 answer.json                可选的私有答案
-data_id_test.npy           可选的私有样本内测试数据
-data_ood_test.npy          可选的私有样本外测试数据
+data_id_test.npy           数据输入任务可选的私有样本内测试数据
+data_ood_test.npy          数据输入任务可选的私有样本外测试数据
 ```
 
-不使用 `--save-answer` 时只写入 `problem.json` 和 `data_train.npy`。公共接口保持基础数据格式：单位使用 `Dict[str, int | float]`，公式使用 nd2py 可解析字符串，数据使用 NumPy 格式。
+不使用 `--save-answer` 时，数据输入任务保存 `problem.json` 和 `data_train.npy`；机制解释任务只保存 `problem.json`。公共接口保持基础数据格式：单位使用 `Dict[str, int | float]`，公式使用 nd2py 可解析字符串，数据使用 NumPy 格式。

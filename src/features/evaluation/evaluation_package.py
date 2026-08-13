@@ -12,8 +12,8 @@ def _json_value(value: np.ndarray) -> dict[str, Any]:
     return json.loads(str(value.item()))
 
 
-def load_public_task(path: str | Path) -> tuple[dict[str, Any], np.ndarray]:
-    """Load ``problem_json`` and training data from a prepared task package.
+def load_public_task(path: str | Path) -> tuple[dict[str, Any], np.ndarray | None]:
+    """Load ``problem_json`` and optional training data from a task package.
 
     ``path`` may name a prepared directory, its ``problem.json``, or a packed
     NPZ task. Private answer and test artifacts are deliberately ignored.
@@ -22,28 +22,34 @@ def load_public_task(path: str | Path) -> tuple[dict[str, Any], np.ndarray]:
     if path.is_dir():
         problem_path = path / "problem.json"
         data_path = path / "data_train.npy"
-        if not problem_path.is_file() or not data_path.is_file():
+        if not problem_path.is_file():
             raise ValueError(
-                f"Prepared task directory {path} must contain problem.json and "
-                "data_train.npy."
+                f"Prepared task directory {path} must contain problem.json."
             )
-        return (
-            json.loads(problem_path.read_text(encoding="utf-8")),
-            np.load(data_path),
-        )
+        problem = json.loads(problem_path.read_text(encoding="utf-8"))
+        data = np.load(data_path) if data_path.is_file() else None
+        if problem.get("input") == "data" and data is None:
+            raise ValueError(f"Data-input task {path} must contain data_train.npy.")
+        return problem, data
     if path.suffix.lower() == ".npz":
         with np.load(path) as archive:
-            missing = {"problem_json", "data_train"} - set(archive.files)
+            missing = {"problem_json"} - set(archive.files)
             if missing:
                 raise ValueError(
                     f"Prepared task NPZ {path} is missing: {', '.join(sorted(missing))}."
                 )
-            return _json_value(archive["problem_json"]), archive["data_train"].copy()
+            problem = _json_value(archive["problem_json"])
+            data = archive["data_train"].copy() if "data_train" in archive else None
+            if problem.get("input") == "data" and data is None:
+                raise ValueError(f"Data-input task NPZ {path} is missing data_train.")
+            return problem, data
     if path.name == "problem.json":
         data_path = path.with_name("data_train.npy")
-        if not data_path.is_file():
+        problem = json.loads(path.read_text(encoding="utf-8"))
+        data = np.load(data_path) if data_path.is_file() else None
+        if problem.get("input") == "data" and data is None:
             raise ValueError(f"Training data not found beside {path}: {data_path}")
-        return json.loads(path.read_text(encoding="utf-8")), np.load(data_path)
+        return problem, data
     raise ValueError(
         "--problem must point to a prepared task directory, problem.json, or task NPZ."
     )

@@ -20,9 +20,10 @@ def test_prepare_all_task_types(tmp_path):
         artifacts = prepare_problem(problem, data, task=task, save_answer=True)
         public = artifacts["problem_json"]
         assert "mechanisms" not in public
-        assert set(artifacts) == {
-            "problem_json", "answer_json", "data_train", "data_id_test", "data_ood_test"
-        }
+        expected = {"problem_json", "answer_json"}
+        if task != "mechanism_explanation":
+            expected |= {"data_train", "data_id_test", "data_ood_test"}
+        assert set(artifacts) == expected
         if task == "symbolic_regression":
             assert "mechanisms" not in artifacts["answer_json"]
 
@@ -206,12 +207,35 @@ def test_answer_is_private_by_default_and_constants_keep_metadata(tmp_path):
         problem, train_samples=8, id_test_samples=4, ood_test_samples=4, pilot_samples=64
     )
     public = prepare_problem(problem, data, task="mechanism_explanation")
-    assert set(public) == {"problem_json", "data_train"}
+    assert set(public) == {"problem_json"}
     private = prepare_problem(problem, data, task="mechanism_explanation", save_answer=True)
+    assert set(private) == {"problem_json", "answer_json"}
     answer = private["answer_json"]
     assert answer["task"] == "mechanism_explanation"
+    assert "data_variables" not in answer
     assert {"a", "M", "m", "G", "π"} <= set(answer["source_variables"])
     assert answer["constants"][0].keys() == {"name", "value", "description", "unit"}
+
+
+def test_mechanism_explanation_does_not_require_synthetic_data():
+    problem = load_problem("problems/demo_problem.yaml")
+    artifacts = prepare_problem(
+        problem, None, task="mechanism_explanation", save_answer=True
+    )
+    assert set(artifacts) == {"problem_json", "answer_json"}
+
+
+def test_prepare_main_mechanism_explanation_writes_no_arrays(tmp_path):
+    args = get_prepare_parser().parse_args([
+        "--problems", "problems/demo_problem.yaml",
+        "--synthetic-data-dir", str(tmp_path / "does-not-exist"),
+        "--output-dir", str(tmp_path / "prepared"),
+        "--task", "mechanism_explanation",
+        "--save-answer",
+    ])
+    assert prepare_main(args) == 0
+    output = tmp_path / "prepared" / "Kepler_s_Third_Law_-_Original"
+    assert {path.name for path in output.iterdir()} == {"problem.json", "answer.json"}
 
 
 def test_prepare_does_not_delete_redundant_files_and_requires_overwrite(tmp_path):

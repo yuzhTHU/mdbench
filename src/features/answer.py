@@ -16,11 +16,6 @@ def build_answer(problem: Problem, task: str) -> dict:
     answer = {
         "task": task,
         "target_variable": problem.target_variable.name,
-        "data_variables": [
-            problem.target_variable.name,
-            *(variable.name for variable in problem.input_variables),
-            *(variable.name for variable in problem.auxiliary_input_variables),
-        ],
         "source_variables": source_variables,
         "phenomenological_formula": (
             f"{problem.target_variable.name} = {problem.phenomenological_formula}"
@@ -32,6 +27,12 @@ def build_answer(problem: Problem, task: str) -> dict:
             "unit": constant.unit.to_dict(),
         } for constant in problem.constants],
     }
+    if task != "mechanism_explanation":
+        answer["data_variables"] = [
+            problem.target_variable.name,
+            *(variable.name for variable in problem.input_variables),
+            *(variable.name for variable in problem.auxiliary_input_variables),
+        ]
     if task != "symbolic_regression":
         answer["mechanisms"] = [{
             "formula": item.equation,

@@ -29,7 +29,7 @@ ARTIFACT_FILENAMES = {
 
 def prepare_problem(
     problem: Problem,
-    data: dict[str, np.ndarray],
+    data: dict[str, np.ndarray] | None,
     *,
     task: str,
     save_answer: bool = False,
@@ -42,11 +42,15 @@ def prepare_problem(
         raise ValueError(f"Unknown task {task!r}; choose one of {sorted(TASKS)}.")
     if task == "symbolic_regression" and reveal_auxiliary:
         raise ValueError("reveal_auxiliary is not available for symbolic regression.")
-    required_splits = {"train", "id_test", "ood_test", "variables"}
-    if missing := sorted(required_splits - set(data)):
-        raise ValueError(f"Synthetic data is missing required arrays: {', '.join(missing)}")
-
     input_kind, output_kind = TASKS[task]
+    if input_kind == "data":
+        if data is None:
+            raise ValueError(f"Synthetic data is required for task {task!r}.")
+        required_splits = {"train", "id_test", "ood_test", "variables"}
+        if missing := sorted(required_splits - set(data)):
+            raise ValueError(
+                f"Synthetic data is missing required arrays: {', '.join(missing)}"
+            )
     public = {
         "problem_name": problem.problem_name,
         "problem_description": problem.problem_description,
@@ -102,36 +106,37 @@ def prepare_problem(
     if input_kind == "formula":
         public["phenomenological_formula"] = f"{problem.target_variable.name} = {problem.phenomenological_formula}"
 
-    data_variables = data["variables"].tolist()
-    visible_data_variables = [problem.target_variable, *problem.input_variables]
-    if reveal_auxiliary:
-        visible_data_variables.extend(problem.auxiliary_input_variables)
-    missing_data_variables = [
-        variable.name
-        for variable in visible_data_variables
-        if variable.name not in data_variables
-    ]
-    if missing_data_variables:
-        raise ValueError(
-            "Synthetic data does not contain required variables: "
-            + ", ".join(missing_data_variables)
-        )
-    visible_indices = [
-        data_variables.index(variable.name) for variable in visible_data_variables
-    ]
+    artifacts: dict[str, dict[str, Any] | np.ndarray] = {"problem_json": public}
+    data_variables = None
+    if input_kind == "data":
+        data_variables = data["variables"].tolist()
+        visible_data_variables = [problem.target_variable, *problem.input_variables]
+        if reveal_auxiliary:
+            visible_data_variables.extend(problem.auxiliary_input_variables)
+        missing_data_variables = [
+            variable.name
+            for variable in visible_data_variables
+            if variable.name not in data_variables
+        ]
+        if missing_data_variables:
+            raise ValueError(
+                "Synthetic data does not contain required variables: "
+                + ", ".join(missing_data_variables)
+            )
+        visible_indices = [
+            data_variables.index(variable.name) for variable in visible_data_variables
+        ]
+        artifacts["data_train"] = data["train"][visible_indices]
 
-    artifacts: dict[str, dict[str, Any] | np.ndarray] = {
-        "problem_json": public,
-        "data_train": data["train"][visible_indices],
-    }
     if save_answer:
         answer = build_answer(problem, task)
-        answer["data_variables"] = data_variables
-        artifacts.update({
-            "answer_json": answer,
-            "data_id_test": data["id_test"],
-            "data_ood_test": data["ood_test"],
-        })
+        artifacts["answer_json"] = answer
+        if input_kind == "data":
+            answer["data_variables"] = data_variables
+            artifacts.update({
+                "data_id_test": data["id_test"],
+                "data_ood_test": data["ood_test"],
+            })
     return artifacts
 
 
@@ -197,14 +202,16 @@ def main(args):
             else:
                 used_names.add(name)
 
-            synthetic_data_path = Path(args.synthetic_data_dir) / f"{name}.npz"
-            if not synthetic_data_path.is_file():
-                raise FileNotFoundError(
-                    f"Synthetic data not found: {synthetic_data_path}. "
-                    "Run 'mdbench synthetic' before preparing problems."
-                )
-            with np.load(synthetic_data_path) as source:
-                data = {key: source[key] for key in source.files}
+            data = None
+            if TASKS[args.task][0] == "data":
+                synthetic_data_path = Path(args.synthetic_data_dir) / f"{name}.npz"
+                if not synthetic_data_path.is_file():
+                    raise FileNotFoundError(
+                        f"Synthetic data not found: {synthetic_data_path}. "
+                        "Run 'mdbench synthetic' before preparing data-input tasks."
+                    )
+                with np.load(synthetic_data_path) as source:
+                    data = {key: source[key] for key in source.files}
 
             artifacts = prepare_problem(
                 problem,

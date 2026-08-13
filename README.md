@@ -74,7 +74,7 @@ overall score:
 Install MDBench with Python 3.12 or newer:
 
 ```bash
-pip install -e ".[dev]"
+pip install mdbench
 mdbench --help
 ```
 
@@ -114,7 +114,7 @@ Checks schemas, variable usage, units, sampling specifications, explicit and
 implicit equation solving, and derivation of the target law:
 
 ```bash
-mdbench validate
+mdbench validate --problems problems
 mdbench validate --problems problems/demo_problem.yaml
 ```
 
@@ -123,7 +123,7 @@ fundamental. API or response failures are reported directly and do not fall
 back to heuristics.
 
 ```bash
-mdbench validate --check-fundamentality \
+mdbench validate --problems problems --check-fundamentality \
   --llm-provider deepseek --llm-model deepseek-v4-flash
 ```
 
@@ -224,12 +224,13 @@ A prepared directory contains:
 
 ```text
 problem.json               public task description
-data_train.npy             public training data
+data_train.npy             public training data for data-input tasks
 answer.json                optional private answer
-data_id_test.npy           optional private ID test data
-data_ood_test.npy          optional private OOD test data
+data_id_test.npy           optional private ID test data for data-input tasks
+data_ood_test.npy          optional private OOD test data for data-input tasks
 ```
 
-Without `--save-answer`, only `problem.json` and `data_train.npy` are written.
+Without `--save-answer`, data-input tasks contain `problem.json` and
+`data_train.npy`; mechanism-explanation tasks contain only `problem.json`.
 Public interchange types remain simple: units are `Dict[str, int | float]`,
 formulas are nd2py-compatible strings, and arrays use NumPy formats.

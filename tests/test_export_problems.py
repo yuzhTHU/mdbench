@@ -14,6 +14,11 @@ def test_export_bundled_problems(tmp_path):
     assert all(path.read_bytes() == (Path("problems") / path.name).read_bytes() for path in exported)
 
 
+def test_export_defaults_to_problems_directory(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["mdbench", "export"])
+    assert get_parser().parse_args([]).output_dir == "./problems/"
+
+
 def test_export_refuses_overwrite_without_confirmation(tmp_path, monkeypatch):
     output_dir = tmp_path / "problems"
     output_dir.mkdir()

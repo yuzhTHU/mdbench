@@ -49,8 +49,8 @@ def get_parser(parser=None):
         )
     parser.add_argument(
         "--output-dir",
-        required=True,
-        help="Destination directory for the exported problem YAML files",
+        default="./problems/",
+        help="Destination directory for the exported problem YAML files (default: ./problems/)",
     )
     parser.add_argument(
         "--force",

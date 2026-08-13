@@ -23,7 +23,7 @@ laws with their underlying mechanism descriptions. It separates three tasks:
 MDBench requires Python 3.12 or newer.
 
 ```bash
-pip install -e .
+pip install mdbench
 mdbench --help
 ```
 
@@ -40,14 +40,17 @@ A prepared task states what the solver receives and what it must return:
 For symbolic regression, submit one equation:
 
 ```text
-y = sqrt(k * x)
+T = sqrt(4 * π**2 * a**3 / (G * M))
 ```
 
 For a mechanism task, submit one relationship per line:
 
 ```text
-a = k * x
-y = sqrt(a)
+r = a
+F = G * M * m / r**2
+acc = F / m
+v = sqrt(r * acc)
+T = 2 * π * r / v
 ```
 
 The relationships must form a solvable system that produces the declared target
@@ -57,18 +60,20 @@ variable.
 
 First export the problem definitions bundled with the installed package. The
 remaining commands validate those definitions, generate data, and prepare
-mechanism-explanation tasks. `--save-answer` creates the private files needed
+mechanism-discovery tasks. `--save-answer` creates the private files needed
 for a local evaluation.
 
 ```bash
-mdbench export --output-dir problems
-mdbench validate
-mdbench synthetic --output-dir data/synthetic_data
+mdbench export  --output-dir problems # The same problems are available from GitHub Releases.
+mdbench validate --problems problems
+mdbench synthetic --problems problems --output-dir data/synthetic_data # The same synthetic data is available from GitHub Releases.
 mdbench prepare \
+  --task mechanism_discovery \
+  --problems problems \
   --synthetic-data-dir data/synthetic_data \
   --output-dir data/problem \
-  --task mechanism_explanation \
   --format directory \
+  --reveal-auxiliary \
   --save-answer
 ```
 
@@ -85,7 +90,7 @@ data_ood_test.npy   private out-of-domain test observations
 
 Read `problem.json` before solving. Its most important fields are:
 
-| Field | What the solver learns |
+| Field | Information provided |
 | --- | --- |
 | `problem_description` | Physical setting and assumptions. |
 | `input` | Whether to use `data` or a `formula`. |
@@ -103,15 +108,23 @@ Save the mechanism equations in `submission.txt`. During exploration, request
 feedback using only the prepared public task and its training data:
 
 ```bash
+# (feedback) Public feedback uses only problem.json and public training data.
 mdbench evaluate \
   --evaluation-mode feedback \
   --problem PATH/TO/PREPARED_TASK \
   --submission submission.txt \
   --verbose
+
+# (final) Final evaluation uses answer.json and the private ID/OOD test data.
+mdbench evaluate \
+  --evaluation-mode final \
+  --answer PATH/TO/PREPARED_TASK/answer.json \
+  --submission submission.txt \
+  --verbose
 ```
 
 The benchmark operator runs final evaluation separately with
-`--evaluation-mode final --answer PATH/TO/answer.json`. In a released
+`--evaluation-mode final --answer PATH/TO/answer.json`. In a private
 benchmark, participants receive only `problem.json`, `data_train.npy`, and a
 temporary working directory; the operator keeps the answer and test arrays.
 Run `mdbench <command> --help` for command-specific options.
@@ -359,8 +372,8 @@ An optional LLM check evaluates whether each relationship is more fundamental
 than the phenomenological law:
 
 ```bash
-mdbench validate --check-fundamentality \
-  --llm-provider deepseek --llm-model deepseek-v4-flash
+mdbench validate --problems problems \
+  --check-fundamentality --llm-provider deepseek --llm-model deepseek-v4-flash
 ```
 
 API or response failures are reported directly and do not fall back to a
@@ -378,10 +391,10 @@ inputs are generated here and may be hidden during task preparation.
 
 ## Task preparation
 
-Task preparation converts an author-facing problem definition and its synthetic
-data into a leakage-controlled package for one benchmark task. It does not
-generate data itself; `mdbench synthetic` must have produced the matching NPZ
-first.
+Task preparation converts an author-facing problem definition into a
+leakage-controlled package for one benchmark task. Data-input tasks require a
+matching NPZ previously produced by `mdbench synthetic`; mechanism explanation
+does not require or include synthetic arrays.
 
 ```bash
 mdbench prepare \
@@ -416,11 +429,12 @@ Additional fields depend on the selected task:
 | `mechanism_discovery` | training data | phenomenological formula and reference mechanisms |
 
 `phenomenological_formula`, when public, is a complete equation such as
-`y = sqrt(k * x)`.
+`T = sqrt(4 * π**2 * a**3 / (G * M))`.
 
 ### Training array
 
-`data_train.npy` is a two-dimensional `float64` array with shape
+For symbolic regression and mechanism discovery, `data_train.npy` is a
+two-dimensional `float64` array with shape
 `(number_of_visible_variables, number_of_samples)`. Its rows are ordered as:
 
 ```text
@@ -437,10 +451,8 @@ The target and observable-input portion exactly matches the order of
 stored separately in `problem.json["auxiliary_input_variables"]` and their rows
 are appended after the observable inputs.
 
-The training array is included in every package to keep artifact layout
-uniform. The `input` field determines whether data or the phenomenological
-formula constitutes the intended task input; a mechanism-explanation solver
-should not require the accompanying data.
+Mechanism-explanation packages contain no data arrays because their public
+input is the phenomenological formula.
 
 ### Auxiliary-input visibility
 
@@ -451,7 +463,7 @@ latent physical quantities rather than receiving them from the task author.
 `--reveal-auxiliary` changes three things:
 
 1. adds `auxiliary_input_variables` metadata to `problem.json`;
-2. appends their rows to `data_train.npy`;
+2. appends their rows to `data_train.npy` for mechanism discovery;
 3. reveals constants used only by the mechanism.
 
 The option is available only for mechanism explanation and mechanism discovery.
@@ -460,19 +472,21 @@ the target phenomenological relationship.
 
 ### Public and private artifacts
 
-Without `--save-answer`, a directory package contains only:
+Without `--save-answer`, a data-input package contains:
 
 ```text
 problem.json
 data_train.npy
 ```
 
-With `--save-answer`, preparation additionally writes:
+For mechanism explanation it contains only `problem.json`. With
+`--save-answer`, preparation adds `answer.json`; data-input tasks additionally
+receive the private test arrays:
 
 ```text
 answer.json
-data_id_test.npy
-data_ood_test.npy
+data_id_test.npy    data-input tasks only
+data_ood_test.npy   data-input tasks only
 ```
 
 `answer.json` always contains:
@@ -481,7 +495,7 @@ data_ood_test.npy
 | --- | --- |
 | `task` | Task needed to interpret the submission. |
 | `target_variable` | Required final left-hand variable. |
-| `data_variables` | Row order used by the private ID and OOD arrays. |
+| `data_variables` | Row order used by private arrays; present only for data-input tasks. |
 | `source_variables` | Inputs, auxiliary inputs, and constants available during evaluation. |
 | `phenomenological_formula` | Private target equation. |
 | `constants` | Complete constant metadata, including mechanism-only constants. |
@@ -504,10 +518,10 @@ compressed NPZ with these keys:
 
 ```text
 problem_json
-data_train
+data_train        data-input tasks only
 answer_json       only with --save-answer
-data_id_test      only with --save-answer
-data_ood_test     only with --save-answer
+data_id_test      data-input tasks only, with --save-answer
+data_ood_test     data-input tasks only, with --save-answer
 ```
 
 The JSON entries are scalar JSON strings; the data entries are NumPy arrays.

@@ -251,7 +251,7 @@ def _mechanism_predictions(submission: dict, context: dict, values: dict) -> np.
 def evaluate_feedback(
     submission: dict,
     public_problem: dict,
-    data_train: np.ndarray,
+    data_train: np.ndarray | None,
     *,
     fundamentality_scorer=None,
     derivation_checker=None,
@@ -259,7 +259,16 @@ def evaluate_feedback(
     """Evaluate using only the public task contract and training observations."""
     task = public_problem["task"]
     context = public_answer_context(public_problem)
-    values, expected = training_values(public_problem, data_train)
+    if task in {"symbolic_regression", "mechanism_discovery"}:
+        if data_train is None:
+            raise ValueError(f"Task {task!r} requires public training data.")
+        values, expected = training_values(public_problem, data_train)
+    else:
+        values = {
+            item["name"]: item["value"]
+            for item in public_problem.get("constants", [])
+        }
+        expected = None
     report = {
         "evaluation_mode": "feedback",
         "formula": None,
@@ -313,6 +322,8 @@ def _load_private_splits(path: str | Path, answer: dict) -> list[tuple[str, dict
     path = Path(path)
     public_path = path if path.suffix.lower() == ".npz" else path.parent
     public_problem, data_train = load_public_task(public_path)
+    if data_train is None:
+        return []
     train_values, train_expected = training_values(public_problem, data_train)
     results = [("train", train_values, train_expected)]
     arrays = {}
