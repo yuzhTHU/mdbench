@@ -3,7 +3,7 @@ from src.features.visualization import MechanismGraphBuilder
 
 
 def test_graph_points_sources_through_drag_to_target():
-    problem = load_problem("problems/分层流体小球终端速度-二次阻力改版.yaml")
+    problem = load_problem("problems/settling-terminal-velocity-quadratic-drag.yaml")
     problem.solution = solve_mechanism_equations(problem)
     dot = MechanismGraphBuilder().build(problem)
 

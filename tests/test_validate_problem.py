@@ -147,7 +147,7 @@ def test_effective_force_is_used_without_warning(caplog):
     import logging
     from src.features.io import load_problem
 
-    problem = load_problem("problems/分层流体小球终端速度-二次阻力改版.yaml")
+    problem = load_problem("problems/settling-terminal-velocity-quadratic-drag.yaml")
     with caplog.at_level(logging.WARNING, logger="src.utils.logger"):
         detail = _check_solution(problem)
     assert "Mechanism derivation tested" in detail
