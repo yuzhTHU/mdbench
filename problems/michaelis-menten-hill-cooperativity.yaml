@@ -1,0 +1,67 @@
+problem_name: Michaelis-Menten Kinetics - Hill Cooperativity
+phenomenological_formula: v = k_cat * E_T * S^2 / (K^2 + S^2)
+problem_description: An enzyme-catalyzed reaction has cooperative substrate binding. This version uses a fixed Hill coefficient of 2 so the units remain explicit.
+variable_description:
+  target:
+    name: v
+    description: Initial reaction rate with cooperative binding
+    unit: mol m^-3 s^-1
+  inputs:
+  - name: k_cat
+    description: Catalytic turnover constant
+    unit: s^-1
+    sampling:
+      min: 0.1
+      max: 1000.0
+      ood_boundary: 10.0
+      distribution: log_uniform
+  - name: E_T
+    description: Total enzyme concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.01
+      ood_boundary: 0.0001
+      distribution: log_uniform
+  - name: S
+    description: Substrate concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  - name: K
+    description: Half-saturation concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  intermediates:
+  - name: S_h
+    description: Squared substrate concentration term
+    unit: mol^2 m^-6
+  - name: K_h
+    description: Squared half-saturation concentration term
+    unit: mol^2 m^-6
+  - name: f
+    description: Hill-type active complex fraction
+    unit: 1 (dimensionless)
+  - name: C_complex
+    description: Active complex concentration
+    unit: mol m^-3
+  auxiliary_inputs: []
+constants: []
+mechanism:
+- formula: S_h = S^2
+  formula_description: Cooperative substrate concentration term for Hill coefficient 2
+- formula: K_h = K^2
+  formula_description: Cooperative half-saturation term for Hill coefficient 2
+- formula: f = S_h / (K_h + S_h)
+  formula_description: Hill-type cooperative binding fraction
+- formula: C_complex = E_T * f
+  formula_description: Active complex concentration from enzyme conservation
+- formula: v = k_cat * C_complex
+  formula_description: Catalytic turnover rate

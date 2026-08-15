@@ -1,0 +1,66 @@
+problem_name: Spring Oscillator Period - Cubic Hardening
+phenomenological_formula: T = 2 * π * sqrt(m / k) * (1 - 3 * alpha * A^2 / (8 * k))
+problem_description: A weak Duffing hardening term modifies the period at lowest order in alpha A^2 / k.
+variable_description:
+  target:
+    name: T
+    description: Weakly nonlinear oscillation period
+    unit: s
+  inputs:
+  - name: m
+    description: Oscillator mass
+    unit: kg
+    sampling:
+      min: 0.01
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: k
+    description: Linear spring stiffness
+    unit: kg s^-2
+    sampling:
+      min: 0.1
+      max: 10000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  - name: alpha
+    description: Cubic hardening stiffness coefficient
+    unit: kg m^-2 s^-2
+    sampling:
+      min: 0.01
+      max: 100000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  - name: A
+    description: Oscillation amplitude
+    unit: m
+    sampling:
+      min: 0.0001
+      max: 0.2
+      ood_boundary: 0.01
+      distribution: log_uniform
+  intermediates:
+  - name: omega0
+    description: Linear angular frequency
+    unit: s^-1
+  - name: T0
+    description: Linear oscillator period
+    unit: s
+  - name: C_corr
+    description: Lowest-order cubic-hardening period correction factor
+    unit: 1 (dimensionless)
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: omega0 = sqrt(k / m)
+  formula_description: Linear angular frequency
+- formula: T0 = 2 * π / omega0
+  formula_description: Linear oscillator period
+- formula: C_corr = 1 - 3 * alpha * A^2 / (8 * k)
+  formula_description: Lowest-order hardening correction factor
+- formula: T = T0 * C_corr
+  formula_description: Weakly nonlinear period correction

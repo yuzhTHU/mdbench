@@ -1,0 +1,75 @@
+problem_name: Michaelis-Menten Kinetics - Substrate Inhibition
+phenomenological_formula: v = k_cat * E_T * S / (K_M + S + S^2 / K_I)
+problem_description: At high substrate concentration, an inactive complex contributes a substrate-inhibition term to the binding denominator.
+variable_description:
+  target:
+    name: v
+    description: Initial reaction rate under substrate inhibition
+    unit: mol m^-3 s^-1
+  inputs:
+  - name: k_cat
+    description: Catalytic turnover constant
+    unit: s^-1
+    sampling:
+      min: 0.1
+      max: 1000.0
+      ood_boundary: 10.0
+      distribution: log_uniform
+  - name: E_T
+    description: Total enzyme concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.01
+      ood_boundary: 0.0001
+      distribution: log_uniform
+  - name: S
+    description: Substrate concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  - name: K_M
+    description: Michaelis constant
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  - name: K_I
+    description: Substrate inhibition constant
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  intermediates:
+  - name: B
+    description: Substrate inhibition contribution to the denominator
+    unit: mol m^-3
+  - name: D
+    description: Binding denominator under substrate inhibition
+    unit: mol m^-3
+  - name: f
+    description: Active complex fraction under substrate inhibition
+    unit: 1 (dimensionless)
+  - name: C_complex
+    description: Enzyme-substrate complex concentration
+    unit: mol m^-3
+  auxiliary_inputs: []
+constants: []
+mechanism:
+- formula: B = S^2 / K_I
+  formula_description: Inactive-complex contribution at high substrate concentration
+- formula: D = K_M + S + B
+  formula_description: Binding denominator with substrate inhibition
+- formula: f = S / D
+  formula_description: Active complex fraction under substrate inhibition
+- formula: C_complex = E_T * f
+  formula_description: Active complex concentration from enzyme conservation
+- formula: v = k_cat * C_complex
+  formula_description: Catalytic turnover rate

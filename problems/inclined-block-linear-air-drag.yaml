@@ -1,0 +1,93 @@
+problem_name: Inclined Block Displacement - Linear Air Drag
+phenomenological_formula: x = m * g * (sin(theta) - mu * cos(theta)) * t / b - m^2 * g * (sin(theta) - mu * cos(theta)) * (1 - exp(-b * t / m)) / b^2
+problem_description: A block slides from rest down a rough incline while also experiencing a velocity-proportional drag force.
+variable_description:
+  target:
+    name: x
+    description: Displacement down the incline
+    unit: m
+  inputs:
+  - name: t
+    description: Time after release from rest
+    unit: s
+    sampling:
+      min: 0.01
+      max: 20.0
+      ood_boundary: 5.0
+      distribution: log_uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: theta
+    description: Incline angle
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.02
+      max: 1.2
+      ood_boundary: 0.5
+      distribution: uniform
+  - name: mu
+    description: Kinetic friction coefficient
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.01
+      max: 0.8
+      ood_boundary: 0.3
+      distribution: uniform
+  - name: m
+    description: Block mass
+    unit: kg
+    sampling:
+      min: 0.01
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: b
+    description: Linear drag coefficient
+    unit: kg s^-1
+    sampling:
+      min: 0.01
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  intermediates:
+  - name: F_parallel
+    description: Down-slope component of gravity
+    unit: kg m s^-2
+  - name: N
+    description: Normal reaction force
+    unit: kg m s^-2
+  - name: F_f
+    description: Kinetic friction force
+    unit: kg m s^-2
+  - name: F_drive
+    description: Constant drive force before air drag
+    unit: kg m s^-2
+  - name: v_T
+    description: Terminal down-slope velocity under linear drag
+    unit: m s^-1
+  - name: tau
+    description: Velocity relaxation time
+    unit: s
+  auxiliary_inputs: []
+constants: []
+mechanism:
+- formula: F_parallel = m * g * sin(theta)
+  formula_description: Down-slope component of gravity
+- formula: N = m * g * cos(theta)
+  formula_description: Normal force on the block
+- formula: F_f = mu * N
+  formula_description: Coulomb kinetic friction
+- formula: F_drive = F_parallel - F_f
+  formula_description: Constant drive force before air drag
+- formula: v_T = F_drive / b
+  formula_description: Terminal velocity under linear drag
+- formula: tau = m / b
+  formula_description: Velocity relaxation time
+- formula: x = v_T * t - v_T * tau * (1 - exp(-t / tau))
+  formula_description: Time integral of the first-order velocity response

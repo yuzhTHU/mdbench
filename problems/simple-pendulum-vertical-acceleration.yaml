@@ -1,0 +1,58 @@
+problem_name: Simple Pendulum Period - Vertically Accelerating Frame
+phenomenological_formula: T = 2 * π * sqrt(L / (g + a0))
+problem_description: A small-angle pendulum is mounted in a frame accelerating vertically upward. The gravitational acceleration in the restoring torque is replaced by an effective acceleration.
+variable_description:
+  target:
+    name: T
+    description: Pendulum period in the accelerating frame
+    unit: s
+  inputs:
+  - name: L
+    description: Pendulum length
+    unit: m
+    sampling:
+      min: 0.05
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: a0
+    description: Upward frame acceleration
+    unit: m s^-2
+    sampling:
+      min: 0.1
+      max: 10.0
+      ood_boundary: 2.0
+      distribution: uniform
+  intermediates:
+  - name: g_eff
+    description: Effective gravitational acceleration
+    unit: m s^-2
+  - name: k_restore
+    description: Angular restoring coefficient
+    unit: s^-2
+  - name: omega
+    description: Angular frequency
+    unit: s^-1
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: g_eff = g + a0
+  formula_description: Effective gravity in the accelerating frame
+- formula: k_restore = g_eff / L
+  formula_description: Angular restoring coefficient using effective gravity
+- formula: omega = sqrt(k_restore)
+  formula_description: Angular frequency
+- formula: T = 2 * π / omega
+  formula_description: Period-frequency relation

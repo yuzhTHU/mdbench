@@ -1,0 +1,57 @@
+problem_name: Michaelis-Menten Kinetics - Original
+phenomenological_formula: v = k_cat * E_T * S / (K_M + S)
+problem_description: An enzyme-catalyzed reaction is observed in the initial-rate regime under the Michaelis-Menten approximation.
+variable_description:
+  target:
+    name: v
+    description: Initial reaction rate
+    unit: mol m^-3 s^-1
+  inputs:
+  - name: k_cat
+    description: Catalytic turnover constant
+    unit: s^-1
+    sampling:
+      min: 0.1
+      max: 1000.0
+      ood_boundary: 10.0
+      distribution: log_uniform
+  - name: E_T
+    description: Total enzyme concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.01
+      ood_boundary: 0.0001
+      distribution: log_uniform
+  - name: S
+    description: Substrate concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  - name: K_M
+    description: Michaelis constant
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  intermediates:
+  - name: f
+    description: Fraction of enzyme in substrate-bound active complex
+    unit: 1 (dimensionless)
+  - name: C_complex
+    description: Enzyme-substrate complex concentration
+    unit: mol m^-3
+  auxiliary_inputs: []
+constants: []
+mechanism:
+- formula: f = S / (K_M + S)
+  formula_description: Substrate-bound fraction under the quasi-steady Michaelis-Menten approximation
+- formula: C_complex = E_T * f
+  formula_description: Active complex concentration from enzyme conservation
+- formula: v = k_cat * C_complex
+  formula_description: Catalytic turnover rate

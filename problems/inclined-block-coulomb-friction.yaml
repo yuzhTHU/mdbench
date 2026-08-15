@@ -1,0 +1,80 @@
+problem_name: Inclined Block Displacement - Coulomb Friction
+phenomenological_formula: x = g * (sin(theta) - mu * cos(theta)) * t^2 / 2
+problem_description: A block slides from rest down a rough fixed incline with Coulomb kinetic friction.
+variable_description:
+  target:
+    name: x
+    description: Displacement down the incline
+    unit: m
+  inputs:
+  - name: t
+    description: Time after release from rest
+    unit: s
+    sampling:
+      min: 0.01
+      max: 20.0
+      ood_boundary: 5.0
+      distribution: log_uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: theta
+    description: Incline angle
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.02
+      max: 1.2
+      ood_boundary: 0.5
+      distribution: uniform
+  - name: mu
+    description: Kinetic friction coefficient
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.01
+      max: 0.8
+      ood_boundary: 0.3
+      distribution: uniform
+  intermediates:
+  - name: F_parallel
+    description: Down-slope component of gravity
+    unit: kg m s^-2
+  - name: N
+    description: Normal reaction force
+    unit: kg m s^-2
+  - name: F_f
+    description: Kinetic friction force
+    unit: kg m s^-2
+  - name: F_net
+    description: Net down-slope force
+    unit: kg m s^-2
+  - name: a
+    description: Down-slope acceleration
+    unit: m s^-2
+  auxiliary_inputs:
+  - name: m
+    description: Block mass used in the force decomposition
+    unit: kg
+    sampling:
+      min: 0.01
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+constants: []
+mechanism:
+- formula: F_parallel = m * g * sin(theta)
+  formula_description: Down-slope component of gravity
+- formula: N = m * g * cos(theta)
+  formula_description: Normal force on the block
+- formula: F_f = mu * N
+  formula_description: Coulomb kinetic friction
+- formula: F_net = F_parallel - F_f
+  formula_description: Net down-slope force
+- formula: a = F_net / m
+  formula_description: Newton second law along the incline
+- formula: x = a * t^2 / 2
+  formula_description: Constant-acceleration displacement from rest

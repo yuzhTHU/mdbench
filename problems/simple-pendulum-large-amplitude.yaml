@@ -1,0 +1,63 @@
+problem_name: Simple Pendulum Period - Large-Amplitude Correction
+phenomenological_formula: T = 2 * π * sqrt(L / g) * (1 + theta0^2 / 16)
+problem_description: A pendulum oscillates with finite but still moderate amplitude. This variant replaces the small-angle period with a second-order amplitude correction.
+variable_description:
+  target:
+    name: T
+    description: Large-amplitude approximate pendulum period
+    unit: s
+  inputs:
+  - name: L
+    description: Pendulum length
+    unit: m
+    sampling:
+      min: 0.05
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: theta0
+    description: Maximum angular amplitude
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.02
+      max: 0.8
+      ood_boundary: 0.3
+      distribution: uniform
+  intermediates:
+  - name: k_restore
+    description: Small-angle angular restoring coefficient
+    unit: s^-2
+  - name: omega0
+    description: Small-angle angular frequency
+    unit: s^-1
+  - name: T0
+    description: Small-angle period
+    unit: s
+  - name: C_amp
+    description: Second-order amplitude correction factor
+    unit: 1 (dimensionless)
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: k_restore = g / L
+  formula_description: Small-angle angular restoring coefficient
+- formula: omega0 = sqrt(k_restore)
+  formula_description: Small-angle angular frequency
+- formula: T0 = 2 * π / omega0
+  formula_description: Small-angle period
+- formula: C_amp = 1 + theta0^2 / 16
+  formula_description: Second-order finite-amplitude correction factor
+- formula: T = T0 * C_amp
+  formula_description: Large-amplitude corrected period

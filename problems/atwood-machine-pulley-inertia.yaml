@@ -1,0 +1,70 @@
+problem_name: Atwood Machine Acceleration - Pulley Rotational Inertia
+phenomenological_formula: a = g * (m1 - m2) / (m1 + m2 + I / R^2)
+problem_description: The pulley has rotational inertia I and the string does not slip, increasing the effective inertia of the system.
+variable_description:
+  target:
+    name: a
+    description: Acceleration magnitude with m1 descending
+    unit: m s^-2
+  inputs:
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: m1
+    description: Mass on the descending side
+    unit: kg
+    sampling:
+      min: 0.2
+      max: 10.0
+      ood_boundary: 2.0
+      distribution: log_uniform
+  - name: m2
+    description: Mass on the ascending side
+    unit: kg
+    sampling:
+      min: 0.05
+      max: 5.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: I
+    description: Pulley moment of inertia
+    unit: kg m^2
+    sampling:
+      min: 1.0e-05
+      max: 1.0
+      ood_boundary: 0.01
+      distribution: log_uniform
+  - name: R
+    description: Pulley radius
+    unit: m
+    sampling:
+      min: 0.01
+      max: 1.0
+      ood_boundary: 0.1
+      distribution: log_uniform
+  intermediates:
+  - name: T1
+    description: Tension on the descending side of the string
+    unit: kg m s^-2
+  - name: T2
+    description: Tension on the ascending side of the string
+    unit: kg m s^-2
+  - name: tau_pulley
+    description: Net torque exerted on the pulley
+    unit: kg m^2 s^-2
+  auxiliary_inputs: []
+constants: []
+mechanism:
+- formula: T1 = m1 * g - m1 * a
+  formula_description: Newton second law for the descending mass
+- formula: T2 = m2 * g + m2 * a
+  formula_description: Newton second law for the ascending mass
+- formula: tau_pulley = (T1 - T2) * R
+  formula_description: Net torque from unequal string tensions
+- formula: a = tau_pulley * R / I
+  formula_description: Rotational dynamics of the pulley with no slip

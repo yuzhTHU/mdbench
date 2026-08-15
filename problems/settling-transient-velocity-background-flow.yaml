@@ -1,0 +1,120 @@
+problem_name: Settling Transient Velocity - Background Flow
+phenomenological_formula: v = (U + 2 * r^2 * g * (rho_p - rho_f) / (9 * u)) * (1 - exp(-9 * u * t / (2 * rho_p * r^2)))
+problem_description: A sphere is released in a viscous fluid with a uniform downward background flow. The drag depends on velocity relative to the fluid and the steady velocity includes the flow speed.
+variable_description:
+  target:
+    name: v
+    description: Downward sphere velocity in the container frame
+    unit: m s^-1
+  inputs:
+  - name: t
+    description: Time after release
+    unit: s
+    sampling:
+      min: 0.01
+      max: 20.0
+      ood_boundary: 5.0
+      distribution: log_uniform
+  - name: r
+    description: Sphere radius
+    unit: m
+    sampling:
+      min: 1.0e-05
+      max: 0.005
+      ood_boundary: 0.0005
+      distribution: log_uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: rho_p
+    description: Particle material density
+    unit: kg m^-3
+    sampling:
+      min: 1500.0
+      max: 8000.0
+      ood_boundary: 3000.0
+      distribution: uniform
+  - name: rho_f
+    description: Fluid density
+    unit: kg m^-3
+    sampling:
+      min: 500.0
+      max: 1300.0
+      ood_boundary: 1000.0
+      distribution: uniform
+  - name: u
+    description: Dynamic viscosity of the fluid
+    unit: kg m^-1 s^-1
+    sampling:
+      min: 0.001
+      max: 10.0
+      ood_boundary: 0.1
+      distribution: log_uniform
+  - name: U
+    description: Downward background flow speed
+    unit: m s^-1
+    sampling:
+      min: 0.01
+      max: 1.0
+      ood_boundary: 0.3
+      distribution: uniform
+  intermediates:
+  - name: V
+    description: Sphere volume
+    unit: m^3
+  - name: m
+    description: Sphere mass
+    unit: kg
+  - name: F_g
+    description: Sphere weight
+    unit: kg m s^-2
+  - name: F_b
+    description: Buoyant force
+    unit: kg m s^-2
+  - name: F
+    description: Effective downward driving force
+    unit: kg m s^-2
+  - name: b
+    description: Linear relative-velocity drag coefficient
+    unit: kg s^-1
+  - name: v_rel
+    description: Terminal velocity relative to the fluid
+    unit: m s^-1
+  - name: v_ss
+    description: Steady velocity in the container frame
+    unit: m s^-1
+  - name: tau
+    description: Velocity relaxation time
+    unit: s
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: V = 4 * π * r^3 / 3
+  formula_description: Volume of a sphere
+- formula: m = rho_p * V
+  formula_description: Mass-density relation for the sphere
+- formula: F_g = m * g
+  formula_description: Weight of the sphere
+- formula: F_b = rho_f * V * g
+  formula_description: Archimedes buoyancy force
+- formula: F = F_g - F_b
+  formula_description: Effective downward force after buoyancy
+- formula: b = 6 * π * u * r
+  formula_description: Linear drag coefficient for velocity relative to the fluid
+- formula: v_rel = F / b
+  formula_description: Terminal velocity relative to the moving fluid
+- formula: v_ss = U + v_rel
+  formula_description: Steady velocity after adding the downward background flow speed
+- formula: tau = m / b
+  formula_description: First-order velocity relaxation time
+- formula: v = v_ss * (1 - exp(-t / tau))
+  formula_description: Simplified first-order response toward the background-flow steady velocity

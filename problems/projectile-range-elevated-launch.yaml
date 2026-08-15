@@ -1,0 +1,62 @@
+problem_name: Projectile Range - Elevated Launch
+phenomenological_formula: R = v0 * cos(theta) * (v0 * sin(theta) + sqrt(v0^2 * sin(theta)^2 + 2 * g * h)) / g
+problem_description: A projectile is launched from height h above the landing surface. The landing time is the positive root of the vertical motion equation.
+variable_description:
+  target:
+    name: R
+    description: Horizontal range
+    unit: m
+  inputs:
+  - name: v0
+    description: Launch speed
+    unit: m s^-1
+    sampling:
+      min: 1.0
+      max: 100.0
+      ood_boundary: 20.0
+      distribution: log_uniform
+  - name: theta
+    description: Launch angle
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.02
+      max: 1.2
+      ood_boundary: 0.5
+      distribution: uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: h
+    description: Launch height above the landing level
+    unit: m
+    sampling:
+      min: 0.01
+      max: 100.0
+      ood_boundary: 5.0
+      distribution: log_uniform
+  intermediates:
+  - name: v_x
+    description: Horizontal launch velocity
+    unit: m s^-1
+  - name: v_y
+    description: Vertical launch velocity
+    unit: m s^-1
+  - name: t_f
+    description: Time of flight
+    unit: s
+  auxiliary_inputs: []
+constants: []
+mechanism:
+- formula: v_x = v0 * cos(theta)
+  formula_description: Horizontal component of launch velocity
+- formula: v_y = v0 * sin(theta)
+  formula_description: Vertical component of launch velocity
+- formula: t_f = (v_y + sqrt(v_y^2 + 2 * g * h)) / g
+  formula_description: Positive landing-time root for elevated launch
+- formula: R = v_x * t_f
+  formula_description: Horizontal displacement during flight
