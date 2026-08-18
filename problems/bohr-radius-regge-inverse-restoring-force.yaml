@@ -1,0 +1,58 @@
+problem_name: Bohr Radius - Physical Variant
+phenomenological_formula: r = (n * h)**(3/4) / (p**(1/4) * sqrt(k))
+problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+variable_description:
+  target:
+    name: r
+    description: Characteristic radius
+    unit: m
+  inputs:
+  - name: k
+    description: Model coefficient
+    unit: kg m^2 s^-2
+    sampling:
+      min: 0.0001
+      max: 0.01
+      ood_boundary: 0.001
+      distribution: log_uniform
+  - name: n
+    description: Dimensionless quantum or layer number
+    unit: 1 (dimensionless)
+    sampling:
+      min: 1.0
+      max: 8.0
+      ood_boundary: 3.0
+      distribution: uniform
+  - name: p
+    description: Physical quantity p
+    unit: kg s m^-2
+    sampling:
+      min: 0.05
+      max: 0.7
+      ood_boundary: 0.3
+      distribution: uniform
+  intermediates:
+  - name: L
+    description: Physical quantity L
+    unit: kg m^2 s^-1
+  - name: m
+    description: Mass
+    unit: kg
+  - name: v
+    description: Velocity
+    unit: m s^-1
+  auxiliary_inputs: []
+constants:
+- name: h
+  description: Planck constant
+  value: 6.62607015e-34
+  unit: kg m^2 s^-1
+mechanism:
+- formula: L = n * h
+  formula_description: Physical relationship that determines L.
+- formula: m = sqrt(p * L)
+  formula_description: Physical relationship that determines m.
+- formula: v = sqrt(k / m)
+  formula_description: Physical relationship that determines v.
+- formula: r = L / (m * v)
+  formula_description: Physical relationship that determines r.

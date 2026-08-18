@@ -1,0 +1,79 @@
+problem_name: Eddington Limit - Original
+phenomenological_formula: Y = 4 * pi * G * M * m * c / s
+problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+variable_description:
+  target:
+    name: Y
+    description: Characteristic response quantity
+    unit: kg m^2 s^-3
+  inputs:
+  - name: M
+    description: Mass or molar mass
+    unit: kg
+    sampling:
+      min: 1.0e+30
+      max: 1.0e+33
+      ood_boundary: 5.0e+31
+      distribution: log_uniform
+  - name: m
+    description: Mass
+    unit: kg
+    sampling:
+      min: 1.0e-30
+      max: 1.0e-18
+      ood_boundary: 1.0e-24
+      distribution: log_uniform
+  - name: s
+    description: Cross section, length scale, or radiative constant
+    unit: m^2
+    sampling:
+      min: 1.0e-06
+      max: 0.01
+      ood_boundary: 0.0001
+      distribution: log_uniform
+  intermediates:
+  - name: F_g
+    description: Physical quantity F_g
+    unit: kg m s^-2
+  - name: F
+    description: Force
+    unit: kg m s^-2
+  - name: Phi
+    description: Physical quantity Phi
+    unit: kg m^-1 s^-2
+  - name: S
+    description: Incident radiative flux
+    unit: kg s^-3
+  auxiliary_inputs:
+  - name: r
+    description: Characteristic radius
+    unit: m
+    sampling:
+      min: 1.0e-06
+      max: 0.01
+      ood_boundary: 0.0001
+      distribution: log_uniform
+constants:
+- name: G
+  description: Gravitational constant
+  value: 6.6743e-11
+  unit: m^3 kg^-1 s^-2
+- name: c
+  description: Speed of light in vacuum
+  value: 299792458.0
+  unit: m s^-1
+- name: pi
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: F_g = G * M * m / r**2
+  formula_description: Physical relationship that determines F_g.
+- formula: F = F_g
+  formula_description: Physical relationship that determines F.
+- formula: Phi = F / s
+  formula_description: Physical relationship that determines Phi.
+- formula: S = Phi * c
+  formula_description: Physical relationship that determines S.
+- formula: Y = 4 * pi * r**2 * S
+  formula_description: Physical relationship that determines Y.
