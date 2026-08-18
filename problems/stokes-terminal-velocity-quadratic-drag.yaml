@@ -1,0 +1,89 @@
+problem_name: Stokes Terminal Velocity - Physical Variant
+phenomenological_formula: v = sqrt(8 * (rho_1 - rho_2) * g * r / (3 * rho_2 * C))
+problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+variable_description:
+  target:
+    name: v
+    description: Velocity
+    unit: m s^-1
+  inputs:
+  - name: C
+    description: Model coefficient
+    unit: 1 (dimensionless)
+    sampling:
+      min: -1.0e-05
+      max: -1.0e-07
+      ood_boundary: -5.0e-06
+      distribution: uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 9.7
+      max: 9.9
+      ood_boundary: 9.81
+      distribution: uniform
+  - name: r
+    description: Characteristic radius
+    unit: m
+    sampling:
+      min: 1.0e-06
+      max: 0.01
+      ood_boundary: 0.0001
+      distribution: log_uniform
+  - name: rho_1
+    description: Particle density
+    unit: kg m^-3
+    sampling:
+      min: 1200.0
+      max: 8000.0
+      ood_boundary: 3000.0
+      distribution: log_uniform
+  - name: rho_2
+    description: Fluid density
+    unit: kg m^-3
+    sampling:
+      min: 1.0
+      max: 1000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  intermediates:
+  - name: V
+    description: Volume
+    unit: m^3
+  - name: A
+    description: Temperature gradient
+    unit: m^2
+  - name: m_p
+    description: Physical quantity m_p
+    unit: kg
+  - name: F_g
+    description: Physical quantity F_g
+    unit: kg m s^-2
+  - name: F_b
+    description: Physical quantity F_b
+    unit: kg m s^-2
+  - name: F_d
+    description: Physical quantity F_d
+    unit: kg m s^-2
+  auxiliary_inputs: []
+constants:
+- name: pi
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: V = 4 * pi * r**3 / 3
+  formula_description: Physical relationship that determines V.
+- formula: A = pi * r**2
+  formula_description: Physical relationship that determines A.
+- formula: m_p = rho_1 * V
+  formula_description: Physical relationship that determines m_p.
+- formula: F_g = m_p * g
+  formula_description: Physical relationship that determines F_g.
+- formula: F_b = rho_2 * V * g
+  formula_description: Physical relationship that determines F_b.
+- formula: F_d = F_g - F_b
+  formula_description: Physical relationship that determines F_d.
+- formula: v = sqrt(2 * F_d / (rho_2 * C * A))
+  formula_description: Physical relationship that determines v.

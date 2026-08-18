@@ -1,0 +1,145 @@
+problem_name: Brunt-Vaisala Frequency - Physical Variant
+phenomenological_formula: Y = (g / T) * (A - B + (C - D) * z)
+problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+variable_description:
+  target:
+    name: Y
+    description: Characteristic response quantity
+    unit: s^-2
+  inputs:
+  - name: A
+    description: Temperature gradient
+    unit: K m^-1
+    sampling:
+      min: -0.012
+      max: -0.001
+      ood_boundary: -0.007
+      distribution: uniform
+  - name: B
+    description: Temperature gradient
+    unit: K m^-1
+    sampling:
+      min: -0.012
+      max: -0.001
+      ood_boundary: -0.006
+      distribution: uniform
+  - name: C
+    description: Model coefficient
+    unit: K m^-2
+    sampling:
+      min: -1.0e-05
+      max: -1.0e-07
+      ood_boundary: -5.0e-06
+      distribution: uniform
+  - name: D
+    description: Discriminant
+    unit: K m^-2
+    sampling:
+      min: -1.0e-05
+      max: -1.0e-07
+      ood_boundary: -5.0e-06
+      distribution: uniform
+  - name: T
+    description: Temperature or period
+    unit: K
+    sampling:
+      min: 200.0
+      max: 330.0
+      ood_boundary: 288.0
+      distribution: uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 9.7
+      max: 9.9
+      ood_boundary: 9.81
+      distribution: uniform
+  - name: z
+    description: Vertical displacement
+    unit: m
+    sampling:
+      min: 1.0
+      max: 1000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  intermediates:
+  - name: T_p
+    description: Physical quantity T_p
+    unit: K
+  - name: T_e
+    description: Physical quantity T_e
+    unit: K
+  - name: rho_p
+    description: Physical quantity rho_p
+    unit: kg m^-3
+  - name: rho_e
+    description: Physical quantity rho_e
+    unit: kg m^-3
+  - name: V
+    description: Volume
+    unit: m^3
+  - name: F_g
+    description: Physical quantity F_g
+    unit: kg m s^-2
+  - name: F_b
+    description: Physical quantity F_b
+    unit: kg m s^-2
+  - name: F
+    description: Force
+    unit: kg m s^-2
+  - name: a
+    description: Dimensionless coefficient or length scale
+    unit: m s^-2
+  - name: a_q
+    description: Physical quantity a_q
+    unit: m s^-2
+  auxiliary_inputs:
+  - name: P
+    description: Orbital period or pressure
+    unit: kg m^-1 s^-2
+    sampling:
+      min: 50000.0
+      max: 150000.0
+      ood_boundary: 101325.0
+      distribution: log_uniform
+  - name: m
+    description: Mass
+    unit: kg
+    sampling:
+      min: 1.0e-30
+      max: 1.0e-18
+      ood_boundary: 1.0e-24
+      distribution: log_uniform
+constants:
+- name: M
+  description: Molar mass of dry air
+  value: 0.0289652
+  unit: kg mol^-1
+- name: R
+  description: Molar gas constant
+  value: 8.314462618
+  unit: kg m^2 s^-2 K^-1 mol^-1
+mechanism:
+- formula: T_p = T - A * z - C * z**2
+  formula_description: Physical relationship that determines T_p.
+- formula: T_e = T - B * z - D * z**2
+  formula_description: Physical relationship that determines T_e.
+- formula: rho_p = P * M / (R * T_p)
+  formula_description: Physical relationship that determines rho_p.
+- formula: rho_e = P * M / (R * T_e)
+  formula_description: Physical relationship that determines rho_e.
+- formula: V = m / rho_p
+  formula_description: Physical relationship that determines V.
+- formula: F_g = m * g
+  formula_description: Physical relationship that determines F_g.
+- formula: F_b = rho_e * V * g
+  formula_description: Physical relationship that determines F_b.
+- formula: F = F_b - F_g
+  formula_description: Physical relationship that determines F.
+- formula: a = F / m
+  formula_description: Physical relationship that determines a.
+- formula: a_q = a * (T_e / T)
+  formula_description: Physical relationship that determines a_q.
+- formula: Y = -a_q / z
+  formula_description: Physical relationship that determines Y.

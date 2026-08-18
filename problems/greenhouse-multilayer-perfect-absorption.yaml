@@ -1,0 +1,63 @@
+problem_name: Greenhouse Effect - Physical Variant
+phenomenological_formula: T = ((N + 1) * (1 - a) * S / (4 * s))**(1/4)
+problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+variable_description:
+  target:
+    name: T
+    description: Temperature or period
+    unit: K
+  inputs:
+  - name: N
+    description: Number of atmospheric layers
+    unit: 1 (dimensionless)
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 5.0
+      distribution: uniform
+  - name: S
+    description: Incident radiative flux
+    unit: kg s^-3
+    sampling:
+      min: 1200.0
+      max: 1500.0
+      ood_boundary: 1361.0
+      distribution: uniform
+  - name: a
+    description: Dimensionless coefficient or length scale
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.1
+      max: 0.6
+      ood_boundary: 0.3
+      distribution: uniform
+  intermediates:
+  - name: S0
+    description: Physical quantity S0
+    unit: kg s^-3
+  - name: OLR
+    description: Physical quantity OLR
+    unit: kg s^-3
+  - name: n
+    description: Dimensionless quantum or layer number
+    unit: 1 (dimensionless)
+  - name: E
+    description: Physical quantity E
+    unit: kg s^-3
+  auxiliary_inputs: []
+constants:
+- name: s
+  description: Stefan-Boltzmann constant
+  value: 5.670374419e-08
+  unit: kg s^-3 K^-4
+mechanism:
+- formula: S0 = (1 - a) * S / 4
+  formula_description: Physical relationship that determines S0.
+- formula: OLR = S0
+  formula_description: Physical relationship that determines OLR.
+- formula: n = N + 1
+  formula_description: Physical relationship that determines n.
+- formula: E = n * OLR
+  formula_description: Physical relationship that determines E.
+- formula: T = (E / s)**(1/4)
+  formula_description: Physical relationship that determines T.

@@ -1,0 +1,75 @@
+problem_name: Black Hole Event Horizon - Physical Variant
+phenomenological_formula: r = G * M / c**2 + sqrt((G * M / c**2)**2 - (J / (M * c))**2 - G * Q**2 / (4 * pi * eps * c**4))
+problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+variable_description:
+  target:
+    name: r
+    description: Characteristic radius
+    unit: m
+  inputs:
+  - name: J
+    description: Angular momentum
+    unit: kg m^2 s^-1
+    sampling:
+      min: 1.0e+36
+      max: 1.0e+41
+      ood_boundary: 1.0e+39
+      distribution: log_uniform
+  - name: M
+    description: Mass or molar mass
+    unit: kg
+    sampling:
+      min: 1.0e+30
+      max: 1.0e+33
+      ood_boundary: 5.0e+31
+      distribution: log_uniform
+  - name: Q
+    description: Electric charge
+    unit: A s
+    sampling:
+      min: 1000000.0
+      max: 100000000000000.0
+      ood_boundary: 10000000000.0
+      distribution: log_uniform
+  intermediates:
+  - name: R
+    description: Physical quantity R
+    unit: m
+  - name: a
+    description: Dimensionless coefficient or length scale
+    unit: m
+  - name: q
+    description: Eccentricity or charge-related term
+    unit: m^2
+  - name: D
+    description: Discriminant
+    unit: m^2
+  auxiliary_inputs: []
+constants:
+- name: G
+  description: Gravitational constant
+  value: 6.6743e-11
+  unit: m^3 kg^-1 s^-2
+- name: c
+  description: Speed of light in vacuum
+  value: 299792458.0
+  unit: m s^-1
+- name: eps
+  description: Vacuum permittivity
+  value: 8.8541878128e-12
+  unit: kg^-1 m^-3 s^4 A^2
+- name: pi
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: R = 2 * G * M / c**2
+  formula_description: Physical relationship that determines R.
+- formula: a = J / (M * c)
+  formula_description: Physical relationship that determines a.
+- formula: q = G * Q**2 / (4 * pi * eps * c**4)
+  formula_description: Physical relationship that determines q.
+- formula: D = R**2 - 4 * a**2 - 4 * q
+  formula_description: Physical relationship that determines D.
+- formula: r = G * M / c**2 + sqrt((G * M / c**2)**2 - (J / (M * c))**2 - G * Q**2 / (4 * pi * eps * c**4))
+  formula_description: Physical relationship that determines r.

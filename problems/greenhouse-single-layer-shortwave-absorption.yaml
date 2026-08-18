@@ -1,0 +1,86 @@
+problem_name: Greenhouse Effect - Physical Variant
+phenomenological_formula: T = (((1 - p / 2) * (1 - a) * S / 4) / (s * (1 - b / 2)))**(1/4)
+problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+variable_description:
+  target:
+    name: T
+    description: Temperature or period
+    unit: K
+  inputs:
+  - name: S
+    description: Incident radiative flux
+    unit: kg s^-3
+    sampling:
+      min: 1200.0
+      max: 1500.0
+      ood_boundary: 1361.0
+      distribution: uniform
+  - name: a
+    description: Dimensionless coefficient or length scale
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.1
+      max: 0.6
+      ood_boundary: 0.3
+      distribution: uniform
+  - name: b
+    description: Dimensionless absorption coefficient or drag coefficient
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.05
+      max: 0.8
+      ood_boundary: 0.4
+      distribution: uniform
+  - name: p
+    description: Physical quantity p
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.05
+      max: 0.7
+      ood_boundary: 0.3
+      distribution: uniform
+  intermediates:
+  - name: S0
+    description: Physical quantity S0
+    unit: kg s^-3
+  - name: S_s
+    description: Physical quantity S_s
+    unit: kg s^-3
+  - name: S_a
+    description: Physical quantity S_a
+    unit: kg s^-3
+  - name: S_d
+    description: Physical quantity S_d
+    unit: kg s^-3
+  - name: Q
+    description: Electric charge
+    unit: kg s^-3
+  - name: f
+    description: Physical quantity f
+    unit: 1 (dimensionless)
+  - name: E
+    description: Physical quantity E
+    unit: kg s^-3
+  auxiliary_inputs: []
+constants:
+- name: s
+  description: Stefan-Boltzmann constant
+  value: 5.670374419e-08
+  unit: kg s^-3 K^-4
+mechanism:
+- formula: S0 = (1 - a) * S / 4
+  formula_description: Physical relationship that determines S0.
+- formula: S_s = (1 - p) * S0
+  formula_description: Physical relationship that determines S_s.
+- formula: S_a = p * S0
+  formula_description: Physical relationship that determines S_a.
+- formula: S_d = S_a / 2
+  formula_description: Physical relationship that determines S_d.
+- formula: Q = S_s + S_d
+  formula_description: Physical relationship that determines Q.
+- formula: f = b / 2
+  formula_description: Physical relationship that determines f.
+- formula: E = Q / (1 - f)
+  formula_description: Physical relationship that determines E.
+- formula: T = (E / s)**(1/4)
+  formula_description: Physical relationship that determines T.
