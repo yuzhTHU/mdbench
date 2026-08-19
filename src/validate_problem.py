@@ -25,6 +25,15 @@ def _run_check(name, function) -> dict:
         return {"name": name, "ok": False, "detail": str(exc)}
 
 
+def _check_problem_name_unique(problem: Problem, problem_names: list[str]) -> str:
+    """Reject duplicate names and register each newly seen problem name."""
+    name = problem.problem_name
+    if name in problem_names:
+        raise ValidationError(f"Duplicate problem_name {name!r}.")
+    problem_names.append(name)
+    return "Problem name is unique."
+
+
 def _check_variables(problem: Problem) -> str:
     all_vars = [*problem.all_variables, *problem.constants]
     all_var_names = [var.name for var in all_vars]
@@ -131,36 +140,55 @@ def _check_solution(problem: Problem, derivation_checker=None) -> str:
             f"{', '.join(missing)}."
         )
 
-    occurrences = {var.name: [] for var in problem.intermediate_variables}
-    for idx, item in enumerate(problem.mechanism):
-        names = {item.variable}
-        for var in nd.parse(item.formula).iter_preorder():
-            if isinstance(var, nd.Variable):
-                names.add(var.name)
-        for name in names:
-            if name in occurrences:
-                occurrences[name].append(idx)
-    unused = []
-    for name, indices in occurrences.items():
-        if name == problem.target_variable.name:
-            pass
-        elif len(indices) > 1:
-            pass
-        elif len(indices) == 1:
-            unused.append(name)
-        else:
-            raise ValidationError(f"Variable {name!r} is never used.")
-    if unused:
-        logger.warning(
-            f"Mechanism-produced variables are never used by a later relationship: "
-            f"{', '.join(unused)}."
-        )
-
     if derivation_checker is None:
         derivation_checker = NumericDerivationChecker()
     derivation_report = derivation_checker.check(problem)
     if not derivation_report["equivalent"]:
         raise ValidationError("Mechanism solution does not derive the phenomenological equation.")
+
+    # Follow dependencies backward from the target through the solved steps.
+    # This also handles implicit systems: a numerical solution item with no
+    # closed-form formulas contributes all variables in its coupled block.
+    dependencies: dict[str, set[str]] = {}
+    mechanism_dependencies: dict[str, set[str]] = {}
+    for item in problem.mechanism:
+        mechanism_dependencies.setdefault(item.variable, set()).update(
+            node.name
+            for node in nd.parse(item.formula).iter_preorder()
+            if isinstance(node, nd.Variable)
+        )
+    for item in problem.solution:
+        item_dependencies = set()
+        for formula in item.formulas:
+            item_dependencies.update(
+                node.name
+                for node in nd.parse(formula).iter_preorder()
+                if isinstance(node, nd.Variable)
+            )
+        # Variables in one solution item form a coupled solved block.  Even
+        # when SymPy returns explicit formulas for the block, they all belong
+        # to the same mechanism relationship and must be retained together.
+        item_dependencies.update(item.variables)
+        if not item.formulas:
+            for variable in item.variables:
+                item_dependencies.update(mechanism_dependencies.get(variable, ()))
+        for variable in item.variables:
+            dependencies.setdefault(variable, set()).update(item_dependencies)
+    reachable = set()
+    pending = [problem.target_variable.name]
+    while pending:
+        name = pending.pop()
+        if name in reachable:
+            continue
+        reachable.add(name)
+        pending.extend(dependencies.get(name, ()))
+    intermediate_names = {var.name for var in problem.intermediate_variables}
+    unused = sorted(intermediate_names - reachable)
+    if unused:
+        raise ValidationError(
+            "Mechanism-produced variables do not contribute to the target: "
+            f"{', '.join(unused)}."
+        )
 
     numerical = sum(not item.formulas for item in problem.solution)
     return (
@@ -302,9 +330,16 @@ def main(args):
         llm_provider=args.llm_provider,
         llm_model=args.llm_model,
     ) if args.check_fundamentality else None
+
+    problem_names = []
     for path in discover_yaml_files(args.problems):
         problem = load_problem(path, solve=False)
         checks = []
+        # Ensure problem names are unique because they are used for output paths.
+        checks.append(_run_check(
+            "Problem name uniqueness",
+            lambda: _check_problem_name_unique(problem, problem_names),
+        ))
         # Check declarations, uniqueness, and formula usage.
         checks.append(_run_check(
             "Variable definitions", 

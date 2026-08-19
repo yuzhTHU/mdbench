@@ -33,11 +33,14 @@ variable_description:
   - name: L
     description: Physical quantity L
     unit: kg m^2 s^-1
+  - name: v
+    description: Electron orbital speed
+    unit: m s^-1
   - name: F_C
-    description: Physical quantity F_C
+    description: Coulomb force magnitude
     unit: kg m s^-2
-  - name: F_n
-    description: Physical quantity F_n
+  - name: F_cent
+    description: Centripetal force magnitude
     unit: kg m s^-2
   auxiliary_inputs: []
 constants:
@@ -61,8 +64,10 @@ mechanism:
 - formula: L = n * h
   formula_description: Physical relationship that determines L.
 - formula: F_C = k_e * q**2 / r**2
-  formula_description: Physical relationship that determines F_C.
-- formula: F_n = F_C
-  formula_description: Physical relationship that determines F_n.
-- formula: r = L**2 / (m * k_e * q**2)
-  formula_description: Physical relationship that determines r.
+  formula_description: Coulomb's law for the electron-nucleus force.
+- formula: F_cent = m * v**2 / r
+  formula_description: Centripetal-force relation for circular motion.
+- formula: F_C = F_cent
+  formula_description: Radial force balance for the circular orbit.
+- formula: L = m * r * v
+  formula_description: Classical angular-momentum definition.

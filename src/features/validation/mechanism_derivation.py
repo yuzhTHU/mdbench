@@ -47,7 +47,19 @@ class NumericDerivationChecker:
             *(variable.name for variable in problem.intermediate_variables),
         }
         rng = np.random.default_rng(self.seed)
-        values = {name: 10 ** rng.uniform(-1, 1, self.samples) for name in sorted(names)}
+        variables = [*problem.input_variables, *problem.auxiliary_input_variables]
+        input_specs = {variable.name: variable for variable in variables}
+        values = {}
+        for name in sorted(names):
+            if (specification := input_specs.get(name)) is None:
+                values[name] = 10 ** rng.uniform(-1, 1, self.samples)
+            else:
+                lower = float(specification.sampling["min"])
+                upper = float(specification.sampling["max"])
+                if specification.sampling.get("distribution") == "log_uniform":
+                    values[name] = 10 ** rng.uniform(np.log10(lower), np.log10(upper), self.samples)
+                else:
+                    values[name] = rng.uniform(lower, upper, self.samples)
         values.update({constant.name: constant.value for constant in problem.constants})
         expected = np.asarray(nd.parse(problem.phenomenological_formula).eval(values))
         if expected.ndim == 0:
