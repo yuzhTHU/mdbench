@@ -48,33 +48,33 @@ variable_description:
       ood_boundary: 0.0001
       distribution: log_uniform
   intermediates:
-  - name: F_b
-    description: Buoyant force on the immersed body
-    unit: kg m s^-2
-  - name: W2_app
-    description: Apparent weight of the immersed side
-    unit: kg m s^-2
   - name: W1
-    description: Weight of the descending side
+    description: Weight of the descending mass
     unit: kg m s^-2
-  - name: F_drive
-    description: Net drive from apparent weight difference
+  - name: W2
+    description: Weight of the immersed ascending mass
     unit: kg m s^-2
-  - name: M_eff
-    description: Effective inertial mass of the translating bodies
-    unit: kg
+  - name: F_b
+    description: Buoyant force on the immersed ascending mass
+    unit: kg m s^-2
+  - name: T1
+    description: Tension acting on the descending mass
+    unit: kg m s^-2
+  - name: T2
+    description: Tension acting on the immersed ascending mass
+    unit: kg m s^-2
   auxiliary_inputs: []
 constants: []
 mechanism:
-- formula: F_b = rho_f * V2 * g
-  formula_description: Archimedes buoyancy force on the immersed side
-- formula: W2_app = m2 * g - F_b
-  formula_description: Apparent weight after buoyancy
 - formula: W1 = m1 * g
-  formula_description: Weight of the descending side
-- formula: F_drive = W1 - W2_app
-  formula_description: Driving force from apparent weight difference
-- formula: M_eff = m1 + m2
-  formula_description: Effective inertia from the two translating masses
-- formula: a = F_drive / M_eff
-  formula_description: Newton second law for the full system
+  formula_description: Near-Earth gravitational force law for the descending mass
+- formula: W2 = m2 * g
+  formula_description: Near-Earth gravitational force law for the immersed ascending mass
+- formula: F_b = rho_f * V2 * g
+  formula_description: Archimedes' principle for the buoyant force on the immersed mass
+- formula: T1 = T2
+  formula_description: Uniform-tension constraint for a massless string over a frictionless massless pulley
+- formula: T1 = W1 - m1 * a
+  formula_description: Newton's second law for the descending mass
+- formula: T2 = W2 - F_b + m2 * a
+  formula_description: Newton's second law for the immersed ascending mass

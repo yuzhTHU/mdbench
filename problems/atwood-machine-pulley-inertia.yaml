@@ -48,23 +48,38 @@ variable_description:
       ood_boundary: 0.1
       distribution: log_uniform
   intermediates:
+  - name: W1
+    description: Weight of the descending mass
+    unit: kg m s^-2
+  - name: W2
+    description: Weight of the ascending mass
+    unit: kg m s^-2
   - name: T1
-    description: Tension on the descending side of the string
+    description: Tension acting on the descending mass
     unit: kg m s^-2
   - name: T2
-    description: Tension on the ascending side of the string
+    description: Tension acting on the ascending mass
     unit: kg m s^-2
   - name: tau_pulley
     description: Net torque exerted on the pulley
     unit: kg m^2 s^-2
+  - name: alpha
+    description: Angular acceleration of the pulley
+    unit: s^-2
   auxiliary_inputs: []
 constants: []
 mechanism:
-- formula: T1 = m1 * g - m1 * a
+- formula: W1 = m1 * g
+  formula_description: Near-Earth gravitational force law for the descending mass
+- formula: W2 = m2 * g
+  formula_description: Near-Earth gravitational force law for the ascending mass
+- formula: T1 = W1 - m1 * a
   formula_description: Newton second law for the descending mass
-- formula: T2 = m2 * g + m2 * a
+- formula: T2 = W2 + m2 * a
   formula_description: Newton second law for the ascending mass
 - formula: tau_pulley = (T1 - T2) * R
-  formula_description: Net torque from unequal string tensions
-- formula: a = tau_pulley * R / I
-  formula_description: Rotational dynamics of the pulley with no slip
+  formula_description: Torque definition for the unequal string tensions acting on the pulley
+- formula: alpha = a / R
+  formula_description: No-slip kinematic constraint between string acceleration and pulley angular acceleration
+- formula: tau_pulley = I * alpha
+  formula_description: Newton's second law for rotation of the pulley
