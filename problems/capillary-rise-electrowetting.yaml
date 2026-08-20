@@ -1,14 +1,14 @@
 problem_name: Capillary Rise - Electrowetting
 phenomenological_formula: h = 2 * gamma * (cos(theta0) + chi * U^2) / (rho * g * r)
 problem_description: |
-  An applied voltage modifies wettability during capillary rise. This variant replaces the fixed contact-angle relation with an effective cosine under electrowetting conditions.
+  An applied voltage modifies wettability during capillary rise in the unsaturated electrowetting regime. This variant replaces the fixed contact-angle relation with the Young-Lippmann effective cosine while keeping it within its physical range.
 variable_description:
   target: {name: h, description: Capillary rise height, unit: m}
   inputs:
     - {name: gamma, description: Liquid surface tension, unit: kg s^-2, sampling: {min: 0.01, max: 0.1, ood_boundary: 0.05, distribution: uniform}}
-    - {name: theta0, description: Contact angle without applied voltage, unit: 1 (dimensionless), sampling: {min: 0.0, max: 1.3, ood_boundary: 0.8, distribution: uniform}}
-    - {name: chi, description: Electrowetting coefficient, unit: kg^-2 m^-4 s^6 A^2, sampling: {min: 1.0e-6, max: 1.0e-2, ood_boundary: 1.0e-4, distribution: log_uniform}}
-    - {name: U, description: Applied voltage, unit: kg m^2 s^-3 A^-1, sampling: {min: 1.0, max: 100.0, ood_boundary: 20.0, distribution: log_uniform}}
+    - {name: theta0, description: Contact angle without applied voltage, unit: 1 (dimensionless), sampling: {min: 0.6, max: 1.3, ood_boundary: 0.9, distribution: uniform}}
+    - {name: chi, description: Electrowetting coefficient, unit: kg^-2 m^-4 s^6 A^2, sampling: {min: 1.0e-6, max: 1.0e-3, ood_boundary: 1.0e-4, distribution: log_uniform}}
+    - {name: U, description: Applied voltage, unit: kg m^2 s^-3 A^-1, sampling: {min: 1.0, max: 10.0, ood_boundary: 3.0, distribution: log_uniform}}
     - {name: rho, description: Liquid density, unit: kg m^-3, sampling: {min: 5.0e2, max: 1.5e3, ood_boundary: 1.0e3, distribution: uniform}}
     - {name: g, description: Gravitational acceleration, unit: m s^-2, sampling: {min: 1.0, max: 20.0, ood_boundary: 10.0, distribution: uniform}}
     - {name: r, description: Capillary tube radius, unit: m, sampling: {min: 1.0e-5, max: 1.0e-3, ood_boundary: 3.0e-4, distribution: log_uniform}}
@@ -22,7 +22,7 @@ variable_description:
 constants:
   - {name: π, description: Pi, value: 3.141592653589793, unit: 1 (dimensionless)}
 mechanism:
-  - {formula: c_eff = cos(theta0) + chi * U^2, formula_description: Young-Lippmann-type electrowetting correction replacing the fixed contact angle}
+  - {formula: c_eff = cos(theta0) + chi * U^2, formula_description: Young-Lippmann electrowetting law for the effective contact-angle cosine in the unsaturated regime}
   - {formula: C = 2 * π * r, formula_description: Circumference of a circle}
   - {formula: A = π * r^2, formula_description: Area of a circle}
   - {formula: F_s = C * gamma * c_eff, formula_description: Vertical component of surface tension}

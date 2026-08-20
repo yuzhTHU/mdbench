@@ -1,14 +1,14 @@
 problem_name: Poiseuille Flow - Newtonian Fluid
 phenomenological_formula: Q = π * r^4 * dP / (8 * u * L)
 problem_description: |
-  An incompressible Newtonian fluid undergoes laminar flow through a circular tube. The volumetric flow rate Q depends on tube radius r, pressure difference dP, dynamic viscosity u, and tube length L.
+  An incompressible Newtonian fluid undergoes steady, fully developed laminar flow through a circular tube. The sampling range is restricted to modest pressure gradients and small radii so the Poiseuille assumptions remain plausible.
 variable_description:
   target: {name: Q, description: Volumetric flow rate, unit: m^3 s^-1}
   inputs:
-    - {name: r, description: Circular tube radius, unit: m, sampling: {min: 1.0e-5, max: 1.0e-3, ood_boundary: 3.0e-4, distribution: log_uniform}}
-    - {name: dP, description: Pressure difference between the tube ends, unit: kg m^-1 s^-2, sampling: {min: 1.0e2, max: 1.0e6, ood_boundary: 1.0e4, distribution: log_uniform}}
-    - {name: u, description: Fluid dynamic viscosity, unit: kg m^-1 s^-1, sampling: {min: 1.0e-4, max: 1.0, ood_boundary: 1.0e-2, distribution: log_uniform}}
-    - {name: L, description: Tube length, unit: m, sampling: {min: 0.01, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
+    - {name: r, description: Circular tube radius, unit: m, sampling: {min: 5.0e-5, max: 3.0e-4, ood_boundary: 1.0e-4, distribution: log_uniform}}
+    - {name: dP, description: Pressure difference between the tube ends, unit: kg m^-1 s^-2, sampling: {min: 1.0, max: 1.0e3, ood_boundary: 1.0e2, distribution: log_uniform}}
+    - {name: u, description: Fluid dynamic viscosity, unit: kg m^-1 s^-1, sampling: {min: 1.0e-3, max: 1.0, ood_boundary: 1.0e-2, distribution: log_uniform}}
+    - {name: L, description: Tube length, unit: m, sampling: {min: 0.05, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
   intermediates:
     - {name: G_p, description: Magnitude of the pressure gradient, unit: kg m^-2 s^-2}
     - {name: tau_w, description: Wall shear stress, unit: kg m^-1 s^-2}
@@ -20,8 +20,8 @@ constants:
   - {name: π, description: Pi, value: 3.141592653589793, unit: 1 (dimensionless)}
 mechanism:
   - {formula: G_p = dP / L, formula_description: Axial pressure-gradient magnitude}
-  - {formula: tau_w = G_p * r / 2, formula_description: Wall shear-stress balance in circular-tube laminar flow}
-  - {formula: v_max = tau_w * r / (2 * u), formula_description: Centerline velocity from Newton's law of viscosity}
-  - {formula: v_avg = v_max / 2, formula_description: Mean velocity of a parabolic velocity profile}
+  - {formula: tau_w = G_p * r / 2, formula_description: Axial momentum balance for fully developed circular-tube laminar flow}
+  - {formula: v_max = tau_w * r / (2 * u), formula_description: Centerline velocity obtained from Newtonian viscosity and the no-slip parabolic velocity profile}
+  - {formula: v_avg = v_max / 2, formula_description: Cross-sectional mean velocity of the parabolic Poiseuille profile}
   - {formula: A = π * r^2, formula_description: Area of a circle}
   - {formula: Q = A * v_avg, formula_description: Definition of volumetric flow rate}

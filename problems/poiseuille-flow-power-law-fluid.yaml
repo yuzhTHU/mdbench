@@ -1,15 +1,15 @@
 problem_name: Poiseuille Flow - Power-Law Fluid
 phenomenological_formula: Q = π * r^3 * n * gamma_ref / (3 * n + 1) * (dP * r / (2 * K * L))^(1 / n)
 problem_description: |
-  A power-law non-Newtonian fluid undergoes laminar flow through a circular tube. This variant replaces the Newtonian constitutive law with a power-law fluid relation.
+  A time-independent power-law non-Newtonian fluid undergoes steady, fully developed laminar flow through a circular tube. This variant replaces the Newtonian constitutive law with a power-law shear relation in a moderate-shear regime.
 variable_description:
   target: {name: Q, description: Volumetric flow rate, unit: m^3 s^-1}
   inputs:
-    - {name: r, description: Circular tube radius, unit: m, sampling: {min: 1.0e-5, max: 1.0e-3, ood_boundary: 3.0e-4, distribution: log_uniform}}
-    - {name: dP, description: Pressure difference between the tube ends, unit: kg m^-1 s^-2, sampling: {min: 1.0e2, max: 1.0e6, ood_boundary: 1.0e4, distribution: log_uniform}}
-    - {name: K, description: Reference shear stress in the power-law constitutive relation, unit: kg m^-1 s^-2, sampling: {min: 1.0e-3, max: 10.0, ood_boundary: 0.1, distribution: log_uniform}}
-    - {name: L, description: Tube length, unit: m, sampling: {min: 0.01, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
-    - {name: n, description: Power-law exponent, unit: 1 (dimensionless), sampling: {min: 0.3, max: 1.5, ood_boundary: 1.0, distribution: uniform}}
+    - {name: r, description: Circular tube radius, unit: m, sampling: {min: 5.0e-5, max: 3.0e-4, ood_boundary: 1.0e-4, distribution: log_uniform}}
+    - {name: dP, description: Pressure difference between the tube ends, unit: kg m^-1 s^-2, sampling: {min: 1.0, max: 1.0e3, ood_boundary: 1.0e2, distribution: log_uniform}}
+    - {name: K, description: Reference shear stress in the power-law constitutive relation, unit: kg m^-1 s^-2, sampling: {min: 0.1, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
+    - {name: L, description: Tube length, unit: m, sampling: {min: 0.05, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
+    - {name: n, description: Power-law exponent, unit: 1 (dimensionless), sampling: {min: 0.6, max: 1.5, ood_boundary: 1.0, distribution: uniform}}
   intermediates:
     - {name: G_p, description: Magnitude of the pressure gradient, unit: kg m^-2 s^-2}
     - {name: tau_w, description: Wall shear stress, unit: kg m^-1 s^-2}
@@ -22,8 +22,8 @@ constants:
   - {name: gamma_ref, description: Reference shear rate in the power-law constitutive relation, value: 1.0, unit: s^-1}
 mechanism:
   - {formula: G_p = dP / L, formula_description: Axial pressure-gradient magnitude}
-  - {formula: tau_w = G_p * r / 2, formula_description: Wall shear-stress balance in circular-tube laminar flow}
+  - {formula: tau_w = G_p * r / 2, formula_description: Axial momentum balance for fully developed circular-tube laminar flow}
   - {formula: gamma_w = gamma_ref * (tau_w / K)^(1 / n), formula_description: Power-law constitutive relation expressed using reference shear stress and shear rate}
-  - {formula: v_avg = n * r * gamma_w / (3 * n + 1), formula_description: Mean velocity of the circular-tube power-law profile}
+  - {formula: v_avg = n * r * gamma_w / (3 * n + 1), formula_description: Cross-sectional mean velocity obtained by integrating the circular-tube power-law velocity profile}
   - {formula: A = π * r^2, formula_description: Area of a circle}
   - {formula: Q = A * v_avg, formula_description: Definition of volumetric flow rate}

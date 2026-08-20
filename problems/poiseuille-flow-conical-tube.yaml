@@ -1,15 +1,15 @@
 problem_name: Poiseuille Flow - Conical Tube
 phenomenological_formula: Q = 3 * π * dP * r1^3 * r2^3 / (8 * u * L * (r1^2 + r1 * r2 + r2^2))
 problem_description: |
-  A Newtonian fluid flows through a conical tube whose radius varies linearly along its axis. This variant replaces constant-radius geometric resistance with the integrated resistance of a varying-radius tube.
+  A Newtonian fluid flows steadily through a gently tapered conical tube whose radius varies linearly along its axis. This variant replaces constant-radius hydraulic resistance with the axial integral of local Poiseuille resistance.
 variable_description:
   target: {name: Q, description: Volumetric flow rate, unit: m^3 s^-1}
   inputs:
-    - {name: r1, description: Tube inlet radius, unit: m, sampling: {min: 1.0e-5, max: 1.0e-3, ood_boundary: 3.0e-4, distribution: log_uniform}}
-    - {name: r2, description: Tube outlet radius, unit: m, sampling: {min: 1.0e-5, max: 1.0e-3, ood_boundary: 3.0e-4, distribution: log_uniform}}
-    - {name: dP, description: Pressure difference between the tube ends, unit: kg m^-1 s^-2, sampling: {min: 1.0e2, max: 1.0e6, ood_boundary: 1.0e4, distribution: log_uniform}}
-    - {name: u, description: Fluid dynamic viscosity, unit: kg m^-1 s^-1, sampling: {min: 1.0e-4, max: 1.0, ood_boundary: 1.0e-2, distribution: log_uniform}}
-    - {name: L, description: Tube length, unit: m, sampling: {min: 0.01, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
+    - {name: r1, description: Tube inlet radius, unit: m, sampling: {min: 5.0e-5, max: 3.0e-4, ood_boundary: 1.0e-4, distribution: log_uniform}}
+    - {name: r2, description: Tube outlet radius, unit: m, sampling: {min: 5.0e-5, max: 3.0e-4, ood_boundary: 1.0e-4, distribution: log_uniform}}
+    - {name: dP, description: Pressure difference between the tube ends, unit: kg m^-1 s^-2, sampling: {min: 1.0, max: 1.0e3, ood_boundary: 1.0e2, distribution: log_uniform}}
+    - {name: u, description: Fluid dynamic viscosity, unit: kg m^-1 s^-1, sampling: {min: 1.0e-3, max: 1.0, ood_boundary: 1.0e-2, distribution: log_uniform}}
+    - {name: L, description: Tube length, unit: m, sampling: {min: 0.05, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
   intermediates:
     - {name: R0, description: Common viscous-resistance coefficient, unit: kg s^-1}
     - {name: G, description: Geometric resistance factor, unit: m^-4}
@@ -18,7 +18,7 @@ variable_description:
 constants:
   - {name: π, description: Pi, value: 3.141592653589793, unit: 1 (dimensionless)}
 mechanism:
-  - {formula: R0 = 8 * u * L / π, formula_description: Common viscous-resistance coefficient of the tube}
-  - {formula: G = (r1^2 + r1 * r2 + r2^2) / (3 * r1^3 * r2^3), formula_description: Geometric resistance factor for a linearly varying radius}
-  - {formula: R_h = R0 * G, formula_description: Total hydraulic resistance of the conical tube}
-  - {formula: Q = dP / R_h, formula_description: Pressure-driven volumetric flow rate}
+  - {formula: R0 = 8 * u * L / π, formula_description: Viscous prefactor from local Hagen-Poiseuille resistance integrated along tube length}
+  - {formula: G = (r1^2 + r1 * r2 + r2^2) / (3 * r1^3 * r2^3), formula_description: Exact geometric integral of inverse fourth power radius for a linear taper}
+  - {formula: R_h = R0 * G, formula_description: Hydraulic resistance obtained by integrating local Poiseuille resistance}
+  - {formula: Q = dP / R_h, formula_description: Definition of pressure-driven flow through hydraulic resistance}
