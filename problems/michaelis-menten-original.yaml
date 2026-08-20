@@ -1,6 +1,6 @@
 problem_name: Michaelis-Menten Kinetics - Original
-phenomenological_formula: v = k_cat * E_T * S / (K_M + S)
-problem_description: An enzyme-catalyzed reaction is observed in the initial-rate regime under the Michaelis-Menten approximation.
+phenomenological_formula: v = k_cat * E_T * S / ((k_off + k_cat) / k_on + S)
+problem_description: An enzyme-catalyzed reaction follows E + S <-> ES -> E + P in the initial-rate regime. The observed rate is derived from mass-action binding, quasi-steady-state balance of the enzyme-substrate complex, total enzyme conservation, and catalytic turnover.
 variable_description:
   target:
     name: v
@@ -31,27 +31,50 @@ variable_description:
       max: 0.1
       ood_boundary: 0.001
       distribution: log_uniform
-  - name: K_M
-    description: Michaelis constant
-    unit: mol m^-3
+  - name: k_on
+    description: Association rate constant for free enzyme and substrate
+    unit: m^3 mol^-1 s^-1
     sampling:
-      min: 1.0e-06
-      max: 0.1
-      ood_boundary: 0.001
+      min: 100.0
+      max: 100000000.0
+      ood_boundary: 100000.0
+      distribution: log_uniform
+  - name: k_off
+    description: Dissociation rate constant of the enzyme-substrate complex
+    unit: s^-1
+    sampling:
+      min: 0.01
+      max: 1000.0
+      ood_boundary: 10.0
       distribution: log_uniform
   intermediates:
-  - name: f
-    description: Fraction of enzyme in substrate-bound active complex
-    unit: 1 (dimensionless)
+  - name: E_free
+    description: Free enzyme concentration
+    unit: mol m^-3
   - name: C_complex
     description: Enzyme-substrate complex concentration
     unit: mol m^-3
+  - name: r_on
+    description: Formation rate of the enzyme-substrate complex
+    unit: mol m^-3 s^-1
+  - name: r_off
+    description: Dissociation rate of the enzyme-substrate complex
+    unit: mol m^-3 s^-1
+  - name: r_cat
+    description: Catalytic turnover rate of the enzyme-substrate complex
+    unit: mol m^-3 s^-1
   auxiliary_inputs: []
 constants: []
 mechanism:
-- formula: f = S / (K_M + S)
-  formula_description: Substrate-bound fraction under the quasi-steady Michaelis-Menten approximation
-- formula: C_complex = E_T * f
-  formula_description: Active complex concentration from enzyme conservation
-- formula: v = k_cat * C_complex
-  formula_description: Catalytic turnover rate
+- formula: r_on = k_on * E_free * S
+  formula_description: Mass-action association rate for formation of ES from free enzyme and substrate
+- formula: r_off = k_off * C_complex
+  formula_description: Mass-action dissociation rate for ES returning to free enzyme and substrate
+- formula: r_cat = k_cat * C_complex
+  formula_description: First-order catalytic turnover rate for ES producing product and free enzyme
+- formula: r_on = r_off + r_cat
+  formula_description: Quasi-steady-state balance for the ES complex, setting its net accumulation to zero
+- formula: E_T = E_free + C_complex
+  formula_description: Conservation of total enzyme between free enzyme and ES complex
+- formula: v = r_cat
+  formula_description: Definition of the observed initial product-formation rate as the catalytic flux

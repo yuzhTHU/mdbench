@@ -1,6 +1,6 @@
 problem_name: Michaelis-Menten Kinetics - Competitive Inhibition
-phenomenological_formula: v = k_cat * E_T * S / (K_M * (1 + I / K_I) + S)
-problem_description: An enzyme-catalyzed reaction has a competitive inhibitor that increases the apparent Michaelis constant.
+phenomenological_formula: v = k_cat * E_T * S / (((k_off + k_cat) / k_on) * (1 + k_i_on * I / k_i_off) + S)
+problem_description: An enzyme-catalyzed reaction follows E + S <-> ES -> E + P while a competitive inhibitor follows E + I <-> EI. The inhibitor competes for free enzyme, so the initial rate is derived from mass-action substrate binding, mass-action inhibitor binding, quasi-steady ES balance, inhibitor binding equilibrium, total enzyme conservation, and catalytic turnover.
 variable_description:
   target:
     name: v
@@ -31,13 +31,13 @@ variable_description:
       max: 0.1
       ood_boundary: 0.001
       distribution: log_uniform
-  - name: K_M
-    description: Michaelis constant
-    unit: mol m^-3
+  - name: k_on
+    description: Association rate constant for free enzyme and substrate
+    unit: m^3 mol^-1 s^-1
     sampling:
-      min: 1.0e-06
-      max: 0.1
-      ood_boundary: 0.001
+      min: 100.0
+      max: 100000000.0
+      ood_boundary: 100000.0
       distribution: log_uniform
   - name: I
     description: Competitive inhibitor concentration
@@ -47,37 +47,73 @@ variable_description:
       max: 0.1
       ood_boundary: 0.001
       distribution: log_uniform
-  - name: K_I
-    description: Inhibition constant
-    unit: mol m^-3
+  - name: k_off
+    description: Dissociation rate constant of the enzyme-substrate complex
+    unit: s^-1
     sampling:
-      min: 1.0e-06
-      max: 0.1
-      ood_boundary: 0.001
+      min: 0.01
+      max: 1000.0
+      ood_boundary: 10.0
+      distribution: log_uniform
+  - name: k_i_on
+    description: Association rate constant for free enzyme and competitive inhibitor
+    unit: m^3 mol^-1 s^-1
+    sampling:
+      min: 100.0
+      max: 100000000.0
+      ood_boundary: 100000.0
+      distribution: log_uniform
+  - name: k_i_off
+    description: Dissociation rate constant of the enzyme-inhibitor complex
+    unit: s^-1
+    sampling:
+      min: 0.01
+      max: 1000.0
+      ood_boundary: 10.0
       distribution: log_uniform
   intermediates:
-  - name: alpha_inh
-    description: Competitive-inhibition amplification factor
-    unit: 1 (dimensionless)
-  - name: K_app
-    description: Apparent Michaelis constant
+  - name: E_free
+    description: Free enzyme concentration
     unit: mol m^-3
-  - name: f
-    description: Fraction of enzyme in substrate-bound active complex
-    unit: 1 (dimensionless)
   - name: C_complex
     description: Enzyme-substrate complex concentration
     unit: mol m^-3
+  - name: C_inhib
+    description: Enzyme-inhibitor complex concentration
+    unit: mol m^-3
+  - name: r_on
+    description: Formation rate of the enzyme-substrate complex
+    unit: mol m^-3 s^-1
+  - name: r_off
+    description: Dissociation rate of the enzyme-substrate complex
+    unit: mol m^-3 s^-1
+  - name: r_cat
+    description: Catalytic turnover rate of the enzyme-substrate complex
+    unit: mol m^-3 s^-1
+  - name: r_i_on
+    description: Formation rate of the enzyme-inhibitor complex
+    unit: mol m^-3 s^-1
+  - name: r_i_off
+    description: Dissociation rate of the enzyme-inhibitor complex
+    unit: mol m^-3 s^-1
   auxiliary_inputs: []
 constants: []
 mechanism:
-- formula: alpha_inh = 1 + I / K_I
-  formula_description: Competitive-inhibition amplification factor
-- formula: K_app = K_M * alpha_inh
-  formula_description: Apparent Michaelis constant under competitive inhibition
-- formula: f = S / (K_app + S)
-  formula_description: Substrate-bound fraction with competitive inhibition
-- formula: C_complex = E_T * f
-  formula_description: Active complex concentration from enzyme conservation
-- formula: v = k_cat * C_complex
-  formula_description: Catalytic turnover rate
+- formula: r_on = k_on * E_free * S
+  formula_description: Mass-action association rate for formation of ES from free enzyme and substrate
+- formula: r_off = k_off * C_complex
+  formula_description: Mass-action dissociation rate for ES returning to free enzyme and substrate
+- formula: r_cat = k_cat * C_complex
+  formula_description: First-order catalytic turnover rate for ES producing product and free enzyme
+- formula: r_i_on = k_i_on * E_free * I
+  formula_description: Mass-action association rate for competitive inhibitor binding to free enzyme
+- formula: r_i_off = k_i_off * C_inhib
+  formula_description: Mass-action dissociation rate for the enzyme-inhibitor complex
+- formula: r_on = r_off + r_cat
+  formula_description: Quasi-steady-state balance for the ES complex, setting its net accumulation to zero
+- formula: r_i_on = r_i_off
+  formula_description: Binding equilibrium for the competitive enzyme-inhibitor complex
+- formula: E_T = E_free + C_complex + C_inhib
+  formula_description: Conservation of total enzyme among free enzyme, ES complex, and inhibitor-bound enzyme
+- formula: v = r_cat
+  formula_description: Definition of the observed initial product-formation rate as the catalytic flux
