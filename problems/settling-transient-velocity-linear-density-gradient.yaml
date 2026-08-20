@@ -1,0 +1,99 @@
+problem_name: Settling Transient Velocity - Linear Density Gradient
+phenomenological_formula: >-
+  v = (rho_p - rho_0) / alpha * sqrt(alpha * g / rho_p) * sin(t * sqrt(alpha * g / rho_p))
+problem_description: |
+  A dense sphere is released from rest in a stably stratified fluid whose density increases linearly with downward depth. This variant neglects viscous drag, so the changing buoyancy acts as a linear restoring term and the target is the instantaneous downward velocity v(t), not a terminal velocity.
+variable_description:
+  target:
+    name: v
+    description: Instantaneous downward velocity of the sphere
+    unit: m s^-1
+  inputs:
+  - name: t
+    description: Time after release
+    unit: s
+    sampling:
+      min: 0.01
+      max: 0.5
+      ood_boundary: 0.1
+      distribution: log_uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: rho_p
+    description: Sphere material density
+    unit: kg m^-3
+    sampling:
+      min: 2000.0
+      max: 8000.0
+      ood_boundary: 4000.0
+      distribution: uniform
+  - name: rho_0
+    description: Fluid density at the release depth
+    unit: kg m^-3
+    sampling:
+      min: 500.0
+      max: 1200.0
+      ood_boundary: 900.0
+      distribution: uniform
+  - name: alpha
+    description: Linear increase of fluid density with downward depth
+    unit: kg m^-4
+    sampling:
+      min: 1.0
+      max: 200.0
+      ood_boundary: 20.0
+      distribution: log_uniform
+  intermediates:
+  - name: V
+    description: Sphere volume
+    unit: m^3
+  - name: m
+    description: Sphere mass
+    unit: kg
+  - name: rho_f_eq
+    description: Fluid density at the neutral-buoyancy depth
+    unit: kg m^-3
+  - name: z_eq
+    description: Downward depth where the local fluid density equals the sphere density
+    unit: m
+  - name: k_b
+    description: Buoyancy-gradient restoring coefficient
+    unit: kg s^-2
+  - name: omega
+    description: Natural angular frequency set by the buoyancy gradient
+    unit: s^-1
+  auxiliary_inputs:
+  - name: r
+    description: Sphere radius used in the mechanism before cancellation
+    unit: m
+    sampling:
+      min: 1.0e-05
+      max: 1.0e-03
+      ood_boundary: 3.0e-04
+      distribution: log_uniform
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: V = 4 * π * r^3 / 3
+  formula_description: Volume formula for a sphere
+- formula: m = rho_p * V
+  formula_description: Mass-density relation for the sphere
+- formula: rho_f_eq = rho_p
+  formula_description: Neutral-buoyancy condition at the equilibrium depth
+- formula: rho_f_eq = rho_0 + alpha * z_eq
+  formula_description: Linear fluid-density stratification evaluated at the neutral-buoyancy depth
+- formula: k_b = alpha * V * g
+  formula_description: Slope of Archimedes buoyancy force induced by the linear density gradient
+- formula: omega = sqrt(k_b / m)
+  formula_description: Natural frequency of the undamped Newton equation with a linear buoyancy restoring term
+- formula: v = z_eq * omega * sin(omega * t)
+  formula_description: Velocity solution for release from rest in the undamped linear-buoyancy field

@@ -1,0 +1,99 @@
+problem_name: Settling Transient Velocity - Exponential Density Profile
+phenomenological_formula: >-
+  v = sqrt(2 * g * (z - rho_0 * (exp(beta * z) - 1) / (rho_p * beta)))
+problem_description: |
+  A dense sphere moves downward from rest in a stratified fluid whose density increases exponentially with depth. This variant neglects viscous drag and describes the instantaneous speed as a function of depth v(z), using the work-energy balance with depth-dependent buoyancy.
+variable_description:
+  target:
+    name: v
+    description: Instantaneous downward velocity at depth z
+    unit: m s^-1
+  inputs:
+  - name: z
+    description: Downward depth measured from the release point
+    unit: m
+    sampling:
+      min: 0.01
+      max: 1.0
+      ood_boundary: 0.2
+      distribution: uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: rho_p
+    description: Sphere material density
+    unit: kg m^-3
+    sampling:
+      min: 2000.0
+      max: 8000.0
+      ood_boundary: 4000.0
+      distribution: uniform
+  - name: rho_0
+    description: Fluid density at the release depth
+    unit: kg m^-3
+    sampling:
+      min: 500.0
+      max: 1000.0
+      ood_boundary: 800.0
+      distribution: uniform
+  - name: beta
+    description: Exponential increase rate of fluid density with depth
+    unit: m^-1
+    sampling:
+      min: 1.0e-03
+      max: 0.5
+      ood_boundary: 0.1
+      distribution: log_uniform
+  intermediates:
+  - name: V
+    description: Sphere volume
+    unit: m^3
+  - name: m
+    description: Sphere mass
+    unit: kg
+  - name: rho_f_z
+    description: Fluid density at depth z
+    unit: kg m^-3
+  - name: W_g
+    description: Work done by gravity over depth z
+    unit: kg m^2 s^-2
+  - name: W_b
+    description: Work done against buoyancy over depth z
+    unit: kg m^2 s^-2
+  - name: E_kin
+    description: Kinetic energy gained from the net work
+    unit: kg m^2 s^-2
+  auxiliary_inputs:
+  - name: r
+    description: Sphere radius used in the mechanism before cancellation
+    unit: m
+    sampling:
+      min: 1.0e-05
+      max: 1.0e-03
+      ood_boundary: 3.0e-04
+      distribution: log_uniform
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: V = 4 * π * r^3 / 3
+  formula_description: Volume formula for a sphere
+- formula: m = rho_p * V
+  formula_description: Mass-density relation for the sphere
+- formula: rho_f_z = rho_0 * exp(beta * z)
+  formula_description: Exponential fluid-density stratification law
+- formula: W_g = m * g * z
+  formula_description: Gravitational work over a downward displacement
+- formula: W_b = V * g * (rho_f_z - rho_0) / beta
+  formula_description: Integrated Archimedes buoyancy work for the exponential density profile
+- formula: E_kin = W_g - W_b
+  formula_description: Work-energy theorem for release from rest
+- formula: v = sqrt(2 * E_kin / m)
+  formula_description: Kinetic-energy definition of speed
