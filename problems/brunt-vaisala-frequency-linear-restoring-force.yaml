@@ -1,14 +1,14 @@
 problem_name: Brunt-Vaisala Frequency - Linear Restoring Force
 phenomenological_formula: Y = (g / T) * (A - B) + C
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: An air parcel is vertically displaced in a stably stratified atmosphere with restoring effect. Its squared Brunt-Vaisala frequency Y is related to the parcel temperature gradient A, environmental temperature gradient B, linear restoring coefficient C, reference temperature T, and gravitational acceleration g.
 variable_description:
   target:
     name: Y
-    description: Characteristic response quantity
+    description: Squared Brunt-Vaisala frequency
     unit: s^-2
   inputs:
   - name: A
-    description: Temperature gradient
+    description: Displaced parcel temperature gradient
     unit: K m^-1
     sampling:
       min: -0.012
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: -0.007
       distribution: uniform
   - name: B
-    description: Temperature gradient
+    description: Environmental temperature gradient
     unit: K m^-1
     sampling:
       min: -0.012
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: -0.006
       distribution: uniform
   - name: C
-    description: Model coefficient
+    description: Linear restoring acceleration coefficient
     unit: s^-2
     sampling:
       min: -1.0e-05
@@ -32,7 +32,7 @@ variable_description:
       ood_boundary: -5.0e-06
       distribution: uniform
   - name: T
-    description: Temperature or period
+    description: Reference temperature
     unit: K
     sampling:
       min: 200.0
@@ -49,47 +49,47 @@ variable_description:
       distribution: uniform
   intermediates:
   - name: T_p
-    description: Physical quantity T_p
+    description: Temperature of the displaced parcel
     unit: K
   - name: T_e
-    description: Physical quantity T_e
+    description: Environmental temperature at the displaced level
     unit: K
   - name: rho_p
-    description: Physical quantity rho_p
+    description: Density of the displaced parcel
     unit: kg m^-3
   - name: rho_e
-    description: Physical quantity rho_e
+    description: Environmental density at the displaced level
     unit: kg m^-3
   - name: V
     description: Volume
     unit: m^3
   - name: F_g
-    description: Physical quantity F_g
+    description: Weight of the displaced parcel
     unit: kg m s^-2
   - name: F_b
-    description: Physical quantity F_b
+    description: Archimedean buoyant force
     unit: kg m s^-2
   - name: F_r
-    description: Physical quantity F_r
+    description: Net buoyancy force
     unit: kg m s^-2
   - name: F_x
-    description: Physical quantity F_x
+    description: Additional linear restoring force
     unit: kg m s^-2
   - name: a_r
-    description: Physical quantity a_r
+    description: Buoyancy-driven parcel acceleration
     unit: m s^-2
   - name: a_l
-    description: Physical quantity a_l
+    description: Linearized buoyancy acceleration
     unit: m s^-2
   - name: a_x
-    description: Physical quantity a_x
+    description: Acceleration due to the additional restoring force
     unit: m s^-2
   - name: a
-    description: Dimensionless coefficient or length scale
+    description: Total restoring acceleration
     unit: m s^-2
   auxiliary_inputs:
   - name: P
-    description: Orbital period or pressure
+    description: Reference pressure
     unit: kg m^-1 s^-2
     sampling:
       min: 50000.0
@@ -123,30 +123,30 @@ constants:
   unit: kg m^2 s^-2 K^-1 mol^-1
 mechanism:
 - formula: T_p = T - A * z
-  formula_description: Physical relationship that determines T_p.
+  formula_description: The linear parcel temperature-profile definition gives T_p after vertical displacement z.
 - formula: T_e = T - B * z
-  formula_description: Physical relationship that determines T_e.
+  formula_description: The linear environmental temperature-profile definition gives T_e at the same displacement.
 - formula: rho_p = P * M / (R * T_p)
-  formula_description: Physical relationship that determines rho_p.
+  formula_description: The ideal-gas law defines parcel density rho_p from P and T_p.
 - formula: rho_e = P * M / (R * T_e)
-  formula_description: Physical relationship that determines rho_e.
+  formula_description: The ideal-gas law defines environmental density rho_e from P and T_e.
 - formula: V = m / rho_p
-  formula_description: Physical relationship that determines V.
+  formula_description: The mass-density definition gives parcel volume V from mass m and density rho_p.
 - formula: F_g = m * g
-  formula_description: Physical relationship that determines F_g.
+  formula_description: Newtonian gravity defines parcel weight F_g.
 - formula: F_b = rho_e * V * g
-  formula_description: Physical relationship that determines F_b.
+  formula_description: Archimedes' principle defines buoyant force F_b from displaced environmental fluid.
 - formula: F_r = F_b - F_g
-  formula_description: Physical relationship that determines F_r.
+  formula_description: The net-buoyancy definition gives F_r as buoyancy F_b minus weight F_g.
 - formula: F_x = -m * C * z
-  formula_description: Physical relationship that determines F_x.
+  formula_description: The linear restoring-force model defines F_x = -m * C * z.
 - formula: a_r = F_r / m
-  formula_description: Physical relationship that determines a_r.
+  formula_description: Newton's second law defines buoyancy acceleration a_r from F_r and m.
 - formula: a_l = a_r * (T_e / T)
-  formula_description: Physical relationship that determines a_l.
+  formula_description: The linearized stratification approximation defines a_l from buoyancy acceleration a_r.
 - formula: a_x = F_x / m
-  formula_description: Physical relationship that determines a_x.
+  formula_description: Newton's second law defines restoring acceleration a_x from F_x and m.
 - formula: a = a_l + a_x
-  formula_description: Physical relationship that determines a.
+  formula_description: Superposition of the prior linearized buoyancy and elastic accelerations defines total restoring acceleration a.
 - formula: Y = -a / z
-  formula_description: Physical relationship that determines Y.
+  formula_description: The Brunt-Vaisala definition gives squared frequency Y as negative total restoring acceleration per displacement z.

@@ -1,6 +1,6 @@
 problem_name: Stokes Terminal Velocity - Original
 phenomenological_formula: v = 2 * r**2 * g * (rho_1 - rho_2) / (9 * u)
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A spherical particle settles through a surrounding fluid at low Reynolds number. Its terminal settling speed v is related to the particle radius r, gravitational acceleration g, particle density rho_1, fluid density rho_2, and fluid dynamic viscosity u.
 variable_description:
   target:
     name: v
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 9.81
       distribution: uniform
   - name: r
-    description: Characteristic radius
+    description: Sphere radius
     unit: m
     sampling:
       min: 1.0e-06
@@ -40,7 +40,7 @@ variable_description:
       ood_boundary: 100.0
       distribution: log_uniform
   - name: u
-    description: Dynamic viscosity or specific dissipation
+    description: Dynamic viscosity of the surrounding fluid
     unit: kg m^-1 s^-1
     sampling:
       min: 0.0001
@@ -52,19 +52,19 @@ variable_description:
     description: Volume
     unit: m^3
   - name: m_p
-    description: Physical quantity m_p
+    description: Mass of the spherical particle
     unit: kg
   - name: F_g
-    description: Physical quantity F_g
+    description: Gravitational weight of the particle
     unit: kg m s^-2
   - name: F_b
-    description: Physical quantity F_b
+    description: Archimedean buoyant force
     unit: kg m s^-2
   - name: F
-    description: Force
+    description: Net downward settling force
     unit: kg m s^-2
   - name: b
-    description: Dimensionless absorption coefficient or drag coefficient
+    description: Stokes linear drag coefficient
     unit: kg s^-1
   auxiliary_inputs: []
 constants:
@@ -74,16 +74,16 @@ constants:
   unit: 1 (dimensionless)
 mechanism:
 - formula: V = 4 * pi * r**3 / 3
-  formula_description: Physical relationship that determines V.
+  formula_description: The sphere-volume definition gives particle volume V from radius r.
 - formula: m_p = rho_1 * V
-  formula_description: Physical relationship that determines m_p.
+  formula_description: The mass-density definition gives particle mass m_p from density rho_1 and volume V.
 - formula: F_g = m_p * g
-  formula_description: Physical relationship that determines F_g.
+  formula_description: Newtonian gravity defines particle weight F_g.
 - formula: F_b = rho_2 * V * g
-  formula_description: Physical relationship that determines F_b.
+  formula_description: Archimedes' principle defines buoyant force F_b as the weight of displaced fluid.
 - formula: F = F_g - F_b
-  formula_description: Physical relationship that determines F.
+  formula_description: The net-force definition gives downward settling force F as weight F_g minus buoyancy F_b.
 - formula: b = 6 * pi * u * r
-  formula_description: Physical relationship that determines b.
+  formula_description: Stokes' drag law defines the linear drag coefficient b for a sphere of radius r in viscosity u.
 - formula: v = F / b
-  formula_description: Physical relationship that determines v.
+  formula_description: Terminal force balance F = b * v defines the settling speed v.

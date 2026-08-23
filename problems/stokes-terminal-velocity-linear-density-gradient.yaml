@@ -1,0 +1,115 @@
+problem_name: Stokes Terminal Velocity - Linear Density Gradient
+phenomenological_formula: z = 2 * r**2 * g * (rho_1 - rho_0) * t / (9 * u + r**2 * g * k * t)
+problem_description: A spherical particle settles through a surrounding fluid with a density gradient at low Reynolds number. Its vertical displacement z is related to gravitational acceleration g, fluid-density gradient coefficient k, particle radius r, reference fluid density rho_0, particle density rho_1, time t, and fluid dynamic viscosity u.
+variable_description:
+  target:
+    name: z
+    description: Downward settling displacement
+    unit: m
+  inputs:
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 9.7
+      max: 9.9
+      ood_boundary: 9.81
+      distribution: uniform
+  - name: k
+    description: Linear fluid-density gradient coefficient
+    unit: kg m^-4
+    sampling:
+      min: 0.0001
+      max: 0.01
+      ood_boundary: 0.001
+      distribution: log_uniform
+  - name: r
+    description: Sphere radius
+    unit: m
+    sampling:
+      min: 1.0e-06
+      max: 0.01
+      ood_boundary: 0.0001
+      distribution: log_uniform
+  - name: rho_0
+    description: Reference fluid density
+    unit: kg m^-3
+    sampling:
+      min: 1.0
+      max: 1000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  - name: rho_1
+    description: Particle density
+    unit: kg m^-3
+    sampling:
+      min: 1200.0
+      max: 8000.0
+      ood_boundary: 3000.0
+      distribution: log_uniform
+  - name: t
+    description: Time
+    unit: s
+    sampling:
+      min: 1.0
+      max: 10000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  - name: u
+    description: Dynamic viscosity of the surrounding fluid
+    unit: kg m^-1 s^-1
+    sampling:
+      min: 0.0001
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  intermediates:
+  - name: V
+    description: Volume
+    unit: m^3
+  - name: m_p
+    description: Mass of the spherical particle
+    unit: kg
+  - name: rho_bar
+    description: Mean fluid density over the settling displacement
+    unit: kg m^-3
+  - name: F_g
+    description: Gravitational weight of the particle
+    unit: kg m s^-2
+  - name: F_b
+    description: Buoyant force at the mean fluid density
+    unit: kg m s^-2
+  - name: F
+    description: Net downward settling force
+    unit: kg m s^-2
+  - name: b
+    description: Stokes linear drag coefficient
+    unit: kg s^-1
+  - name: v
+    description: Mean terminal settling speed over the elapsed interval
+    unit: m s^-1
+  auxiliary_inputs: []
+constants:
+- name: pi
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: V = 4 * pi * r**3 / 3
+  formula_description: The sphere-volume definition gives particle volume V from radius r.
+- formula: m_p = rho_1 * V
+  formula_description: The mass-density definition gives particle mass m_p from density rho_1 and volume V.
+- formula: F_g = m_p * g
+  formula_description: Newtonian gravity defines particle weight F_g.
+- formula: rho_bar = rho_0 + k * z / 2
+  formula_description: For a fluid with density increasing linearly from rho_0, the path-average density over displacement z is rho_bar = rho_0 + k * z / 2.
+- formula: F_b = rho_bar * V * g
+  formula_description: Archimedes' principle defines buoyant force F_b as the weight of fluid displaced at mean density rho_bar.
+- formula: F = F_g - F_b
+  formula_description: The net-force definition gives settling force F as weight F_g minus buoyancy F_b.
+- formula: b = 6 * pi * u * r
+  formula_description: Stokes' drag law defines the linear drag coefficient b for radius r and viscosity u.
+- formula: v = F / b
+  formula_description: Stokes terminal force balance F = b * v defines the mean settling speed v.
+- formula: z = v * t
+  formula_description: The kinematic displacement relation defines z from mean settling speed v and elapsed time t.

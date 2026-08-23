@@ -1,6 +1,6 @@
 problem_name: Stokes Terminal Velocity - Cubic Particle
 phenomenological_formula: v = s**2 * g * (rho_1 - rho_2) / (C * u)
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A particle settles through a surrounding fluid at low Reynolds number. Its terminal settling speed v is related to geometric drag coefficient C, gravitational acceleration g, particle density rho_1, fluid density rho_2, side length s, and fluid dynamic viscosity u.
 variable_description:
   target:
     name: v
@@ -8,12 +8,12 @@ variable_description:
     unit: m s^-1
   inputs:
   - name: C
-    description: Model coefficient
+    description: Positive dimensionless geometric drag coefficient for the particle
     unit: 1 (dimensionless)
     sampling:
-      min: 1.0e-07
-      max: 1.0e-05
-      ood_boundary: 5.0e-06
+      min: 0.1
+      max: 10.0
+      ood_boundary: 1.0
       distribution: uniform
   - name: g
     description: Gravitational acceleration
@@ -40,7 +40,7 @@ variable_description:
       ood_boundary: 100.0
       distribution: log_uniform
   - name: s
-    description: Cross section, length scale, or radiative constant
+    description: Side length of the cubic particle
     unit: m
     sampling:
       min: 1.0e-06
@@ -48,7 +48,7 @@ variable_description:
       ood_boundary: 0.0001
       distribution: log_uniform
   - name: u
-    description: Dynamic viscosity or specific dissipation
+    description: Dynamic viscosity of the surrounding fluid
     unit: kg m^-1 s^-1
     sampling:
       min: 0.0001
@@ -60,34 +60,34 @@ variable_description:
     description: Volume
     unit: m^3
   - name: m_p
-    description: Physical quantity m_p
+    description: Mass of the cubic particle
     unit: kg
   - name: F_g
-    description: Physical quantity F_g
+    description: Gravitational weight of the particle
     unit: kg m s^-2
   - name: F_b
-    description: Physical quantity F_b
+    description: Archimedean buoyant force
     unit: kg m s^-2
   - name: F
-    description: Force
+    description: Net downward settling force
     unit: kg m s^-2
   - name: b
-    description: Dimensionless absorption coefficient or drag coefficient
+    description: Geometry-specific linear drag coefficient
     unit: kg s^-1
   auxiliary_inputs: []
 constants: []
 mechanism:
 - formula: V = s**3
-  formula_description: Physical relationship that determines V.
+  formula_description: The cube-volume definition gives particle volume V from side length s.
 - formula: m_p = rho_1 * V
-  formula_description: Physical relationship that determines m_p.
+  formula_description: The mass-density definition gives particle mass m_p from density rho_1 and volume V.
 - formula: F_g = m_p * g
-  formula_description: Physical relationship that determines F_g.
+  formula_description: Newtonian gravity defines particle weight F_g.
 - formula: F_b = rho_2 * V * g
-  formula_description: Physical relationship that determines F_b.
+  formula_description: Archimedes' principle defines buoyant force F_b as the weight of displaced fluid.
 - formula: F = F_g - F_b
-  formula_description: Physical relationship that determines F.
+  formula_description: The net-force definition gives downward settling force F as weight F_g minus buoyancy F_b.
 - formula: b = C * u * s
-  formula_description: Physical relationship that determines b.
+  formula_description: The cubic-particle drag model defines linear coefficient b from positive geometry factor C, viscosity u, and side length s.
 - formula: v = F / b
-  formula_description: Physical relationship that determines v.
+  formula_description: Terminal force balance F = b * v defines the settling speed v.

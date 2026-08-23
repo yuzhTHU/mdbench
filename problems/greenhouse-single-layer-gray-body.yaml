@@ -1,10 +1,10 @@
 problem_name: Greenhouse Effect - Single-Layer Gray Body
 phenomenological_formula: T = ((1 - a) * S / (4 * s * (1 - b / 2)))**(1/4)
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A planet is surrounded by a one-layer gray atmosphere. Its surface temperature T is related to incident radiative flux S, planetary albedo a, and atmospheric longwave absorptivity b.
 variable_description:
   target:
     name: T
-    description: Temperature or period
+    description: Surface temperature
     unit: K
   inputs:
   - name: S
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 1361.0
       distribution: uniform
   - name: a
-    description: Dimensionless coefficient or length scale
+    description: Planetary shortwave albedo
     unit: 1 (dimensionless)
     sampling:
       min: 0.1
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 0.3
       distribution: uniform
   - name: b
-    description: Dimensionless absorption coefficient or drag coefficient
+    description: Longwave absorptivity and emissivity of the gray atmospheric layer
     unit: 1 (dimensionless)
     sampling:
       min: 0.05
@@ -33,13 +33,13 @@ variable_description:
       distribution: uniform
   intermediates:
   - name: S0
-    description: Physical quantity S0
+    description: Globally averaged absorbed solar flux
     unit: kg s^-3
   - name: f
-    description: Physical quantity f
+    description: Downward longwave feedback fraction
     unit: 1 (dimensionless)
   - name: E
-    description: Physical quantity E
+    description: Surface outgoing longwave emission flux
     unit: kg s^-3
   auxiliary_inputs: []
 constants:
@@ -49,10 +49,10 @@ constants:
   unit: kg s^-3 K^-4
 mechanism:
 - formula: S0 = (1 - a) * S / 4
-  formula_description: Physical relationship that determines S0.
+  formula_description: Global radiative geometry and albedo define absorbed solar flux S0 from stellar flux S.
 - formula: f = b / 2
-  formula_description: Physical relationship that determines f.
+  formula_description: Isotropic emission by a gray layer defines the downward feedback fraction f as half its longwave absorptivity b.
 - formula: E = S0 / (1 - f)
-  formula_description: Physical relationship that determines E.
+  formula_description: Surface radiative-equilibrium balance defines emission flux E from absorbed solar flux S0 and feedback fraction f.
 - formula: T = (E / s)**(1/4)
-  formula_description: Physical relationship that determines T.
+  formula_description: The Stefan-Boltzmann law E = s * T**4 defines surface temperature T from emission flux E.

@@ -1,10 +1,10 @@
 problem_name: Greenhouse Effect - Non-Radiative Surface Flux
 phenomenological_formula: T = (((1 - a) * S / 4 - H / 2) / (s * (1 - b / 2)))**(1/4)
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A planet is surrounded by a one-layer gray atmosphere with a non-radiative surface heat flux. Its surface temperature T is related to non-radiative heat flux H, incident radiative flux S, planetary albedo a, and atmospheric longwave absorptivity b.
 variable_description:
   target:
     name: T
-    description: Temperature or period
+    description: Surface temperature
     unit: K
   inputs:
   - name: H
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 1361.0
       distribution: uniform
   - name: a
-    description: Dimensionless coefficient or length scale
+    description: Planetary shortwave albedo
     unit: 1 (dimensionless)
     sampling:
       min: 0.1
@@ -32,7 +32,7 @@ variable_description:
       ood_boundary: 0.3
       distribution: uniform
   - name: b
-    description: Dimensionless absorption coefficient or drag coefficient
+    description: Longwave absorptivity and emissivity of the gray atmospheric layer
     unit: 1 (dimensionless)
     sampling:
       min: 0.05
@@ -41,19 +41,19 @@ variable_description:
       distribution: uniform
   intermediates:
   - name: S0
-    description: Physical quantity S0
+    description: Globally averaged absorbed solar flux
     unit: kg s^-3
   - name: H_s
-    description: Physical quantity H_s
+    description: Surface radiative-budget share of the non-radiative heat flux
     unit: kg s^-3
   - name: Q
-    description: Electric charge
+    description: Net surface radiative source flux before longwave feedback
     unit: kg s^-3
   - name: f
-    description: Physical quantity f
+    description: Downward longwave feedback fraction
     unit: 1 (dimensionless)
   - name: E
-    description: Physical quantity E
+    description: Surface outgoing longwave emission flux
     unit: kg s^-3
   auxiliary_inputs: []
 constants:
@@ -63,14 +63,14 @@ constants:
   unit: kg s^-3 K^-4
 mechanism:
 - formula: S0 = (1 - a) * S / 4
-  formula_description: Physical relationship that determines S0.
+  formula_description: Global radiative geometry and albedo define absorbed solar flux S0 from stellar flux S.
 - formula: H_s = H / 2
-  formula_description: Physical relationship that determines H_s.
+  formula_description: The model's symmetric non-radiative-transfer convention assigns half the imposed heat flux H to the surface budget.
 - formula: Q = S0 - H_s
-  formula_description: Physical relationship that determines Q.
+  formula_description: Surface energy balance defines net radiative source flux Q by subtracting the prior non-radiative export H_s from S0.
 - formula: f = b / 2
-  formula_description: Physical relationship that determines f.
+  formula_description: Isotropic emission by a gray layer defines the downward feedback fraction f as b / 2.
 - formula: E = Q / (1 - f)
-  formula_description: Physical relationship that determines E.
+  formula_description: Surface radiative-equilibrium balance defines emission flux E from net source Q and feedback f.
 - formula: T = (E / s)**(1/4)
-  formula_description: Physical relationship that determines T.
+  formula_description: The Stefan-Boltzmann law E = s * T**4 defines surface temperature T from emission flux E.

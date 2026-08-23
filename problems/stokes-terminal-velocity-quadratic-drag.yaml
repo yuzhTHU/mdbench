@@ -1,6 +1,6 @@
 problem_name: Stokes Terminal Velocity - Quadratic Drag
 phenomenological_formula: v = sqrt(8 * (rho_1 - rho_2) * g * r / (3 * rho_2 * C))
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A spherical particle settles through a surrounding fluid at high Reynolds number. Its terminal settling speed v is related to drag coefficient C, gravitational acceleration g, particle radius r, particle density rho_1, and fluid density rho_2.
 variable_description:
   target:
     name: v
@@ -8,11 +8,11 @@ variable_description:
     unit: m s^-1
   inputs:
   - name: C
-    description: Model coefficient
+    description: Positive dimensionless quadratic drag coefficient
     unit: 1 (dimensionless)
     sampling:
       min: 0.1
-      max: 2.0
+      max: 10.0
       ood_boundary: 1.0
       distribution: uniform
   - name: g
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 9.81
       distribution: uniform
   - name: r
-    description: Characteristic radius
+    description: Sphere radius
     unit: m
     sampling:
       min: 1.0e-06
@@ -52,19 +52,19 @@ variable_description:
     description: Volume
     unit: m^3
   - name: A
-    description: Temperature gradient
+    description: Projected cross-sectional area of the sphere
     unit: m^2
   - name: m_p
-    description: Physical quantity m_p
+    description: Mass of the spherical particle
     unit: kg
   - name: F_g
-    description: Physical quantity F_g
+    description: Gravitational weight of the particle
     unit: kg m s^-2
   - name: F_b
-    description: Physical quantity F_b
+    description: Archimedean buoyant force
     unit: kg m s^-2
   - name: F_d
-    description: Physical quantity F_d
+    description: Quadratic drag force required at terminal balance
     unit: kg m s^-2
   auxiliary_inputs: []
 constants:
@@ -74,16 +74,16 @@ constants:
   unit: 1 (dimensionless)
 mechanism:
 - formula: V = 4 * pi * r**3 / 3
-  formula_description: Physical relationship that determines V.
+  formula_description: The sphere-volume definition gives particle volume V from radius r.
 - formula: A = pi * r**2
-  formula_description: Physical relationship that determines A.
+  formula_description: The projected-area definition gives the sphere's cross-sectional area A.
 - formula: m_p = rho_1 * V
-  formula_description: Physical relationship that determines m_p.
+  formula_description: The mass-density definition gives particle mass m_p from density rho_1 and volume V.
 - formula: F_g = m_p * g
-  formula_description: Physical relationship that determines F_g.
+  formula_description: Newtonian gravity defines particle weight F_g.
 - formula: F_b = rho_2 * V * g
-  formula_description: Physical relationship that determines F_b.
+  formula_description: Archimedes' principle defines buoyant force F_b as the weight of displaced fluid.
 - formula: F_d = F_g - F_b
-  formula_description: Physical relationship that determines F_d.
+  formula_description: Terminal force balance defines required drag force F_d as weight F_g minus buoyancy F_b.
 - formula: v = sqrt(2 * F_d / (rho_2 * C * A))
-  formula_description: Physical relationship that determines v.
+  formula_description: The quadratic drag law F_d = rho_2 * C * A * v**2 / 2 determines terminal speed v from the prior drag force F_d.

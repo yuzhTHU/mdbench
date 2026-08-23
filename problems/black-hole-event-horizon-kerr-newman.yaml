@@ -1,10 +1,10 @@
 problem_name: Black Hole Event Horizon - Kerr-Newman
 phenomenological_formula: r = G * M / c**2 + sqrt((G * M / c**2)**2 - (J / (M * c))**2 - G * Q**2 / (4 * pi * eps * c**4))
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A black hole rotates about its axis and carries electric charge. Its outer event-horizon radius r is related to the black-hole mass M, angular momentum J, and electric charge Q.
 variable_description:
   target:
     name: r
-    description: Characteristic radius
+    description: Outer event-horizon radius
     unit: m
   inputs:
   - name: J
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 1.0e+39
       distribution: log_uniform
   - name: M
-    description: Mass or molar mass
+    description: Black-hole mass
     unit: kg
     sampling:
       min: 1.0e+30
@@ -33,13 +33,13 @@ variable_description:
       distribution: log_uniform
   intermediates:
   - name: R
-    description: Physical quantity R
+    description: Schwarzschild diameter associated with the mass M
     unit: m
   - name: a
-    description: Dimensionless coefficient or length scale
+    description: Kerr specific angular-momentum length
     unit: m
   - name: q
-    description: Eccentricity or charge-related term
+    description: Charge contribution to the horizon length-squared
     unit: m^2
   - name: D
     description: Discriminant
@@ -64,12 +64,12 @@ constants:
   unit: 1 (dimensionless)
 mechanism:
 - formula: R = 2 * G * M / c**2
-  formula_description: Physical relationship that determines R.
+  formula_description: The Schwarzschild-radius definition gives the mass diameter scale R.
 - formula: a = J / (M * c)
-  formula_description: Physical relationship that determines a.
+  formula_description: The Kerr spin-parameter definition converts angular momentum J into length a.
 - formula: q = G * Q**2 / (4 * pi * eps * c**4)
-  formula_description: Physical relationship that determines q.
+  formula_description: The Kerr-Newman metric charge term defines the length-squared contribution q from charge Q.
 - formula: D = R**2 - 4 * a**2 - 4 * q
-  formula_description: Physical relationship that determines D.
+  formula_description: The Kerr-Newman horizon quadratic has discriminant D after mass, spin, and charge contributions.
 - formula: r = (R + sqrt(D)) / 2
-  formula_description: Physical relationship that determines r.
+  formula_description: The outer-root definition selects the larger Kerr-Newman horizon radius r.

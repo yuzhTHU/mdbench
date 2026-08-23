@@ -1,10 +1,10 @@
 problem_name: Bohr Radius - Original
 phenomenological_formula: r = 4 * pi * eps * h**2 / (m * q**2)
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: An electron moves in a circular orbit around an atomic nucleus. Its Bohr-orbit radius r is related to the electron mass m and charge q.
 variable_description:
   target:
     name: r
-    description: Characteristic radius
+    description: Bohr-orbit radius
     unit: m
   inputs:
   - name: m
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 1.0e-24
       distribution: log_uniform
   - name: q
-    description: Eccentricity or charge-related term
+    description: Magnitude of the electron and nuclear charge
     unit: A s
     sampling:
       min: 0.01
@@ -25,23 +25,23 @@ variable_description:
       distribution: uniform
   intermediates:
   - name: n
-    description: Dimensionless quantum or layer number
+    description: Principal quantum number
     unit: 1 (dimensionless)
   - name: k_e
-    description: Physical quantity k_e
+    description: Coulomb constant
     unit: kg m^3 s^-4 A^-2
   - name: L
-    description: Physical quantity L
+    description: Orbital angular momentum
     unit: kg m^2 s^-1
-  - name: v
-    description: Electron orbital speed
-    unit: m s^-1
   - name: F_C
-    description: Coulomb force magnitude
+    description: Electrostatic Coulomb attraction
     unit: kg m s^-2
-  - name: F_cent
-    description: Centripetal force magnitude
+  - name: F_n
+    description: Centripetal force required for circular motion
     unit: kg m s^-2
+  - name: v
+    description: Orbital speed of the electron
+    unit: m s^-1
   auxiliary_inputs: []
 constants:
 - name: eps
@@ -58,16 +58,16 @@ constants:
   unit: 1 (dimensionless)
 mechanism:
 - formula: n = 1
-  formula_description: Physical relationship that determines n.
+  formula_description: Bohr's ground-state postulate fixes the principal quantum number at n = 1.
 - formula: k_e = 1 / (4 * pi * eps)
-  formula_description: Physical relationship that determines k_e.
+  formula_description: The SI definition of the Coulomb constant relates k_e to the vacuum permittivity eps.
 - formula: L = n * h
-  formula_description: Physical relationship that determines L.
+  formula_description: Bohr angular-momentum quantization sets the circular-orbit angular momentum L to n times Planck's constant h.
 - formula: F_C = k_e * q**2 / r**2
-  formula_description: Coulomb's law for the electron-nucleus force.
-- formula: F_cent = m * v**2 / r
-  formula_description: Centripetal-force relation for circular motion.
-- formula: F_C = F_cent
-  formula_description: Radial force balance for the circular orbit.
-- formula: L = m * r * v
-  formula_description: Classical angular-momentum definition.
+  formula_description: Coulomb's law gives the electrostatic attraction F_C between charges separated by the orbit radius r.
+- formula: F_n = m * v**2 / r
+  formula_description: Newton's circular-motion relation defines the required centripetal force F_n for speed v at radius r.
+- formula: F_n = F_C
+  formula_description: Circular-orbit force balance equates the centripetal force F_n to the Coulomb attraction F_C.
+- formula: r = L / (m * v)
+  formula_description: The classical angular-momentum definition L = m * v * r determines the orbit radius r from the previously quantized L and orbital speed v.

@@ -1,10 +1,10 @@
 problem_name: Greenhouse Effect - Single-Layer Shortwave Absorption
 phenomenological_formula: T = (((1 - p / 2) * (1 - a) * S / 4) / (s * (1 - b / 2)))**(1/4)
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A planet is surrounded by a one-layer atmosphere that absorbs shortwave radiation. Its surface temperature T is related to incident radiative flux S, planetary albedo a, atmospheric longwave absorptivity b, and atmospheric shortwave absorption fraction p.
 variable_description:
   target:
     name: T
-    description: Temperature or period
+    description: Surface temperature
     unit: K
   inputs:
   - name: S
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 1361.0
       distribution: uniform
   - name: a
-    description: Dimensionless coefficient or length scale
+    description: Planetary shortwave albedo
     unit: 1 (dimensionless)
     sampling:
       min: 0.1
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 0.3
       distribution: uniform
   - name: b
-    description: Dimensionless absorption coefficient or drag coefficient
+    description: Longwave absorptivity and emissivity of the gray atmospheric layer
     unit: 1 (dimensionless)
     sampling:
       min: 0.05
@@ -32,7 +32,7 @@ variable_description:
       ood_boundary: 0.4
       distribution: uniform
   - name: p
-    description: Physical quantity p
+    description: Fraction of absorbed solar flux taken up by the atmosphere
     unit: 1 (dimensionless)
     sampling:
       min: 0.05
@@ -41,25 +41,25 @@ variable_description:
       distribution: uniform
   intermediates:
   - name: S0
-    description: Physical quantity S0
+    description: Globally averaged absorbed solar flux
     unit: kg s^-3
   - name: S_s
-    description: Physical quantity S_s
+    description: Direct shortwave flux absorbed at the surface
     unit: kg s^-3
   - name: S_a
-    description: Physical quantity S_a
+    description: Shortwave flux absorbed by the atmosphere
     unit: kg s^-3
   - name: S_d
-    description: Physical quantity S_d
+    description: Downward half of atmospheric re-emission
     unit: kg s^-3
   - name: Q
-    description: Electric charge
+    description: Surface radiative source flux before longwave feedback
     unit: kg s^-3
   - name: f
-    description: Physical quantity f
+    description: Downward longwave feedback fraction
     unit: 1 (dimensionless)
   - name: E
-    description: Physical quantity E
+    description: Surface outgoing longwave emission flux
     unit: kg s^-3
   auxiliary_inputs: []
 constants:
@@ -69,18 +69,18 @@ constants:
   unit: kg s^-3 K^-4
 mechanism:
 - formula: S0 = (1 - a) * S / 4
-  formula_description: Physical relationship that determines S0.
+  formula_description: Global radiative geometry and albedo define absorbed solar flux S0 from stellar flux S.
 - formula: S_s = (1 - p) * S0
-  formula_description: Physical relationship that determines S_s.
+  formula_description: The shortwave partition definition assigns fraction 1 - p of the prior absorbed flux S0 directly to the surface.
 - formula: S_a = p * S0
-  formula_description: Physical relationship that determines S_a.
+  formula_description: The same shortwave partition assigns fraction p of S0 to atmospheric absorption S_a.
 - formula: S_d = S_a / 2
-  formula_description: Physical relationship that determines S_d.
+  formula_description: Isotropic atmospheric re-emission defines downward flux S_d as half the previously absorbed atmospheric flux S_a.
 - formula: Q = S_s + S_d
-  formula_description: Physical relationship that determines Q.
+  formula_description: Surface energy balance defines radiative source flux Q as direct surface absorption S_s plus downward atmospheric emission S_d.
 - formula: f = b / 2
-  formula_description: Physical relationship that determines f.
+  formula_description: Isotropic longwave emission by a gray layer defines feedback fraction f as b / 2.
 - formula: E = Q / (1 - f)
-  formula_description: Physical relationship that determines E.
+  formula_description: Surface radiative-equilibrium balance defines emission flux E from net source Q and feedback f.
 - formula: T = (E / s)**(1/4)
-  formula_description: Physical relationship that determines T.
+  formula_description: The Stefan-Boltzmann law E = s * T**4 defines surface temperature T from emission flux E.

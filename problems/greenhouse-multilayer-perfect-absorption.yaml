@@ -1,10 +1,10 @@
 problem_name: Greenhouse Effect - Multilayer Perfect Absorption
 phenomenological_formula: T = ((N + 1) * (1 - a) * S / (4 * s))**(1/4)
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A planet is surrounded by multi-layer atmosphere. Its surface temperature T is related to the number of atmospheric layers N, incident radiative flux S, and planetary albedo a.
 variable_description:
   target:
     name: T
-    description: Temperature or period
+    description: Surface temperature
     unit: K
   inputs:
   - name: N
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 1361.0
       distribution: uniform
   - name: a
-    description: Dimensionless coefficient or length scale
+    description: Planetary shortwave albedo
     unit: 1 (dimensionless)
     sampling:
       min: 0.1
@@ -33,16 +33,16 @@ variable_description:
       distribution: uniform
   intermediates:
   - name: S0
-    description: Physical quantity S0
+    description: Globally averaged absorbed solar flux
     unit: kg s^-3
   - name: OLR
-    description: Physical quantity OLR
+    description: Top-of-atmosphere outgoing longwave radiation
     unit: kg s^-3
   - name: n
-    description: Dimensionless quantum or layer number
+    description: Count of surface plus atmospheric radiative layers
     unit: 1 (dimensionless)
   - name: E
-    description: Physical quantity E
+    description: Surface outgoing longwave emission flux
     unit: kg s^-3
   auxiliary_inputs: []
 constants:
@@ -52,12 +52,12 @@ constants:
   unit: kg s^-3 K^-4
 mechanism:
 - formula: S0 = (1 - a) * S / 4
-  formula_description: Physical relationship that determines S0.
+  formula_description: Global radiative geometry and albedo define absorbed solar flux S0 from stellar flux S.
 - formula: OLR = S0
-  formula_description: Physical relationship that determines OLR.
+  formula_description: Top-of-atmosphere radiative equilibrium equates outgoing longwave radiation OLR to absorbed solar flux S0.
 - formula: n = N + 1
-  formula_description: Physical relationship that determines n.
+  formula_description: The perfect-layer model defines n as the N atmospheric layers plus the surface emission level.
 - formula: E = n * OLR
-  formula_description: Physical relationship that determines E.
+  formula_description: The N-layer radiative-transfer model defines surface emission E from the prior layer count n and OLR.
 - formula: T = (E / s)**(1/4)
-  formula_description: Physical relationship that determines T.
+  formula_description: The Stefan-Boltzmann law E = s * T**4 defines surface temperature T from emission flux E.

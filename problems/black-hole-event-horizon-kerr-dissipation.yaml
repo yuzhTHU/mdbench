@@ -1,10 +1,10 @@
 problem_name: Black Hole Event Horizon - Kerr Dissipation
 phenomenological_formula: r = (G * M / (0.5 * c**2 - u) + sqrt((G * M / (0.5 * c**2 - u))**2 - 4 * (J / (M * c))**2)) / 2
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A rotating black hole is considered in a dissipative model. Its outer event-horizon radius r is related to the black-hole mass M, angular momentum J, and specific dissipative energy correction u.
 variable_description:
   target:
     name: r
-    description: Characteristic radius
+    description: Outer horizon radius in the dissipative model
     unit: m
   inputs:
   - name: J
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 1.0e+39
       distribution: log_uniform
   - name: M
-    description: Mass or molar mass
+    description: Black-hole mass
     unit: kg
     sampling:
       min: 1.0e+30
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 5.0e+31
       distribution: log_uniform
   - name: u
-    description: Dynamic viscosity or specific dissipation
+    description: Specific dissipative energy correction
     unit: m^2 s^-2
     sampling:
       min: 0.0001
@@ -33,13 +33,13 @@ variable_description:
       distribution: log_uniform
   intermediates:
   - name: E
-    description: Physical quantity E
+    description: Effective energy scale in the dissipative horizon model
     unit: m^2 s^-2
   - name: R
-    description: Physical quantity R
+    description: Modified gravitational length scale
     unit: m
   - name: a
-    description: Dimensionless coefficient or length scale
+    description: Kerr specific angular-momentum length
     unit: m
   - name: D
     description: Discriminant
@@ -56,12 +56,12 @@ constants:
   unit: m s^-1
 mechanism:
 - formula: E = 0.5 * c**2 - u
-  formula_description: Physical relationship that determines E.
+  formula_description: The model definition subtracts the specific dissipation u from the relativistic energy scale c**2 / 2.
 - formula: R = G * M / E
-  formula_description: Physical relationship that determines R.
+  formula_description: The dissipative horizon model defines the modified gravitational length R from mass M and energy scale E.
 - formula: a = J / (M * c)
-  formula_description: Physical relationship that determines a.
+  formula_description: The Kerr spin-parameter definition converts angular momentum J into length a.
 - formula: D = R**2 - 4 * a**2
-  formula_description: Physical relationship that determines D.
+  formula_description: The model horizon quadratic has discriminant D after its mass and spin contributions.
 - formula: r = (R + sqrt(D)) / 2
-  formula_description: Physical relationship that determines r.
+  formula_description: The outer-root definition selects the larger horizon radius r of the dissipative Kerr quadratic.

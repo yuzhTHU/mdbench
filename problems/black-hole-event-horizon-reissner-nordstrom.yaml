@@ -1,14 +1,14 @@
-problem_name: Black Hole Event Horizon - Reissner-Nordström
+problem_name: Black Hole Event Horizon - Reissner-Nordstrom
 phenomenological_formula: r = G * M / c**2 + sqrt((G * M / c**2)**2 - G * Q**2 / (4 * pi * eps * c**4))
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: A black hole carries electric charge. Its outer event-horizon radius r is related to the black-hole mass M and electric charge Q.
 variable_description:
   target:
     name: r
-    description: Characteristic radius
+    description: Outer event-horizon radius
     unit: m
   inputs:
   - name: M
-    description: Mass or molar mass
+    description: Black-hole mass
     unit: kg
     sampling:
       min: 1.0e+30
@@ -25,10 +25,10 @@ variable_description:
       distribution: log_uniform
   intermediates:
   - name: R
-    description: Physical quantity R
+    description: Schwarzschild diameter associated with the mass M
     unit: m
   - name: q
-    description: Eccentricity or charge-related term
+    description: Charge contribution to the horizon length-squared
     unit: m^2
   - name: D
     description: Discriminant
@@ -53,10 +53,10 @@ constants:
   unit: 1 (dimensionless)
 mechanism:
 - formula: R = 2 * G * M / c**2
-  formula_description: Physical relationship that determines R.
+  formula_description: The Schwarzschild-radius definition gives the mass diameter scale R.
 - formula: q = G * Q**2 / (4 * pi * eps * c**4)
-  formula_description: Physical relationship that determines q.
+  formula_description: The Reissner-Nordstrom metric charge term defines the length-squared contribution q from Q.
 - formula: D = R**2 - 4 * q
-  formula_description: Physical relationship that determines D.
+  formula_description: The charged horizon quadratic has discriminant D after the mass and charge terms.
 - formula: r = (R + sqrt(D)) / 2
-  formula_description: Physical relationship that determines r.
+  formula_description: The outer-root definition selects the larger Reissner-Nordstrom horizon radius r.

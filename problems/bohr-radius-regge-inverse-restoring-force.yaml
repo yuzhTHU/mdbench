@@ -1,14 +1,14 @@
 problem_name: Bohr Radius - Regge Inverse Restoring Force
 phenomenological_formula: r = (n * h)**(3/4) / (p**(1/4) * sqrt(k))
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: An electron moves in a quantized circular orbit around an atomic nucleus. Its orbit radius r is related to the principal quantum number n, the coefficient p, and the kinetic-energy scale k.
 variable_description:
   target:
     name: r
-    description: Characteristic radius
+    description: Bohr-orbit radius
     unit: m
   inputs:
   - name: k
-    description: Model coefficient
+    description: Prescribed orbital kinetic-energy scale
     unit: kg m^2 s^-2
     sampling:
       min: 0.0001
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 0.001
       distribution: log_uniform
   - name: n
-    description: Dimensionless quantum or layer number
+    description: Principal quantum number
     unit: 1 (dimensionless)
     sampling:
       min: 1.0
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 3.0
       distribution: uniform
   - name: p
-    description: Physical quantity p
+    description: Coefficient relating mass squared to angular momentum
     unit: kg s m^-2
     sampling:
       min: 0.05
@@ -33,7 +33,7 @@ variable_description:
       distribution: uniform
   intermediates:
   - name: L
-    description: Physical quantity L
+    description: Quantized orbital angular momentum
     unit: kg m^2 s^-1
   - name: m
     description: Mass
@@ -49,10 +49,10 @@ constants:
   unit: kg m^2 s^-1
 mechanism:
 - formula: L = n * h
-  formula_description: Physical relationship that determines L.
+  formula_description: Bohr angular-momentum quantization defines L as n times Planck's constant h.
 - formula: m = sqrt(p * L)
-  formula_description: Physical relationship that determines m.
+  formula_description: The Regge trajectory assumption m**2 = p * L defines the effective orbiting mass m.
 - formula: v = sqrt(k / m)
-  formula_description: Physical relationship that determines v.
+  formula_description: The prescribed kinetic-energy scale k = m * v**2 defines the orbital speed v.
 - formula: r = L / (m * v)
-  formula_description: Physical relationship that determines r.
+  formula_description: The classical angular-momentum definition L = m * v * r determines the orbit radius r.

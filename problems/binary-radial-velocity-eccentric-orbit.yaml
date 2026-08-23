@@ -1,14 +1,14 @@
 problem_name: Binary Radial Velocity Semi-amplitude - Eccentric Orbit
 phenomenological_formula: y = (2 * pi * G * M_2**3 / (P * (M_1 + M_2)**2))**(1/3) * sin(i) / sqrt(1 - q**2)
-problem_description: A physics benchmark that relates the target quantity to experimentally specified parameters.
+problem_description: Two celestial bodies form a binary system in an eccentric orbit. Its radial-velocity semi-amplitude y is related to the primary mass M_1, companion mass M_2, orbital period P, orbital inclination i, and orbital eccentricity q.
 variable_description:
   target:
     name: y
-    description: Physical quantity y
+    description: Eccentric-orbit radial-velocity semi-amplitude of body M_1
     unit: m s^-1
   inputs:
   - name: M_1
-    description: Physical quantity M_1
+    description: Mass of the observed primary body
     unit: kg
     sampling:
       min: 2.0e+29
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 2.0e+30
       distribution: log_uniform
   - name: M_2
-    description: Physical quantity M_2
+    description: Mass of the companion body
     unit: kg
     sampling:
       min: 2.0e+28
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 2.0e+29
       distribution: log_uniform
   - name: P
-    description: Orbital period or pressure
+    description: Orbital period
     unit: s
     sampling:
       min: 86400.0
@@ -49,22 +49,22 @@ variable_description:
       distribution: uniform
   intermediates:
   - name: M
-    description: Mass or molar mass
+    description: Total binary mass
     unit: kg
   - name: a3
-    description: Physical quantity a3
+    description: Cube of the binary relative-orbit semi-major axis
     unit: m^3
   - name: a
-    description: Dimensionless coefficient or length scale
+    description: Relative-orbit semi-major axis
     unit: m
   - name: r
-    description: Characteristic radius
+    description: Primary body's barycentric orbital radius
     unit: m
   - name: v
     description: Velocity
     unit: m s^-1
   - name: u
-    description: Dynamic viscosity or specific dissipation
+    description: Circular-orbit velocity projected onto the line of sight
     unit: m s^-1
   - name: eccentricity_factor
     description: Eccentricity correction factor
@@ -81,18 +81,18 @@ constants:
   unit: 1 (dimensionless)
 mechanism:
 - formula: M = M_1 + M_2
-  formula_description: Physical relationship that determines M.
+  formula_description: The binary-system mass definition gives total mass M as the sum of component masses.
 - formula: a3 = G * M * P**2 / (4 * pi**2)
-  formula_description: Physical relationship that determines a3.
+  formula_description: Kepler's third law defines the cube a3 of the relative-orbit semi-major axis.
 - formula: a = a3**(1/3)
-  formula_description: Physical relationship that determines a.
+  formula_description: The semi-major-axis definition takes the physical positive cube root of a3.
 - formula: r = a * M_2 / M
-  formula_description: Physical relationship that determines r.
+  formula_description: The center-of-mass relation defines the primary barycentric radius r.
 - formula: v = 2 * pi * r / P
-  formula_description: Physical relationship that determines v.
+  formula_description: Uniform circular motion defines the characteristic orbital speed v.
 - formula: u = v * sin(i)
-  formula_description: Physical relationship that determines u.
+  formula_description: Line-of-sight projection at inclination i defines the projected speed u.
 - formula: eccentricity_factor = 1 / sqrt(1 - q**2)
-  formula_description: Physical relationship that determines the eccentricity correction factor.
+  formula_description: The Keplerian eccentric-orbit definition gives the correction factor 1 / sqrt(1 - q**2).
 - formula: y = u * eccentricity_factor
-  formula_description: Physical relationship that determines y.
+  formula_description: The eccentric-orbit semi-amplitude definition scales the projected speed u by the prior eccentricity factor.
