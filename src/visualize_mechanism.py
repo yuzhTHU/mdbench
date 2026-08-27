@@ -14,8 +14,12 @@ def get_parser(parser=None):
         parser = argparse.ArgumentParser(description="Visualize a mechanism dependency graph")
     parser.add_argument("--problem", required=True, help="Problem YAML path")
     parser.add_argument("--output", required=True, help="Output DOT, SVG, PNG, or PDF path")
-    parser.add_argument("--format", choices=["dot", "svg", "png", "pdf"], help="Output format; inferred from --output by default")
-    parser.add_argument("--hide-constants", action="store_true", help="Omit constant nodes and their edges")
+    parser.add_argument("--format", choices=["dot", "svg", "png", "pdf"], help=(
+        "Output format; inferred from --output by default"
+    ))
+    parser.add_argument("--hide-constants", action=argparse.BooleanOptionalAction, default=False, help=(
+        "Omit constant nodes and their edges"
+    ))
     return parser
 
 

@@ -310,7 +310,7 @@ def get_parser(parser=None):
     if parser is None:
         parser = argparse.ArgumentParser(description="Validate benchmark problem files")
     parser.add_argument("--problems", nargs="*", default=["problems"], help="Problem files or directories")
-    parser.add_argument("--check-fundamentality", action="store_true", help=(
+    parser.add_argument("--check-fundamentality", action=argparse.BooleanOptionalAction, default=False, help=(
         "Send the problem context and mechanism equations to an LLM and "
         "check whether each relationship is sufficiently fundamental"
     ))
@@ -318,8 +318,7 @@ def get_parser(parser=None):
         "LLM provider used by --check-fundamentality (default: deepseek)"
     ))
     parser.add_argument("--llm-model", default="deepseek-v4-flash", help=(
-        "LLM model used by --check-fundamentality "
-        "(default: deepseek-v4-flash)"
+        "LLM model used by --check-fundamentality (default: deepseek-v4-flash)"
     ))
     return parser
 

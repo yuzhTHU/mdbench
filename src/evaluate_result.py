@@ -526,34 +526,23 @@ def format_reports(report: dict) -> str:
 def get_parser(parser=None):
     if parser is None:
         parser = argparse.ArgumentParser(description="Evaluate a benchmark submission")
-    mode_action = parser.add_argument(
-        "--evaluation-mode",
-        choices=("feedback", "final"),
-        help=(
-            "'feedback' uses only a prepared public task and training data; "
-            "'final' uses a private answer and hidden test artifacts"
-        ),
-    )
+    mode_action = parser.add_argument("--evaluation-mode", choices=("feedback", "final"), help=(
+        "'feedback' uses only a prepared public task and training data; "
+        "'final' uses a private answer and hidden test artifacts"
+    ))
     parser.add_argument("--task", choices=sorted(TASKS))
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help=(
-            "Show a concise equation chain; append a fully expanded right-hand "
-            "side when an intermediate-dependent formula has a closed form"
-        ),
-    )
+    parser.add_argument("--verbose", action=argparse.BooleanOptionalAction, default=False, help=(
+        "Show a concise equation chain; append a fully expanded right-hand "
+        "side when an intermediate-dependent formula has a closed form"
+    ))
     source = parser.add_mutually_exclusive_group()
-    source.add_argument(
-        "--answer", help="Private answer JSON or prepared NPZ (final mode only)"
-    )
-    source.add_argument(
-        "--problem",
-        help=(
-            "Prepared public task directory, problem.json, or task NPZ "
-            "(feedback mode only)"
-        ),
-    )
+    source.add_argument("--answer", help=(
+        "Private answer JSON or prepared NPZ (final mode only)"
+    ))
+    source.add_argument("--problem", help=(
+        "Prepared public task directory, problem.json, or task NPZ "
+        "(feedback mode only)"
+    ))
     preparse_args = sys.argv[1:]
     if preparse_args and preparse_args[0] == "evaluate":
         preparse_args = preparse_args[1:]
@@ -597,22 +586,14 @@ def get_parser(parser=None):
         parser.add_argument("--llm-provider", default="openrouter", help="LLM provider used for semantic formula-equivalence judgment.")
         parser.add_argument("--llm-model", default="deepseek/deepseek-v4-flash", help="LLM model used for semantic formula-equivalence judgment.")
     elif task in ["mechanism_explanation", "mechanism_discovery"]:
-        parser.add_argument(
-            "--llm-provider",
-            default="deepseek",
-            help=(
-                "LLM provider used for mechanism fundamentality and private "
-                "derived-equation equivalence judgments."
-            ),
-        )
-        parser.add_argument(
-            "--llm-model",
-            default="deepseek-v4-flash",
-            help=(
-                "LLM model used for mechanism fundamentality and private "
-                "derived-equation equivalence judgments."
-            ),
-        )
+        parser.add_argument("--llm-provider", default="deepseek", help=(
+            "LLM provider used for mechanism fundamentality and private "
+            "derived-equation equivalence judgments."
+        ))
+        parser.add_argument("--llm-model", default="deepseek-v4-flash", help=(
+            "LLM model used for mechanism fundamentality and private "
+            "derived-equation equivalence judgments."
+        ))
     return parser
 
 

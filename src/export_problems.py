@@ -47,16 +47,12 @@ def get_parser(parser=None):
         parser = argparse.ArgumentParser(
             description="Export MDBench's bundled problem YAML files",
         )
-    parser.add_argument(
-        "--output-dir",
-        default="./problems/",
-        help="Destination directory for the exported problem YAML files (default: ./problems/)",
-    )
-    parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Overwrite existing problem files without prompting",
-    )
+    parser.add_argument("--output-dir", default="./problems/", help=(
+        "Destination directory for the exported problem YAML files (default: ./problems/)"
+    ))
+    parser.add_argument("--force", action=argparse.BooleanOptionalAction, default=False, help=(
+        "Overwrite existing problem files without prompting"
+    ))
     return parser
 
 
