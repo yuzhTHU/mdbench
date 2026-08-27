@@ -2,7 +2,6 @@
 from __future__ import annotations
 import json
 import argparse
-import sys
 import numpy as np
 from pathlib import Path
 from .metrics import (
@@ -451,7 +450,7 @@ def format_reports(report: dict) -> str:
             f"DAG={percent(recovery['dag_similarity'])}"
         )
     if trace := report.get("mechanism_trace"):
-        lines.append("  [cyan bold]Verbose mechanism trace[reset]")
+        lines.append("  [cyan]Mechanism trace[reset]")
         line_index = 1
         for index, step in enumerate(trace["solution_steps"], 1):
             variables = ", ".join(step["variables"])
@@ -524,9 +523,17 @@ def format_reports(report: dict) -> str:
 
 
 def get_parser(parser=None):
+    preliminary_parser = argparse.ArgumentParser(add_help=False)
+    preliminary_parser.add_argument("--evaluation-mode", choices=("feedback", "final"))
+    preliminary_parser.add_argument("--task", choices=sorted(TASKS))
+    preliminary_source = preliminary_parser.add_mutually_exclusive_group()
+    preliminary_source.add_argument("--answer")
+    preliminary_source.add_argument("--problem")
+    preliminary_args, _ = preliminary_parser.parse_known_args()
+
     if parser is None:
         parser = argparse.ArgumentParser(description="Evaluate a benchmark submission")
-    mode_action = parser.add_argument("--evaluation-mode", choices=("feedback", "final"), help=(
+    parser.add_argument("--evaluation-mode", choices=("feedback", "final"), required=True, help=(
         "'feedback' uses only a prepared public task and training data; "
         "'final' uses a private answer and hidden test artifacts"
     ))
@@ -535,7 +542,7 @@ def get_parser(parser=None):
         "Show a concise equation chain; append a fully expanded right-hand "
         "side when an intermediate-dependent formula has a closed form"
     ))
-    source = parser.add_mutually_exclusive_group()
+    source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--answer", help=(
         "Private answer JSON or prepared NPZ (final mode only)"
     ))
@@ -543,27 +550,23 @@ def get_parser(parser=None):
         "Prepared public task directory, problem.json, or task NPZ "
         "(feedback mode only)"
     ))
-    preparse_args = sys.argv[1:]
-    if preparse_args and preparse_args[0] == "evaluate":
-        preparse_args = preparse_args[1:]
-    preparse_args = [arg for arg in preparse_args if arg not in {"-h", "--help"}]
-    tmp_args, _ = parser.parse_known_args(preparse_args)
-    source.required = True
-    mode_action.required = True
-    if tmp_args.evaluation_mode == "feedback" and not tmp_args.problem:
-        parser.error("--evaluation-mode feedback requires --problem")
-    if tmp_args.evaluation_mode == "final" and not tmp_args.answer:
-        parser.error("--evaluation-mode final requires --answer")
-    if tmp_args.evaluation_mode == "feedback" and tmp_args.answer:
-        parser.error("--answer is not accepted in feedback mode")
-    if tmp_args.evaluation_mode == "final" and tmp_args.problem:
-        parser.error("--problem is not accepted in final mode")
+    if preliminary_args.evaluation_mode == "feedback":
+        if not preliminary_args.problem:
+            parser.error("--evaluation-mode feedback requires --problem")
+        if preliminary_args.answer:
+            parser.error("--answer is not accepted in feedback mode")
+    if preliminary_args.evaluation_mode == "final":
+        if preliminary_args.problem:
+            parser.error("--problem is not accepted in final mode")
+        if not preliminary_args.answer:
+            parser.error("--evaluation-mode final requires --answer")
 
-    task = tmp_args.task
-    if task is None and tmp_args.answer:
-        task = load_json(tmp_args.answer).get("task")
-    if task is None and tmp_args.problem:
-        task = load_public_task(tmp_args.problem)[0].get("task")
+
+    task = preliminary_args.task
+    if task is None and preliminary_args.answer:
+        task = load_json(preliminary_args.answer).get("task")
+    if task is None and preliminary_args.problem:
+        task = load_public_task(preliminary_args.problem)[0].get("task")
 
     if task in ["symbolic_regression"]:
         parser.add_argument("--submission", type=str, required=True, help=(
@@ -579,12 +582,18 @@ def get_parser(parser=None):
             "left side is not currently supported."
         ))
 
-    if tmp_args.evaluation_mode == "final" and task in ["symbolic_regression", "mechanism_discovery"]:
-        parser.add_argument("--data", help="Optional NPZ dataset supplying numerical values for formula evaluation.")
+    if preliminary_args.evaluation_mode == "final" and task in ["symbolic_regression", "mechanism_discovery"]:
+        parser.add_argument("--data", help=(
+            "Optional NPZ dataset supplying numerical values for formula evaluation."
+        ))
 
     if task == "symbolic_regression":
-        parser.add_argument("--llm-provider", default="openrouter", help="LLM provider used for semantic formula-equivalence judgment.")
-        parser.add_argument("--llm-model", default="deepseek/deepseek-v4-flash", help="LLM model used for semantic formula-equivalence judgment.")
+        parser.add_argument("--llm-provider", default="openrouter", help=(
+            "LLM provider used for semantic formula-equivalence judgment."
+        ))
+        parser.add_argument("--llm-model", default="deepseek/deepseek-v4-flash", help=(
+            "LLM model used for semantic formula-equivalence judgment."
+        ))
     elif task in ["mechanism_explanation", "mechanism_discovery"]:
         parser.add_argument("--llm-provider", default="deepseek", help=(
             "LLM provider used for mechanism fundamentality and private "
@@ -661,19 +670,13 @@ def main(args):
                 split_reports = []
                 for split, values, expected in private_splits:
                     if "phenomenological_formula" in submission:
-                        actual = _formula_predictions(
-                            submission["phenomenological_formula"], values
-                        )
+                        actual = _formula_predictions(submission["phenomenological_formula"], values)
                     else:
                         actual = _mechanism_predictions(submission, answer, values)
-                    split_reports.append(
-                        _prediction_metrics(actual, expected, split=split)
-                    )
+                    split_reports.append(_prediction_metrics(actual, expected, split=split))
                 report["data_accuracy"] = {"splits": split_reports}
-        if args.verbose and "mechanisms" in submission:
-            report["mechanism_trace"] = trace_mechanism_submission(
-                submission["mechanisms"], answer
-            )
+        if "mechanisms" in submission:
+            report["mechanism_trace"] = trace_mechanism_submission(submission["mechanisms"], answer)
     except (OSError, ValueError, KeyError, TypeError) as exc:
         logger.error(tag2ansi(f"[red bold]Error:[reset] {exc}"))
         return 1
