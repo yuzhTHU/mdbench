@@ -1,10 +1,10 @@
-problem_name: Settling Transient Velocity - Added Inertia
-phenomenological_formula: v = 2 * r^2 * g * (rho_p - rho_f) / (9 * u) * (1 - exp(-6 * π * u * r * t / (4 * π * rho_p * r^3 / 3 + eta)))
+problem_name: Settling Transient Velocity - Case 03
+phenomenological_formula: v = 2 * r^2 * g * (rho_p - rho_f) / (9 * u) * (1 - exp(-6 * π * u * r * t / (4 * π * rho_p * r^3 / 3 + m_x)))
 problem_description: A spherical particle moves vertically through a fluid after release. The target is its instantaneous vertical velocity.
 variable_description:
   target:
     name: v
-    description: Downward sphere velocity
+    description: Instantaneous vertical velocity
     unit: m s^-1
   inputs:
   - name: t
@@ -55,8 +55,8 @@ variable_description:
       max: 10.0
       ood_boundary: 0.1
       distribution: log_uniform
-  - name: eta
-    description: Added inertial mass coefficient
+  - name: m_x
+    description: Additional measured mass-like parameter
     unit: kg
     sampling:
       min: 1.0e-09
@@ -102,7 +102,7 @@ mechanism:
   formula_description: Volume of a sphere
 - formula: m = rho_p * V
   formula_description: Mass-density relation for the sphere
-- formula: M_eff = m + eta
+- formula: M_eff = m + m_x
   formula_description: Added inertia modifies the inertial mass
 - formula: F_g = m * g
   formula_description: Weight of the sphere

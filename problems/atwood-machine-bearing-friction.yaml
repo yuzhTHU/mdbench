@@ -1,10 +1,10 @@
-problem_name: Atwood Machine Acceleration - Bearing Friction Torque
-phenomenological_formula: a = ((m1 - m2) * g - tau_f / R) / (m1 + m2)
+problem_name: Coupled-Mass Acceleration - Case 03
+phenomenological_formula: a = ((m1 - m2) * g - tau_b / R) / (m1 + m2)
 problem_description: Two bodies connected by a string over a pulley move vertically under gravity. The target is their common acceleration.
 variable_description:
   target:
     name: a
-    description: Acceleration magnitude with m1 descending
+    description: Common vertical acceleration magnitude
     unit: m s^-2
   inputs:
   - name: g
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 10.0
       distribution: uniform
   - name: m1
-    description: Mass on the descending side
+    description: Mass of body 1
     unit: kg
     sampling:
       min: 0.2
@@ -24,15 +24,15 @@ variable_description:
       ood_boundary: 2.0
       distribution: log_uniform
   - name: m2
-    description: Mass on the ascending side
+    description: Mass of body 2
     unit: kg
     sampling:
       min: 0.05
       max: 5.0
       ood_boundary: 1.0
       distribution: log_uniform
-  - name: tau_f
-    description: Constant bearing friction torque
+  - name: tau_b
+    description: Measured pulley-bearing torque magnitude
     unit: kg m^2 s^-2
     sampling:
       min: 0.0001
@@ -76,5 +76,5 @@ mechanism:
   formula_description: Newton's second law for the ascending mass
 - formula: tau_string = (T1 - T2) * R
   formula_description: Torque definition for the unequal string tensions acting on the pulley
-- formula: tau_string = tau_f
+- formula: tau_string = tau_b
   formula_description: Rotational torque balance for a massless pulley with constant bearing friction

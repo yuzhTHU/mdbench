@@ -1,5 +1,5 @@
-problem_name: Inclined Block Displacement - Linear Air Drag
-phenomenological_formula: x = m * g * (sin(theta) - mu * cos(theta)) * t / b - m^2 * g * (sin(theta) - mu * cos(theta)) * (1 - exp(-b * t / m)) / b^2
+problem_name: Inclined Block Displacement - Case 03
+phenomenological_formula: x = m * g * (sin(theta) - mu * cos(theta)) * t / c_env - m^2 * g * (sin(theta) - mu * cos(theta)) * (1 - exp(-c_env * t / m)) / c_env^2
 problem_description: A block is released on an inclined surface. The target is its displacement along the incline after a specified time.
 variable_description:
   target:
@@ -32,7 +32,7 @@ variable_description:
       ood_boundary: 0.5
       distribution: uniform
   - name: mu
-    description: Kinetic friction coefficient
+    description: Dimensionless surface-interaction coefficient
     unit: 1 (dimensionless)
     sampling:
       min: 0.01
@@ -47,8 +47,8 @@ variable_description:
       max: 10.0
       ood_boundary: 1.0
       distribution: log_uniform
-  - name: b
-    description: Linear drag coefficient
+  - name: c_env
+    description: Environmental interaction coefficient
     unit: kg s^-1
     sampling:
       min: 0.01
@@ -85,9 +85,9 @@ mechanism:
   formula_description: Coulomb kinetic friction
 - formula: F_drive = F_parallel - F_f
   formula_description: Constant drive force before air drag
-- formula: v_T = F_drive / b
+- formula: v_T = F_drive / c_env
   formula_description: Terminal velocity under linear drag
-- formula: tau = m / b
+- formula: tau = m / c_env
   formula_description: Velocity relaxation time
 - formula: x = v_T * t - v_T * tau * (1 - exp(-t / tau))
   formula_description: Time integral of the first-order velocity response

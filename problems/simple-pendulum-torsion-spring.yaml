@@ -1,10 +1,10 @@
-problem_name: Simple Pendulum Period - Torsion Spring Assist
-phenomenological_formula: T = 2 * π * sqrt(m * L^2 / (m * g * L + k_theta))
+problem_name: Simple Pendulum Period - Case 03
+phenomenological_formula: T = 2 * π * sqrt(m * L^2 / (m * g * L + k_p))
 problem_description: A pendulum oscillates about its equilibrium position. The target is its oscillation period.
 variable_description:
   target:
     name: T
-    description: Pendulum period with torsion spring
+    description: Oscillation period
     unit: s
   inputs:
   - name: L
@@ -31,8 +31,8 @@ variable_description:
       max: 10.0
       ood_boundary: 1.0
       distribution: log_uniform
-  - name: k_theta
-    description: Torsion spring angular stiffness
+  - name: k_p
+    description: Pivot-response coefficient
     unit: kg m^2 s^-2
     sampling:
       min: 0.0001
@@ -60,7 +60,7 @@ variable_description:
     unit: s^-1
   auxiliary_inputs:
   - name: theta
-    description: Small angular displacement used in the torque derivation
+    description: Angular displacement
     unit: 1 (dimensionless)
     sampling:
       min: 0.02
@@ -75,7 +75,7 @@ constants:
 mechanism:
 - formula: tau_g = m * g * L * theta
   formula_description: Small-angle gravitational restoring torque
-- formula: tau_s = k_theta * theta
+- formula: tau_s = k_p * theta
   formula_description: Linear torsion spring restoring torque
 - formula: tau_total = tau_g + tau_s
   formula_description: Total restoring torque from gravity and spring

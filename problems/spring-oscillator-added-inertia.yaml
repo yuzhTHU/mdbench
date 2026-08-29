@@ -1,10 +1,10 @@
-problem_name: Spring Oscillator Period - Added Inertia
-phenomenological_formula: T = 2 * π * sqrt((m + eta) / k)
+problem_name: Spring Oscillator Period - Case 03
+phenomenological_formula: T = 2 * π * sqrt((m + m_x) / k)
 problem_description: A mass-spring system oscillates about equilibrium. The target is its oscillation period.
 variable_description:
   target:
     name: T
-    description: Oscillation period with added inertia
+    description: Oscillation period
     unit: s
   inputs:
   - name: m
@@ -15,8 +15,8 @@ variable_description:
       max: 10.0
       ood_boundary: 1.0
       distribution: log_uniform
-  - name: eta
-    description: Added inertial mass
+  - name: m_x
+    description: Additional measured mass-like parameter
     unit: kg
     sampling:
       min: 1.0e-09
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 1.0e-06
       distribution: log_uniform
   - name: k
-    description: Linear spring stiffness
+    description: Spring stiffness
     unit: kg s^-2
     sampling:
       min: 0.1
@@ -45,7 +45,7 @@ constants:
   value: 3.141592653589793
   unit: 1 (dimensionless)
 mechanism:
-- formula: M_eff = m + eta
+- formula: M_eff = m + m_x
   formula_description: Added inertia modifies the oscillator mass
 - formula: omega = sqrt(k / M_eff)
   formula_description: Angular frequency using effective mass

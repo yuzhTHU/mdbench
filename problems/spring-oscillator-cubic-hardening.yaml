@@ -1,10 +1,10 @@
-problem_name: Spring Oscillator Period - Cubic Hardening
-phenomenological_formula: T = 2 * π * sqrt(m / k) * (1 - 3 * alpha * A^2 / (8 * k))
+problem_name: Spring Oscillator Period - Case 04
+phenomenological_formula: T = 2 * π * sqrt(m / k) * (1 - 3 * c_s * A^2 / (8 * k))
 problem_description: A mass-spring system oscillates about equilibrium. The target is its oscillation period.
 variable_description:
   target:
     name: T
-    description: Weakly nonlinear oscillation period
+    description: Oscillation period
     unit: s
   inputs:
   - name: m
@@ -16,15 +16,15 @@ variable_description:
       ood_boundary: 1.0
       distribution: log_uniform
   - name: k
-    description: Linear spring stiffness
+    description: Spring stiffness
     unit: kg s^-2
     sampling:
       min: 0.1
       max: 10000.0
       ood_boundary: 100.0
       distribution: log_uniform
-  - name: alpha
-    description: Cubic hardening stiffness coefficient
+  - name: c_s
+    description: Additional stiffness-response coefficient
     unit: kg m^-2 s^-2
     sampling:
       min: 0.01
@@ -60,7 +60,7 @@ mechanism:
   formula_description: Linear angular frequency
 - formula: T0 = 2 * π / omega0
   formula_description: Linear oscillator period
-- formula: C_corr = 1 - 3 * alpha * A^2 / (8 * k)
+- formula: C_corr = 1 - 3 * c_s * A^2 / (8 * k)
   formula_description: Lowest-order hardening correction factor
 - formula: T = T0 * C_corr
   formula_description: Weakly nonlinear period correction

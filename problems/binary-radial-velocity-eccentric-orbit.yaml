@@ -1,14 +1,14 @@
-problem_name: Binary Radial Velocity Semi-amplitude - Eccentric Orbit
+problem_name: Orbital Radial-Velocity Semi-Amplitude - Case 02
 phenomenological_formula: y = (2 * pi * G * M_2**3 / (P * (M_1 + M_2)**2))**(1/3) * sin(i) / sqrt(1 - q**2)
 problem_description: Orbiting celestial bodies produce observable line-of-sight motion. The target is the radial-velocity semi-amplitude.
 variable_description:
   target:
     name: y
-    description: Eccentric-orbit radial-velocity semi-amplitude of body M_1
+    description: Radial-velocity semi-amplitude
     unit: m s^-1
   inputs:
   - name: M_1
-    description: Mass of the observed primary body
+    description: Mass parameter for body 1
     unit: kg
     sampling:
       min: 2.0e+29
@@ -16,7 +16,7 @@ variable_description:
       ood_boundary: 2.0e+30
       distribution: log_uniform
   - name: M_2
-    description: Mass of the companion body
+    description: Mass parameter for body 2
     unit: kg
     sampling:
       min: 2.0e+28
@@ -24,7 +24,7 @@ variable_description:
       ood_boundary: 2.0e+29
       distribution: log_uniform
   - name: P
-    description: Orbital period
+    description: Observed motion period
     unit: s
     sampling:
       min: 86400.0
@@ -32,7 +32,7 @@ variable_description:
       ood_boundary: 2592000.0
       distribution: log_uniform
   - name: i
-    description: Orbital inclination
+    description: Viewing inclination
     unit: 1 (dimensionless)
     sampling:
       min: 0.05
@@ -40,7 +40,7 @@ variable_description:
       ood_boundary: 0.8
       distribution: uniform
   - name: q
-    description: Orbital eccentricity
+    description: Dimensionless orbit-shape parameter
     unit: 1 (dimensionless)
     sampling:
       min: 0.01

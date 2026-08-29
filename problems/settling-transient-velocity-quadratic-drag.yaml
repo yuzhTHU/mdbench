@@ -1,10 +1,10 @@
-problem_name: Settling Transient Velocity - Quadratic Drag
-phenomenological_formula: v = sqrt(8 * r * g * (rho_p - rho_f) / (3 * rho_f * C)) * tanh(t * sqrt(3 * rho_f * C * g * (rho_p - rho_f) / (8 * rho_p^2 * r)))
+problem_name: Settling Transient Velocity - Case 02
+phenomenological_formula: v = sqrt(8 * r * g * (rho_p - rho_f) / (3 * rho_f * c_f)) * tanh(t * sqrt(3 * rho_f * c_f * g * (rho_p - rho_f) / (8 * rho_p^2 * r)))
 problem_description: A spherical particle moves vertically through a fluid after release. The target is its instantaneous vertical velocity.
 variable_description:
   target:
     name: v
-    description: Downward sphere velocity
+    description: Instantaneous vertical velocity
     unit: m s^-1
   inputs:
   - name: t
@@ -47,8 +47,8 @@ variable_description:
       max: 1300.0
       ood_boundary: 1000.0
       distribution: uniform
-  - name: C
-    description: Dimensionless quadratic drag coefficient
+  - name: c_f
+    description: Dimensionless particle-fluid interaction coefficient
     unit: 1 (dimensionless)
     sampling:
       min: 0.1
@@ -102,7 +102,7 @@ mechanism:
   formula_description: Archimedes buoyancy force
 - formula: F = F_g - F_b
   formula_description: Effective downward force after buoyancy
-- formula: k_drag = rho_f * C * A / 2
+- formula: k_drag = rho_f * c_f * A / 2
   formula_description: Quadratic inertial drag coefficient replacing linear drag
 - formula: v_T = sqrt(F / k_drag)
   formula_description: Terminal velocity from balance with quadratic drag

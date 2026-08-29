@@ -1,14 +1,14 @@
-problem_name: Michaelis-Menten Kinetics - Hill Cooperativity
-phenomenological_formula: v = k_cat * E_T * S^2 / ((k_off + k_cat) / k_on + S^2)
+problem_name: Enzyme Reaction Rate - Case 04
+phenomenological_formula: v = k3 * E_T * S^2 / ((k2 + k3) / k1 + S^2)
 problem_description: An enzyme converts a substrate into a product. The target is the initial reaction rate under the supplied conditions.
 variable_description:
   target:
     name: v
-    description: Initial reaction rate with cooperative binding
+    description: Initial product-formation rate
     unit: mol m^-3 s^-1
   inputs:
-  - name: k_cat
-    description: Catalytic turnover constant
+  - name: k3
+    description: Kinetic parameter 3
     unit: s^-1
     sampling:
       min: 0.1
@@ -31,16 +31,16 @@ variable_description:
       max: 0.1
       ood_boundary: 0.001
       distribution: log_uniform
-  - name: k_on
-    description: Coarse-grained association rate constant for cooperative two-substrate binding
+  - name: k1
+    description: Kinetic parameter 1
     unit: m^6 mol^-2 s^-1
     sampling:
       min: 10000.0
       max: 100000000000000.0
       ood_boundary: 100000000.0
       distribution: log_uniform
-  - name: k_off
-    description: Dissociation rate constant of the cooperative substrate-bound complex
+  - name: k2
+    description: Kinetic parameter 2
     unit: s^-1
     sampling:
       min: 0.01
@@ -66,11 +66,11 @@ variable_description:
   auxiliary_inputs: []
 constants: []
 mechanism:
-- formula: r_on = k_on * E_free * S^2
+- formula: r_on = k1 * E_free * S^2
   formula_description: Coarse-grained mass-action association rate for concerted formation of the two-substrate cooperative complex
-- formula: r_off = k_off * C_complex
+- formula: r_off = k2 * C_complex
   formula_description: Mass-action dissociation rate for the cooperative complex returning to free enzyme and substrate
-- formula: r_cat = k_cat * C_complex
+- formula: r_cat = k3 * C_complex
   formula_description: First-order catalytic turnover rate for the cooperative complex producing product and free enzyme
 - formula: r_on = r_off + r_cat
   formula_description: Quasi-steady-state balance for the cooperative complex, setting its net accumulation to zero

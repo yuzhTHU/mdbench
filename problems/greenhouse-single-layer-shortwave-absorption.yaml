@@ -1,10 +1,10 @@
-problem_name: Greenhouse Effect - Single-Layer Shortwave Absorption
-phenomenological_formula: T = (((1 - p / 2) * (1 - a) * S / 4) / (s * (1 - b / 2)))**(1/4)
+problem_name: Atmosphere-Surface Equilibrium Temperature - Case 03
+phenomenological_formula: T = (((1 - f_x / 2) * (1 - a) * S / 4) / (s * (1 - b / 2)))**(1/4)
 problem_description: A planet exchanges energy with its atmosphere and surroundings. The target is the equilibrium planetary surface temperature.
 variable_description:
   target:
     name: T
-    description: Surface temperature
+    description: Equilibrium surface temperature
     unit: K
   inputs:
   - name: S
@@ -24,15 +24,15 @@ variable_description:
       ood_boundary: 0.3
       distribution: uniform
   - name: b
-    description: Longwave absorptivity and emissivity of the gray atmospheric layer
+    description: Atmospheric longwave-response coefficient
     unit: 1 (dimensionless)
     sampling:
       min: 0.05
       max: 0.8
       ood_boundary: 0.4
       distribution: uniform
-  - name: p
-    description: Fraction of absorbed solar flux taken up by the atmosphere
+  - name: f_x
+    description: Atmospheric shortwave energy-uptake fraction
     unit: 1 (dimensionless)
     sampling:
       min: 0.05
@@ -70,10 +70,10 @@ constants:
 mechanism:
 - formula: S0 = (1 - a) * S / 4
   formula_description: Global radiative geometry and albedo define absorbed solar flux S0 from stellar flux S.
-- formula: S_s = (1 - p) * S0
-  formula_description: The shortwave partition definition assigns fraction 1 - p of the prior absorbed flux S0 directly to the surface.
-- formula: S_a = p * S0
-  formula_description: The same shortwave partition assigns fraction p of S0 to atmospheric absorption S_a.
+- formula: S_s = (1 - f_x) * S0
+  formula_description: The shortwave partition definition assigns fraction 1 - f_x of the prior absorbed flux S0 directly to the surface.
+- formula: S_a = f_x * S0
+  formula_description: The same shortwave partition assigns fraction f_x of S0 to atmospheric absorption S_a.
 - formula: S_d = S_a / 2
   formula_description: Isotropic atmospheric re-emission defines downward flux S_d as half the previously absorbed atmospheric flux S_a.
 - formula: Q = S_s + S_d

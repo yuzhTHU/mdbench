@@ -1,14 +1,14 @@
-problem_name: Michaelis-Menten Kinetics - Original
-phenomenological_formula: v = k_cat * E_T * S / ((k_off + k_cat) / k_on + S)
+problem_name: Enzyme Reaction Rate - Case 01
+phenomenological_formula: v = k3 * E_T * S / ((k2 + k3) / k1 + S)
 problem_description: An enzyme converts a substrate into a product. The target is the initial reaction rate under the supplied conditions.
 variable_description:
   target:
     name: v
-    description: Initial reaction rate
+    description: Initial product-formation rate
     unit: mol m^-3 s^-1
   inputs:
-  - name: k_cat
-    description: Catalytic turnover constant
+  - name: k3
+    description: Kinetic parameter 3
     unit: s^-1
     sampling:
       min: 0.1
@@ -31,16 +31,16 @@ variable_description:
       max: 0.1
       ood_boundary: 0.001
       distribution: log_uniform
-  - name: k_on
-    description: Association rate constant for free enzyme and substrate
+  - name: k1
+    description: Kinetic parameter 1
     unit: m^3 mol^-1 s^-1
     sampling:
       min: 100.0
       max: 100000000.0
       ood_boundary: 100000.0
       distribution: log_uniform
-  - name: k_off
-    description: Dissociation rate constant of the enzyme-substrate complex
+  - name: k2
+    description: Kinetic parameter 2
     unit: s^-1
     sampling:
       min: 0.01
@@ -66,11 +66,11 @@ variable_description:
   auxiliary_inputs: []
 constants: []
 mechanism:
-- formula: r_on = k_on * E_free * S
+- formula: r_on = k1 * E_free * S
   formula_description: Mass-action association rate for formation of ES from free enzyme and substrate
-- formula: r_off = k_off * C_complex
+- formula: r_off = k2 * C_complex
   formula_description: Mass-action dissociation rate for ES returning to free enzyme and substrate
-- formula: r_cat = k_cat * C_complex
+- formula: r_cat = k3 * C_complex
   formula_description: First-order catalytic turnover rate for ES producing product and free enzyme
 - formula: r_on = r_off + r_cat
   formula_description: Quasi-steady-state balance for the ES complex, setting its net accumulation to zero
