@@ -1,0 +1,40 @@
+problem_name: Spring Oscillator Period - Original
+phenomenological_formula: T = 2 * π * sqrt(m / k)
+problem_description: A mass-spring system oscillates about equilibrium. The target is its oscillation period.
+variable_description:
+  target:
+    name: T
+    description: Oscillation period
+    unit: s
+  inputs:
+  - name: m
+    description: Oscillator mass
+    unit: kg
+    sampling:
+      min: 0.01
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: k
+    description: Spring stiffness
+    unit: kg s^-2
+    sampling:
+      min: 0.1
+      max: 10000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  intermediates:
+  - name: omega
+    description: Angular frequency
+    unit: s^-1
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: omega = sqrt(k / m)
+  formula_description: Angular frequency of a linear mass-spring oscillator
+- formula: T = 2 * π / omega
+  formula_description: Period-frequency relation

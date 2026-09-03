@@ -9,12 +9,12 @@ from src.evaluate_result import get_parser
 
 @pytest.fixture
 def answer():
-    return build_answer(load_problem("problems/demo_problem.yaml"), "mechanism_discovery")
+    return build_answer(load_problem("demo_problem.yaml"), "mechanism_discovery")
 
 
 def test_symbolic_regression_accepts_raw_formula():
     symbolic_answer = build_answer(
-        load_problem("problems/demo_problem.yaml"), "symbolic_regression"
+        load_problem("demo_problem.yaml"), "symbolic_regression"
     )
     result = load_submission(
         "T = sqrt(4 * π^2 * a^3 / G / M)",
@@ -27,7 +27,7 @@ def test_submission_cli_argument_is_one_string(monkeypatch):
     argv = [
         "--evaluation-mode", "feedback",
         "--submission", "r = a; F = G * M * m / r^2",
-        "--problem", "problems/demo_problem.yaml",
+        "--problem", "demo_problem.yaml",
         "--task", "mechanism_discovery",
     ]
     monkeypatch.setattr("sys.argv", ["evaluate_result"] + argv)

@@ -93,7 +93,7 @@ def main() -> None:
         "mechanism_implicit_coupled.svg",
     )
     _render(
-        load_problem(ROOT / "problems" / "demo_problem.yaml", solve=True),
+        load_problem(ROOT / "demo_problem.yaml", solve=True),
         "mechanism_kepler.svg",
     )
 

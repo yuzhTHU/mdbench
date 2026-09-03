@@ -1,0 +1,80 @@
+problem_name: Enzyme Reaction Rate - Variant 3
+phenomenological_formula: v = k3 * E_T * S^2 / ((k2 + k3) / k1 + S^2)
+problem_description: An enzyme converts a substrate into a product. The target is the initial reaction rate under the supplied conditions.
+variable_description:
+  target:
+    name: v
+    description: Initial product-formation rate
+    unit: mol m^-3 s^-1
+  inputs:
+  - name: k3
+    description: Kinetic parameter 3
+    unit: s^-1
+    sampling:
+      min: 0.1
+      max: 1000.0
+      ood_boundary: 10.0
+      distribution: log_uniform
+  - name: E_T
+    description: Total enzyme concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.01
+      ood_boundary: 0.0001
+      distribution: log_uniform
+  - name: S
+    description: Substrate concentration
+    unit: mol m^-3
+    sampling:
+      min: 1.0e-06
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  - name: k1
+    description: Kinetic parameter 1
+    unit: m^6 mol^-2 s^-1
+    sampling:
+      min: 10000.0
+      max: 100000000000000.0
+      ood_boundary: 100000000.0
+      distribution: log_uniform
+  - name: k2
+    description: Kinetic parameter 2
+    unit: s^-1
+    sampling:
+      min: 0.01
+      max: 1000.0
+      ood_boundary: 10.0
+      distribution: log_uniform
+  intermediates:
+  - name: E_free
+    description: Free enzyme concentration
+    unit: mol m^-3
+  - name: C_complex
+    description: Cooperative substrate-bound active complex concentration
+    unit: mol m^-3
+  - name: r_on
+    description: Formation rate of the cooperative substrate-bound complex
+    unit: mol m^-3 s^-1
+  - name: r_off
+    description: Dissociation rate of the cooperative substrate-bound complex
+    unit: mol m^-3 s^-1
+  - name: r_cat
+    description: Catalytic turnover rate of the cooperative complex
+    unit: mol m^-3 s^-1
+  auxiliary_inputs: []
+constants: []
+mechanism:
+- formula: r_on = k1 * E_free * S^2
+  formula_description: Coarse-grained mass-action association rate for concerted formation of the two-substrate cooperative complex
+- formula: r_off = k2 * C_complex
+  formula_description: Mass-action dissociation rate for the cooperative complex returning to free enzyme and substrate
+- formula: r_cat = k3 * C_complex
+  formula_description: First-order catalytic turnover rate for the cooperative complex producing product and free enzyme
+- formula: r_on = r_off + r_cat
+  formula_description: Quasi-steady-state balance for the cooperative complex, setting its net accumulation to zero
+- formula: E_T = E_free + C_complex
+  formula_description: Conservation of total enzyme between free enzyme and cooperative substrate-bound complex
+- formula: v = r_cat
+  formula_description: Definition of the observed initial product-formation rate as the catalytic flux

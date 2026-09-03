@@ -1,0 +1,54 @@
+problem_name: Projectile Range - Original
+phenomenological_formula: R = v0^2 * sin(2 * theta) / g
+problem_description: A projectile is launched and later reaches a landing surface. The target is its horizontal range.
+variable_description:
+  target:
+    name: R
+    description: Horizontal range
+    unit: m
+  inputs:
+  - name: v0
+    description: Launch speed
+    unit: m s^-1
+    sampling:
+      min: 1.0
+      max: 100.0
+      ood_boundary: 20.0
+      distribution: log_uniform
+  - name: theta
+    description: Launch angle
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.02
+      max: 1.2
+      ood_boundary: 0.5
+      distribution: uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  intermediates:
+  - name: v_x
+    description: Horizontal launch velocity
+    unit: m s^-1
+  - name: v_y
+    description: Vertical launch velocity
+    unit: m s^-1
+  - name: t_f
+    description: Time of flight
+    unit: s
+  auxiliary_inputs: []
+constants: []
+mechanism:
+- formula: v_x = v0 * cos(theta)
+  formula_description: Horizontal component of launch velocity
+- formula: v_y = v0 * sin(theta)
+  formula_description: Vertical component of launch velocity
+- formula: t_f = 2 * v_y / g
+  formula_description: Time of flight from the equal-height landing condition
+- formula: R = v_x * t_f
+  formula_description: Horizontal displacement during flight

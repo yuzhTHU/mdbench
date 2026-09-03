@@ -1,0 +1,81 @@
+problem_name: Bound-Particle Orbital Radius - Variant 2
+phenomenological_formula: r = 4 * pi * eps * (n * h)**(3/2) / (sqrt(p) * q**2)
+problem_description: An electron occupies a bound orbit around an atomic nucleus. The target is the characteristic orbital radius.
+variable_description:
+  target:
+    name: r
+    description: Characteristic orbital radius
+    unit: m
+  inputs:
+  - name: n
+    description: Integer orbital-state index
+    unit: 1 (dimensionless)
+    sampling:
+      min: 1.0
+      max: 8.0
+      ood_boundary: 3.0
+      distribution: uniform
+  - name: p
+    description: Orbital scaling coefficient
+    unit: kg s m^-2
+    sampling:
+      min: 0.05
+      max: 0.7
+      ood_boundary: 0.3
+      distribution: uniform
+  - name: q
+    description: Magnitude of the electron and nuclear charge
+    unit: A s
+    sampling:
+      min: 0.01
+      max: 0.7
+      ood_boundary: 0.3
+      distribution: uniform
+  intermediates:
+  - name: k_e
+    description: Coulomb constant
+    unit: kg m^3 s^-4 A^-2
+  - name: L
+    description: Quantized orbital angular momentum
+    unit: kg m^2 s^-1
+  - name: m
+    description: Mass
+    unit: kg
+  - name: v
+    description: Orbital speed
+    unit: m s^-1
+  - name: F_C
+    description: Electrostatic Coulomb attraction
+    unit: kg m s^-2
+  - name: F_n
+    description: Centripetal force required for circular motion
+    unit: kg m s^-2
+  auxiliary_inputs: []
+constants:
+- name: eps
+  description: Vacuum permittivity
+  value: 8.8541878128e-12
+  unit: kg^-1 m^-3 s^4 A^2
+- name: h
+  description: Planck constant
+  value: 6.62607015e-34
+  unit: kg m^2 s^-1
+- name: pi
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: k_e = 1 / (4 * pi * eps)
+  formula_description: The SI definition of the Coulomb constant relates k_e to vacuum permittivity eps.
+- formula: L = n * h
+  formula_description: Bohr angular-momentum quantization defines L as n times Planck's constant h.
+- formula: m = sqrt(p * L)
+  formula_description: The Regge trajectory assumption m**2 = p * L defines the effective orbiting mass m.
+- formula: F_C = k_e * q**2 / r**2
+  formula_description: Coulomb's law defines the electrostatic attraction F_C at orbit radius r.
+- formula: F_n = m * v**2 / r
+  formula_description: Newton's circular-motion relation defines the centripetal force F_n for orbital speed v.
+- formula: F_n = F_C
+  formula_description: Circular-orbit force balance equates the centripetal force F_n to the Coulomb attraction F_C.
+- formula: r = L / (m * v)
+  formula_description: The classical angular-momentum definition L = m * v * r determines the orbit radius r from prior physical quantities.

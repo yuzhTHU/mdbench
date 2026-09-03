@@ -42,7 +42,7 @@ def test_parse_unit_rejects_invalid_notation(text):
 
 
 def test_load_problem_builds_unit_objects():
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     assert all(isinstance(variable.unit, UNIT) for variable in problem.all_variables)
     assert all(isinstance(variable.unit, UNIT) for variable in problem.auxiliary_input_variables)
     assert all(isinstance(constant.unit, UNIT) for constant in problem.constants)
@@ -63,7 +63,7 @@ def test_load_problem_builds_unit_objects():
 
 
 def test_variable_roles_come_from_sections_not_sampling(tmp_path):
-    source = open("problems/demo_problem.yaml", encoding="utf-8").read()
+    source = open("demo_problem.yaml", encoding="utf-8").read()
     source = source.replace(
         "      description: 行星圆轨道半径\n      unit: m\n",
         "      description: 行星圆轨道半径\n      unit: m\n"
@@ -82,7 +82,7 @@ def test_variable_roles_come_from_sections_not_sampling(tmp_path):
 
 
 def test_load_problem_rejects_legacy_formula_key(tmp_path):
-    source = open("problems/demo_problem.yaml", encoding="utf-8").read()
+    source = open("demo_problem.yaml", encoding="utf-8").read()
     path = tmp_path / "legacy.yaml"
     path.write_text(source.replace("phenomenological_formula:", "phenomical_formula:"), encoding="utf-8")
     with pytest.raises(ValueError, match="phenomenological_formula"):
@@ -90,7 +90,7 @@ def test_load_problem_rejects_legacy_formula_key(tmp_path):
 
 
 def test_load_problem_rejects_legacy_unified_variable_section(tmp_path):
-    source = open("problems/demo_problem.yaml", encoding="utf-8").read()
+    source = open("demo_problem.yaml", encoding="utf-8").read()
     source = source.replace(
         "variable_description:", "phenomenological_variable_description:", 1
     )
@@ -120,7 +120,7 @@ def test_load_problem_rejects_legacy_unified_variable_section(tmp_path):
 def test_dataclass_constructors_validate_spec_fields(
     tmp_path, old, new, message
 ):
-    source = open("problems/demo_problem.yaml", encoding="utf-8").read()
+    source = open("demo_problem.yaml", encoding="utf-8").read()
     path = tmp_path / "invalid-spec.yaml"
     path.write_text(source.replace(old, new, 1), encoding="utf-8")
     with pytest.raises(ValueError, match=message):
@@ -155,7 +155,7 @@ mechanism:
 
 
 def test_mechanism_item_rejects_legacy_variable_metadata(tmp_path):
-    source = open("problems/demo_problem.yaml", encoding="utf-8").read()
+    source = open("demo_problem.yaml", encoding="utf-8").read()
     source = source.replace(
         "  formula_description: The orbital radius equals the semi-major axis for a circular orbit",
         "  formula_description: The orbital radius equals the semi-major axis for a circular orbit\n  unit: m",
@@ -168,7 +168,7 @@ def test_mechanism_item_rejects_legacy_variable_metadata(tmp_path):
 
 
 def test_mechanism_item_rejects_zero_left_side(tmp_path):
-    source = open("problems/demo_problem.yaml", encoding="utf-8").read()
+    source = open("demo_problem.yaml", encoding="utf-8").read()
     source = source.replace("formula: r = a", "formula: 0 = r - a", 1)
     path = tmp_path / "zero-left-side.yaml"
     path.write_text(source, encoding="utf-8")

@@ -1,0 +1,62 @@
+problem_name: Black-Hole Horizon Radius - Variant 1
+phenomenological_formula: r = G * M / c**2 + sqrt((G * M / c**2)**2 - G * Q**2 / (4 * pi * eps * c**4))
+problem_description: A black hole is characterized by a set of physical properties. The target is the radius of its outer event horizon.
+variable_description:
+  target:
+    name: r
+    description: Outer event-horizon radius
+    unit: m
+  inputs:
+  - name: M
+    description: Black-hole mass
+    unit: kg
+    sampling:
+      min: 1.0e+30
+      max: 1.0e+33
+      ood_boundary: 5.0e+31
+      distribution: log_uniform
+  - name: Q
+    description: Electric charge
+    unit: A s
+    sampling:
+      min: 1000000.0
+      max: 100000000000000.0
+      ood_boundary: 10000000000.0
+      distribution: log_uniform
+  intermediates:
+  - name: R
+    description: Schwarzschild diameter associated with the mass M
+    unit: m
+  - name: q
+    description: Charge contribution to the horizon length-squared
+    unit: m^2
+  - name: D
+    description: Discriminant
+    unit: m^2
+  auxiliary_inputs: []
+constants:
+- name: G
+  description: Gravitational constant
+  value: 6.6743e-11
+  unit: m^3 kg^-1 s^-2
+- name: c
+  description: Speed of light in vacuum
+  value: 299792458.0
+  unit: m s^-1
+- name: eps
+  description: Vacuum permittivity
+  value: 8.8541878128e-12
+  unit: kg^-1 m^-3 s^4 A^2
+- name: pi
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: R = 2 * G * M / c**2
+  formula_description: The Schwarzschild-radius definition gives the mass diameter scale R.
+- formula: q = G * Q**2 / (4 * pi * eps * c**4)
+  formula_description: The Reissner-Nordstrom metric charge term defines the length-squared contribution q from Q.
+- formula: D = R**2 - 4 * q
+  formula_description: The charged horizon quadratic has discriminant D after the mass and charge terms.
+- formula: r = (R + sqrt(D)) / 2
+  formula_description: The outer-root definition selects the larger Reissner-Nordstrom horizon radius r.

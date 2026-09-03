@@ -27,7 +27,7 @@ def _validate(problem):
 def test_loaded_formula_format_is_accepted():
     from src.features.io import load_problem
 
-    result = _validate(load_problem("problems/demo_problem.yaml"))
+    result = _validate(load_problem("demo_problem.yaml"))
     assert len(result["checks"]) == 4
 
 
@@ -95,7 +95,7 @@ def test_rejects_declared_constant_replaced_by_numeric_literal():
 def test_unused_declared_constant_is_rejected():
     from src.features.io import load_problem
 
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     problem.constants.append(ConstantSpec("unused", "unused", UNIT({}), 1.0))
     result = _validate(problem)
     variable_check = next(
@@ -108,7 +108,7 @@ def test_unused_declared_constant_is_rejected():
 def test_intermediate_variable_may_omit_unit():
     from src.features.io import load_problem
 
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     next(variable for variable in problem.intermediate_variables if variable.name == "F").unit = None
     result = _validate(problem)
     assert result["ok"], result
@@ -147,7 +147,7 @@ def test_effective_force_is_used_without_warning(caplog):
     import logging
     from src.features.io import load_problem
 
-    problem = load_problem("problems/settling-terminal-velocity-quadratic-drag.yaml")
+    problem = load_problem("problems/settling-terminal-velocity-variant1.yaml")
     with caplog.at_level(logging.WARNING, logger="src.utils.logger"):
         detail = _check_solution(problem)
     assert "Mechanism derivation tested" in detail

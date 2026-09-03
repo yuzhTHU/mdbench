@@ -1,0 +1,29 @@
+problem_name: Pressure-Driven Tube Flow - Variant 2
+phenomenological_formula: Q = π * r^3 * p_f * gamma_f / (3 * p_f + 1) * (dP * r / (2 * sigma_f * L))^(1 / p_f)
+problem_description: |
+  A pressure difference drives fluid flow through a tube. The target is the steady volumetric flow rate.
+variable_description:
+  target: {name: Q, description: Steady volumetric flow rate, unit: m^3 s^-1}
+  inputs:
+    - {name: r, description: Circular tube radius, unit: m, sampling: {min: 5.0e-5, max: 3.0e-4, ood_boundary: 1.0e-4, distribution: log_uniform}}
+    - {name: dP, description: Pressure difference between the tube ends, unit: kg m^-1 s^-2, sampling: {min: 1.0, max: 1.0e3, ood_boundary: 1.0e2, distribution: log_uniform}}
+    - {name: sigma_f, description: Fluid stress-scale parameter, unit: kg m^-1 s^-2, sampling: {min: 0.1, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
+    - {name: L, description: Tube length, unit: m, sampling: {min: 0.05, max: 10.0, ood_boundary: 1.0, distribution: log_uniform}}
+    - {name: p_f, description: Dimensionless fluid-response parameter, unit: 1 (dimensionless), sampling: {min: 0.6, max: 1.5, ood_boundary: 1.0, distribution: uniform}}
+  intermediates:
+    - {name: G_p, description: Magnitude of the pressure gradient, unit: kg m^-2 s^-2}
+    - {name: tau_w, description: Wall shear stress, unit: kg m^-1 s^-2}
+    - {name: gamma_w, description: Wall shear rate, unit: s^-1}
+    - {name: v_avg, description: Cross-sectional mean velocity, unit: m s^-1}
+    - {name: A, description: Tube cross-sectional area, unit: m^2}
+  auxiliary_inputs: []
+constants:
+  - {name: π, description: Pi, value: 3.141592653589793, unit: 1 (dimensionless)}
+  - {name: gamma_f, description: Fluid rate-scale parameter, value: 1.0, unit: s^-1}
+mechanism:
+  - {formula: G_p = dP / L, formula_description: Definition of the axial pressure-gradient magnitude over tube length}
+  - {formula: tau_w = G_p * r / 2, formula_description: Axial momentum balance for steady fully developed circular-tube laminar flow}
+  - {formula: gamma_w = gamma_f * (tau_w / sigma_f)^(1 / p_f), formula_description: "Power-law rheological constitutive law solved for the wall shear rate"}
+  - {formula: v_avg = p_f * r * gamma_w / (3 * p_f + 1), formula_description: "Cross-sectional average of the circular-tube velocity profile implied by the power-law constitutive relation"}
+  - {formula: A = π * r^2, formula_description: Area of a circle}
+  - {formula: Q = A * v_avg, formula_description: Definition of volumetric flow rate}

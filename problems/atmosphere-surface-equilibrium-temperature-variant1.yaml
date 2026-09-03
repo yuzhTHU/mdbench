@@ -1,0 +1,63 @@
+problem_name: Atmosphere-Surface Equilibrium Temperature - Variant 1
+phenomenological_formula: T = ((N + 1) * (1 - a) * S / (4 * s))**(1/4)
+problem_description: A planet exchanges energy with its atmosphere and surroundings. The target is the equilibrium planetary surface temperature.
+variable_description:
+  target:
+    name: T
+    description: Equilibrium surface temperature
+    unit: K
+  inputs:
+  - name: N
+    description: Number of atmospheric layers
+    unit: 1 (dimensionless)
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 5.0
+      distribution: uniform
+  - name: S
+    description: Incident radiative flux
+    unit: kg s^-3
+    sampling:
+      min: 1200.0
+      max: 1500.0
+      ood_boundary: 1361.0
+      distribution: uniform
+  - name: a
+    description: Planetary shortwave albedo
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.1
+      max: 0.6
+      ood_boundary: 0.3
+      distribution: uniform
+  intermediates:
+  - name: S0
+    description: Globally averaged absorbed solar flux
+    unit: kg s^-3
+  - name: OLR
+    description: Top-of-atmosphere outgoing longwave radiation
+    unit: kg s^-3
+  - name: n
+    description: Count of surface plus atmospheric radiative layers
+    unit: 1 (dimensionless)
+  - name: E
+    description: Surface outgoing longwave emission flux
+    unit: kg s^-3
+  auxiliary_inputs: []
+constants:
+- name: s
+  description: Stefan-Boltzmann constant
+  value: 5.670374419e-08
+  unit: kg s^-3 K^-4
+mechanism:
+- formula: S0 = (1 - a) * S / 4
+  formula_description: Global radiative geometry and albedo define absorbed solar flux S0 from stellar flux S.
+- formula: OLR = S0
+  formula_description: Top-of-atmosphere radiative equilibrium equates outgoing longwave radiation OLR to absorbed solar flux S0.
+- formula: n = N + 1
+  formula_description: The perfect-layer model defines n as the N atmospheric layers plus the surface emission level.
+- formula: E = n * OLR
+  formula_description: The N-layer radiative-transfer model defines surface emission E from the prior layer count n and OLR.
+- formula: T = (E / s)**(1/4)
+  formula_description: The Stefan-Boltzmann law E = s * T**4 defines surface temperature T from emission flux E.

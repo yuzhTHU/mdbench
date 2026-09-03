@@ -3,7 +3,7 @@ from src.features.visualization import MechanismGraphBuilder
 
 
 def test_graph_points_sources_through_drag_to_target():
-    problem = load_problem("problems/settling-terminal-velocity-quadratic-drag.yaml")
+    problem = load_problem("problems/settling-terminal-velocity-variant1.yaml")
     problem.solution = solve_mechanism_equations(problem)
     dot = MechanismGraphBuilder().build(problem)
 
@@ -24,7 +24,7 @@ def test_graph_points_sources_through_drag_to_target():
 
 
 def test_graph_can_hide_constants():
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     problem.solution = solve_mechanism_equations(problem)
     dot = MechanismGraphBuilder().build(problem, include_constants=False)
     assert 'label="G"' not in dot

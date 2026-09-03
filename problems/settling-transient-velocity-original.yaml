@@ -1,0 +1,107 @@
+problem_name: Settling Transient Velocity - Original
+phenomenological_formula: v = 2 * r^2 * g * (rho_p - rho_f) / (9 * u) * (1 - exp(-9 * u * t / (2 * rho_p * r^2)))
+problem_description: A spherical particle moves vertically through a fluid after release. The target is its instantaneous vertical velocity.
+variable_description:
+  target:
+    name: v
+    description: Instantaneous vertical velocity
+    unit: m s^-1
+  inputs:
+  - name: t
+    description: Time after release
+    unit: s
+    sampling:
+      min: 0.01
+      max: 20.0
+      ood_boundary: 5.0
+      distribution: log_uniform
+  - name: r
+    description: Sphere radius
+    unit: m
+    sampling:
+      min: 1.0e-05
+      max: 0.005
+      ood_boundary: 0.0005
+      distribution: log_uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: rho_p
+    description: Particle material density
+    unit: kg m^-3
+    sampling:
+      min: 1500.0
+      max: 8000.0
+      ood_boundary: 3000.0
+      distribution: uniform
+  - name: rho_f
+    description: Fluid density
+    unit: kg m^-3
+    sampling:
+      min: 500.0
+      max: 1300.0
+      ood_boundary: 1000.0
+      distribution: uniform
+  - name: u
+    description: Dynamic viscosity of the fluid
+    unit: kg m^-1 s^-1
+    sampling:
+      min: 0.001
+      max: 10.0
+      ood_boundary: 0.1
+      distribution: log_uniform
+  intermediates:
+  - name: V
+    description: Sphere volume
+    unit: m^3
+  - name: m
+    description: Sphere mass
+    unit: kg
+  - name: F_g
+    description: Sphere weight
+    unit: kg m s^-2
+  - name: F_b
+    description: Buoyant force
+    unit: kg m s^-2
+  - name: F
+    description: Effective downward driving force
+    unit: kg m s^-2
+  - name: b
+    description: Linear Stokes drag coefficient
+    unit: kg s^-1
+  - name: v_T
+    description: Terminal velocity
+    unit: m s^-1
+  - name: tau
+    description: Velocity relaxation time
+    unit: s
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: V = 4 * π * r^3 / 3
+  formula_description: Volume of a sphere
+- formula: m = rho_p * V
+  formula_description: Mass-density relation for the sphere
+- formula: F_g = m * g
+  formula_description: Weight of the sphere
+- formula: F_b = rho_f * V * g
+  formula_description: Archimedes buoyancy force
+- formula: F = F_g - F_b
+  formula_description: Effective downward force after buoyancy
+- formula: b = 6 * π * u * r
+  formula_description: Linear Stokes drag coefficient
+- formula: v_T = F / b
+  formula_description: Terminal velocity from balance of force and linear drag
+- formula: tau = m / b
+  formula_description: First-order velocity relaxation time
+- formula: v = v_T * (1 - exp(-t / tau))
+  formula_description: Velocity response from rest under linear drag

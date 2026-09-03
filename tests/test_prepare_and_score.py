@@ -12,7 +12,7 @@ from src.features.io import load_problem
 
 
 def test_prepare_all_task_types(tmp_path):
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     data = generate_synthetic_data(
         problem, train_samples=8, id_test_samples=4, ood_test_samples=4, pilot_samples=64
     )
@@ -29,7 +29,7 @@ def test_prepare_all_task_types(tmp_path):
 
 
 def test_prepare_controls_auxiliary_and_constant_visibility():
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     mechanism_only = ConstantSpec("k", "mechanism-only constant", UNIT({}), 1.0)
     problem.constants.append(mechanism_only)
     problem.mechanism[0].formula = "a + 0 * k"
@@ -58,7 +58,7 @@ def test_prepare_controls_auxiliary_and_constant_visibility():
 
 
 def test_exact_answer_scores_one(tmp_path):
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     data = generate_synthetic_data(
         problem, train_samples=8, id_test_samples=8, ood_test_samples=8, pilot_samples=64
     )
@@ -72,7 +72,7 @@ def test_exact_answer_scores_one(tmp_path):
 
 def test_problem_can_supply_answer_without_data_file():
     from src.features.answer import build_answer
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     answer = build_answer(problem, "symbolic_regression")
     submission = {"phenomenological_formula": answer["phenomenological_formula"]}
     report = validate_result(submission, answer, problem=problem)
@@ -84,7 +84,7 @@ def test_exact_mechanism_formula_sequence_scores_one():
     from src.features.answer import build_answer
     from src.features.io import load_submission
 
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     answer = build_answer(problem, "mechanism_discovery")
     formulas = [item["formula"] for item in answer["mechanisms"]]
     submission = load_submission(
@@ -100,7 +100,7 @@ def test_fundamentality_is_reported_without_changing_primary_score():
     from src.features.answer import build_answer
     from src.features.io import load_submission
 
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     answer = build_answer(problem, "mechanism_discovery")
     formulas = [item["formula"] for item in answer["mechanisms"]]
     submission = load_submission(
@@ -130,7 +130,7 @@ def test_prepare_file_format(tmp_path):
     synthetic_dir = tmp_path / "synthetic"
     _generate_test_data(synthetic_dir)
     args = get_prepare_parser().parse_args([
-        "--problems", "problems/demo_problem.yaml",
+        "--problems", "demo_problem.yaml",
         "--synthetic-data-dir", str(synthetic_dir),
         "--output-dir", str(tmp_path / "prepared"),
         "--task", "symbolic_regression",
@@ -147,7 +147,7 @@ def test_prepare_file_format(tmp_path):
 
 def test_prepare_main_requires_existing_synthetic_data(tmp_path):
     args = get_prepare_parser().parse_args([
-        "--problems", "problems/demo_problem.yaml",
+        "--problems", "demo_problem.yaml",
         "--synthetic-data-dir", str(tmp_path / "missing"),
         "--output-dir", str(tmp_path / "prepared"),
         "--task", "symbolic_regression",
@@ -158,7 +158,7 @@ def test_prepare_main_requires_existing_synthetic_data(tmp_path):
 
 def _generate_test_data(output_dir):
     args = get_synthetic_parser().parse_args([
-        "--problems", "problems/demo_problem.yaml",
+        "--problems", "demo_problem.yaml",
         "--output-dir", str(output_dir),
         "--train-samples", "8",
         "--id-test-samples", "4",
@@ -172,7 +172,7 @@ def test_batch_operations_accept_directories(tmp_path):
     problem_dir = tmp_path / "problems"
     problem_dir.mkdir()
     (problem_dir / "demo_problem.yaml").write_text(
-        Path("problems/demo_problem.yaml").read_text(encoding="utf-8"),
+        Path("demo_problem.yaml").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     synthetic_args = get_synthetic_parser().parse_args([
@@ -202,7 +202,7 @@ def test_batch_operations_accept_directories(tmp_path):
 
 
 def test_answer_is_private_by_default_and_constants_keep_metadata(tmp_path):
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     data = generate_synthetic_data(
         problem, train_samples=8, id_test_samples=4, ood_test_samples=4, pilot_samples=64
     )
@@ -218,7 +218,7 @@ def test_answer_is_private_by_default_and_constants_keep_metadata(tmp_path):
 
 
 def test_mechanism_explanation_does_not_require_synthetic_data():
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     artifacts = prepare_problem(
         problem, None, task="mechanism_explanation", save_answer=True
     )
@@ -227,7 +227,7 @@ def test_mechanism_explanation_does_not_require_synthetic_data():
 
 def test_prepare_main_mechanism_explanation_writes_no_arrays(tmp_path):
     args = get_prepare_parser().parse_args([
-        "--problems", "problems/demo_problem.yaml",
+        "--problems", "demo_problem.yaml",
         "--synthetic-data-dir", str(tmp_path / "does-not-exist"),
         "--output-dir", str(tmp_path / "prepared"),
         "--task", "mechanism_explanation",
@@ -242,7 +242,7 @@ def test_prepare_does_not_delete_redundant_files_and_requires_overwrite(tmp_path
     synthetic_dir = tmp_path / "synthetic"
     _generate_test_data(synthetic_dir)
     argv = [
-        "--problems", "problems/demo_problem.yaml",
+        "--problems", "demo_problem.yaml",
         "--synthetic-data-dir", str(synthetic_dir),
         "--output-dir", str(tmp_path / "prepared"),
         "--task", "mechanism_explanation",
@@ -260,7 +260,7 @@ def test_prepare_formats_have_the_same_logical_contents(tmp_path):
     synthetic_dir = tmp_path / "synthetic"
     _generate_test_data(synthetic_dir)
     common = [
-        "--problems", "problems/demo_problem.yaml",
+        "--problems", "demo_problem.yaml",
         "--synthetic-data-dir", str(synthetic_dir),
         "--task", "symbolic_regression",
         "--save-answer",

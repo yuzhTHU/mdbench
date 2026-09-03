@@ -1,0 +1,67 @@
+problem_name: Black-Hole Horizon Radius - Variant 3
+phenomenological_formula: r = (G * M / (0.5 * c**2 - u) + sqrt((G * M / (0.5 * c**2 - u))**2 - 4 * (J / (M * c))**2)) / 2
+problem_description: A black hole is characterized by a set of physical properties. The target is the radius of its outer event horizon.
+variable_description:
+  target:
+    name: r
+    description: Outer event-horizon radius
+    unit: m
+  inputs:
+  - name: J
+    description: Angular momentum
+    unit: kg m^2 s^-1
+    sampling:
+      min: 1.0e+36
+      max: 1.0e+41
+      ood_boundary: 1.0e+39
+      distribution: log_uniform
+  - name: M
+    description: Black-hole mass
+    unit: kg
+    sampling:
+      min: 1.0e+30
+      max: 1.0e+33
+      ood_boundary: 5.0e+31
+      distribution: log_uniform
+  - name: u
+    description: Additional specific-energy parameter
+    unit: m^2 s^-2
+    sampling:
+      min: 0.0001
+      max: 0.1
+      ood_boundary: 0.001
+      distribution: log_uniform
+  intermediates:
+  - name: E
+    description: Effective energy scale in the dissipative horizon model
+    unit: m^2 s^-2
+  - name: R
+    description: Modified gravitational length scale
+    unit: m
+  - name: a
+    description: Kerr specific angular-momentum length
+    unit: m
+  - name: D
+    description: Discriminant
+    unit: m^2
+  auxiliary_inputs: []
+constants:
+- name: G
+  description: Gravitational constant
+  value: 6.6743e-11
+  unit: m^3 kg^-1 s^-2
+- name: c
+  description: Speed of light in vacuum
+  value: 299792458.0
+  unit: m s^-1
+mechanism:
+- formula: E = 0.5 * c**2 - u
+  formula_description: The model definition subtracts the specific dissipation u from the relativistic energy scale c**2 / 2.
+- formula: R = G * M / E
+  formula_description: The dissipative horizon model defines the modified gravitational length R from mass M and energy scale E.
+- formula: a = J / (M * c)
+  formula_description: The Kerr spin-parameter definition converts angular momentum J into length a.
+- formula: D = R**2 - 4 * a**2
+  formula_description: The model horizon quadratic has discriminant D after its mass and spin contributions.
+- formula: r = (R + sqrt(D)) / 2
+  formula_description: The outer-root definition selects the larger horizon radius r of the dissipative Kerr quadratic.

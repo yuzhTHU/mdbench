@@ -102,7 +102,7 @@ def test_triangular_equations_are_solved_in_dependency_order():
 
 
 def test_explicit_steps_are_stored_in_execution_order():
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     solution = solve_mechanism_equations(problem)
     assert [item.variables for item in solution] == [
         ["r"], ["F"], ["acc"], ["v"], ["T"],

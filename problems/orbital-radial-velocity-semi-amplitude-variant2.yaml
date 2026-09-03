@@ -1,0 +1,93 @@
+problem_name: Orbital Radial-Velocity Semi-Amplitude - Variant 2
+phenomenological_formula: y = (2 * pi * G * M_3**3 / (P * (M_1 + M_2 + M_3)**2))**(1/3) * sin(i)
+problem_description: Orbiting celestial bodies produce observable line-of-sight motion. The target is the radial-velocity semi-amplitude.
+variable_description:
+  target:
+    name: y
+    description: Radial-velocity semi-amplitude
+    unit: m s^-1
+  inputs:
+  - name: M_1
+    description: Mass parameter for body 1
+    unit: kg
+    sampling:
+      min: 2.0e+29
+      max: 2.0e+31
+      ood_boundary: 2.0e+30
+      distribution: log_uniform
+  - name: M_2
+    description: Mass parameter for body 2
+    unit: kg
+    sampling:
+      min: 2.0e+28
+      max: 2.0e+30
+      ood_boundary: 2.0e+29
+      distribution: log_uniform
+  - name: M_3
+    description: Mass parameter for body 3
+    unit: kg
+    sampling:
+      min: 2.0e+27
+      max: 2.0e+29
+      ood_boundary: 2.0e+28
+      distribution: log_uniform
+  - name: P
+    description: Observed motion period
+    unit: s
+    sampling:
+      min: 86400.0
+      max: 31540000.0
+      ood_boundary: 2592000.0
+      distribution: log_uniform
+  - name: i
+    description: Viewing inclination
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.05
+      max: 1.5
+      ood_boundary: 0.8
+      distribution: uniform
+  intermediates:
+  - name: M12
+    description: Combined mass of the inner binary
+    unit: kg
+  - name: M
+    description: Total mass of the hierarchical triple
+    unit: kg
+  - name: a3
+    description: Cube of the outer relative-orbit semi-major axis
+    unit: m^3
+  - name: a
+    description: Outer relative-orbit semi-major axis
+    unit: m
+  - name: r
+    description: Inner subsystem's barycentric outer-orbit radius
+    unit: m
+  - name: v
+    description: Velocity
+    unit: m s^-1
+  auxiliary_inputs: []
+constants:
+- name: G
+  description: Gravitational constant
+  value: 6.6743e-11
+  unit: m^3 kg^-1 s^-2
+- name: pi
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: M12 = M_1 + M_2
+  formula_description: The inner-binary mass definition gives M12 as the sum of M_1 and M_2.
+- formula: M = M12 + M_3
+  formula_description: The system-mass definition adds outer companion M_3 to the prior inner mass M12.
+- formula: a3 = G * M * P**2 / (4 * pi**2)
+  formula_description: Kepler's third law defines the cube a3 of the outer relative-orbit semi-major axis.
+- formula: a = a3**(1/3)
+  formula_description: The semi-major-axis definition takes the physical positive cube root of a3.
+- formula: r = a * M_3 / M
+  formula_description: The outer center-of-mass relation defines the inner subsystem radius r.
+- formula: v = 2 * pi * r / P
+  formula_description: Uniform circular motion defines the inner subsystem's outer-orbit speed v.
+- formula: y = v * sin(i)
+  formula_description: Line-of-sight projection at inclination i defines the observed semi-amplitude y.

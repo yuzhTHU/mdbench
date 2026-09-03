@@ -19,7 +19,7 @@ relationships, assumptions, and intermediate variables.
 
 For example, Kepler's third law for a circular orbit follows from gravitation,
 Newton's second law, and uniform circular motion. See
-[`problems/demo_problem.yaml`](problems/demo_problem.yaml).
+[`demo_problem.yaml`](demo_problem.yaml).
 
 Each mechanism relationship uses `variable = formula`, where the formula must
 be parseable by [nd2py](https://pypi.org/project/nd2py/). Explicit relationships
@@ -115,7 +115,7 @@ implicit equation solving, and derivation of the target law:
 
 ```bash
 mdbench validate --problems problems
-mdbench validate --problems problems/demo_problem.yaml
+mdbench validate --problems demo_problem.yaml
 ```
 
 An optional LLM check evaluates whether every relationship is sufficiently

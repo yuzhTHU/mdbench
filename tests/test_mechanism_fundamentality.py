@@ -50,7 +50,7 @@ def _response(problem, judgment="fundamental"):
 
 
 def test_llm_checker_sends_complete_physical_context():
-    problem = load_problem("problems/demo_problem.yaml", solve=False)
+    problem = load_problem("demo_problem.yaml", solve=False)
     api = FakeAPI(_response(problem))
     checker = LLMMechanismFundamentalityChecker(api=api)
 
@@ -75,7 +75,7 @@ def test_llm_checker_sends_complete_physical_context():
 
 
 def test_llm_checker_rejects_incomplete_results():
-    problem = load_problem("problems/demo_problem.yaml", solve=False)
+    problem = load_problem("demo_problem.yaml", solve=False)
     api = FakeAPI(json.dumps({"items": []}))
     checker = LLMMechanismFundamentalityChecker(api=api)
 
@@ -84,7 +84,7 @@ def test_llm_checker_rejects_incomplete_results():
 
 
 def test_llm_checker_retries_empty_final_answer():
-    problem = load_problem("problems/demo_problem.yaml", solve=False)
+    problem = load_problem("demo_problem.yaml", solve=False)
     api = SequenceAPI([
         ("", {"finish_reason": "length", "reasoning_content": "thinking"}),
         (_response(problem), {"finish_reason": "stop"}),
@@ -98,7 +98,7 @@ def test_llm_checker_retries_empty_final_answer():
 
 
 def test_fundamentality_check_rejects_nonfundamental_relationship():
-    problem = load_problem("problems/demo_problem.yaml", solve=False)
+    problem = load_problem("demo_problem.yaml", solve=False)
     report = json.loads(_response(problem))
     report["items"][0].update({
         "judgment": "not_fundamental",
@@ -118,7 +118,7 @@ def test_fundamentality_check_rejects_nonfundamental_relationship():
 def test_submission_scorer_returns_one_score_per_mechanism():
     from src.features.answer import build_answer
 
-    problem = load_problem("problems/demo_problem.yaml", solve=False)
+    problem = load_problem("demo_problem.yaml", solve=False)
     answer = build_answer(problem, "mechanism_discovery")
     response = json.loads(_response(problem))
     response["items"][0]["judgment"] = "not_fundamental"
@@ -143,7 +143,7 @@ def test_submission_scorer_returns_one_score_per_mechanism():
 def test_submission_scorer_can_build_context_from_answer_only():
     from src.features.answer import build_answer
 
-    problem = load_problem("problems/demo_problem.yaml", solve=False)
+    problem = load_problem("demo_problem.yaml", solve=False)
     answer = build_answer(problem, "mechanism_explanation")
     api = FakeAPI(_response(problem))
     checker = LLMMechanismFundamentalityChecker(api=api)

@@ -22,7 +22,7 @@ def test_export_defaults_to_problems_directory(monkeypatch):
 def test_export_refuses_overwrite_without_confirmation(tmp_path, monkeypatch):
     output_dir = tmp_path / "problems"
     output_dir.mkdir()
-    existing = output_dir / "demo_problem.yaml"
+    existing = output_dir / "atmosphere-surface-equilibrium-temperature-original.yaml"
     existing.write_text("keep me", encoding="utf-8")
     monkeypatch.setattr("builtins.input", lambda _: "n")
     args = get_parser().parse_args(["--output-dir", str(output_dir)])
@@ -34,11 +34,11 @@ def test_export_refuses_overwrite_without_confirmation(tmp_path, monkeypatch):
 def test_export_force_overwrites_existing_files(tmp_path):
     output_dir = tmp_path / "problems"
     output_dir.mkdir()
-    existing = output_dir / "demo_problem.yaml"
+    existing = output_dir / "atmosphere-surface-equilibrium-temperature-original.yaml"
     existing.write_text("old", encoding="utf-8")
     args = get_parser().parse_args(
         ["--output-dir", str(output_dir), "--force"]
     )
 
     assert main(args) == 0
-    assert existing.read_bytes() == Path("problems/demo_problem.yaml").read_bytes()
+    assert existing.read_bytes() == Path("problems/atmosphere-surface-equilibrium-temperature-original.yaml").read_bytes()

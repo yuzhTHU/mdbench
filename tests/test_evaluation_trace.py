@@ -5,7 +5,7 @@ from src.features.io import load_problem
 
 
 def test_trace_expands_ordered_mechanism_steps_to_target():
-    problem = load_problem("problems/demo_problem.yaml", solve=False)
+    problem = load_problem("demo_problem.yaml", solve=False)
     answer = build_answer(problem, "mechanism_explanation")
 
     trace = trace_mechanism_submission(answer["mechanisms"], answer)

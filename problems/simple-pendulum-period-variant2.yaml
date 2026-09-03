@@ -1,0 +1,89 @@
+problem_name: Simple Pendulum Period - Variant 2
+phenomenological_formula: T = 2 * π * sqrt(m * L^2 / (m * g * L + k_p))
+problem_description: A pendulum oscillates about its equilibrium position. The target is its oscillation period.
+variable_description:
+  target:
+    name: T
+    description: Oscillation period
+    unit: s
+  inputs:
+  - name: L
+    description: Pendulum length
+    unit: m
+    sampling:
+      min: 0.05
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: g
+    description: Gravitational acceleration
+    unit: m s^-2
+    sampling:
+      min: 1.0
+      max: 20.0
+      ood_boundary: 10.0
+      distribution: uniform
+  - name: m
+    description: Pendulum bob mass
+    unit: kg
+    sampling:
+      min: 0.01
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: k_p
+    description: Pivot-response coefficient
+    unit: kg m^2 s^-2
+    sampling:
+      min: 0.0001
+      max: 10.0
+      ood_boundary: 0.1
+      distribution: log_uniform
+  intermediates:
+  - name: tau_g
+    description: Small-angle gravitational restoring torque magnitude
+    unit: kg m^2 s^-2
+  - name: tau_s
+    description: Torsion spring restoring torque magnitude
+    unit: kg m^2 s^-2
+  - name: tau_total
+    description: Total restoring torque magnitude
+    unit: kg m^2 s^-2
+  - name: I_moment
+    description: Moment of inertia about the pivot
+    unit: kg m^2
+  - name: k_restore
+    description: Angular restoring coefficient
+    unit: s^-2
+  - name: omega
+    description: Angular frequency
+    unit: s^-1
+  auxiliary_inputs:
+  - name: theta
+    description: Angular displacement
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.02
+      max: 1.2
+      ood_boundary: 0.5
+      distribution: uniform
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: tau_g = m * g * L * theta
+  formula_description: Small-angle gravitational restoring torque
+- formula: tau_s = k_p * theta
+  formula_description: Linear torsion spring restoring torque
+- formula: tau_total = tau_g + tau_s
+  formula_description: Total restoring torque from gravity and spring
+- formula: I_moment = m * L^2
+  formula_description: Moment of inertia of a point mass
+- formula: k_restore = tau_total / (I_moment * theta)
+  formula_description: Angular restoring coefficient
+- formula: omega = sqrt(k_restore)
+  formula_description: Angular frequency
+- formula: T = 2 * π / omega
+  formula_description: Period-frequency relation

@@ -13,7 +13,7 @@ MDBench 用于评估 AI 从方程或观测数据中恢复科学规律及其生�
 
 MDBench 将唯象方程理解为若干简单、相互一致的关系共同作用后的可观测结果。唯象方程描述变量之间“有什么关系”，机制则通过物理关系、假设和中间变量解释这种关系“为什么成立”。
 
-例如，圆轨道下的开普勒第三定律可以由万有引力定律、牛顿第二定律和匀速圆周运动关系导出。示例见 [`problems/demo_problem.yaml`](problems/demo_problem.yaml)。
+例如，圆轨道下的开普勒第三定律可以由万有引力定律、牛顿第二定律和匀速圆周运动关系导出。示例见 [`demo_problem.yaml`](demo_problem.yaml)。
 
 每条机制关系使用 `variable = formula`，其中公式必须能被 [nd2py](https://pypi.org/project/nd2py/) 解析。显式关系构成 DAG：
 
@@ -85,7 +85,7 @@ mdbench export --output-dir problems/
 
 ```bash
 mdbench validate --problems problems
-mdbench validate --problems problems/demo_problem.yaml
+mdbench validate --problems demo_problem.yaml
 ```
 
 可以选择调用 LLM 判断每条机制关系是否足够基础。API 或响应错误会直接报告，不会退回启发式规则：

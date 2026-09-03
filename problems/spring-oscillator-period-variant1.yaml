@@ -1,0 +1,53 @@
+problem_name: Spring Oscillator Period - Variant 1
+phenomenological_formula: T = 2 * π * sqrt(m / (k1 + k2))
+problem_description: A mass-spring system oscillates about equilibrium. The target is its oscillation period.
+variable_description:
+  target:
+    name: T
+    description: Oscillation period
+    unit: s
+  inputs:
+  - name: m
+    description: Oscillator mass
+    unit: kg
+    sampling:
+      min: 0.01
+      max: 10.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+  - name: k1
+    description: Spring-stiffness parameter 1
+    unit: kg s^-2
+    sampling:
+      min: 0.1
+      max: 10000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  - name: k2
+    description: Spring-stiffness parameter 2
+    unit: kg s^-2
+    sampling:
+      min: 0.1
+      max: 10000.0
+      ood_boundary: 100.0
+      distribution: log_uniform
+  intermediates:
+  - name: k_eff
+    description: Equivalent parallel stiffness
+    unit: kg s^-2
+  - name: omega
+    description: Angular frequency
+    unit: s^-1
+  auxiliary_inputs: []
+constants:
+- name: π
+  description: Pi
+  value: 3.141592653589793
+  unit: 1 (dimensionless)
+mechanism:
+- formula: k_eff = k1 + k2
+  formula_description: Equivalent stiffness of parallel springs
+- formula: omega = sqrt(k_eff / m)
+  formula_description: Angular frequency using the equivalent stiffness
+- formula: T = 2 * π / omega
+  formula_description: Period-frequency relation

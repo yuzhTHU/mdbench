@@ -7,7 +7,7 @@ from src.features.io import load_problem
 
 
 def test_generate_synthetic_data():
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     data = generate_synthetic_data(
         problem,
         seed=123,
@@ -51,7 +51,7 @@ def test_generate_synthetic_data():
 
 
 def test_generation_is_reproducible():
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     outputs = [
         generate_synthetic_data(
             problem,

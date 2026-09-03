@@ -1,0 +1,54 @@
+problem_name: Black-Hole Horizon Radius - Original
+phenomenological_formula: r = G * M / c**2 + sqrt((G * M / c**2)**2 - (J / (M * c))**2)
+problem_description: A black hole is characterized by a set of physical properties. The target is the radius of its outer event horizon.
+variable_description:
+  target:
+    name: r
+    description: Outer event-horizon radius
+    unit: m
+  inputs:
+  - name: J
+    description: Angular momentum
+    unit: kg m^2 s^-1
+    sampling:
+      min: 1.0e+36
+      max: 1.0e+41
+      ood_boundary: 1.0e+39
+      distribution: log_uniform
+  - name: M
+    description: Black-hole mass
+    unit: kg
+    sampling:
+      min: 1.0e+30
+      max: 1.0e+33
+      ood_boundary: 5.0e+31
+      distribution: log_uniform
+  intermediates:
+  - name: R
+    description: Schwarzschild diameter associated with the mass M
+    unit: m
+  - name: a
+    description: Kerr specific angular-momentum length
+    unit: m
+  - name: D
+    description: Discriminant
+    unit: m^2
+  auxiliary_inputs: []
+constants:
+- name: G
+  description: Gravitational constant
+  value: 6.6743e-11
+  unit: m^3 kg^-1 s^-2
+- name: c
+  description: Speed of light in vacuum
+  value: 299792458.0
+  unit: m s^-1
+mechanism:
+- formula: R = 2 * G * M / c**2
+  formula_description: The Schwarzschild-radius definition gives the mass diameter scale R = 2 * G * M / c**2.
+- formula: a = J / (M * c)
+  formula_description: The Kerr spin-parameter definition converts angular momentum J into the length a.
+- formula: D = R**2 - 4 * a**2
+  formula_description: The Kerr horizon quadratic has discriminant D = R**2 - 4 * a**2.
+- formula: r = (R + sqrt(D)) / 2
+  formula_description: The outer-root definition of the Kerr horizon selects the larger root r of the horizon quadratic.

@@ -14,7 +14,7 @@ from src.synthetic_data import generate_synthetic_data
 
 
 def _prepared(task):
-    problem = load_problem("problems/demo_problem.yaml")
+    problem = load_problem("demo_problem.yaml")
     data = generate_synthetic_data(
         problem,
         train_samples=12,
