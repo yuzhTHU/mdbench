@@ -1,76 +1,73 @@
 problem_name: Atmosphere-Surface Equilibrium Temperature - Variant 3
-phenomenological_formula: T = (((1 - a) * S / 4 - q_x / 2) / (s * (1 - b / 2)))**(1/4)
-problem_description: A planet exchanges energy with its atmosphere and surroundings. The target is the equilibrium planetary surface temperature.
+phenomenological_formula: T = (((1 - a) * S / 4 - 10.0) / (s * (1 - b / 2)))**(1/4)
+problem_description: A planet receives stellar radiation and exchanges radiative energy with its atmosphere and space, eventually reaching thermal equilibrium.
+
 variable_description:
   target:
     name: T
-    description: Equilibrium surface temperature
+    description: Surface equilibrium temperature
     unit: K
+
   inputs:
-  - name: q_x
-    description: Additional measured surface energy flux
-    unit: kg s^-3
-    sampling:
-      min: 1.0
-      max: 100.0
-      ood_boundary: 30.0
-      distribution: uniform
   - name: S
-    description: Incident radiative flux
+    description: Incident stellar flux
     unit: kg s^-3
-    sampling:
-      min: 1200.0
-      max: 1500.0
-      ood_boundary: 1361.0
-      distribution: uniform
+    sampling: {min: 1200.0, max: 1500.0, ood_boundary: 1361.0, distribution: uniform}
   - name: a
     description: Planetary shortwave albedo
     unit: 1 (dimensionless)
-    sampling:
-      min: 0.1
-      max: 0.6
-      ood_boundary: 0.3
-      distribution: uniform
+    sampling: {min: 0.1, max: 0.6, ood_boundary: 0.3, distribution: uniform}
   - name: b
-    description: Atmospheric longwave-response coefficient
+    description: Atmospheric longwave absorptivity
     unit: 1 (dimensionless)
-    sampling:
-      min: 0.05
-      max: 0.8
-      ood_boundary: 0.4
-      distribution: uniform
+    sampling: {min: 0.05, max: 0.8, ood_boundary: 0.4, distribution: uniform}
+
   intermediates:
-  - name: S0
-    description: Globally averaged absorbed solar flux
-    unit: kg s^-3
-  - name: H_s
-    description: Surface radiative-budget share of the non-radiative heat flux
-    unit: kg s^-3
-  - name: Q
-    description: Net surface radiative source flux before longwave feedback
-    unit: kg s^-3
-  - name: f
-    description: Downward longwave feedback fraction
-    unit: 1 (dimensionless)
+  - name: P_in
+    description: Absorbed stellar power
+    unit: kg m^2 s^-3
+  - name: P_emit
+    description: Surface emission power
+    unit: kg m^2 s^-3
+  - name: P_abs
+    description: Atmosphere-absorbed power
+    unit: kg m^2 s^-3
+  - name: P_back
+    description: Downward atmospheric power
+    unit: kg m^2 s^-3
   - name: E
-    description: Surface outgoing longwave emission flux
+    description: Surface emission flux
     unit: kg s^-3
-  auxiliary_inputs: []
+  - name: P_loss
+    description: Non-radiative surface energy loss
+    unit: kg m^2 s^-3
+
+  auxiliary_inputs:
+  - name: R
+    description: Planetary radius
+    unit: m
+    sampling: {min: 5.0e6, max: 8.0e6, ood_boundary: 6.5e6, distribution: uniform}
+
 constants:
 - name: s
   description: Stefan-Boltzmann constant
   value: 5.670374419e-08
   unit: kg s^-3 K^-4
+
 mechanism:
-- formula: S0 = (1 - a) * S / 4
-  formula_description: Global radiative geometry and albedo define absorbed solar flux S0 from stellar flux S.
-- formula: H_s = q_x / 2
-  formula_description: The model's symmetric non-radiative-transfer convention assigns half the imposed heat flux q_x to the surface budget.
-- formula: Q = S0 - H_s
-  formula_description: Surface energy balance defines net radiative source flux Q by subtracting the prior non-radiative export H_s from S0.
-- formula: f = b / 2
-  formula_description: Isotropic emission by a gray layer defines the downward feedback fraction f as b / 2.
-- formula: E = Q / (1 - f)
-  formula_description: Surface radiative-equilibrium balance defines emission flux E from net source Q and feedback f.
-- formula: T = (E / s)**(1/4)
-  formula_description: The Stefan-Boltzmann law E = s * T**4 defines surface temperature T from emission flux E.
+- formula: P_in = 3.141592653589793 * R**2 * (1 - a) * S
+  formula_description: The planet intercepts stellar radiation over its cross-sectional area, with a fraction 1-a absorbed.
+- formula: P_emit = 4 * 3.141592653589793 * R**2 * E
+  formula_description: The entire planetary surface emits longwave radiation with flux E.
+- formula: P_abs = b * P_emit
+  formula_description: The atmosphere absorbs a fraction b of the surface longwave emission.
+- formula: P_back = P_abs / 2
+  formula_description: Under isotropic atmospheric re-emission, half of the absorbed longwave radiation is emitted back toward the surface.
+- formula: P_loss = 4 * 3.141592653589793 * R**2 * 10.0
+  formula_description: A uniform non-radiative energy-loss flux acts over the entire planetary surface.
+- formula: P_emit = P_in + P_back - P_loss
+  formula_description: At equilibrium, surface emission balances absorbed stellar radiation and downward atmospheric radiation after accounting for non-radiative energy loss.
+- formula: E = s * T**4
+  formula_description: The surface longwave emission flux follows the Stefan-Boltzmann law.
+
+aha: 存在正比于行星表面积的热量流失

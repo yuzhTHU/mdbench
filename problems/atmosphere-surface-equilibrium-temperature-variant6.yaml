@@ -1,5 +1,5 @@
-problem_name: Atmosphere-Surface Equilibrium Temperature - Original
-phenomenological_formula: T = ((1 - a) * S / (4 * s * (1 - b / 2)))**(1/4)
+problem_name: Atmosphere-Surface Equilibrium Temperature - Variant 6
+phenomenological_formula: T = (((1 - a) * S / 4 - 3.0e15 / (4 * 3.141592653589793 * R**2)) / (s * (1 - b / 2)))**(1/4)
 problem_description: A planet receives stellar radiation and exchanges radiative energy with its atmosphere and space, eventually reaching thermal equilibrium.
 
 variable_description:
@@ -7,7 +7,7 @@ variable_description:
     name: T
     description: Surface equilibrium temperature
     unit: K
-  
+
   inputs:
   - name: S
     description: Incident stellar flux
@@ -21,7 +21,11 @@ variable_description:
     description: Atmospheric longwave absorptivity
     unit: 1 (dimensionless)
     sampling: {min: 0.05, max: 0.8, ood_boundary: 0.4, distribution: uniform}
-  
+  - name: R
+    description: Planetary radius
+    unit: m
+    sampling: {min: 5.0e6, max: 8.0e6, ood_boundary: 6.5e6, distribution: uniform}
+
   intermediates:
   - name: P_in
     description: Absorbed stellar power
@@ -38,12 +42,8 @@ variable_description:
   - name: E
     description: Surface emission flux
     unit: kg s^-3
-  
-  auxiliary_inputs:
-  - name: R
-    description: Planetary radius
-    unit: m
-    sampling: {min: 5.0e6, max: 8.0e6, ood_boundary: 6.5e6, distribution: uniform}
+
+  auxiliary_inputs: []
 
 constants:
 - name: s
@@ -60,7 +60,9 @@ mechanism:
   formula_description: The atmosphere absorbs a fraction b of the surface longwave emission.
 - formula: P_back = P_abs / 2
   formula_description: Under isotropic atmospheric re-emission, half of the absorbed longwave radiation is emitted back toward the surface.
-- formula: P_emit = P_in + P_back
-  formula_description: At equilibrium, surface emission balances absorbed stellar radiation and downward atmospheric radiation.
+- formula: P_emit = P_in + P_back - 3.0e15
+  formula_description: At equilibrium, surface emission balances absorbed stellar radiation and downward atmospheric radiation after accounting for energy loss of a fixed total power.
 - formula: E = s * T**4
   formula_description: The surface longwave emission flux follows the Stefan-Boltzmann law.
+
+aha: 存在固定总功率的能量损失

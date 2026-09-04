@@ -1,5 +1,5 @@
-problem_name: Atmosphere-Surface Equilibrium Temperature - Original
-phenomenological_formula: T = ((1 - a) * S / (4 * s * (1 - b / 2)))**(1/4)
+problem_name: Atmosphere-Surface Equilibrium Temperature - Variant 5
+phenomenological_formula: T = (4 * (1 - a) * S / (4 * s))**(1/4)
 problem_description: A planet receives stellar radiation and exchanges radiative energy with its atmosphere and space, eventually reaching thermal equilibrium.
 
 variable_description:
@@ -17,11 +17,7 @@ variable_description:
     description: Planetary shortwave albedo
     unit: 1 (dimensionless)
     sampling: {min: 0.1, max: 0.6, ood_boundary: 0.3, distribution: uniform}
-  - name: b
-    description: Atmospheric longwave absorptivity
-    unit: 1 (dimensionless)
-    sampling: {min: 0.05, max: 0.8, ood_boundary: 0.4, distribution: uniform}
-  
+
   intermediates:
   - name: P_in
     description: Absorbed stellar power
@@ -29,8 +25,14 @@ variable_description:
   - name: P_emit
     description: Surface emission power
     unit: kg m^2 s^-3
-  - name: P_abs
-    description: Atmosphere-absorbed power
+  - name: P_1
+    description: Lower-layer directional emission power
+    unit: kg m^2 s^-3
+  - name: P_2
+    description: Middle-layer directional emission power
+    unit: kg m^2 s^-3
+  - name: P_3
+    description: Upper-layer directional emission power
     unit: kg m^2 s^-3
   - name: P_back
     description: Downward atmospheric power
@@ -56,11 +58,17 @@ mechanism:
   formula_description: The planet intercepts stellar radiation over its cross-sectional area, with a fraction 1-a absorbed.
 - formula: P_emit = 4 * 3.141592653589793 * R**2 * E
   formula_description: The entire planetary surface emits longwave radiation with flux E.
-- formula: P_abs = b * P_emit
-  formula_description: The atmosphere absorbs a fraction b of the surface longwave emission.
-- formula: P_back = P_abs / 2
-  formula_description: Under isotropic atmospheric re-emission, half of the absorbed longwave radiation is emitted back toward the surface.
+- formula: 2 * P_1 = P_emit + P_2
+  formula_description: The lower atmospheric layer absorbs longwave radiation from the surface and the middle layer, and emits equally upward and downward at radiative equilibrium.
+- formula: 2 * P_2 = P_1 + P_3
+  formula_description: The middle atmospheric layer absorbs longwave radiation from the lower and upper layers, and emits equally upward and downward at radiative equilibrium.
+- formula: 2 * P_3 = P_2
+  formula_description: The upper atmospheric layer absorbs upward radiation from the middle layer and emits equally upward and downward at radiative equilibrium.
+- formula: P_back = P_1
+  formula_description: The downward emission from the lower atmospheric layer is the atmospheric radiation returned to the surface.
 - formula: P_emit = P_in + P_back
   formula_description: At equilibrium, surface emission balances absorbed stellar radiation and downward atmospheric radiation.
 - formula: E = s * T**4
   formula_description: The surface longwave emission flux follows the Stefan-Boltzmann law.
+
+aha: 有三层大气
