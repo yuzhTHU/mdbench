@@ -1,15 +1,12 @@
 """Reference-free description complexity for a mechanism list."""
 from __future__ import annotations
-
 from typing import Any
+from ..features.io.mechanism_equation import parse_mechanism_equation
 
-import nd2py as nd
 
-
-def formula_complexity(equation: str) -> int:
-    """Return ``len(nd2py_expression)`` for the equation's right-hand side."""
-    expression = equation.split("=", 1)[-1].strip()
-    return len(nd.parse(expression))
+def formula_complexity(formula: str) -> int:
+    """Return the nd2py AST size of a formula's residual expression."""
+    return len(parse_mechanism_equation(formula))
 
 
 class MechanismSimplicityScorer:

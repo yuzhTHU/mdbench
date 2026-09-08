@@ -188,9 +188,12 @@ Units are exchanged internally as base-SI exponent dictionaries and may be
 written as strings such as `kg m^-1 s^-2` in YAML. Dimensionless quantities use
 `1 (dimensionless)`.
 
-Formulas must be parseable by nd2py. A mechanism left-hand side is currently a
-single variable; `0 = formula` is not supported. Declare every referenced
-variable and constant, and do not declare unused entries.
+Both sides of every mechanism equation must be parseable by nd2py. They are
+loaded as residual equations (`left - right = 0`), so either side may be an
+expression and forms such as `0 = formula` are supported. The solver repeatedly
+selects N equations containing exactly N unresolved variables; coupled
+equations therefore need not be adjacent. Declare every referenced variable
+and constant, and do not declare unused entries.
 
 For sampling, `min` to `ood_boundary` defines the train and ID domain, while
 `ood_boundary` to `max` defines the OOD domain. Supported distributions are

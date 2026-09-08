@@ -67,7 +67,7 @@ class LLMMechanismFundamentalityChecker:
         if mechanisms is None:
             mechanisms = [
                 {
-                    "formula": item.equation,
+                    "formula": item.formula_str,
                     "formula_description": item.formula_description,
                 }
                 for item in problem.mechanism

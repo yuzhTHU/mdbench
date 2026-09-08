@@ -5,7 +5,12 @@ import numpy as np
 import pytest
 
 from src.core import MechanismItem, Problem, UNIT, VariableSpec
-from src.features.io import evaluate_solution, load_problem, solve_mechanism_equations
+from src.features.io import (
+    evaluate_solution,
+    load_problem,
+    parse_mechanism_equation,
+    solve_mechanism_equations,
+)
 from src.features.validation import NumericDerivationChecker
 
 
@@ -14,7 +19,10 @@ def _variable(name):
 
 
 def _equation(left, right, description="relationship"):
-    return MechanismItem(left, right, description)
+    formula_str = f"{left} = {right}"
+    return MechanismItem(
+        formula_str, parse_mechanism_equation(formula_str), description
+    )
 
 
 def _implicit_problem():
@@ -41,6 +49,7 @@ def test_implicit_cycle_is_solved_symbolically():
 
 def test_implicit_equations_need_not_be_contiguous():
     y, x, a, b, c = map(_variable, ("y", "x", "a", "b", "c"))
+    x.sampling = {"min": 1, "max": 3, "ood_boundary": 2, "distribution": "uniform"}
     problem = Problem(
         "noncontiguous",
         "noncontiguous",
@@ -89,8 +98,34 @@ def test_rewritten_balance_closes_pending_drag_relationship():
     assert np.allclose(values["v"], [2.0, 3.0])
 
 
+def test_expression_left_sides_form_a_coupled_system():
+    y, x, a, b = map(_variable, ("y", "x", "a", "b"))
+    x.sampling = {"min": 1, "max": 3, "ood_boundary": 2, "distribution": "uniform"}
+    problem = Problem(
+        "general left sides",
+        "general left sides",
+        "3 * x",
+        y,
+        [x],
+        [a, b],
+        [
+            _equation("a + b", "3 * x"),
+            _equation("a - b", "x"),
+            _equation("0", "y - a - b"),
+        ],
+    )
+
+    solution = solve_mechanism_equations(problem)
+    problem.solution = solution
+
+    assert [item.variables for item in solution] == [["a", "b"], ["y"]]
+    assert [item.mechanism_indices for item in solution] == [[1, 2], [3]]
+    assert NumericDerivationChecker().check(problem)["equivalent"]
+
+
 def test_triangular_equations_are_solved_in_dependency_order():
     y, x, a1, a2 = map(_variable, ("y", "x", "a1", "a2"))
+    x.sampling = {"min": 1, "max": 3, "ood_boundary": 2, "distribution": "uniform"}
     problem = Problem(
         "triangular", "triangular", "4 * x + 2", y, [x], [a1, a2],
         [_equation("a2", "2 * a1"), _equation("a1", "x + 1"),

@@ -37,9 +37,8 @@ class NumericDerivationChecker:
             if isinstance(node, nd.Variable)
         }
         for item in problem.mechanism:
-            names.add(item.variable)
             names |= {
-                node.name for node in nd.parse(item.formula).iter_preorder()
+                node.name for node in item.formula.iter_preorder()
                 if isinstance(node, nd.Variable)
             }
         names -= {

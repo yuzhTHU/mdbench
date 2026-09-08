@@ -456,8 +456,9 @@ def format_reports(report: dict) -> str:
             variables = ", ".join(step["variables"])
             if step["numerical"]:
                 lines.append(
-                    f"    {line_index}. {variables}: solved numerically as an "
-                    "implicit equation system"
+                    f"    {line_index}. {variables}: "
+                    f"solved numerically as an implicit equation system from "
+                    + '; '.join(step['mechanism_equations'])
                 )
                 line_index += 1
                 continue
@@ -578,8 +579,8 @@ def get_parser(parser=None):
         parser.add_argument("--submission", type=str, required=True, help=(
             "Mechanism equations separated by semicolons, or a plain-text "
             "file containing one mechanism equation per non-empty line. "
-            "Each relationship must use 'variable = formula'; a zero-valued "
-            "left side is not currently supported."
+            "Each relationship must contain exactly one '='; either side may "
+            "be an expression."
         ))
 
     if preliminary_args.evaluation_mode == "final" and task in ["symbolic_regression", "mechanism_discovery"]:

@@ -1,7 +1,8 @@
 """Turn ordered mechanism equations into executable solution steps.
 
-Mechanism equations may contain an implicit system such as
-``a = f(x, a, b); b = g(x, a, b)``.  The resolver first attempts a closed
+Mechanism relationships are stored as residual equations ``LHS - RHS = 0``
+and may contain an implicit system such as ``a = f(x, a, b); b = g(x, a, b)``.
+The resolver first attempts a closed
 symbolic solution and otherwise evaluates the block with a numerical nonlinear
 least-squares solver.  The numerical implementation is isolated here so it can
 also serve as the reference used to validate user-provided closed forms later.
@@ -48,38 +49,25 @@ def _select_positive_solution(
     return positive[0] if len(positive) == 1 else None
 
 
-def _symbolic_solution(
-    target_names: list[str],
-    left_expressions: list[nd.Symbol],
-    right_expressions: list[nd.Symbol],
-) -> list[nd.Symbol] | None:
+def _symbolic_solution(target_names: list[str], equations: list[nd.Symbol]) -> list[nd.Symbol] | None:
     """Return one complete nd2py closed form, or ``None`` for numerical solving."""
-    if not (len(target_names) == len(left_expressions) == len(right_expressions)):
-        raise ValueError("Number of targets, left expressions, and right expressions must match.")
-    if (
-        len(target_names) == 1
-        and isinstance(left_expressions[0], nd.Variable)
-        and target_names[0] == left_expressions[0].name
-        and target_names[0] not in _variables(right_expressions[0])
-    ):
-        return right_expressions
+    if len(target_names) != len(equations):
+        raise ValueError("Number of targets and equations must match.")
 
     all_names = set()
-    for expression in [*left_expressions, *right_expressions]:
+    for expression in equations:
         all_names |= _variables(expression)
     if missing := set(target_names) - all_names:
         raise ValueError(f"Missing variables in the system: {missing}")
     
     symbols = {name: sp.Symbol(name) for name in all_names}
-    equations = []
-    for left, right in zip(left_expressions, right_expressions):
-        equations.append(sp.Eq(
-            sp.sympify(str(left), locals=symbols), 
-            sp.sympify(str(right), locals=symbols)
-        ))
+    symbolic_equations = [
+        sp.Eq(sp.sympify(str(equation), locals=symbols), 0)
+        for equation in equations
+    ]
     try:
         target_symbols = [symbols[name] for name in target_names]
-        solutions = sp.solve(equations, target_symbols, dict=True)
+        solutions = sp.solve(symbolic_equations, target_symbols, dict=True)
     except Exception:
         return None
     solution = (
@@ -103,8 +91,7 @@ def _symbolic_solution(
 
 def _evaluate_numerically(
     target_names: list[str],
-    left_expressions: list[nd.Symbol],
-    right_expressions: list[nd.Symbol],
+    equations: list[nd.Symbol],
     mechanism_indices: list[int],
     values: dict[str, Any],
     *,
@@ -134,13 +121,12 @@ def _evaluate_numerically(
             float(context[name]) if name in context and np.isfinite(context[name]) else 1.0
             for name in target_names
         ])
-        initially_known = set(context) & set(target_names)
-        initial_context = {**context, **dict(zip(target_names, initial))}
+
         def raw_residual(candidate):
             local = {**context, **dict(zip(target_names, candidate))}
             return np.asarray([
-                float(left.eval(local)) - float(right.eval(local))
-                for left, right in zip(left_expressions, right_expressions)
+                float(equation.eval(local))
+                for equation in equations
             ], dtype=float)
 
         initial_residual = raw_residual(initial)
@@ -187,15 +173,80 @@ def _explicit_function(formulas: tuple[nd.Symbol, ...]) -> SolutionFunction:
 
 def _numerical_function(
     targets: tuple[str, ...],
-    left_expressions: tuple[nd.Symbol, ...],
-    right_expressions: tuple[nd.Symbol, ...],
+    equations: tuple[nd.Symbol, ...],
     indices: tuple[int, ...],
 ) -> SolutionFunction:
     def evaluate(values: dict[str, Any]) -> list[np.ndarray]:
-        return _evaluate_numerically(
-            targets, left_expressions, right_expressions, indices, values
-        )
+        return _evaluate_numerically(targets, equations, indices, values)
     return evaluate
+
+def equation_variables(equation: nd.Symbol) -> list[str]:
+    """Return variable names in deterministic expression traversal order."""
+    names: list[str] = []
+    for node in equation.iter_preorder():
+        if isinstance(node, nd.Variable) and node.name not in names:
+            names.append(node.name)
+    return names
+
+def select_solvable_equation_groups(
+    equations: list[nd.Symbol],
+    known_names: set[str],
+) -> list[tuple[tuple[int, ...], list[str]]]:
+    """Select the smallest square equation systems until all are consumed.
+
+    At every step, a selected group of N equations must collectively contain
+    exactly N variables not solved by earlier groups. Equations in one group
+    need not be adjacent in the submitted mechanism list.
+    """
+    known = set(known_names)
+    pending = list(range(len(equations)))
+    groups: list[tuple[tuple[int, ...], list[str]]] = []
+
+    def unresolved_names(indices: tuple[int, ...]) -> list[str]:
+        unresolved: list[str] = []
+        for index in indices:
+            for name in equation_variables(equations[index]):
+                if name not in known and name not in unresolved:
+                    unresolved.append(name)
+        return unresolved
+
+    while pending:
+        for index in pending:
+            if not unresolved_names((index,)):
+                raise ValueError(
+                    f"Mechanism {index + 1} is marked as pending but has no "
+                    "unresolved variables."
+                )
+
+        for size in range(1, len(pending) + 1):
+            selected = None
+            unresolved = []
+            for candidate in combinations(pending, size):
+                candidate_unresolved = unresolved_names(candidate)
+                if size == len(candidate_unresolved):
+                    selected = candidate
+                    unresolved = candidate_unresolved
+                    break
+            if selected is not None:
+                break
+        else:
+            unresolved = unresolved_names(tuple(pending))
+            relation = (
+                "underdetermined" if len(pending) < len(unresolved)
+                else "overdetermined"
+            )
+            indices = ", ".join(str(index + 1) for index in pending)
+            raise ValueError(
+                f"Remaining mechanisms [{indices}] are {relation}: "
+                f"{len(pending)} equations for {len(unresolved)} unresolved "
+                f"variables ({', '.join(unresolved)})."
+            )
+
+        groups.append((selected, unresolved))
+        known.update(unresolved)
+        pending = [index for index in pending if index not in selected]
+
+    return groups
 
 
 def solve_mechanism_equations(problem: Problem) -> list[SolutionItem]:
@@ -209,62 +260,25 @@ def solve_mechanism_equations(problem: Problem) -> list[SolutionItem]:
     constant_names = {cons.name for cons in problem.constants}
     input_names = {var.name for var in problem.input_variables}
     known = input_names | constant_names | auxiliary_names
-
-    def unresolved_names(indices: tuple[int, ...], known: set[str]) -> list[str]:
-        unresolved = []
-        for index in indices:
-            item = problem.mechanism[index]
-            if item.variable not in known and item.variable not in unresolved:
-                unresolved.append(item.variable)
-            for node in nd.parse(item.formula).iter_preorder():
-                if (
-                    isinstance(node, nd.Variable)
-                    and node.name not in known
-                    and node.name not in unresolved
-                ):
-                    unresolved.append(node.name)
-        return unresolved
-
-    pending = list(range(len(problem.mechanism)))
+    equations = [item.formula for item in problem.mechanism]
     solutions: list[SolutionItem] = []
-    while pending:
-        for index in pending:
-            if not unresolved_names((index,), known):
-                raise ValueError(
-                    f"Mechanism {index + 1} is marked as pending "
-                    f"but has no unresolved variables. "
-                )
-
-        def loader(pending):
-            for size in range(1, len(pending) + 1):
-                for selected in combinations(pending, size):
-                    yield (size, selected)
-            
-        for size, selected in loader(pending):
-            if size == len(unresolved := unresolved_names(selected, known)):
-                break
-        else:
-            unresolved = unresolved_names(tuple(pending), known)
-            relation = "underdetermined" if len(pending) < len(unresolved) else "overdetermined"
-            selected = ", ".join(str(idx + 1) for idx in pending)
-            raise ValueError(
-                f"Remaining mechanisms [{selected}] are {relation}: "
-                f"{len(pending)} equations for {len(unresolved)} unresolved "
-                f"variables ({', '.join(unresolved)})."
-            )
-
-        left_expressions = [nd.Variable(problem.mechanism[idx].variable) for idx in selected]
-        right_expressions = [nd.parse(problem.mechanism[idx].formula) for idx in selected]
-        solved = _symbolic_solution(unresolved, left_expressions, right_expressions)
+    for selected, unresolved in select_solvable_equation_groups(equations, known):
+        selected_equations = [equations[index] for index in selected]
+        solved = _symbolic_solution(unresolved, selected_equations)
         formulas = [str(f) for f in solved] if solved is not None else []
         if solved is not None:
             func = _explicit_function(solved)
         else:
             mechanism_indices = tuple(index + 1 for index in selected)
-            func = _numerical_function(unresolved, left_expressions, right_expressions, mechanism_indices)
-        solutions.append(SolutionItem(variables=unresolved, formulas=formulas, function=func))
-        known.update(unresolved)
-        pending = [index for index in pending if index not in selected]
+            func = _numerical_function(
+                tuple(unresolved), tuple(selected_equations), mechanism_indices
+            )
+        solutions.append(SolutionItem(
+            variables=unresolved,
+            formulas=formulas,
+            function=func,
+            mechanism_indices=[index + 1 for index in selected],
+        ))
 
     return solutions  # Leave assignment to the caller.
 

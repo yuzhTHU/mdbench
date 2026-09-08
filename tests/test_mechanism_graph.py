@@ -1,5 +1,10 @@
-from src.features.io import load_problem, solve_mechanism_equations
+from src.core import MechanismItem
+from src.features.io import load_problem, parse_mechanism_equation, solve_mechanism_equations
 from src.features.visualization import MechanismGraphBuilder
+
+
+def _mechanism(formula, description):
+    return MechanismItem(formula, parse_mechanism_equation(formula), description)
 
 
 def test_graph_points_sources_through_drag_to_target():
@@ -17,7 +22,7 @@ def test_graph_points_sources_through_drag_to_target():
     assert f"{node_by_label['F_g']} -> {node_by_label['F_d']}" in dot
     assert f"{node_by_label['F_b']} -> {node_by_label['F_d']}" in dot
     assert f"{node_by_label['F_d']} -> {node_by_label['v_T']}" in dot
-    assert f"{node_by_label['C_d']} -> {node_by_label['v_T']}" in dot
+    assert f"{node_by_label['c_f']} -> {node_by_label['v_T']}" in dot
     assert "outputorder=edgesfirst" in dot
     assert "rankdir=LR" in dot
     assert "Step " not in dot
@@ -32,7 +37,7 @@ def test_graph_can_hide_constants():
 
 
 def test_implicit_solution_is_drawn_as_a_cycle():
-    from src.core import MechanismItem, Problem, UNIT, VariableSpec
+    from src.core import Problem, UNIT, VariableSpec
 
     variables = {
         name: VariableSpec(name, name, UNIT({}))
@@ -46,9 +51,9 @@ def test_implicit_solution_is_drawn_as_a_cycle():
         [variables["x"]],
         [variables["a"], variables["b"]],
         [
-            MechanismItem("a", "x + b", "first relation"),
-            MechanismItem("b", "a / 2", "second relation"),
-            MechanismItem("y", "2 * a", "target relation"),
+            _mechanism("a = x + b", "first relation"),
+            _mechanism("b = a / 2", "second relation"),
+            _mechanism("y = 2 * a", "target relation"),
         ],
     )
     problem.solution = solve_mechanism_equations(problem)
@@ -67,7 +72,7 @@ def test_implicit_solution_is_drawn_as_a_cycle():
 
 
 def test_numerical_solution_uses_dashed_edges():
-    from src.core import MechanismItem, Problem, UNIT, VariableSpec
+    from src.core import Problem, UNIT, VariableSpec
 
     a = VariableSpec("a", "a", UNIT({}))
     x = VariableSpec("x", "x", UNIT({}))
@@ -78,7 +83,7 @@ def test_numerical_solution_uses_dashed_edges():
         a,
         [x],
         [],
-        [MechanismItem("a", "cos(a) + x", "fixed point")],
+        [_mechanism("a = cos(a) + x", "fixed point")],
     )
     problem.solution = solve_mechanism_equations(problem)
     dot = MechanismGraphBuilder().build(problem)

@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from src.core import MechanismItem, Problem, UNIT, VariableSpec
-from src.features.io import load_problem, solve_mechanism_equations
+from src.features.io import load_problem, parse_mechanism_equation, solve_mechanism_equations
 from src.features.visualization import MechanismGraphBuilder
 
 OUTPUT_DIR = ROOT / "docs" / "source" / "_static"
@@ -24,12 +24,16 @@ def _formal_problem(
     target: str,
     inputs: list[str],
     intermediates: list[str],
-    formulas: list[tuple[str, str]],
+    formulas: list[str],
 ) -> Problem:
     variables = {
         variable: _variable(variable)
         for variable in [target, *inputs, *intermediates]
     }
+    mechanism = []
+    for formula_str in formulas:
+        formula = parse_mechanism_equation(formula_str)
+        mechanism.append(MechanismItem(formula_str, formula, ""))
     problem = Problem(
         problem_name=name,
         problem_description=name,
@@ -37,9 +41,7 @@ def _formal_problem(
         target_variable=variables[target],
         input_variables=[variables[variable] for variable in inputs],
         intermediate_variables=[variables[variable] for variable in intermediates],
-        mechanism=[
-            MechanismItem(variable, formula, "") for variable, formula in formulas
-        ],
+        mechanism=mechanism,
     )
     problem.solution = solve_mechanism_equations(problem)
     return problem
@@ -64,7 +66,7 @@ def main() -> None:
             target="y",
             inputs=["x"],
             intermediates=["a", "b"],
-            formulas=[("a", "x**2"), ("b", "a + x"), ("y", "sqrt(b)")],
+            formulas=["a=x**2", "b=a+x", "y=sqrt(b)"],
         ),
         "mechanism_explicit.svg",
     )
@@ -74,7 +76,7 @@ def main() -> None:
             target="y",
             inputs=["x"],
             intermediates=["a"],
-            formulas=[("a", "cos(a) + x"), ("y", "2 * a")],
+            formulas=["a=cos(a)+x", "y=2*a"],
         ),
         "mechanism_implicit_single.svg",
     )
@@ -84,11 +86,7 @@ def main() -> None:
             target="y",
             inputs=["x"],
             intermediates=["a", "b"],
-            formulas=[
-                ("a", "(x + b) / 2"),
-                ("b", "(x + a) / 3"),
-                ("y", "a + b"),
-            ],
+            formulas=["a=(x+b)/2", "b=(x+a)/3", "y=a+b"],
         ),
         "mechanism_implicit_coupled.svg",
     )

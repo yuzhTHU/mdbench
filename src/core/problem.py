@@ -1,6 +1,7 @@
 # Copyright (c) 2026-present, Yumeow. Licensed under the MIT License.
 from typing import List, Dict, Literal, get_args
 from dataclasses import dataclass, field
+import nd2py as nd
 from .solution import SolutionItem
 
 SI = Literal['kg', 'm', 's', 'A', 'K', 'mol', 'cd']
@@ -47,14 +48,9 @@ class ConstantSpec(VariableSpec):
 
 @dataclass
 class MechanismItem:
-    variable: str
-    formula: str  # An nd2py-compatible right-hand-side expression.
+    formula_str: str  # The original fundamental relationship, including its '='.
+    formula: nd.Symbol  # Parsed residual expression: left-hand side minus right-hand side.
     formula_description: str
-
-    @property
-    def equation(self) -> str:
-        """Return the complete mechanism equation."""
-        return f"{self.variable} = {self.formula}"
 
 
 @dataclass

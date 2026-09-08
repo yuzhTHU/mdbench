@@ -21,9 +21,10 @@ For example, Kepler's third law for a circular orbit follows from gravitation,
 Newton's second law, and uniform circular motion. See
 [`demo_problem.yaml`](demo_problem.yaml).
 
-Each mechanism relationship uses `variable = formula`, where the formula must
-be parseable by [nd2py](https://pypi.org/project/nd2py/). Explicit relationships
-form a DAG:
+Each mechanism relationship uses `left_expression = right_expression`, where
+both sides must be parseable by [nd2py](https://pypi.org/project/nd2py/). The
+loader stores the relationship as the residual `left_expression -
+right_expression = 0`. Explicit relationships form a DAG:
 
 ```text
 a = f1(x)
@@ -31,8 +32,10 @@ b = f2(x, a)
 y = f3(x, a, b)
 ```
 
-Implicit systems are also supported. Relationships are collected until the
-unknown variables form a closed system, then solved symbolically or with a
+Implicit systems are also supported. At each step, the solver selects N
+equations containing exactly N unresolved variables; those equations need not
+be contiguous and forms such as `0 = F - m * a` are valid. The selected system
+is then solved symbolically or with a
 numerical root finder:
 
 ```text

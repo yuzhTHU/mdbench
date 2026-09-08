@@ -1,6 +1,7 @@
 from src.core import ConstantSpec, MechanismItem, Problem, UNIT, VariableSpec
 import nd2py as nd
 import numpy as np
+from src.features.io import parse_mechanism_equation
 
 from src.validate_problem import (
     _check_sampling,
@@ -24,6 +25,10 @@ def _validate(problem):
     return {"ok": all(check["ok"] for check in checks), "checks": checks}
 
 
+def _mechanism(formula, description):
+    return MechanismItem(formula, parse_mechanism_equation(formula), description)
+
+
 def test_loaded_formula_format_is_accepted():
     from src.features.io import load_problem
 
@@ -44,7 +49,7 @@ def test_pi_and_e_are_dimensionless_constants():
         target_variable=target,
         input_variables=[],
         intermediate_variables=[],
-        mechanism=[MechanismItem("y", "pi + e", "constants")],
+        mechanism=[_mechanism("y = pi + e", "constants")],
         constants=constants,
     )
 
@@ -61,7 +66,7 @@ def test_undeclared_math_constant_is_rejected():
         target_variable=target,
         input_variables=[],
         intermediate_variables=[],
-        mechanism=[MechanismItem("y", "pi", "undeclared constant")],
+        mechanism=[_mechanism("y = pi", "undeclared constant")],
     )
 
     result = _validate(problem)
@@ -83,7 +88,7 @@ def test_rejects_declared_constant_replaced_by_numeric_literal():
         target_variable=target,
         input_variables=[x],
         intermediate_variables=[],
-        mechanism=[MechanismItem("y", "2 * x", "substituted constant")],
+        mechanism=[_mechanism("y = 2 * x", "substituted constant")],
         constants=[k],
     )
 
@@ -135,7 +140,7 @@ def test_solution_must_derive_the_target_variable():
         target_variable=target,
         input_variables=[x],
         intermediate_variables=[intermediate],
-        mechanism=[MechanismItem("a", "x", "derive only a")],
+        mechanism=[_mechanism("a = x", "derive only a")],
     )
 
     check = _run_check("Mechanism equation solving", lambda: _check_solution(problem))

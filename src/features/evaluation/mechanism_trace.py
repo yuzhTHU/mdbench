@@ -7,7 +7,7 @@ import nd2py as nd
 import sympy as sp
 
 from ...core import ConstantSpec, MechanismItem, Problem, UNIT, VariableSpec
-from ..io import solve_mechanism_equations
+from ..io import solve_mechanism_equations, parse_mechanism_equation, split_mechanism_equation
 
 
 def _unit(value: Any) -> UNIT:
@@ -42,17 +42,16 @@ def build_submission_problem(
     equations = []
     mentioned_names = set(source_names) | constant_names | {target_name}
     for item in mechanisms:
-        equation = item["formula"]
-        left, right = (part.strip() for part in equation.split("=", 1))
+        formula_str = str(item["formula"]).strip()
+        formula = parse_mechanism_equation(formula_str)
         equations.append(MechanismItem(
-            variable=left,
-            formula=right,
+            formula_str=formula_str,
+            formula=formula,
             formula_description=item.get("formula_description", ""),
         ))
-        mentioned_names.add(left)
         mentioned_names.update(
             node.name
-            for node in nd.parse(right.replace("^", "**")).iter_preorder()
+            for node in formula.iter_preorder()
             if isinstance(node, nd.Variable)
         )
 
@@ -121,40 +120,54 @@ def trace_mechanism_submission(
     problem = build_submission_problem(mechanisms, answer)
     solution = solve_mechanism_equations(problem)
     expanded = _expanded_formulas(solution)
-    submitted = {item.variable: item.formula for item in problem.mechanism}
     base_names = {
         variable.name for variable in problem.input_variables
     } | {constant.name for constant in problem.constants}
     steps = []
     for item in solution:
-        original_formulas = [submitted[variable] for variable in item.variables]
+        mechanism_equations = [
+            problem.mechanism[index - 1].formula_str
+            for index in item.mechanism_indices
+        ]
+        direct_right_sides = {}
+        for equation in mechanism_equations:
+            left, right = split_mechanism_equation(equation)
+            if left.isidentifier():
+                direct_right_sides[left] = right
+        original_formulas = [
+            direct_right_sides.get(variable, formula)
+            for variable, formula in zip(item.variables, item.formulas)
+        ] if item.formulas else []
+        group_has_internal_dependency = any(
+            isinstance(node, nd.Variable) and node.name not in base_names
+            for index in item.mechanism_indices
+            for node in problem.mechanism[index - 1].formula.iter_preorder()
+        )
         steps.append({
             "variables": list(item.variables),
             "formulas": list(item.formulas),
             "original_formulas": original_formulas,
+            "mechanism_equations": mechanism_equations,
+            "mechanism_indices": list(item.mechanism_indices),
             "expanded_formulas": [
                 expanded.get(variable) for variable in item.variables
             ] if item.formulas else [],
             "show_expanded_formulas": [
-                any(
-                    isinstance(node, nd.Variable) and node.name not in base_names
-                    for node in nd.parse(original).iter_preorder()
-                )
+                group_has_internal_dependency
                 and expanded_formula is not None
                 and all(
                     not isinstance(node, nd.Variable) or node.name in base_names
                     for node in nd.parse(expanded_formula).iter_preorder()
                 )
-                for original, expanded_formula in zip(
-                    original_formulas,
-                    [expanded.get(variable) for variable in item.variables],
-                )
+                for expanded_formula in [
+                    expanded.get(variable) for variable in item.variables
+                ]
             ],
             "numerical": not bool(item.formulas),
         })
     target = answer["target_variable"]
     return {
-        "submitted_equations": [item.equation for item in problem.mechanism],
+        "submitted_equations": [item.formula_str for item in problem.mechanism],
         "solution_steps": steps,
         "target_variable": target,
         "derived_formula": expanded.get(target),

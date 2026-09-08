@@ -1,16 +1,14 @@
 """Build a readable dependency graph for a solved mechanism system."""
 from __future__ import annotations
-
-from dataclasses import dataclass
-
 import nd2py as nd
-
+from dataclasses import dataclass
 from ...core import Problem
+from ..io.mechanism_equation import split_mechanism_equation
 
 
 def _variables(formula: str) -> list[str]:
     names = []
-    for node in nd.parse(formula).iter_preorder():
+    for node in nd.parse(formula.replace("^", "**")).iter_preorder():
         if isinstance(node, nd.Variable) and node.name not in names:
             names.append(node.name)
     return names
@@ -37,25 +35,30 @@ class MechanismGraphBuilder:
     """
 
     @staticmethod
-    def _is_implicit(problem: Problem, variables: list[str]) -> bool:
-        targets = set(variables)
+    def _is_implicit(problem: Problem, solution) -> bool:
+        targets = set(solution.variables)
         if len(targets) > 1:
             return True
-        target = variables[0]
-        return any(
-            item.variable == target and target in _variables(item.formula)
-            for item in problem.mechanism
-        )
+        target = solution.variables[0]
+        for index in solution.mechanism_indices:
+            left, right = split_mechanism_equation(
+                problem.mechanism[index - 1].formula_str
+            )
+            if target in _variables(left) and target in _variables(right):
+                return True
+        return False
 
     @staticmethod
     def _implicit_dependencies(
         problem: Problem,
+        mechanism_indices: list[int],
         targets: set[str],
         known: set[str],
     ) -> set[str]:
         dependencies = set()
-        for item in problem.mechanism:
-            names = {item.variable, *_variables(item.formula)}
+        for index in mechanism_indices:
+            item = problem.mechanism[index - 1]
+            names = set(_variables(str(item.formula)))
             if names & targets and names <= known | targets:
                 dependencies.update(names - targets)
         return dependencies
@@ -83,7 +86,7 @@ class MechanismGraphBuilder:
         implicit_steps = {
             index
             for index, item in enumerate(problem.solution)
-            if self._is_implicit(problem, item.variables)
+            if self._is_implicit(problem, item)
         }
         implicit_names = {
             variable
@@ -103,6 +106,7 @@ class MechanismGraphBuilder:
             else:
                 for dependency in self._implicit_dependencies(
                     problem,
+                    item.mechanism_indices,
                     targets,
                     known_names,
                 ):

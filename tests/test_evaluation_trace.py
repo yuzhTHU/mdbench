@@ -86,7 +86,7 @@ def test_verbose_report_formats_mechanism_trace():
 
     rendered = format_reports(report)
 
-    assert "Verbose mechanism trace" in rendered
+    assert "Mechanism trace" in rendered
     assert "solved numerically as an implicit equation system" in rendered
     assert "2. y = a" in rendered
     assert "50.00%" in rendered

@@ -77,7 +77,7 @@ def test_mechanism_task_accepts_multiple_raw_formulas(answer):
         task="mechanism_discovery", answer=answer,
     )
     assert [item["formula"] for item in result["mechanisms"]] == [
-        "r = a", "F = G * M * m / r**2",
+        "r = a", "F = G * M * m / r^2",
     ]
 
 
@@ -101,7 +101,7 @@ def test_structured_submission_file_explains_supported_formats(
     message = str(exc_info.value)
     assert "Structured submission file" in message
     assert "equations separated by semicolons" in message
-    assert "one 'variable = formula' equation per non-empty line" in message
+    assert "one equation per non-empty line" in message
     assert "mdbench evaluate --help" in message
 
 
@@ -131,10 +131,22 @@ def test_rejects_unknown_or_duplicate_auxiliary_input_variables(answer):
         load_submission("z = a; z = M", task="mechanism_discovery", answer=answer)
 
 
-def test_mechanism_submission_rejects_zero_left_side(answer):
-    with pytest.raises(ValueError, match="left side must be a variable name"):
-        load_submission(
-            "F_d = k * v^2; 0 = F - F_d",
-            task="mechanism_discovery",
-            answer={**answer, "source_variables": [*answer["source_variables"], "k", "F"]},
-        )
+def test_mechanism_submission_accepts_zero_left_side(answer):
+    result = load_submission(
+        "F_d = k * v^2; 0 = F - F_d",
+        task="mechanism_discovery",
+        answer={**answer, "source_variables": [*answer["source_variables"], "k", "F"]},
+    )
+    assert result["mechanisms"][1]["formula"] == "0 = F - F_d"
+
+
+def test_mechanism_submission_accepts_expression_left_side(answer):
+    result = load_submission(
+        "a + b = 3 * x; a - b = x",
+        task="mechanism_discovery",
+        answer={"source_variables": ["x"], "target_variable": "a"},
+    )
+    assert [item["formula"] for item in result["mechanisms"]] == [
+        "a + b = 3 * x",
+        "a - b = x",
+    ]

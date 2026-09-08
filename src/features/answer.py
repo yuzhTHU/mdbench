@@ -35,7 +35,7 @@ def build_answer(problem: Problem, task: str) -> dict:
         ]
     if task != "symbolic_regression":
         answer["mechanisms"] = [{
-            "formula": item.equation,
+            "formula": item.formula_str,
             "formula_description": item.formula_description,
         } for item in problem.mechanism]
         answer["intermediate_variables"] = [{

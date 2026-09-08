@@ -1,9 +1,9 @@
 """Load and validate task-aware benchmark submissions."""
 from __future__ import annotations
-
-from pathlib import Path
-
 import nd2py as nd
+from pathlib import Path
+from .mechanism_equation import parse_mechanism_equation
+from .solve_mechanism_equations import select_solvable_equation_groups
 
 SYMBOLIC_REGRESSION = "symbolic_regression"
 MECHANISM_TASKS = {"mechanism_explanation", "mechanism_discovery"}
@@ -20,7 +20,7 @@ def _unsupported_structured_submission(path: Path | None = None) -> ValueError:
         f"{subject} not supported. "
         "For a mechanism task, pass equations separated by semicolons, for "
         "example --submission 'r = a; F = G * M * m / r**2', or pass a "
-        "plain-text file containing one 'variable = formula' equation per "
+        "plain-text file containing one equation per "
         "non-empty line. Run 'mdbench evaluate --help' for the complete syntax."
     )
 
@@ -70,63 +70,21 @@ def _parse_equation(formula: str, *, require_target: bool, expected_target: str 
 def _validate_mechanisms(formulas: list[str], answer: dict) -> list[dict[str, str]]:
     if "source_variables" not in answer:
         raise ValueError("Answer is missing source_variables required for mechanism validation.")
-    known = set(answer["source_variables"]) - {answer.get("target_variable")}
     normalized = []
-    block_equations = 0
-    unresolved: list[str] = []
+    equations = []
     for index, formula in enumerate(formulas, 1):
-        if formula.count("=") != 1:
-            raise ValueError(
-                f"Mechanism {index} must contain exactly one '=': {formula!r}."
-            )
-        left, right = (part.strip() for part in formula.split("=", 1))
-        if not left or not right:
-            raise ValueError(f"Invalid mechanism equation: {formula!r}.")
-        if not left.isidentifier():
-            raise ValueError(
-                f"Mechanism {index} left side must be a variable name: {left!r}."
-            )
-        parsed_expressions = []
-        for expression in (left, right):
-            try:
-                parsed = nd.parse(expression.replace("^", "**"))
-            except Exception as exc:
-                raise ValueError(
-                    f"nd2py cannot parse mechanism {index} expression "
-                    f"{expression!r}: {exc}"
-                ) from exc
-            if not isinstance(parsed, nd.Symbol):
-                raise ValueError(
-                    f"Mechanism {index} did not produce a symbolic expression: {expression!r}."
-                )
-            parsed_expressions.append(parsed)
-        block_equations += 1
-        for parsed in parsed_expressions:
-            for node in parsed.iter_preorder():
-                if (
-                    isinstance(node, nd.Variable)
-                    and node.name not in known
-                    and node.name not in unresolved
-                ):
-                    unresolved.append(node.name)
-        if block_equations > len(unresolved):
-            raise ValueError(
-                f"Mechanism {index} introduces no unresolved variable or "
-                "overdetermines the current equation block."
-            )
-        if block_equations == len(unresolved):
-            known.update(unresolved)
-            block_equations = 0
-            unresolved = []
+        formula_str = str(formula).strip()
+        try:
+            residual = parse_mechanism_equation(formula_str)
+        except ValueError as exc:
+            raise ValueError(f"Mechanism {index}: {exc}") from exc
+        equations.append(residual)
         normalized.append({
-            "formula": f"{left} = {right.replace('^', '**')}",
+            "formula": formula_str,
             "formula_description": "",
         })
-    if unresolved:
-        raise ValueError(
-            f"Final mechanism block is underdetermined: {block_equations} equations "
-            f"for {len(unresolved)} unresolved variables ({', '.join(unresolved)})."
-        )
+    known = set(answer["source_variables"]) - {answer.get("target_variable")}
+    select_solvable_equation_groups(equations, known)
     return normalized
 
 

@@ -23,3 +23,4 @@ class SolutionItem:
     variables: list[str]
     formulas: list[str]
     function: SolutionFunction
+    mechanism_indices: list[int]

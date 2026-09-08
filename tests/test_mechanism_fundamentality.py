@@ -61,7 +61,7 @@ def test_llm_checker_sends_complete_physical_context():
     assert problem.phenomenological_formula not in api.prompt
     assert '"target_variable"' in api.prompt
     assert problem.target_variable.name in api.prompt
-    assert problem.mechanism[0].equation in api.prompt
+    assert problem.mechanism[0].formula_str in api.prompt
     assert problem.mechanism[0].formula_description in api.prompt
     assert api.kwargs["temperature"] == 0.0
     assert api.kwargs["thinking"] == "disabled"

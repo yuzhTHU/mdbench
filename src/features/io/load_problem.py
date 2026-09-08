@@ -7,6 +7,7 @@ from pathlib import Path
 from ...utils.unit_parser import parse_unit
 from ...core import ConstantSpec, MechanismItem, Problem, VariableSpec, UNIT
 from .solve_mechanism_equations import solve_mechanism_equations
+from .mechanism_equation import parse_mechanism_equation
 
 
 def _load_variable_spec(row: dict[str, Any]) -> VariableSpec:
@@ -81,7 +82,9 @@ def load_problem(problem_path: str, solve=True) -> Problem:
         "variable_description",
         "mechanism",
     }
-    allowed_keys = {*required_keys, "constants"}
+    # ``aha`` is an optional free-form author note. It is deliberately ignored
+    # and never enters the runtime Problem or benchmark evaluation.
+    allowed_keys = {*required_keys, "constants", "aha"}
     _check_keys(data, required_keys, allowed_keys)
 
     variable_description = data["variable_description"]
@@ -113,24 +116,10 @@ def load_problem(problem_path: str, solve=True) -> Problem:
     for row in data["mechanism"]:
         required_keys = {"formula", "formula_description"}
         _check_keys(row, required_keys, required_keys)
-        formula_text = str(row["formula"])
-        _variable, _formula = formula_text.split("=", 1)
-        _variable = _variable.strip()
-        _formula = _formula.strip().replace("^", "**")
-        if not _variable.isidentifier():
-            raise ValueError(
-                f"Invalid mechanism variable name: {_variable!r}. "
-                f"Expected a valid Python identifier."
-            )
-        if not _variable or not _formula:
-            raise ValueError(
-                f"Invalid mechanism formula: {formula_text}. "
-                f"Expected format: 'Variable = Formula'."
-            )
-        _check_formula(_formula)
+        formula_str = str(row["formula"]).strip()
         mechanism = MechanismItem(
-            variable=_variable,
-            formula=_formula,
+            formula_str=formula_str,
+            formula=parse_mechanism_equation(formula_str),
             formula_description=str(row["formula_description"]),
         )
         mechanisms.append(mechanism)

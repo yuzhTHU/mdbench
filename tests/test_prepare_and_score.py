@@ -8,7 +8,7 @@ from src.core import ConstantSpec, UNIT
 from src.prepare_problem import get_parser as get_prepare_parser, main as prepare_main, prepare_problem
 from src.synthetic_data import generate_synthetic_data, get_parser as get_synthetic_parser, main as synthetic_main
 from src.evaluate_result import validate_result
-from src.features.io import load_problem
+from src.features.io import load_problem, parse_mechanism_equation
 
 
 def test_prepare_all_task_types(tmp_path):
@@ -32,7 +32,9 @@ def test_prepare_controls_auxiliary_and_constant_visibility():
     problem = load_problem("demo_problem.yaml")
     mechanism_only = ConstantSpec("k", "mechanism-only constant", UNIT({}), 1.0)
     problem.constants.append(mechanism_only)
-    problem.mechanism[0].formula = "a + 0 * k"
+    formula_str = "r = a + 0 * k"
+    problem.mechanism[0].formula_str = formula_str
+    problem.mechanism[0].formula = parse_mechanism_equation(formula_str)
     data = generate_synthetic_data(
         problem, train_samples=8, id_test_samples=4, ood_test_samples=4, pilot_samples=64
     )

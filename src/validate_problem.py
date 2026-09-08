@@ -7,11 +7,9 @@ from .core import Problem, UNIT
 from .features.units import unit_inference
 from .features.sampling import RangeInferrer
 from .utils import discover_yaml_files, tag2ansi, logger
-from .features.validation import (
-    LLMMechanismFundamentalityChecker,
-    NumericDerivationChecker,
-)
+from .features.io import split_mechanism_equation
 from .features.io import load_problem, solve_mechanism_equations
+from .features.validation import LLMMechanismFundamentalityChecker, NumericDerivationChecker
 
 
 class ValidationError(ValueError):
@@ -69,10 +67,14 @@ def _check_variables(problem: Problem) -> str:
 
     used_var_names = {problem.target_variable.name, *expected}
     for item in problem.mechanism:
-        used_var_names.add(item.variable)
-        for var in nd.parse(item.formula).iter_preorder():
+        for var in item.formula.iter_preorder():
             if isinstance(var, nd.Variable):
                 used_var_names.add(var.name)
+    if undeclared := sorted(used_var_names - set(all_var_names)):
+        raise ValidationError(
+            "Mechanism equations use undeclared variables: "
+            f"{', '.join(undeclared)}."
+        )
     if unused := sorted(set(all_var_names) - used_var_names):
         raise ValidationError(
             "Declared variables or constants are unused by the phenomenological "
@@ -150,13 +152,6 @@ def _check_solution(problem: Problem, derivation_checker=None) -> str:
     # This also handles implicit systems: a numerical solution item with no
     # closed-form formulas contributes all variables in its coupled block.
     dependencies: dict[str, set[str]] = {}
-    mechanism_dependencies: dict[str, set[str]] = {}
-    for item in problem.mechanism:
-        mechanism_dependencies.setdefault(item.variable, set()).update(
-            node.name
-            for node in nd.parse(item.formula).iter_preorder()
-            if isinstance(node, nd.Variable)
-        )
     for item in problem.solution:
         item_dependencies = set()
         for formula in item.formulas:
@@ -170,8 +165,12 @@ def _check_solution(problem: Problem, derivation_checker=None) -> str:
         # to the same mechanism relationship and must be retained together.
         item_dependencies.update(item.variables)
         if not item.formulas:
-            for variable in item.variables:
-                item_dependencies.update(mechanism_dependencies.get(variable, ()))
+            for index in item.mechanism_indices:
+                item_dependencies.update(
+                    node.name
+                    for node in problem.mechanism[index - 1].formula.iter_preorder()
+                    if isinstance(node, nd.Variable)
+                )
         for variable in item.variables:
             dependencies.setdefault(variable, set()).update(item_dependencies)
     reachable = set()
@@ -229,17 +228,18 @@ def _check_units(problem: Problem) -> str:
 
     mechanism_skipped = 0
     for index, item in enumerate(problem.mechanism, 1):
-        equation_names = {item.variable} | {
+        equation_names = {
             node.name
-            for node in nd.parse(item.formula).iter_preorder()
+            for node in item.formula.iter_preorder()
             if isinstance(node, nd.Variable)
         }
         if any(variable_by_name[name].unit is None for name in equation_names):
             mechanism_skipped += 1
             continue
         try:
-            left_unit, left_errors = unit_inference(item.variable, all_vars)
-            right_unit, right_errors = unit_inference(item.formula, all_vars)
+            left, right = split_mechanism_equation(item.formula_str)
+            left_unit, left_errors = unit_inference(left.replace("^", "**"), all_vars)
+            right_unit, right_errors = unit_inference(right.replace("^", "**"), all_vars)
             inference_errors = left_errors + right_errors
             if inference_errors:
                 raise ValidationError("; ".join(inference_errors))
