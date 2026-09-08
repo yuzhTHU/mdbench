@@ -1,95 +1,68 @@
 problem_name: Atmospheric Parcel Stability Measure - Variant 1
-phenomenological_formula: Y = (g / T) * (A - B) + C
-problem_description: An air parcel is displaced in a stratified atmosphere. The target is the specified atmospheric stability diagnostic.
+phenomenological_formula: a = -g * z * B / (T + B * z)
+problem_description: A vertically displaced air parcel experiences buoyancy-driven vertical acceleration at the displaced level.
+
 variable_description:
   target:
-    name: Y
-    description: Atmospheric stability diagnostic
-    unit: s^-2
+    name: a
+    description: Parcel vertical acceleration
+    unit: m s^-2
+
   inputs:
-  - name: A
-    description: Parcel temperature-profile parameter
-    unit: K m^-1
-    sampling:
-      min: -0.012
-      max: -0.001
-      ood_boundary: -0.007
-      distribution: uniform
   - name: B
-    description: Environmental temperature-profile parameter
+    description: Local environmental temperature gradient
     unit: K m^-1
     sampling:
       min: -0.012
       max: -0.001
       ood_boundary: -0.006
       distribution: uniform
-  - name: C
-    description: Additional acceleration-scale parameter
-    unit: s^-2
-    sampling:
-      min: -1.0e-05
-      max: -1.0e-07
-      ood_boundary: -5.0e-06
-      distribution: uniform
   - name: T
-    description: Reference temperature
+    description: Reference air temperature
     unit: K
     sampling:
       min: 200.0
       max: 330.0
       ood_boundary: 288.0
       distribution: uniform
-  - name: g
-    description: Gravitational acceleration
-    unit: m s^-2
+  - name: z
+    description: Vertical parcel displacement from the reference level
+    unit: m
     sampling:
-      min: 9.7
-      max: 9.9
-      ood_boundary: 9.81
-      distribution: uniform
+      min: 1.0
+      max: 10.0
+      ood_boundary: 5.0
+      distribution: log_uniform
+
   intermediates:
-  - name: T_p
-    description: Temperature of the displaced parcel
-    unit: K
   - name: T_e
-    description: Environmental temperature at the displaced level
+    description: Environmental temperature
     unit: K
-  - name: rho_p
-    description: Density of the displaced parcel
-    unit: kg m^-3
+  - name: T_p
+    description: Displaced parcel temperature
+    unit: K
   - name: rho_e
-    description: Environmental density at the displaced level
+    description: Environmental air density
     unit: kg m^-3
-  - name: V
-    description: Volume
+  - name: n
+    description: Parcel amount of substance
+    unit: mol
+  - name: V_p
+    description: Parcel volume
     unit: m^3
-  - name: F_g
-    description: Weight of the displaced parcel
-    unit: kg m s^-2
   - name: F_b
-    description: Archimedean buoyant force
+    description: Buoyant force
     unit: kg m s^-2
-  - name: F_r
-    description: Net buoyancy force
+  - name: F_g
+    description: Parcel weight
     unit: kg m s^-2
-  - name: F_x
-    description: Additional linear restoring force
+  - name: F
+    description: Net vertical force
     unit: kg m s^-2
-  - name: a_r
-    description: Buoyancy-driven parcel acceleration
-    unit: m s^-2
-  - name: a_l
-    description: Linearized buoyancy acceleration
-    unit: m s^-2
-  - name: a_x
-    description: Acceleration due to the additional restoring force
-    unit: m s^-2
-  - name: a
-    description: Total restoring acceleration
-    unit: m s^-2
+
   auxiliary_inputs:
-  - name: P
-    description: Reference pressure
+  - name: P_z
+    description: Pressure at displaced level
     unit: kg m^-1 s^-2
     sampling:
       min: 50000.0
@@ -100,19 +73,16 @@ variable_description:
     description: Parcel mass
     unit: kg
     sampling:
-      min: 1.0e-30
-      max: 1.0e-18
-      ood_boundary: 1.0e-24
-      distribution: log_uniform
-  - name: z
-    description: Vertical displacement
-    unit: m
-    sampling:
-      min: 1.0
+      min: 0.001
       max: 1000.0
-      ood_boundary: 100.0
+      ood_boundary: 1.0
       distribution: log_uniform
+
 constants:
+- name: g
+  description: Gravitational acceleration
+  value: 9.81
+  unit: m s^-2
 - name: M
   description: Molar mass of dry air
   value: 0.0289652
@@ -121,32 +91,25 @@ constants:
   description: Molar gas constant
   value: 8.314462618
   unit: kg m^2 s^-2 K^-1 mol^-1
+
 mechanism:
-- formula: T_p = T - A * z
-  formula_description: The linear parcel temperature-profile definition gives T_p after vertical displacement z.
-- formula: T_e = T - B * z
-  formula_description: The linear environmental temperature-profile definition gives T_e at the same displacement.
-- formula: rho_p = P * M / (R * T_p)
-  formula_description: The ideal-gas law defines parcel density rho_p from P and T_p.
-- formula: rho_e = P * M / (R * T_e)
-  formula_description: The ideal-gas law defines environmental density rho_e from P and T_e.
-- formula: V = m / rho_p
-  formula_description: The mass-density definition gives parcel volume V from mass m and density rho_p.
+- formula: T_e = T + B * z
+  formula_description: The local environmental temperature gradient gives the temperature at the displaced level.
+- formula: T_p = T
+  formula_description: The parcel is maintained at its reference temperature during the displacement.
+- formula: P_z * M = rho_e * R * T_e
+  formula_description: The ideal-gas law gives the environmental air density at the displaced level.
+- formula: n = m / M
+  formula_description: The parcel mass and molar mass determine its amount of substance.
+- formula: P_z * V_p = n * R * T_p
+  formula_description: The ideal-gas law gives the parcel volume at the displaced-level pressure.
+- formula: F_b = rho_e * g * V_p
+  formula_description: Archimedes' principle gives the upward buoyant force.
 - formula: F_g = m * g
-  formula_description: Newtonian gravity defines parcel weight F_g.
-- formula: F_b = rho_e * V * g
-  formula_description: Archimedes' principle defines buoyant force F_b from displaced environmental fluid.
-- formula: F_r = F_b - F_g
-  formula_description: The net-buoyancy definition gives F_r as buoyancy F_b minus weight F_g.
-- formula: F_x = -m * C * z
-  formula_description: The linear restoring-force model defines F_x = -m * C * z.
-- formula: a_r = F_r / m
-  formula_description: Newton's second law defines buoyancy acceleration a_r from F_r and m.
-- formula: a_l = a_r * (T_e / T)
-  formula_description: The linearized stratification approximation defines a_l from buoyancy acceleration a_r.
-- formula: a_x = F_x / m
-  formula_description: Newton's second law defines restoring acceleration a_x from F_x and m.
-- formula: a = a_l + a_x
-  formula_description: Superposition of the prior linearized buoyancy and elastic accelerations defines total restoring acceleration a.
-- formula: Y = -a / z
-  formula_description: The Brunt-Vaisala definition gives squared frequency Y as negative total restoring acceleration per displacement z.
+  formula_description: Gravity gives the downward parcel weight.
+- formula: F = F_b - F_g
+  formula_description: The net vertical force is buoyancy minus weight.
+- formula: a = F / m
+  formula_description: Newton's second law gives the parcel vertical acceleration.
+
+aha: 是等温过程
