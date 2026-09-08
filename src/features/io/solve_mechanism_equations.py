@@ -236,10 +236,14 @@ def select_solvable_equation_groups(
                 else "overdetermined"
             )
             indices = ", ".join(str(index + 1) for index in pending)
+            mechanism_word = "mechanism" if len(pending) == 1 else "mechanisms"
+            equation_word = "equation" if len(pending) == 1 else "equations"
+            variable_word = "variable" if len(unresolved) == 1 else "variables"
             raise ValueError(
-                f"Remaining mechanisms [{indices}] are {relation}: "
-                f"{len(pending)} equations for {len(unresolved)} unresolved "
-                f"variables ({', '.join(unresolved)})."
+                f"Cannot solve remaining {mechanism_word} [{indices}]: the system "
+                f"is {relation} ({len(pending)} {equation_word} for "
+                f"{len(unresolved)} unresolved {variable_word}: "
+                f"{', '.join(unresolved)})."
             )
 
         groups.append((selected, unresolved))

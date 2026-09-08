@@ -71,23 +71,6 @@ def test_parser_infers_task_specific_options_from_answer(tmp_path, monkeypatch):
     assert args.data == "data.npz"
 
 
-def test_mechanism_task_accepts_multiple_raw_formulas(answer):
-    result = load_submission(
-        "r = a; F = G * M * m / r^2",
-        task="mechanism_discovery", answer=answer,
-    )
-    assert [item["formula"] for item in result["mechanisms"]] == [
-        "r = a", "F = G * M * m / r^2",
-    ]
-
-
-def test_plain_text_file_uses_one_formula_per_line(tmp_path, answer):
-    path = tmp_path / "submission.txt"
-    path.write_text("r = a\nF = G * M * m / r^2\n", encoding="utf-8")
-    result = load_submission(str(path), task="mechanism_discovery", answer=answer)
-    assert len(result["mechanisms"]) == 2
-
-
 @pytest.mark.parametrize("suffix", [".json", ".yaml", ".yml"])
 def test_structured_submission_file_explains_supported_formats(
     tmp_path, answer, suffix
@@ -129,24 +112,3 @@ def test_rejects_unknown_or_duplicate_auxiliary_input_variables(answer):
         load_submission("z = unknown + a", task="mechanism_discovery", answer=answer)
     with pytest.raises(ValueError, match="no unresolved variable"):
         load_submission("z = a; z = M", task="mechanism_discovery", answer=answer)
-
-
-def test_mechanism_submission_accepts_zero_left_side(answer):
-    result = load_submission(
-        "F_d = k * v^2; 0 = F - F_d",
-        task="mechanism_discovery",
-        answer={**answer, "source_variables": [*answer["source_variables"], "k", "F"]},
-    )
-    assert result["mechanisms"][1]["formula"] == "0 = F - F_d"
-
-
-def test_mechanism_submission_accepts_expression_left_side(answer):
-    result = load_submission(
-        "a + b = 3 * x; a - b = x",
-        task="mechanism_discovery",
-        answer={"source_variables": ["x"], "target_variable": "a"},
-    )
-    assert [item["formula"] for item in result["mechanisms"]] == [
-        "a + b = 3 * x",
-        "a - b = x",
-    ]

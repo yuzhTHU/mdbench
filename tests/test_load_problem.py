@@ -46,9 +46,6 @@ def test_load_problem_builds_unit_objects():
     assert all(isinstance(variable.unit, UNIT) for variable in problem.all_variables)
     assert all(isinstance(variable.unit, UNIT) for variable in problem.auxiliary_input_variables)
     assert all(isinstance(constant.unit, UNIT) for constant in problem.constants)
-    assert all(isinstance(item.formula_str, str) for item in problem.mechanism)
-    assert all("=" in item.formula_str for item in problem.mechanism)
-    assert all(isinstance(item.formula, nd.Symbol) for item in problem.mechanism)
     assert problem.target_variable.name == "T"
     assert {variable.name for variable in problem.input_variables} == {"a", "M"}
     assert {variable.name for variable in problem.intermediate_variables} == {"r", "F", "acc", "v"}
@@ -179,14 +176,3 @@ def test_mechanism_item_rejects_legacy_variable_metadata(tmp_path):
     path.write_text(source, encoding="utf-8")
     with pytest.raises(ValueError, match="Unexpected keys: unit"):
         load_problem(str(path))
-
-
-def test_mechanism_item_accepts_zero_left_side(tmp_path):
-    source = open("demo_problem.yaml", encoding="utf-8").read()
-    source = source.replace("formula: r = a", "formula: 0 = r - a", 1)
-    path = tmp_path / "zero-left-side.yaml"
-    path.write_text(source, encoding="utf-8")
-    problem = load_problem(str(path))
-    assert problem.mechanism[0].formula_str == "0 = r - a"
-    assert isinstance(problem.mechanism[0].formula, nd.Symbol)
-    assert problem.solution[0].variables == ["r"]

@@ -210,20 +210,15 @@ def _check_units(problem: Problem) -> str:
             f"Target variable {problem.target_variable.name!r} must declare a unit."
         )
     else:
-        actual, inference_errors = unit_inference(
-            problem.phenomenological_formula,
-            all_vars,
+        inferred_target_unit, inference_errors = unit_inference(
+            problem.phenomenological_formula, all_vars,
         )
         if inference_errors:
-            errors.extend(
-                f"Phenomenological equation: {error}"
-                for error in inference_errors
-            )
-        elif actual != target_unit.unit_dict:
+            errors.extend(f"Phenomenological equation: {error}" for error in inference_errors)
+        elif inferred_target_unit != target_unit.unit_dict:
             errors.append(
-                "Phenomenological equation has unit "
-                f"{UNIT(actual)}, but target {problem.target_variable.name!r} "
-                f"has unit {target_unit}."
+                f"Phenomenological equation has unit {UNIT(inferred_target_unit)}, "
+                f"but target {problem.target_variable.name!r} has unit {target_unit}."
             )
 
     mechanism_skipped = 0
@@ -269,14 +264,14 @@ def _check_units(problem: Problem) -> str:
             }
             if any(variable_by_name[name].unit is None for name in formula_names):
                 continue
-            actual, inference_errors = unit_inference(formula, all_vars)
+            inferred_target_unit, inference_errors = unit_inference(formula, all_vars)
             expected = variable_by_name[target_name].unit
             if inference_errors:
                 errors.append(f"Solution step [{label}]: " + "; ".join(inference_errors))
-            elif actual != expected.unit_dict:
+            elif inferred_target_unit != expected.unit_dict:
                 errors.append(
                     f"Solution step [{label}] formula for {target_name!r} "
-                    f"has unit {UNIT(actual)}, but expected {expected}."
+                    f"has unit {UNIT(inferred_target_unit)}, but expected {expected}."
                 )
             solution_checked += 1
 
