@@ -1,0 +1,119 @@
+problem_name: Atmospheric Parcel Stability Measure - Variant 4
+phenomenological_formula: a = g * (T * exp(-g * z / (c_p * T)) / (T * exp(B * z / T)) - 1)
+problem_description: A vertically displaced air parcel experiences buoyancy-driven vertical acceleration at the displaced level.
+
+variable_description:
+  target:
+    name: a
+    description: Parcel vertical acceleration
+    unit: m s^-2
+
+  inputs:
+  - name: B
+    description: Local environmental temperature gradient
+    unit: K m^-1
+    sampling:
+      min: -0.012
+      max: -0.001
+      ood_boundary: -0.006
+      distribution: uniform
+  - name: T
+    description: Reference air temperature
+    unit: K
+    sampling:
+      min: 200.0
+      max: 330.0
+      ood_boundary: 288.0
+      distribution: uniform
+  - name: z
+    description: Vertical parcel displacement from the reference level
+    unit: m
+    sampling:
+      min: 10.0
+      max: 10000.0
+      ood_boundary: 5000.0
+      distribution: log_uniform
+
+  intermediates:
+  - name: T_e
+    description: Environmental temperature
+    unit: K
+  - name: T_p
+    description: Displaced parcel temperature
+    unit: K
+  - name: rho_e
+    description: Environmental air density
+    unit: kg m^-3
+  - name: n
+    description: Parcel amount of substance
+    unit: mol
+  - name: V_p
+    description: Parcel volume
+    unit: m^3
+  - name: F_b
+    description: Buoyant force
+    unit: kg m s^-2
+  - name: F_g
+    description: Parcel weight
+    unit: kg m s^-2
+  - name: F
+    description: Net vertical force
+    unit: kg m s^-2
+
+  auxiliary_inputs:
+  - name: P_z
+    description: Pressure at displaced level
+    unit: kg m^-1 s^-2
+    sampling:
+      min: 50000.0
+      max: 150000.0
+      ood_boundary: 101325.0
+      distribution: log_uniform
+  - name: m
+    description: Parcel mass
+    unit: kg
+    sampling:
+      min: 0.001
+      max: 1000.0
+      ood_boundary: 1.0
+      distribution: log_uniform
+
+constants:
+- name: g
+  description: Gravitational acceleration
+  value: 9.81
+  unit: m s^-2
+- name: c_p
+  description: Specific heat capacity of dry air
+  value: 1004.0
+  unit: m^2 s^-2 K^-1
+- name: M
+  description: Molar mass of dry air
+  value: 0.0289652
+  unit: kg mol^-1
+- name: R
+  description: Molar gas constant
+  value: 8.314462618
+  unit: kg m^2 s^-2 K^-1 mol^-1
+
+mechanism:
+- formula: T_e = T * exp(B * z / T)
+  formula_description: The nonlinear environmental temperature profile gives the temperature at the displaced level.
+- formula: T_p = T * exp(-g * z / (c_p * T))
+  formula_description: The nonlinear parcel thermal response gives the temperature at the displaced level.
+- formula: P_z * M = rho_e * R * T_e
+  formula_description: The ideal-gas law gives the environmental air density at the displaced level.
+- formula: n = m / M
+  formula_description: The parcel mass and molar mass determine its amount of substance.
+- formula: P_z * V_p = n * R * T_p
+  formula_description: The ideal-gas law gives the parcel volume at the displaced-level pressure.
+- formula: F_b = rho_e * g * V_p
+  formula_description: Archimedes' principle gives the upward buoyant force.
+- formula: F_g = m * g
+  formula_description: Gravity gives the downward parcel weight.
+- formula: F = F_b - F_g
+  formula_description: The net vertical force is buoyancy minus weight.
+- formula: a = F / m
+  formula_description: Newton's second law gives the parcel vertical acceleration.
+
+aha: 环境温度剖面与气块温度响应均包含不可忽略的指数非线性
