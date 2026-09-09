@@ -1,5 +1,5 @@
-problem_name: Bound-Particle Orbital Radius - Variant 2
-phenomenological_formula: r = 2 * hbar**2 / (m * q**2 / (4 * 3.141592653589793 * eps) + sqrt((m * q**2 / (4 * 3.141592653589793 * eps))**2 + 4 * q * 5.0e4 * hbar**3))
+problem_name: Bound-Particle Orbital Radius - Variant 6
+phenomenological_formula: r = (4 * 3.141592653589793 * eps * hbar**2 * (2.0e-9)**4 / (m * q**2))**0.2
 problem_description: A charged particle occupies a bound circular orbit around a fixed center carrying an equal-magnitude, opposite-sign charge.
 
 variable_description:
@@ -19,11 +19,14 @@ variable_description:
     sampling: {min: 8.0e-20, max: 3.2e-19, ood_boundary: 2.4e-19, distribution: uniform}
 
   intermediates:
+  - name: R
+    description: Radius of the nonuniformly charged central sphere
+    unit: m
+  - name: q_enc
+    description: Central charge enclosed within the particle's orbital radius
+    unit: A s
   - name: F_C
     description: Magnitude of the Coulomb attraction
-    unit: kg m s^-2
-  - name: F_B
-    description: Magnitude of the magnetic force on the orbiting particle
     unit: kg m s^-2
   - name: F_in
     description: Net inward force required for circular motion
@@ -34,9 +37,6 @@ variable_description:
   - name: L
     description: Orbital angular momentum of the charged particle
     unit: kg m^2 s^-1
-  - name: B
-    description: Strength of the uniform magnetic field perpendicular to the orbital plane
-    unit: kg s^-2 A^-1
 
   auxiliary_inputs: []
 
@@ -51,19 +51,19 @@ constants:
   unit: kg m^2 s^-1
 
 mechanism:
-- formula: F_C = q * q / (4 * 3.141592653589793 * eps * r**2)
+- formula: R = 2.0e-9
+  formula_description: The radius of the uniformly charged central sphere.
+- formula: q_enc = q * r**4 / R**4
+  formula_description: Because the volume charge density increases linearly with distance from the center, the charge enclosed within radius r scales with r**4.
+- formula: F_C = q * q_enc / (4 * 3.141592653589793 * eps * r**2)
   formula_description: Coulomb's law gives the attractive force between the two opposite charges.
-- formula: B = 5.0e4
-  formula_description: The uniform magnetic field strength.
-- formula: F_B = q * v * B
-  formula_description: A charged particle moving perpendicular to a magnetic field experiences a magnetic force of magnitude q * v * B.
 - formula: F_in = m * v**2 / r
   formula_description: Circular motion at speed v and radius r requires a net inward force of magnitude m * v**2 / r.
-- formula: F_in = F_C + F_B
-  formula_description: The Coulomb attraction and magnetic force both point inward and together supply the required inward force.
+- formula: F_in = F_C
+  formula_description: The Coulomb attraction supplies the required inward force.
 - formula: L = m * v * r
   formula_description: Definition of the orbital angular momentum.
 - formula: L = 1 * hbar
   formula_description: The lowest Bohr orbit has orbital angular momentum equal to one reduced Planck constant.
 
-aha: 存在磁场效应
+aha: 电荷不均匀地分布在半径为 R > r 的球体内

@@ -1,73 +1,57 @@
 problem_name: Bound-Particle Orbital Radius - Original
-phenomenological_formula: r = 4 * pi * eps * h**2 / (m * q**2)
-problem_description: An electron occupies a bound orbit around an atomic nucleus. The target is the characteristic orbital radius.
+phenomenological_formula: r = 4 * 3.141592653589793 * eps * hbar**2 / (m * q**2)
+problem_description: A charged particle occupies a bound circular orbit around a fixed center carrying an equal-magnitude, opposite-sign charge.
+
 variable_description:
   target:
     name: r
-    description: Characteristic orbital radius
+    description: Orbital radius of the charged particle
     unit: m
+
   inputs:
   - name: m
-    description: Mass
+    description: Mass of the charged particle
     unit: kg
-    sampling:
-      min: 1.0e-30
-      max: 1.0e-18
-      ood_boundary: 1.0e-24
-      distribution: log_uniform
+    sampling: {min: 3.0e-31, max: 3.0e-30, ood_boundary: 1.5e-30, distribution: log_uniform}
   - name: q
-    description: Magnitude of the electron and nuclear charge
+    description: Magnitude of the particle and central charges
     unit: A s
-    sampling:
-      min: 0.01
-      max: 0.7
-      ood_boundary: 0.3
-      distribution: uniform
+    sampling: {min: 8.0e-20, max: 3.2e-19, ood_boundary: 2.4e-19, distribution: uniform}
+
   intermediates:
-  - name: n
-    description: Principal quantum number
-    unit: 1 (dimensionless)
-  - name: k_e
-    description: Coulomb constant
-    unit: kg m^3 s^-4 A^-2
-  - name: L
-    description: Orbital angular momentum
-    unit: kg m^2 s^-1
   - name: F_C
-    description: Electrostatic Coulomb attraction
+    description: Magnitude of the Coulomb attraction
     unit: kg m s^-2
-  - name: F_n
-    description: Centripetal force required for circular motion
+  - name: F_in
+    description: Net inward force required for circular motion
     unit: kg m s^-2
   - name: v
-    description: Orbital speed of the electron
+    description: Orbital speed of the charged particle
     unit: m s^-1
+  - name: L
+    description: Orbital angular momentum of the charged particle
+    unit: kg m^2 s^-1
+
   auxiliary_inputs: []
+
 constants:
 - name: eps
   description: Vacuum permittivity
   value: 8.8541878128e-12
   unit: kg^-1 m^-3 s^4 A^2
-- name: h
-  description: Planck constant
-  value: 6.62607015e-34
+- name: hbar
+  description: Reduced Planck constant
+  value: 1.054571817e-34
   unit: kg m^2 s^-1
-- name: pi
-  description: Pi
-  value: 3.141592653589793
-  unit: 1 (dimensionless)
+
 mechanism:
-- formula: n = 1
-  formula_description: Bohr's ground-state postulate fixes the principal quantum number at n = 1.
-- formula: k_e = 1 / (4 * pi * eps)
-  formula_description: The SI definition of the Coulomb constant relates k_e to the vacuum permittivity eps.
-- formula: L = n * h
-  formula_description: Bohr angular-momentum quantization sets the circular-orbit angular momentum L to n times Planck's constant h.
-- formula: F_C = k_e * q**2 / r**2
-  formula_description: Coulomb's law gives the electrostatic attraction F_C between charges separated by the orbit radius r.
-- formula: F_n = m * v**2 / r
-  formula_description: Newton's circular-motion relation defines the required centripetal force F_n for speed v at radius r.
-- formula: F_n = F_C
-  formula_description: Circular-orbit force balance equates the centripetal force F_n to the Coulomb attraction F_C.
-- formula: r = L / (m * v)
-  formula_description: The classical angular-momentum definition L = m * v * r determines the orbit radius r from the previously quantized L and orbital speed v.
+- formula: F_C = q * q / (4 * 3.141592653589793 * eps * r**2)
+  formula_description: Coulomb's law gives the attractive force between the two opposite charges.
+- formula: F_in = m * v**2 / r
+  formula_description: Circular motion at speed v and radius r requires a net inward force of magnitude m * v**2 / r.
+- formula: F_in = F_C
+  formula_description: The Coulomb attraction supplies the required inward force.
+- formula: L = m * v * r
+  formula_description: Definition of the orbital angular momentum.
+- formula: L = 1 * hbar
+  formula_description: The lowest Bohr orbit has orbital angular momentum equal to one reduced Planck constant.
