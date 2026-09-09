@@ -203,6 +203,17 @@ def _check_units(problem: Problem) -> str:
     all_vars = [*problem.all_variables, *problem.constants]
     variable_by_name = {var.name: var for var in all_vars}
     errors = []
+    warnings = []
+
+    def infer(formula, *, expected=None, context):
+        unit, inference_errors, inference_warnings = unit_inference(
+            formula,
+            all_vars,
+            expected_unit=expected,
+            include_warnings=True,
+        )
+        warnings.extend(f"{context}: {warning}" for warning in inference_warnings)
+        return unit, inference_errors
 
     target_unit = problem.target_variable.unit
     if target_unit is None:
@@ -210,8 +221,10 @@ def _check_units(problem: Problem) -> str:
             f"Target variable {problem.target_variable.name!r} must declare a unit."
         )
     else:
-        inferred_target_unit, inference_errors = unit_inference(
-            problem.phenomenological_formula, all_vars,
+        inferred_target_unit, inference_errors = infer(
+            problem.phenomenological_formula,
+            expected=target_unit,
+            context="Phenomenological equation",
         )
         if inference_errors:
             errors.extend(f"Phenomenological equation: {error}" for error in inference_errors)
@@ -233,16 +246,16 @@ def _check_units(problem: Problem) -> str:
             continue
         try:
             left, right = split_mechanism_equation(item.formula_str)
-            left_unit, left_errors = unit_inference(left.replace("^", "**"), all_vars)
-            right_unit, right_errors = unit_inference(right.replace("^", "**"), all_vars)
-            inference_errors = left_errors + right_errors
+            # Treat equality as a unit constraint over one combined tree. This
+            # lets a known side propagate through the other side and determine
+            # contextual units for numeric coefficients.
+            equation = f"({left.replace('^', '**')}) - ({right.replace('^', '**')})"
+            _, inference_errors = infer(
+                equation,
+                context=f"Mechanism {index} ({item.formula_description})",
+            )
             if inference_errors:
                 raise ValidationError("; ".join(inference_errors))
-            if left_unit != right_unit:
-                errors.append(
-                    f"Mechanism {index} ({item.formula_description}) has mismatched "
-                    f"units {UNIT(left_unit)} and {UNIT(right_unit)}."
-                )
         except (ValidationError, ValueError) as exc:
             errors.append(f"Mechanism {index} ({item.formula_description}): {exc}")
 
@@ -264,8 +277,12 @@ def _check_units(problem: Problem) -> str:
             }
             if any(variable_by_name[name].unit is None for name in formula_names):
                 continue
-            inferred_target_unit, inference_errors = unit_inference(formula, all_vars)
             expected = variable_by_name[target_name].unit
+            inferred_target_unit, inference_errors = infer(
+                formula,
+                expected=expected,
+                context=f"Solution step [{label}] formula for {target_name!r}",
+            )
             if inference_errors:
                 errors.append(f"Solution step [{label}]: " + "; ".join(inference_errors))
             elif inferred_target_unit != expected.unit_dict:
@@ -275,6 +292,9 @@ def _check_units(problem: Problem) -> str:
                 )
             solution_checked += 1
 
+    for warning in dict.fromkeys(warnings):
+        logger.warning(warning)
+
     if errors:
         raise ValidationError("; ".join(errors))
     mechanism_checked = len(problem.mechanism) - mechanism_skipped
@@ -282,7 +302,8 @@ def _check_units(problem: Problem) -> str:
         "Phenomenological equation, "
         f"{mechanism_checked} checkable mechanism equations, and "
         f"{solution_checked} closed-form solution formulas have valid units; "
-        f"{mechanism_skipped} mechanism equations use variables without declared units."
+        f"{mechanism_skipped} mechanism equations use variables without declared units; "
+        f"{len(dict.fromkeys(warnings))} dimensional numeric literal warnings were reported."
     )
 
 

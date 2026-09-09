@@ -101,12 +101,38 @@ def _evaluate_numerically(
     """Numerically solve an implicit group independently for every sample.
 
     The initial value for a target already present in ``values`` is reused. This
-    normally seeds the phenomenological target with its expected value; other
-    internal variables start at 1. Numerical results are accepted only when the
-    scaled equation residual is below ``residual_tolerance``.
+    normally seeds the phenomenological target with its expected value. Other
+    internal variables are initialized from any now-explicit equations when
+    possible, with 1 as the final fallback. Numerical results are accepted only
+    when the scaled equation residual is below ``residual_tolerance``.
     """
     count = _sample_count(values)
     outputs = {name: np.empty(count, dtype=float) for name in target_names}
+
+    # A caller may already know one member of an implicit block, most notably
+    # the phenomenological target used while validating a mechanism. Use that
+    # value to derive physically scaled initial guesses for other block members
+    # whenever an equation has only one not-yet-seeded variable. Starting every
+    # intermediate at 1 is particularly harmful for microscopic mechanisms
+    # whose valid states span many orders of magnitude.
+    target_set = set(target_names)
+    seeded_names = set(values)
+    seed_rules: list[tuple[str, nd.Symbol]] = []
+    while True:
+        added = False
+        for equation in equations:
+            unresolved = list((_variables(equation) & target_set) - seeded_names)
+            if len(unresolved) != 1:
+                continue
+            name = unresolved[0]
+            solved = _symbolic_solution([name], [equation])
+            if solved is None:
+                continue
+            seed_rules.append((name, solved[0]))
+            seeded_names.add(name)
+            added = True
+        if not added:
+            break
 
     for sample_index in range(count):
         context = {
@@ -117,8 +143,18 @@ def _evaluate_numerically(
             for name in target_names:
                 outputs[name][sample_index] = np.nan
             continue
+        seeded_context = dict(context)
+        for name, formula in seed_rules:
+            try:
+                value = float(formula.eval(seeded_context))
+            except (ArithmeticError, KeyError, TypeError, ValueError):
+                continue
+            if np.isfinite(value):
+                seeded_context[name] = value
         initial = np.asarray([
-            float(context[name]) if name in context and np.isfinite(context[name]) else 1.0
+            float(seeded_context[name])
+            if name in seeded_context and np.isfinite(seeded_context[name])
+            else 1.0
             for name in target_names
         ])
 

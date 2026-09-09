@@ -157,3 +157,38 @@ def test_effective_force_is_used_without_warning(caplog):
         detail = _check_solution(problem)
     assert "Mechanism derivation tested" in detail
     assert "never used" not in caplog.text
+
+
+def test_dimensional_numeric_literal_warns_without_failing_unit_check(caplog):
+    import logging
+
+    target = VariableSpec("T", "temperature", UNIT({"K": 1}))
+    x = VariableSpec(
+        "x",
+        "length",
+        UNIT({"m": 1}),
+        sampling={
+            "min": 1.0,
+            "max": 2.0,
+            "ood_boundary": 1.5,
+            "distribution": "uniform",
+        },
+    )
+    problem = Problem(
+        problem_name="dimensional literal",
+        problem_description="dimensional literal",
+        phenomenological_formula="0.1 * x",
+        target_variable=target,
+        input_variables=[x],
+        intermediate_variables=[],
+        mechanism=[_mechanism("T = 0.1 * x", "dimensional coefficient")],
+    )
+    _check_solution(problem)
+
+    with caplog.at_level(logging.WARNING, logger="src.utils.logger"):
+        detail = _check_units(problem)
+
+    assert "valid units" in detail
+    assert "dimensional numeric literal warnings" in detail
+    assert "Numeric literal 0.1" in caplog.text
+    assert "m^-1 K" in caplog.text
