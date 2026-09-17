@@ -1,0 +1,108 @@
+problem_name: Atmosphere-Surface Equilibrium Temperature - Combination 5-2-6
+phenomenological_formula: T = ((3.1 * (1 - a) * S / 4 - (3.0e15 / (4 * 3.141592653589793 * R**2))) / s)**(1/4)
+problem_description: A planet receives stellar radiation and exchanges radiative energy with its atmosphere and
+  space, eventually reaching thermal equilibrium.
+variable_description:
+  target:
+    name: T
+    description: Surface equilibrium temperature
+    unit: K
+  inputs:
+  - name: S
+    description: Incident stellar flux
+    unit: kg s^-3
+    sampling:
+      min: 1200.0
+      max: 1500.0
+      ood_boundary: 1361.0
+      distribution: uniform
+  - name: a
+    description: Planetary shortwave albedo
+    unit: 1 (dimensionless)
+    sampling:
+      min: 0.1
+      max: 0.6
+      ood_boundary: 0.3
+      distribution: uniform
+  - name: R
+    description: Planetary radius
+    unit: m
+    sampling:
+      min: 5.0e6
+      max: 8.0e6
+      ood_boundary: 6.5e6
+      distribution: uniform
+  intermediates:
+  - name: P_in
+    description: Absorbed stellar power
+    unit: kg m^2 s^-3
+  - name: P_emit
+    description: Surface emission power
+    unit: kg m^2 s^-3
+  - name: P_1
+    description: Lower-layer directional emission power
+    unit: kg m^2 s^-3
+  - name: P_2
+    description: Middle-layer directional emission power
+    unit: kg m^2 s^-3
+  - name: P_3
+    description: Upper-layer directional emission power
+    unit: kg m^2 s^-3
+  - name: P_back
+    description: Downward atmospheric power
+    unit: kg m^2 s^-3
+  - name: E
+    description: Surface emission flux
+    unit: kg s^-3
+  - name: P_loss
+    description: Non-radiative power lost from the outermost atmospheric layer to space
+    unit: kg m^2 s^-3
+  auxiliary_inputs: []
+constants:
+- name: s
+  description: Stefan-Boltzmann constant
+  value: 5.670374419e-08
+  unit: kg s^-3 K^-4
+mechanism:
+- formula: P_in = 3.141592653589793 * R**2 * (1 - a) * S
+  formula_description: The planet intercepts stellar radiation over its cross-sectional area, with a fraction 1-a
+    absorbed.
+- formula: P_emit = 4 * 3.141592653589793 * R**2 * E
+  formula_description: The entire planetary surface emits longwave radiation with flux E.
+- formula: P_loss = 3.0e15
+  formula_description: The outermost layer loses a fixed total power of 3.0e15 W to space.
+- formula: 2 * P_1 = P_emit + P_2
+  formula_description: The lower atmospheric layer absorbs longwave radiation from the surface and the middle layer,
+    and emits equally upward and downward at radiative equilibrium.
+- formula: 2 * P_2 = P_1 + P_3
+  formula_description: The middle atmospheric layer absorbs longwave radiation from the lower and upper layers,
+    and emits equally upward and downward at radiative equilibrium.
+- formula: 2 * P_3 = P_2 + 0.3 * P_in - P_loss
+  formula_description: The upper atmospheric layer absorbs upward radiation from the middle layer and emits equally
+    upward and downward at radiative equilibrium. This layer also absorbs 0.3 of the total stellar power absorbed
+    by the planet. Non-radiative loss removes power from this outermost layer to space.
+- formula: P_back = P_1
+  formula_description: The downward emission from the lower atmospheric layer is the atmospheric radiation returned
+    to the surface.
+- formula: P_emit = 0.7 * P_in + P_back
+  formula_description: At equilibrium, surface emission balances the 70% of absorbed stellar power reaching the
+    surface plus downward longwave radiation.
+- formula: E = s * T**4
+  formula_description: The surface longwave emission flux follows the Stefan-Boltzmann law.
+aha: 3 layers; outermost-layer fixed-power loss; total 30% shortwave absorption (outermost)
+understanding_checking:
+- question: Give the equation for L_middle, the total longwave power absorbed by the atmospheric component between
+    the lowest and highest components.
+  answer: L_middle = P_1 + P_3 = 2*P_2
+- question: Give the equation for D_upper_to_surface, the highest atmospheric component's downward longwave power
+    reaching the surface without intervening absorption and re-emission.
+  answer: D_upper_to_surface = 0
+- question: Give the equations for net non-radiative power received by the surface (N_surface), each atmospheric
+    component (N_i), and the exterior (N_external); received power is positive and lost power is negative.
+  answer: N_surface = 0; N_1 = 0; N_2 = 0; N_3 = -P_loss; N_external = P_loss
+- question: Give the equation for P_back, the atmospheric longwave power reaching the surface. Keep any outermost-layer
+    shortwave heating H symbolic.
+  answer: P_back = P_1 = 3*P_in - 2*H - P_loss
+- question: Give the equation for L_lower, the total longwave power absorbed by the lowest atmospheric component
+    from below and above.
+  answer: L_lower = P_emit + P_2 = 2*P_1
