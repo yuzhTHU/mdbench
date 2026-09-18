@@ -1,15 +1,17 @@
 """Sphinx configuration for MDBench."""
 from __future__ import annotations
 
-import os
 import sys
+import tomllib
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath("../.."))
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 
 project = "MDBench"
 copyright = "2026, YuMeow"
 author = "YuMeow"
-release = "0.1.0"
+release = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]["version"]
 
 extensions = [
     "sphinx.ext.autodoc",

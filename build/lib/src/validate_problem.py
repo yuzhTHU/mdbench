@@ -274,17 +274,10 @@ def validate_sampling(variable: VariableSpec):
 
 # Dimensional constraints are built from raw syntax, before SymPy folds literals.
 BASES = ('kg', 'm', 's', 'A', 'K', 'mol', 'cd')
-DERIVED_UNITS = {
-    'N': {'kg': 1, 'm': 1, 's': -2}, 
-    'J': {'kg': 1, 'm': 2, 's': -2},
-    'W': {'kg': 1, 'm': 2, 's': -3}, 
-    'Pa': {'kg': 1, 'm': -1, 's': -2},
-    'Hz': {'s': -1},
-    'C': {'s': 1, 'A': 1}, 
-    'V': {'kg': 1, 'm': 2, 's': -3, 'A': -1},
-    'ohm': {'kg': 1, 'm': 2, 's': -3, 'A': -2}, 
-    'rad': {}
-}
+DERIVED_UNITS = {'N': {'kg': 1, 'm': 1, 's': -2}, 'J': {'kg': 1, 'm': 2, 's': -2},
+    'W': {'kg': 1, 'm': 2, 's': -3}, 'Pa': {'kg': 1, 'm': -1, 's': -2},
+    'Hz': {'s': -1}, 'C': {'s': 1, 'A': 1}, 'V': {'kg': 1, 'm': 2, 's': -3, 'A': -1},
+    'ohm': {'kg': 1, 'm': 2, 's': -3, 'A': -2}, 'rad': {}}
 
 
 def parse_unit(text: str) -> dict[str, sp.Rational]:
@@ -397,24 +390,12 @@ def validate_task(task: Task, *, path: Path | None = None, seen: set[str] | None
     required = [v.name for v in task.by_role('internal', 'target')]
     formulas = [m.formula_str for m in task.mechanism_model]
     # The proposal also permits unlisted numeric constants defined by equations.
-    residuals = [parse_equation(formula) for formula in formulas]
     numeric_constants = set()
-    for residual in residuals:
-        # Constant definitions obey the same equality contract as every other
-        # mechanism equation: k=2, 2=k and k-2=0 are interchangeable.
-        constant_symbols = residual.free_symbols
-        if len(constant_symbols) != 1:
-            continue
-        symbol = next(iter(constant_symbols))
-        if str(symbol) in names:
-            continue
-        try:
-            values = sp.solve(residual, symbol, check=True)
-        except (NotImplementedError, ValueError):
-            continue
-        if len(values) == 1 and not values[0].free_symbols and values[0].is_real is not False:
-            numeric_constants.add(str(symbol))
-    all_used = set().union(*(set(map(str, residual.free_symbols)) for residual in residuals))
+    for f in formulas:
+        a, b = split_equation(f)
+        if NAME.fullmatch(a) and a not in names and not parse_expression(b).free_symbols:
+            numeric_constants.add(a)
+    all_used = set().union(*(set(map(str, parse_equation(f).free_symbols)) for f in formulas))
     if unknown := all_used - set(names) - numeric_constants:
         raise ValidationError(f'Undeclared nonconstant variables: {sorted(unknown)}')
     if len(formulas) != len(required) + len(numeric_constants):

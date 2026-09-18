@@ -4,7 +4,6 @@ Each probe restores the exact saved rollout into a fresh CODEX_HOME. No probe
 turns are ever appended to the original checkpoint or seen by another probe.
 """
 from __future__ import annotations
-from contextlib import nullcontext
 import json
 import os
 from pathlib import Path
@@ -12,7 +11,6 @@ import re
 import shutil
 import signal
 import subprocess
-import sys
 import tempfile
 import time
 import tomllib
@@ -33,65 +31,35 @@ def _toml(value):
     raise TypeError('Unsupported Codex provider configuration value.')
 
 
-def _isolated_home(home: Path, profile=None):
+def _isolated_home(home: Path):
     home.mkdir(parents=True, exist_ok=True)
     original = Path(os.environ.get('CODEX_HOME', Path.home() / '.codex'))
     auth = original / 'auth.json'
-    if auth.is_file() and not profile:
+    if auth.is_file():
         shutil.copy2(auth, home / 'auth.json')
         (home / 'auth.json').chmod(0o600)
     # Preserve account/provider configuration, but not user instructions, MCP,
     # plugins, skills or hooks. Credentials are never written into run artifacts.
-    config = {}
     config_file = original / 'config.toml'
     if config_file.is_file():
         config = tomllib.loads(config_file.read_text())
         keys = ('model', 'model_provider', 'model_providers', 'model_reasoning_effort',
                 'chatgpt_base_url', 'openai_base_url')
         (home / 'config.toml').write_text('\n'.join(f'{k} = {_toml(config[k])}' for k in keys if k in config))
-    if profile:
-        if not re.fullmatch(r'[A-Za-z0-9_-]+', profile): raise ValueError('Invalid Codex profile name.')
-        profile_file = original / f'{profile}.config.toml'
-        selected = tomllib.loads(profile_file.read_text())
-        provider = selected['model_provider']
-        definition = dict(config.get('model_providers', {}).get(provider, {}))
-        definition.update(selected.get('model_providers', {}).get(provider, {}))
-        # Profiles used for experiments authenticate through environment values;
-        # never copy account credentials into their persistent runtime artifacts.
-        safe = {k: definition[k] for k in ('name', 'base_url', 'wire_api', 'env_key',
-                                          'request_max_retries', 'stream_max_retries',
-                                          'stream_idle_timeout_ms') if k in definition}
-        if provider == 'openrouter': safe['env_key'] = 'OPENROUTER_API_KEY'
-        elif 'env_key' not in safe: raise ValueError('Persistent profiles require an env_key provider.')
-        selected = {k: selected[k] for k in ('model', 'model_provider', 'model_reasoning_effort') if k in selected}
-        selected['model_providers'] = {provider: safe}
-        # The base also contains only this provider, with no inherited auth.
-        text = '\n'.join(f'{k} = {_toml(v)}' for k, v in selected.items())
-        (home / 'config.toml').write_text(text)
-        (home / f'{profile}.config.toml').write_text(text)
     env = dict(os.environ, CODEX_HOME=str(home))
     no_proxy = env.get('NO_PROXY', env.get('no_proxy', ''))
     env['NO_PROXY'] = env['no_proxy'] = no_proxy + ',localhost,127.0.0.1,::1'
     return env
 
 
-def _command(args, *, probe=False, workspace=None):
+def _command(args, *, probe=False):
     command = [getattr(args, 'codex_bin', 'codex'), 'exec']
     if probe: command.append('resume')
     command += ['--json', '--skip-git-repo-check', '-c', 'approval_policy="never"',
                 '-c', 'web_search="disabled"', '-c', 'features.apps=false',
                 '-c', 'features.plugins=false', '-c', 'features.hooks=false',
-                '-c', 'features.multi_agent=false', '-c', 'features.memories=false',
-                '-c', 'features.shell_snapshot=false',
-                '-c', 'allow_login_shell=false', '-c', 'analytics.enabled=false']
-    if tool_path := getattr(args, 'codex_tool_path', None):
-        command += ['-c', f'shell_environment_policy.set.PATH={_toml(tool_path)}']
+                '-c', 'features.multi_agent=false', '-c', 'features.memories=false']
     if getattr(args, 'codex_model', None): command += ['--model', args.codex_model]
-    if getattr(args, 'codex_profile', None): command += ['--profile', args.codex_profile]
-    for attribute, key in [('codex_provider_base_url', 'model_providers.openrouter.base_url'),
-                           ('codex_provider_env_key', 'model_providers.openrouter.env_key'),
-                           ('codex_reasoning_effort', 'model_reasoning_effort')]:
-        if value := getattr(args, attribute, None): command += ['-c', f'{key}={_toml(value)}']
     if probe:
         command += ['-c', 'sandbox_mode="read-only"', '-c', 'features.shell_tool=false',
                     '-c', 'features.unified_exec=false', '-c', 'features.code_mode=false',
@@ -99,25 +67,8 @@ def _command(args, *, probe=False, workspace=None):
                     '-c', 'features.image_generation=false', '-c', 'features.browser_use=false',
                     '-c', 'features.computer_use=false', '-c', 'features.sleep_tool=false']
     else:
-        if private := getattr(args, 'codex_private_root', None):
-            private = Path(private).resolve()
-            permissions = {'filesystem': {':root': 'read', str(workspace): 'write',
-                            str(Path.home() / '.codex/auth.json'): 'deny',
-                            str(Path.home() / '.zshrc'): 'deny'},
-                           'network': {'enabled': True}}
-            aliases = {str(private), str(private).replace('/mnt/mergerfs/yuzihan/', '/data2/yuzihan/')}
-            for alias in aliases:
-                for hidden in ('.env', '.git', 'problems', 'playground', 'legacy', 'docs', 'src', 'logs/run'):
-                    permissions['filesystem'][str(Path(alias) / hidden)] = 'deny'
-            if blocked := getattr(args, 'codex_blocked_tools', None):
-                # The shim lives outside denied directories so its read grant
-                # need not reopen a deny mount on current Linux runtimes.
-                permissions['filesystem'][str(Path(blocked).resolve())] = 'read'
-            command += ['-c', f'permissions.benchmark={_toml(permissions)}',
-                        '-c', 'default_permissions="benchmark"', '--color', 'never']
-        else:
-            command += ['--sandbox', 'workspace-write', '--color', 'never',
-                        '-c', 'sandbox_workspace_write.network_access=true']
+        command += ['--sandbox', 'workspace-write', '--color', 'never',
+                    '-c', 'sandbox_workspace_write.network_access=true']
     return command
 
 
@@ -172,21 +123,16 @@ def run(args, problem_file: Path, train_data_npy_file: Path, feedback_server_url
     submission = save / 'submission.txt'
     # Submission is deliberately saved only from this run, never a stale artifact.
     if submission.exists(): raise FileExistsError(f'Run artifact already exists: {submission}')
-    if getattr(args, 'persist_runtime', False) and not getattr(args, 'codex_profile', None):
-        raise ValueError('Persistent runtimes require an environment-authenticated profile.')
-    runtime = save / 'runtime'
-    context = nullcontext(str(runtime)) if getattr(args, 'persist_runtime', False) else tempfile.TemporaryDirectory(prefix='mdbench-codex-')
-    with context as directory:
+    with tempfile.TemporaryDirectory(prefix='mdbench-codex-') as directory:
         root = Path(directory)
         workspace = root / 'workspace'
-        workspace.mkdir(parents=True)
+        workspace.mkdir()
         shutil.copy2(problem_file, workspace / 'problem.json')
         shutil.copy2(train_data_npy_file, workspace / 'train.npy')
-        env = _isolated_home(root / 'home', getattr(args, 'codex_profile', None))
+        env = _isolated_home(root / 'home')
         prompt = f'''Discover a scientific mechanism from the observations in problem.json and train.npy.
 Only observed variables are provided. The NPY array has shape (variables, samples);
 row names and their scientific meanings are in problem.json data_columns/variables.
-Scientific Python is available at {sys.executable}; use it for numpy/sympy analysis.
 Propose a set of algebraic equations involving those inputs, the target and any
 scientifically meaningful unobserved internal states needed to explain the data.
 No separate symbolic constants: define their numerical values as equations.
@@ -203,17 +149,13 @@ submission (submission.txt). For example use Python session.post(url, files={{
 "problem": open("problem.json", "rb"), "train_data": open("train.npy", "rb"),
 "submission": open("submission.txt", "rb")}}).json().
 Internal predictions may be queried later. Do not use external reference answers.
-Do not run git commands. Do not read shell startup files or credentials.
-Do not inspect files outside this workspace, except the provided Python environment.
 End with the same equations as your submission, so the final conversation records it.
 '''
         (save / 'prompt.txt').write_text(prompt)
         final = workspace / 'last_message.txt'
-        status = _invoke(_command(args, workspace=workspace) + ['-o', str(final), '-'], prompt, workspace, env, events, errors, args.timeout)
+        status = _invoke(_command(args) + ['-o', str(final), '-'], prompt, workspace, env, events, errors, args.timeout)
         model = {'algorithm': 'codex', 'submission': str(submission), 'events': str(events),
                  'session': str(checkpoint), 'codex_model': getattr(args, 'codex_model', None), **status}
-        model['codex_profile'] = getattr(args, 'codex_profile', None)
-        if getattr(args, 'persist_runtime', False): model['runtime'] = str(runtime)
         if (workspace / 'submission.txt').is_file():
             submission.write_text(clean_ansi((workspace / 'submission.txt').read_text()))
         if final.is_file():
@@ -253,13 +195,12 @@ class CodexConversation:
     def ask(self, prompt: str, *, output_dir: str | Path) -> str:
         output = Path(output_dir).resolve()
         output.mkdir(parents=True, exist_ok=True)
-        context = nullcontext(str(output / 'runtime')) if getattr(self.args, 'persist_runtime', False) else tempfile.TemporaryDirectory(prefix='mdbench-probe-')
-        with context as directory:
+        with tempfile.TemporaryDirectory(prefix='mdbench-probe-') as directory:
             root = Path(directory)
             workspace = root / 'workspace'
-            workspace.mkdir(parents=True)
+            workspace.mkdir()
             home = root / 'home'
-            env = _isolated_home(home, getattr(self.args, 'codex_profile', None))
+            env = _isolated_home(home)
             sessions = home / 'sessions'
             sessions.mkdir()
             # Rebind the now-deleted training workspace; conversation content and
@@ -293,7 +234,6 @@ def resume(args, model):
     import copy
     args = copy.copy(args)
     if not getattr(args, 'codex_model', None): args.codex_model = model.get('codex_model')
-    if not getattr(args, 'codex_profile', None): args.codex_profile = model.get('codex_profile')
     return CodexConversation(args, model)
 
 
@@ -301,12 +241,4 @@ def update_parser(parser):
     parser.add_argument('--timeout', type=float, default=600, help='Agent run time limit in seconds.')
     parser.add_argument('--codex-bin', default='codex')
     parser.add_argument('--codex-model', default=None)
-    parser.add_argument('--codex-profile', default=None)
-    parser.add_argument('--codex-provider-base-url', default=None)
-    parser.add_argument('--codex-provider-env-key', default=None)
-    parser.add_argument('--codex-reasoning-effort', default=None)
-    parser.add_argument('--persist-runtime', action='store_true', help='Keep live workspace and rollouts under save_path for interrupted-run recovery.')
-    parser.add_argument('--codex-private-root', default=None, help='Deny agent tool access to private benchmark files, while allowing its workspace and the project venv.')
-    parser.add_argument('--codex-blocked-tools', default=None)
-    parser.add_argument('--codex-tool-path', default=None)
     return parser

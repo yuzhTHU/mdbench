@@ -2,13 +2,9 @@
 import argparse
 import importlib
 
-COMMANDS = {
-    'validate': 'validate_problem', 
-    'synthetic': 'synthetic_data',
-    'export': 'export_problems', 
-    'feedback': 'feedback_server', 
-    'evaluate': 'evaluate'
-}
+COMMANDS = {'validate': 'validate_problem', 'synthetic': 'synthetic_data',
+            'export': 'export_problems', 'feedback': 'feedback_server', 'evaluate': 'evaluate'}
+
 
 def get_parser():
     parser = argparse.ArgumentParser(prog='mdbench')
