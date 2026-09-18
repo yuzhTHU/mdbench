@@ -1,0 +1,64 @@
+task_name: Surface Bimolecular Catalysis - Variant 1-4-5
+task_description: Two maintained dilute reactants contact a catalytic surface. Relate the initial product formation
+  rate to their bulk concentrations at fixed catalyst loading.
+mutation: Combine Variants 1, 4, 5; apply all component changes in the same balance equations.
+mechanism_model:
+- formula: a = ((1.3 * A / (1 + 0.21 * A)) / (1 + 0.17 * (A + B))) * v
+  role: constitutive/component relations
+  description: First reactant rapid adsorption equilibrium.
+- formula: b = (0.8 * B) * v
+  role: constitutive/component relations
+  description: Second reactant rapid adsorption equilibrium.
+- formula: v + (1) * a + b = (1 / (1 + 0.19 * A * B))
+  role: conservation/balance relations
+  description: Reference site conservation including any eliminated inactive populations.
+- formula: r = (2.3 / (1 + 0.17 * (A + B))) * a * b
+  role: governing/dynamical laws
+  description: Reaction between two adsorbed species in the adsorption pre-equilibrium limit.
+phenomenal_model: r = (2.3 / (1 + 0.17 * (A + B))) * ((1.3 * A / (1 + 0.21 * A)) / (1 + 0.17 * (A + B))) * (0.8
+  * B) * ((1 / (1 + 0.19 * A * B)) / (1 + (1) * ((1.3 * A / (1 + 0.21 * A)) / (1 + 0.17 * (A + B))) + (0.8 * B)))^2
+variables:
+- name: r
+  description: Initial product formation rate per reference catalyst amount.
+  unit: s^-1
+  role: target
+- name: A
+  description: Maintained first reactant concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: B
+  description: Maintained second reactant concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: v
+  description: Vacant site fraction per reference site.
+  unit: '1'
+  role: internal
+- name: a
+  description: First adsorbate coverage per reference site.
+  unit: '1'
+  role: internal
+- name: b
+  description: Second adsorbate coverage per reference site.
+  unit: '1'
+  role: internal
+mechanism_probes:
+- probe: a
+  description: First adsorbate coverage per reference site.
+  answer: a
+- probe: b
+  description: Second adsorbate coverage per reference site.
+  answer: b
+- probe: v
+  description: Vacant site fraction per reference site.
+  answer: v

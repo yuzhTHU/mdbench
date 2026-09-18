@@ -1,0 +1,73 @@
+task_name: Competitive Enzyme Inhibition - Variant 1-2-3-4
+task_description: An enzyme reacts with substrate in the presence of an inhibitor. Relate initial product formation
+  rate to free substrate, free inhibitor, and total enzyme concentrations.
+mutation: Combine Variants 1, 2, 3, 4; apply all component changes in the same balance equations.
+mechanism_model:
+- formula: (1.4 * S / (1 + 0.21 * S)) * e = (0.9 + (2.1)) * c
+  role: conservation/balance relations
+  description: Substrate complex quasi-steady-state balance.
+- formula: (1.1 * I * (1 + 0.13 * I)) * e = (0.7 * (1 + 0.19 * S)) * q
+  role: conservation/balance relations
+  description: Inhibitor complex rapid binding balance.
+- formula: (1 + 0.11 * I * S) * e + c + q = E
+  role: conservation/balance relations
+  description: Enzyme site conservation after eliminating any inactive pool.
+- formula: r = (2.1) * c
+  role: governing/dynamical laws
+  description: Product formation from the substrate complex.
+phenomenal_model: r = (2.1) * E * (1.4 * S / (1 + 0.21 * S)) / (0.9 + (2.1)) / ((1 + 0.11 * I * S) + (1.4 * S /
+  (1 + 0.21 * S)) / (0.9 + (2.1)) + (1.1 * I * (1 + 0.13 * I)) / (0.7 * (1 + 0.19 * S)))
+variables:
+- name: r
+  description: Initial product formation rate.
+  unit: mol m^-3 s^-1
+  role: target
+- name: S
+  description: Maintained free substrate concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: I
+  description: Maintained free inhibitor concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: E
+  description: Total enzyme concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-07
+    max: 0.0001
+    ood_boundary: 1.0e-05
+    distribution: log_uniform
+- name: e
+  description: Free active enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: c
+  description: Enzyme-substrate complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: q
+  description: Enzyme-inhibitor complex concentration.
+  unit: mol m^-3
+  role: internal
+mechanism_probes:
+- probe: e
+  description: Free active enzyme concentration.
+  answer: e
+- probe: c
+  description: Enzyme-substrate complex concentration.
+  answer: c
+- probe: q
+  description: Enzyme-inhibitor complex concentration.
+  answer: q

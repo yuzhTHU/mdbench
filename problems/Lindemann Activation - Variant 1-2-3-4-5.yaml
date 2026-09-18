@@ -1,0 +1,54 @@
+task_name: Lindemann Activation - Variant 1-2-3-4-5
+task_description: A dilute reactant undergoes collision activation in a maintained bath. Relate its initial product
+  formation rate to reactant and bath concentrations.
+mutation: Combine Variants 1, 2, 3, 4, 5; apply all component changes in the same balance equations.
+mechanism_model:
+- formula: j = ((1.7 * M / (1 + 0.23 * M)) * (1 + 0.11 * A^2)) * A
+  role: constitutive/component relations
+  description: Collision activation flux.
+- formula: j = ((0.8 * M * (1 + 0.19 * M)) + (0.41) + (2.3 / (1 + 0.17 * M))) * u
+  role: conservation/balance relations
+  description: Activated population steady-state balance, including every exit channel.
+- formula: r = (2.3 / (1 + 0.17 * M)) * u
+  role: governing/dynamical laws
+  description: Product formation from activated molecules.
+phenomenal_model: r = (2.3 / (1 + 0.17 * M)) * ((1.7 * M / (1 + 0.23 * M)) * (1 + 0.11 * A^2)) * A / ((0.8 * M *
+  (1 + 0.19 * M)) + (0.41) + (2.3 / (1 + 0.17 * M)))
+variables:
+- name: r
+  description: Initial product formation rate.
+  unit: mol m^-3 s^-1
+  role: target
+- name: A
+  description: Maintained unactivated reactant concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: M
+  description: Maintained collision bath concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: u
+  description: Activated reactant concentration.
+  unit: mol m^-3
+  role: internal
+- name: j
+  description: Forward activation flux.
+  unit: mol m^-3 s^-1
+  role: internal
+mechanism_probes:
+- probe: u
+  description: Activated reactant concentration.
+  answer: u
+- probe: j
+  description: Forward activation flux.
+  answer: j

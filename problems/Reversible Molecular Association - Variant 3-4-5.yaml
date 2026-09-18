@@ -1,0 +1,54 @@
+task_name: Reversible Molecular Association - Variant 3-4-5
+task_description: A finite molecular pool associates reversibly with a reservoir-maintained partner. Relate equilibrium
+  complex concentration to total pool concentration and reservoir partner concentration.
+mutation: Combine Variants 3, 4, 5; apply all component changes in the same balance equations.
+mechanism_model:
+- formula: b = ((L) / (1 + 0.21 * L / (1 + 0.37 * T)))
+  role: constitutive/component relations
+  description: Local partner concentration set by reservoir partitioning.
+- formula: c = (1.8) * a * b
+  role: constitutive/component relations
+  description: Association and dissociation equilibrium of the active species.
+- formula: (1 + 0.17 * T / (1 + 0.11 * L) + 0.23 * L) * a + c = (T)
+  role: conservation/balance relations
+  description: Molecular pool conservation after eliminating stored populations.
+phenomenal_model: c = (T) * (1.8) * ((L) / (1 + 0.21 * L / (1 + 0.37 * T))) / ((1 + 0.17 * T / (1 + 0.11 * L) +
+  0.23 * L) + (1.8) * ((L) / (1 + 0.21 * L / (1 + 0.37 * T))))
+variables:
+- name: c
+  description: Active associated complex concentration.
+  unit: mol m^-3
+  role: target
+- name: T
+  description: Total reference molecular pool concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: L
+  description: Maintained reservoir partner concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: a
+  description: Free active molecular pool concentration.
+  unit: mol m^-3
+  role: internal
+- name: b
+  description: Local free association partner concentration.
+  unit: mol m^-3
+  role: internal
+mechanism_probes:
+- probe: a
+  description: Free active molecular pool concentration.
+  answer: a
+- probe: b
+  description: Local free association partner concentration.
+  answer: b

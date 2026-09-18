@@ -1,0 +1,41 @@
+task_name: Langmuir Surface Adsorption - Variant 5
+task_description: A maintained gas contacts an adsorbing surface at fixed temperature. Relate equilibrium surface
+  coverage to the gas concentration.
+mutation: Reduce the available site pool through an eliminated gas-dependent blocking equilibrium.
+mechanism_model:
+- formula: j = (1.4 * C) * v
+  role: constitutive/component relations
+  description: Forward adsorption exchange flux per reference site.
+- formula: j = (0.9) * theta
+  role: conservation/balance relations
+  description: Adsorption and desorption flux balance at equilibrium.
+- formula: v + (1) * theta = (1 / (1 + 0.17 * C^2))
+  role: conservation/balance relations
+  description: Reference site conservation including eliminated unavailable populations.
+phenomenal_model: theta = (1 / (1 + 0.17 * C^2)) * (1.4 * C) / ((0.9) + (1) * (1.4 * C))
+variables:
+- name: theta
+  description: Adsorbate coverage per reference site.
+  unit: '1'
+  role: target
+- name: C
+  description: Maintained gas concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: v
+  description: Vacant site fraction per reference site.
+  unit: '1'
+  role: internal
+- name: j
+  description: Forward adsorption exchange flux per reference site.
+  unit: s^-1
+  role: internal
+mechanism_probes:
+- probe: v
+  description: Vacant site fraction per reference site.
+  answer: v

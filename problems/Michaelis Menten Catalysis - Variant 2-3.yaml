@@ -1,0 +1,54 @@
+task_name: Michaelis Menten Catalysis - Variant 2-3
+task_description: An enzyme converts a maintained dilute substrate to product. Relate the initial reaction rate
+  to substrate concentration and total enzyme concentration.
+mutation: Combine Variants 2, 3; apply all component changes in the same balance equations.
+mechanism_model:
+- formula: ((1.4 * S) * (1 + 0.09 * S^2)) * e = (0.9 + (2.1) + 0.31 * S) * c
+  role: conservation/balance relations
+  description: Enzyme-substrate complex quasi-steady-state balance.
+- formula: (1) * e + c = E
+  role: conservation/balance relations
+  description: Total enzyme balance after eliminating any inactive pool.
+- formula: r = (2.1) * c
+  role: governing/dynamical laws
+  description: Catalytic product formation.
+phenomenal_model: r = (2.1) * E * ((1.4 * S) * (1 + 0.09 * S^2)) / ((0.9 + (2.1) + 0.31 * S) * (1) + ((1.4 * S)
+  * (1 + 0.09 * S^2)))
+variables:
+- name: r
+  description: Initial product formation rate.
+  unit: mol m^-3 s^-1
+  role: target
+- name: S
+  description: Maintained free substrate concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: E
+  description: Total enzyme concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-07
+    max: 0.0001
+    ood_boundary: 1.0e-05
+    distribution: log_uniform
+- name: e
+  description: Free active enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: c
+  description: Enzyme-substrate complex concentration.
+  unit: mol m^-3
+  role: internal
+mechanism_probes:
+- probe: e
+  description: Free active enzyme concentration.
+  answer: e
+- probe: c
+  description: Enzyme-substrate complex concentration.
+  answer: c

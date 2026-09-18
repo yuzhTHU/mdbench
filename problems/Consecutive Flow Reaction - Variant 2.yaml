@@ -1,0 +1,54 @@
+task_name: Consecutive Flow Reaction - Variant 2
+task_description: A maintained reactant feeds consecutive reactions in a well-mixed flow reactor. Relate steady-state
+  product formation rate to reactant concentration and dilution rate.
+mutation: Couple intermediate transfer efficiency to maintained reactant concentration.
+mechanism_model:
+- formula: (1.2 * A) + (0) * c = ((0.8 / (1 + 0.17 * A)) + D + (0)) * b
+  role: conservation/balance relations
+  description: First intermediate steady-state flow and reaction balance.
+- formula: (0.8 / (1 + 0.17 * A)) * b = ((1.6) + D + (0)) * c
+  role: conservation/balance relations
+  description: Second intermediate steady-state flow and reaction balance.
+- formula: r = (1.6) * c
+  role: governing/dynamical laws
+  description: Terminal product formation flux.
+phenomenal_model: r = (1.6) * (1.2 * A) * (0.8 / (1 + 0.17 * A)) / (((0.8 / (1 + 0.17 * A)) + D + (0)) * ((1.6)
+  + D + (0)) - (0) * (0.8 / (1 + 0.17 * A)))
+variables:
+- name: r
+  description: Steady-state product formation rate.
+  unit: mol m^-3 s^-1
+  role: target
+- name: A
+  description: Maintained feed reactant concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: D
+  description: Reactor dilution rate.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.02
+    max: 3.0
+    ood_boundary: 0.5
+    distribution: log_uniform
+- name: b
+  description: First intermediate concentration.
+  unit: mol m^-3
+  role: internal
+- name: c
+  description: Second intermediate concentration.
+  unit: mol m^-3
+  role: internal
+mechanism_probes:
+- probe: b
+  description: First intermediate concentration.
+  answer: b
+- probe: c
+  description: Second intermediate concentration.
+  answer: c
