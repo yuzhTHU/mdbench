@@ -1,0 +1,85 @@
+task_name: Astronomy Galaxy Rotation - Variant 1-2-5
+task_description: An object follows a circular orbit within a galaxy. The target is its circular orbital speed.
+mutation: Combines variants 1&2&5; each replacement applies to its own mechanism relation.
+mechanism_model:
+- formula: b = R_h/7
+  role: kinematic/geometric constraints
+  description: Normalized baryonic concentration radius.
+- formula: M_he = M_h*(r/R_h)**(13/4)
+  role: kinematic/geometric constraints
+  description: Normalized enclosed halo mass.
+- formula: M_be = M_b*r**(13/4)/(r**(13/4)+b**(13/4))+M_b*M_he/(17*(M_b+M_h))*(r/R_h)**2
+  role: kinematic/geometric constraints
+  description: Normalized enclosed baryonic mass.
+- formula: g = (M_be+M_he)/r**2
+  role: governing/dynamical laws
+  description: Normalized inward gravitational acceleration.
+- formula: v = sqrt(g*r)
+  role: kinematic/geometric constraints
+  description: Normalized circular orbital speed.
+phenomenal_model: v = sqrt(M_b*M_h*r**(21/4)/(R_h**(21/4)*(17*M_b + 17*M_h)) + M_b*r**(13/4)/(7**(3/4)*R_h**(13/4)/2401 +
+  r**(13/4)) + M_h*r**(13/4)/R_h**(13/4))/sqrt(r)
+variables:
+- name: M_b
+  description: Normalized baryonic mass scale.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.3
+    max: 3.0
+    ood_boundary: 1.65
+    distribution: uniform
+- name: M_h
+  description: Normalized halo mass within its reference radius.
+  unit: '1'
+  role: input
+  sampling:
+    min: 3.0
+    max: 20.0
+    ood_boundary: 11.5
+    distribution: uniform
+- name: R_h
+  description: Normalized halo reference radius.
+  unit: '1'
+  role: input
+  sampling:
+    min: 10.0
+    max: 20.0
+    ood_boundary: 15.0
+    distribution: uniform
+- name: r
+  description: Normalized orbital radius.
+  unit: '1'
+  role: input
+  sampling:
+    min: 1.0
+    max: 5.0
+    ood_boundary: 3.0
+    distribution: uniform
+- name: v
+  description: Normalized circular orbital speed.
+  unit: '1'
+  role: target
+- name: b
+  description: Normalized baryonic concentration radius.
+  unit: '1'
+  role: internal
+- name: M_he
+  description: Normalized enclosed halo mass.
+  unit: '1'
+  role: internal
+- name: M_be
+  description: Normalized enclosed baryonic mass.
+  unit: '1'
+  role: internal
+- name: g
+  description: Normalized inward gravitational acceleration.
+  unit: '1'
+  role: internal
+mechanism_probes:
+- probe: M_be
+  description: Normalized enclosed baryonic mass.
+  answer: M_b*M_h*r**(21/4)/(R_h**(21/4)*(17*M_b + 17*M_h)) + M_b*r**(13/4)/(7**(3/4)*R_h**(13/4)/2401 + r**(13/4))
+- probe: M_he
+  description: Normalized enclosed halo mass.
+  answer: M_h*r**(13/4)/R_h**(13/4)

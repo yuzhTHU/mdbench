@@ -1,0 +1,112 @@
+task_name: Geoscience Geostrophic Balance - Original
+task_description: A rotating fluid develops horizontal flow under pressure gradients. The target is the magnitude of the steady horizontal velocity.
+mutation: Calibration blueprint with no mutation.
+mechanism_model:
+- formula: ax = px/rho
+  role: governing/dynamical laws
+  description: Applied acceleration along the first horizontal axis
+- formula: ay = py/rho
+  role: governing/dynamical laws
+  description: Applied acceleration along the second horizontal axis
+- formula: fx = f
+  role: constitutive/component relations
+  description: First transverse momentum-response rate
+- formula: fy = f
+  role: constitutive/component relations
+  description: Second transverse momentum-response rate
+- formula: rx = 0
+  role: constitutive/component relations
+  description: First directional momentum-drag rate
+- formula: ry = 0
+  role: constitutive/component relations
+  description: Second directional momentum-drag rate
+- formula: ax = -fy*v + rx*u
+  role: conservation/balance relations
+  description: First horizontal momentum balance
+- formula: ay = fx*u + ry*v
+  role: conservation/balance relations
+  description: Second horizontal momentum balance
+- formula: speed = sqrt(u**2 + v**2)
+  role: kinematic/geometric constraints
+  description: Velocity components determine the observed speed magnitude
+phenomenal_model: speed = sqrt(px**2/(f**2*rho**2) + py**2/(f**2*rho**2))
+variables:
+- name: px
+  description: Pressure decrease per distance along the first horizontal axis
+  unit: kg m^-2 s^-2
+  role: input
+  sampling:
+    min: 0.0002
+    max: 0.002
+    ood_boundary: 0.001
+    distribution: uniform
+- name: py
+  description: Pressure decrease per distance along the second horizontal axis
+  unit: kg m^-2 s^-2
+  role: input
+  sampling:
+    min: 0.0003
+    max: 0.0025
+    ood_boundary: 0.0012
+    distribution: uniform
+- name: rho
+  description: Reference fluid mass density
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 0.9
+    max: 1.5
+    ood_boundary: 1.2
+    distribution: uniform
+- name: f
+  description: Positive local Coriolis parameter
+  unit: s^-1
+  role: input
+  sampling:
+    min: 7.0e-05
+    max: 0.00014
+    ood_boundary: 0.0001
+    distribution: uniform
+- name: speed
+  description: Magnitude of steady horizontal velocity
+  unit: m s^-1
+  role: target
+- name: ax
+  description: Applied acceleration along the first horizontal axis
+  unit: m s^-2
+  role: internal
+- name: ay
+  description: Applied acceleration along the second horizontal axis
+  unit: m s^-2
+  role: internal
+- name: fx
+  description: First transverse momentum-response rate
+  unit: s^-1
+  role: internal
+- name: fy
+  description: Second transverse momentum-response rate
+  unit: s^-1
+  role: internal
+- name: rx
+  description: First directional momentum-drag rate
+  unit: s^-1
+  role: internal
+- name: ry
+  description: Second directional momentum-drag rate
+  unit: s^-1
+  role: internal
+- name: u
+  description: Signed velocity along the first horizontal axis
+  unit: m s^-1
+  role: internal
+- name: v
+  description: Signed velocity along the second horizontal axis
+  unit: m s^-1
+  role: internal
+mechanism_probes:
+- probe: u
+  description: Signed velocity along the first horizontal axis
+  answer: py/(f*rho)
+- probe: v
+  description: Signed velocity along the second horizontal axis
+  answer: -px/(f*rho)

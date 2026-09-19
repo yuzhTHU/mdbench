@@ -1,0 +1,145 @@
+task_name: Astronomy Gravitational Lensing - Variant 1-2-3-4
+task_description: A foreground gravitational lens deflects light from a background source. The target is the angular position of the positive image.
+mutation: Combines variants 1&2&3&4; each replacement applies to its own mechanism relation.
+mechanism_model:
+- formula: D_s = D_l+D_ls
+  role: kinematic/geometric constraints
+  description: Normalized source propagation distance.
+- formula: d_c = D_l*(1+D_ls/(17*D_s))
+  role: kinematic/geometric constraints
+  description: Normalized effective compact-channel propagation distance.
+- formula: d_e = D_l+D_ls/3*(1+D_l/(19*D_s))
+  role: kinematic/geometric constraints
+  description: Normalized effective extended-channel propagation distance.
+- formula: C_c = 8*M/3*(1+M/11)*(1+D_l/(17*D_ls))/(1+beta**2/(19e-4))
+  role: governing/dynamical laws
+  description: Normalized uncoupled compact-channel bending coefficient.
+- formula: C_e = 4*M/3*(1+M**2/13)*(1+D_ls/(19*D_l))*(1+beta/(23e-2))
+  role: governing/dynamical laws
+  description: Normalized uncoupled extended-channel bending coefficient.
+- formula: J_c = C_c*(D_s-d_c)/(d_c*D_s)
+  role: kinematic/geometric constraints
+  description: Uncoupled compact-channel reduced deflection strength.
+- formula: J_e = C_e*(D_s-d_e)/(d_e*D_s)
+  role: kinematic/geometric constraints
+  description: Uncoupled extended-channel reduced deflection strength.
+- formula: eta_c = 0
+  role: auxiliary/regime constraints
+  description: Extended-to-compact channel response coefficient.
+- formula: eta_e = 0
+  role: auxiliary/regime constraints
+  description: Compact-to-extended channel response coefficient.
+- formula: A_c = (J_c+eta_c*J_e)/(1-eta_c*eta_e)
+  role: conservation/balance relations
+  description: Compact-channel reduced angular deflection strength.
+- formula: A_e = (J_e+eta_e*J_c)/(1-eta_c*eta_e)
+  role: conservation/balance relations
+  description: Extended-channel reduced angular deflection strength.
+- formula: E_sq = A_c+A_e
+  role: conservation/balance relations
+  description: Total angular deflection strength in the image equation.
+- formula: theta = (beta+sqrt(beta**2+4*E_sq))/2
+  role: kinematic/geometric constraints
+  description: Angular position of the positive image in radians.
+phenomenal_model: theta = beta/2 + sqrt(16*M*(1 + D_ls/(19*D_l))*(M**2/13 + 1)*(100*beta/23 + 1)*(-D_ls*(D_l/(19*(D_l + D_ls))
+  + 1)/3 + D_ls)/(3*(D_l + D_ls)*(D_l + D_ls*(D_l/(19*(D_l + D_ls)) + 1)/3)) + beta**2 + 32*M*(M/11 + 1)*(D_l/(17*D_ls) +
+  1)*(-D_l*(D_ls/(17*(D_l + D_ls)) + 1) + D_l + D_ls)/(3*D_l*(D_l + D_ls)*(10000*beta**2/19 + 1)*(D_ls/(17*(D_l + D_ls)) +
+  1)))/2
+variables:
+- name: M
+  description: Normalized lens mass.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.1
+    max: 1.0
+    ood_boundary: 0.55
+    distribution: uniform
+- name: D_l
+  description: Normalized observer-to-lens distance.
+  unit: '1'
+  role: input
+  sampling:
+    min: 100000.0
+    max: 500000.0
+    ood_boundary: 300000.0
+    distribution: uniform
+- name: D_ls
+  description: Normalized lens-to-source distance.
+  unit: '1'
+  role: input
+  sampling:
+    min: 100000.0
+    max: 500000.0
+    ood_boundary: 300000.0
+    distribution: uniform
+- name: beta
+  description: Source angular position in radians.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.001
+    max: 0.01
+    ood_boundary: 0.0055
+    distribution: uniform
+- name: theta
+  description: Angular position of the positive image in radians.
+  unit: '1'
+  role: target
+- name: D_s
+  description: Normalized source propagation distance.
+  unit: '1'
+  role: internal
+- name: d_c
+  description: Normalized effective compact-channel propagation distance.
+  unit: '1'
+  role: internal
+- name: d_e
+  description: Normalized effective extended-channel propagation distance.
+  unit: '1'
+  role: internal
+- name: C_c
+  description: Normalized uncoupled compact-channel bending coefficient.
+  unit: '1'
+  role: internal
+- name: C_e
+  description: Normalized uncoupled extended-channel bending coefficient.
+  unit: '1'
+  role: internal
+- name: J_c
+  description: Uncoupled compact-channel reduced deflection strength.
+  unit: '1'
+  role: internal
+- name: J_e
+  description: Uncoupled extended-channel reduced deflection strength.
+  unit: '1'
+  role: internal
+- name: eta_c
+  description: Extended-to-compact channel response coefficient.
+  unit: '1'
+  role: internal
+- name: eta_e
+  description: Compact-to-extended channel response coefficient.
+  unit: '1'
+  role: internal
+- name: A_c
+  description: Compact-channel reduced angular deflection strength.
+  unit: '1'
+  role: internal
+- name: A_e
+  description: Extended-channel reduced angular deflection strength.
+  unit: '1'
+  role: internal
+- name: E_sq
+  description: Total angular deflection strength in the image equation.
+  unit: '1'
+  role: internal
+mechanism_probes:
+- probe: A_c
+  description: Compact-channel reduced angular deflection strength.
+  answer: 8*M*(M/11 + 1)*(D_l/(17*D_ls) + 1)*(-D_l*(D_ls/(17*(D_l + D_ls)) + 1) + D_l + D_ls)/(3*D_l*(D_l + D_ls)*(10000*beta**2/19
+    + 1)*(D_ls/(17*(D_l + D_ls)) + 1))
+- probe: A_e
+  description: Extended-channel reduced angular deflection strength.
+  answer: 4*M*(1 + D_ls/(19*D_l))*(M**2/13 + 1)*(100*beta/23 + 1)*(-D_ls*(D_l/(19*(D_l + D_ls)) + 1)/3 + D_ls)/(3*(D_l + D_ls)*(D_l
+    + D_ls*(D_l/(19*(D_l + D_ls)) + 1)/3))

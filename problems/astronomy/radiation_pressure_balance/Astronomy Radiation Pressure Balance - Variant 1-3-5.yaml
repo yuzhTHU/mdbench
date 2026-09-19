@@ -1,0 +1,97 @@
+task_name: Astronomy Radiation Pressure Balance - Variant 1-3-5
+task_description: Gas near a star is exposed to outward radiation. The target is the limiting stellar luminosity.
+mutation: Combines variants 1&3&5; each replacement applies to its own mechanism relation.
+mechanism_model:
+- formula: pi0 = 3.141592653589793
+  role: auxiliary/regime constraints
+  description: Circle constant.
+- formula: r = 100*M**(1/3)
+  role: kinematic/geometric constraints
+  description: Normalized radius of the reference radiating shell.
+- formula: M_e = M*(1+100/(7*r))
+  role: kinematic/geometric constraints
+  description: Normalized mass sourcing the inward force.
+- formula: g = M_e/r**2
+  role: governing/dynamical laws
+  description: Normalized inward gravitational acceleration.
+- formula: k_e = kappa*(1+kappa/8)
+  role: constitutive/component relations
+  description: Normalized effective momentum-transfer opacity.
+- formula: a_r = g
+  role: conservation/balance relations
+  description: Normalized outward radiative acceleration.
+- formula: F = a_r/k_e
+  role: governing/dynamical laws
+  description: Normalized outward radiative energy flux.
+- formula: A = 4*pi0*r**2*(1+r/1100)
+  role: kinematic/geometric constraints
+  description: Normalized emitting surface area.
+- formula: L = A*F
+  role: conservation/balance relations
+  description: Normalized limiting luminosity.
+phenomenal_model: L = 3141592653589793*M*(1 + 1/(7*M**(1/3)))*(M**(1/3)/11 + 1)/(250000000000000*kappa*(kappa/8 + 1))
+variables:
+- name: M
+  description: Normalized stellar mass.
+  unit: '1'
+  role: input
+  sampling:
+    min: 1.0
+    max: 4.0
+    ood_boundary: 2.5
+    distribution: uniform
+- name: kappa
+  description: Normalized reference mass opacity.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.2
+    max: 2.0
+    ood_boundary: 1.1
+    distribution: uniform
+- name: L
+  description: Normalized limiting luminosity.
+  unit: '1'
+  role: target
+- name: pi0
+  description: Circle constant.
+  unit: '1'
+  role: internal
+- name: r
+  description: Normalized radius of the reference radiating shell.
+  unit: '1'
+  role: internal
+- name: M_e
+  description: Normalized mass sourcing the inward force.
+  unit: '1'
+  role: internal
+- name: g
+  description: Normalized inward gravitational acceleration.
+  unit: '1'
+  role: internal
+- name: k_e
+  description: Normalized effective momentum-transfer opacity.
+  unit: '1'
+  role: internal
+- name: a_r
+  description: Normalized outward radiative acceleration.
+  unit: '1'
+  role: internal
+- name: F
+  description: Normalized outward radiative energy flux.
+  unit: '1'
+  role: internal
+- name: A
+  description: Normalized emitting surface area.
+  unit: '1'
+  role: internal
+mechanism_probes:
+- probe: g
+  description: Normalized inward gravitational acceleration.
+  answer: M**(1/3)*(1 + 1/(7*M**(1/3)))/10000
+- probe: F
+  description: Normalized outward radiative energy flux.
+  answer: M**(1/3)*(1 + 1/(7*M**(1/3)))/(10000*kappa*(kappa/8 + 1))
+- probe: A
+  description: Normalized emitting surface area.
+  answer: 3141592653589793*M**(2/3)*(M**(1/3)/11 + 1)/25000000000

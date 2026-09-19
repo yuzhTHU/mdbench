@@ -1,0 +1,130 @@
+task_name: Geoscience Box Carbon Cycle - Variant 3-4
+task_description: Carbon moves between the atmosphere and environmental reservoirs under a sustained external supply. The target is the steady atmospheric carbon concentration.
+mutation: Combines variants 3&4; all constitutive changes enter the same simultaneous balances.
+mechanism_model:
+- formula: b0 = 1/5000000000
+  role: auxiliary/regime constraints
+  description: Reference ocean burial rate
+- formula: bl = 3/10000000000
+  role: auxiliary/regime constraints
+  description: Terrestrial burial rate
+- formula: r0 = 7/10000000000
+  role: auxiliary/regime constraints
+  description: Reference terrestrial return rate
+- formula: bo = b0
+  role: constitutive/component relations
+  description: Ocean burial rate
+- formula: rl = r0
+  role: constitutive/component relations
+  description: Terrestrial carbon return rate
+- formula: h = 17*ka*kl/(100*(ka + kl))
+  role: constitutive/component relations
+  description: Ocean-land exchange rate
+- formula: p = 13*kl/(100*(kl + ko))
+  role: constitutive/component relations
+  description: Direct terrestrial source fraction
+- formula: g = 0
+  role: constitutive/component relations
+  description: Atmospheric mineral export rate
+- formula: c*ka + h*land = o*(bo + h + ko)
+  role: conservation/balance relations
+  description: Ocean inflows balance atmospheric return, burial, and terrestrial exchange
+- formula: E*p + c*kl + h*o = land*(bl + h + rl)
+  role: conservation/balance relations
+  description: Terrestrial inflows balance atmospheric return, burial, and ocean exchange
+- formula: E*(1 - p) + ko*o + land*rl = c*(g + ka + kl)
+  role: conservation/balance relations
+  description: Atmospheric inflows balance reservoir uptake and mineral export
+phenomenal_model: c = E*(850000000000000000000.0*ka*kl**2*ko + 964750000000*ka*kl**2 + 850000000000000000000.0*ka*kl*ko**2
+  + 5825000000000*ka*kl*ko + 961*ka*kl + 5000000000000*ka*ko**2 + 1000*ka*ko + 4805000000000*kl**2*ko + 961*kl**2 + 5000000000000*kl*ko**2
+  + 1000*kl*ko)/(100*(ka + kl)*(kl + ko)*(4250000000*ka*kl + 10*ka + 15000000000*kl*ko + 3*kl))
+variables:
+- name: E
+  description: External carbon source per reference volume
+  unit: kg m^-3 s^-1
+  role: input
+  sampling:
+    min: 1.0e-11
+    max: 5.0e-10
+    ood_boundary: 1.0e-10
+    distribution: log_uniform
+- name: ka
+  description: Reference atmosphere-to-ocean exchange rate
+  unit: s^-1
+  role: input
+  sampling:
+    min: 1.0e-10
+    max: 2.0e-09
+    ood_boundary: 5.0e-10
+    distribution: log_uniform
+- name: ko
+  description: Reference ocean-to-atmosphere exchange rate
+  unit: s^-1
+  role: input
+  sampling:
+    min: 2.0e-10
+    max: 3.0e-09
+    ood_boundary: 8.0e-10
+    distribution: log_uniform
+- name: kl
+  description: Reference atmosphere-to-land exchange rate
+  unit: s^-1
+  role: input
+  sampling:
+    min: 1.0e-10
+    max: 1.0e-09
+    ood_boundary: 4.0e-10
+    distribution: log_uniform
+- name: c
+  description: Steady atmospheric carbon concentration
+  unit: kg m^-3
+  role: target
+- name: b0
+  description: Reference ocean burial rate
+  unit: s^-1
+  role: internal
+- name: bl
+  description: Terrestrial burial rate
+  unit: s^-1
+  role: internal
+- name: r0
+  description: Reference terrestrial return rate
+  unit: s^-1
+  role: internal
+- name: bo
+  description: Ocean burial rate
+  unit: s^-1
+  role: internal
+- name: rl
+  description: Terrestrial carbon return rate
+  unit: s^-1
+  role: internal
+- name: h
+  description: Ocean-land exchange rate
+  unit: s^-1
+  role: internal
+- name: p
+  description: Direct terrestrial source fraction
+  unit: '1'
+  role: internal
+- name: g
+  description: Atmospheric mineral export rate
+  unit: s^-1
+  role: internal
+- name: o
+  description: Steady ocean carbon concentration
+  unit: kg m^-3
+  role: internal
+- name: land
+  description: Steady terrestrial carbon concentration
+  unit: kg m^-3
+  role: internal
+mechanism_probes:
+- probe: o
+  description: Steady ocean carbon concentration
+  answer: 50000000*E*ka*(170000000000*kl**2 + 170000000000*kl*ko + 961*kl + 1000*ko)/((kl + ko)*(4250000000*ka*kl + 10*ka
+    + 15000000000*kl*ko + 3*kl))
+- probe: land
+  description: Steady terrestrial carbon concentration
+  answer: 100000000*E*kl*(85000000000*ka*kl + 85000000000*ka*ko + 13*ka + 500000000000*kl*ko + 100*kl + 500000000000*ko**2
+    + 100*ko)/((kl + ko)*(4250000000*ka*kl + 10*ka + 15000000000*kl*ko + 3*kl))

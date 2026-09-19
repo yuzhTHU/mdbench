@@ -1,0 +1,107 @@
+task_name: Astronomy Stellar Hydrostatic Balance - Variant 1-3-5
+task_description: A stellar layer is in hydrostatic equilibrium. The target is the gas pressure at the layer base.
+mutation: Combines variants 1&3&5; each replacement applies to its own mechanism relation.
+mechanism_model:
+- formula: pi0 = 3.141592653589793
+  role: auxiliary/regime constraints
+  description: Circle constant.
+- formula: rho_b = 3*M/(4*pi0*R**3)*(1+(h/R)**2/13)*(1+h/(5*R))
+  role: kinematic/geometric constraints
+  description: Normalized reference density of the layer.
+- formula: M_e = M*(1+(h/R)**2/7)*(1+h/(11*R))*(1+M/(19*R**3))
+  role: kinematic/geometric constraints
+  description: Normalized effective gravitational source mass.
+- formula: g = M_e/R**2
+  role: governing/dynamical laws
+  description: Normalized inward gravitational acceleration.
+- formula: h_e = h*(1+g/(9e-4))
+  role: kinematic/geometric constraints
+  description: Normalized distance over which pressure support acts.
+- formula: rho = rho_b*sqrt(h_e/h)
+  role: constitutive/component relations
+  description: Normalized representative layer density.
+- formula: q = rho*g
+  role: conservation/balance relations
+  description: Normalized gas pressure gradient magnitude.
+- formula: P = P_s+q*h_e
+  role: conservation/balance relations
+  description: Normalized gas pressure at the layer base.
+phenomenal_model: P = 750000000000000*M**2*h*(1 + h**2/(13*R**2))*(1 + h**2/(7*R**2))*(1 + h/(11*R))*(1 + h/(5*R))*(M/(19*R**3)
+  + 1)*(10000*M*(1 + h**2/(7*R**2))*(1 + h/(11*R))*(M/(19*R**3) + 1)/(9*R**2) + 1)**(3/2)/(3141592653589793*R**5) + P_s
+variables:
+- name: M
+  description: Normalized stellar mass.
+  unit: '1'
+  role: input
+  sampling:
+    min: 1.0
+    max: 4.0
+    ood_boundary: 2.5
+    distribution: uniform
+- name: R
+  description: Normalized stellar radius.
+  unit: '1'
+  role: input
+  sampling:
+    min: 50.0
+    max: 150.0
+    ood_boundary: 100.0
+    distribution: uniform
+- name: h
+  description: Normalized depth of the sampled layer.
+  unit: '1'
+  role: input
+  sampling:
+    min: 1.0
+    max: 5.0
+    ood_boundary: 3.0
+    distribution: uniform
+- name: P_s
+  description: Normalized gas pressure at the layer surface.
+  unit: '1'
+  role: input
+  sampling:
+    min: 1.0e-10
+    max: 1.0e-08
+    ood_boundary: 5.05e-09
+    distribution: log_uniform
+- name: P
+  description: Normalized gas pressure at the layer base.
+  unit: '1'
+  role: target
+- name: pi0
+  description: Circle constant.
+  unit: '1'
+  role: internal
+- name: rho_b
+  description: Normalized reference density of the layer.
+  unit: '1'
+  role: internal
+- name: M_e
+  description: Normalized effective gravitational source mass.
+  unit: '1'
+  role: internal
+- name: g
+  description: Normalized inward gravitational acceleration.
+  unit: '1'
+  role: internal
+- name: h_e
+  description: Normalized distance over which pressure support acts.
+  unit: '1'
+  role: internal
+- name: rho
+  description: Normalized representative layer density.
+  unit: '1'
+  role: internal
+- name: q
+  description: Normalized gas pressure gradient magnitude.
+  unit: '1'
+  role: internal
+mechanism_probes:
+- probe: g
+  description: Normalized inward gravitational acceleration.
+  answer: M*(1 + h**2/(7*R**2))*(1 + h/(11*R))*(M/(19*R**3) + 1)/R**2
+- probe: rho
+  description: Normalized representative layer density.
+  answer: 750000000000000*M*(1 + h**2/(13*R**2))*(1 + h/(5*R))*sqrt(10000*M*(1 + h**2/(7*R**2))*(1 + h/(11*R))*(M/(19*R**3)
+    + 1)/(9*R**2) + 1)/(3141592653589793*R**3)

@@ -1,0 +1,109 @@
+task_name: Geoscience Soil Moisture Balance - Variant 1-2-3-5
+task_description: A soil column receives precipitation and loses water to its surroundings. The target is the steady mean volumetric soil water content.
+mutation: Combines variants 1&2&3&5; all constitutive changes enter the same simultaneous balances.
+mechanism_model:
+- formula: I = P/(1 + 19*P/(100*E))
+  role: constitutive/component relations
+  description: Water-depth rate delivered to the soil
+- formula: p = 17*k/(100*(E + k))
+  role: constitutive/component relations
+  description: Lower-compartment root uptake fraction
+- formula: b = 11*P/(100*(P + k))
+  role: constitutive/component relations
+  description: Preferential lower-compartment input fraction
+- formula: kd = 7*k/10
+  role: constitutive/component relations
+  description: Lower-compartment drainage coefficient
+- formula: kr = 3*k*(31*E/(100*(E + P)) + 1)/10
+  role: constitutive/component relations
+  description: Upper-compartment runoff coefficient
+- formula: J = k*(-lower + upper)
+  role: constitutive/component relations
+  description: A linear hydraulic closure transfers water between finite soil compartments
+- formula: I*(1 - b) = J + upper*(E*(1 - p) + kr)
+  role: conservation/balance relations
+  description: Upper input balances root uptake, lateral runoff, and downward transfer
+- formula: I*b + J = lower*(E*p + kd)
+  role: conservation/balance relations
+  description: Lower input balances root uptake and deep drainage
+- formula: theta = lower/2 + upper/2
+  role: kinematic/geometric constraints
+  description: Equal compartment volumes define the mean water content
+phenomenal_model: theta = P*(11*P*k/(100*(P + k)) + (-11*P/(100*(P + k)) + 1)*(17*E*k/(100*(E + k)) + 17*k/10))/(2*(1 + 19*P/(100*E))*(-k**2
+  + (17*E*k/(100*(E + k)) + 17*k/10)*(E*(-17*k/(100*(E + k)) + 1) + 3*k*(31*E/(100*(E + P)) + 1)/10 + k))) + P*(11*P*(E*(-17*k/(100*(E
+  + k)) + 1) + 3*k*(31*E/(100*(E + P)) + 1)/10 + k)/(100*(P + k)) + k*(-11*P/(100*(P + k)) + 1))/(2*(1 + 19*P/(100*E))*(-k**2
+  + (17*E*k/(100*(E + k)) + 17*k/10)*(E*(-17*k/(100*(E + k)) + 1) + 3*k*(31*E/(100*(E + P)) + 1)/10 + k)))
+variables:
+- name: P
+  description: Precipitation water-depth rate
+  unit: m s^-1
+  role: input
+  sampling:
+    min: 1.0e-08
+    max: 3.0e-08
+    ood_boundary: 2.0e-08
+    distribution: log_uniform
+- name: E
+  description: Reference evaporative-demand rate
+  unit: m s^-1
+  role: input
+  sampling:
+    min: 8.0e-08
+    max: 2.0e-07
+    ood_boundary: 1.2e-07
+    distribution: log_uniform
+- name: k
+  description: Reference soil hydraulic conductivity
+  unit: m s^-1
+  role: input
+  sampling:
+    min: 5.0e-08
+    max: 2.0e-07
+    ood_boundary: 1.0e-07
+    distribution: log_uniform
+- name: theta
+  description: Mean volumetric soil water content
+  unit: '1'
+  role: target
+- name: I
+  description: Water-depth rate delivered to the soil
+  unit: m s^-1
+  role: internal
+- name: p
+  description: Lower-compartment root uptake fraction
+  unit: '1'
+  role: internal
+- name: b
+  description: Preferential lower-compartment input fraction
+  unit: '1'
+  role: internal
+- name: kd
+  description: Lower-compartment drainage coefficient
+  unit: m s^-1
+  role: internal
+- name: kr
+  description: Upper-compartment runoff coefficient
+  unit: m s^-1
+  role: internal
+- name: upper
+  description: Upper-compartment volumetric water content
+  unit: '1'
+  role: internal
+- name: lower
+  description: Lower-compartment volumetric water content
+  unit: '1'
+  role: internal
+- name: J
+  description: Downward water transfer between soil compartments
+  unit: m s^-1
+  role: internal
+mechanism_probes:
+- probe: upper
+  description: Upper-compartment volumetric water content
+  answer: P*(11*P*k/(100*(P + k)) + (-11*P/(100*(P + k)) + 1)*(17*E*k/(100*(E + k)) + 17*k/10))/((1 + 19*P/(100*E))*(-k**2
+    + (17*E*k/(100*(E + k)) + 17*k/10)*(E*(-17*k/(100*(E + k)) + 1) + 3*k*(31*E/(100*(E + P)) + 1)/10 + k)))
+- probe: lower
+  description: Lower-compartment volumetric water content
+  answer: P*(11*P*(E*(-17*k/(100*(E + k)) + 1) + 3*k*(31*E/(100*(E + P)) + 1)/10 + k)/(100*(P + k)) + k*(-11*P/(100*(P + k))
+    + 1))/((1 + 19*P/(100*E))*(-k**2 + (17*E*k/(100*(E + k)) + 17*k/10)*(E*(-17*k/(100*(E + k)) + 1) + 3*k*(31*E/(100*(E +
+    P)) + 1)/10 + k)))

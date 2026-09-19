@@ -1,0 +1,155 @@
+task_name: Geoscience Greenhouse Equilibrium - Variant 3
+task_description: A planetary surface exchanges radiation with its atmosphere and space. The target is the equilibrium surface temperature.
+mutation: The atmospheric patches export different state-dependent fractions of absorbed energy to an external cold reservoir.
+mechanism_model:
+- formula: sigma = 5670374419/100000000000000000.0
+  role: auxiliary/regime constraints
+  description: Reference thermal emission coefficient
+- formula: H = S*(1 - a)/4
+  role: kinematic/geometric constraints
+  description: Total absorbed stellar flux
+- formula: qa1 = 0
+  role: constitutive/component relations
+  description: Patch 1 atmospheric shortwave heating per patch area
+- formula: ee1 = e
+  role: constitutive/component relations
+  description: Patch 1 effective longwave absorptivity
+- formula: ell1 = 19*e/(100*(e + 1))
+  role: constitutive/component relations
+  description: Patch 1 atmospheric export fraction
+- formula: gamma1 = 0
+  role: constitutive/component relations
+  description: Patch 1 nonradiative surface-transfer coefficient
+- formula: plume1 = 0
+  role: constitutive/component relations
+  description: Patch 1 atmospheric geothermal heating per patch area
+- formula: 2*D1 = (1 - ell1)*(U*(ee1 + gamma1) + plume1 + qa1)
+  role: conservation/balance relations
+  description: Patch 1 heating balances upward and downward thermal emission plus external export
+- formula: qa2 = 0
+  role: constitutive/component relations
+  description: Patch 2 atmospheric shortwave heating per patch area
+- formula: ee2 = e
+  role: constitutive/component relations
+  description: Patch 2 effective longwave absorptivity
+- formula: ell2 = 31*e/(100*(2*e + 1))
+  role: constitutive/component relations
+  description: Patch 2 atmospheric export fraction
+- formula: gamma2 = 0
+  role: constitutive/component relations
+  description: Patch 2 nonradiative surface-transfer coefficient
+- formula: plume2 = 0
+  role: constitutive/component relations
+  description: Patch 2 atmospheric geothermal heating per patch area
+- formula: 2*D2 = (1 - ell2)*(U*(ee2 + gamma2) + plume2 + qa2)
+  role: conservation/balance relations
+  description: Patch 2 heating balances upward and downward thermal emission plus external export
+- formula: U*(2*gamma1/5 + 3*gamma2/5 + 1) = 2*D1/5 + 3*D2/5 + H - 2*plume1/5 - 3*plume2/5 - 2*qa1/5 - 3*qa2/5
+  role: conservation/balance relations
+  description: Surface energy balances exchanges with atmospheric patches occupying two-fifths and three-fifths of the area
+- formula: T = (U/sigma)**(1/4)
+  role: constitutive/component relations
+  description: Positive-temperature Stefan-Boltzmann surface emission
+phenomenal_model: T = 5000*40**(1/4)*5670374419**(3/4)*(S*(1 - a)/(-e*(-19*e/(250*(e + 1)) + 2/5)/2 - e*(-93*e/(500*(2*e +
+  1)) + 3/5)/2 + 1))**(1/4)/5670374419
+variables:
+- name: S
+  description: Incident stellar irradiance
+  unit: kg s^-3
+  role: input
+  sampling:
+    min: 900.0
+    max: 1800.0
+    ood_boundary: 1350.0
+    distribution: uniform
+- name: a
+  description: Planetary shortwave albedo
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.1
+    max: 0.5
+    ood_boundary: 0.3
+    distribution: uniform
+- name: e
+  description: Reference atmospheric longwave absorptivity
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.2
+    max: 0.9
+    ood_boundary: 0.55
+    distribution: uniform
+- name: T
+  description: Equilibrium surface temperature
+  unit: K
+  role: target
+- name: sigma
+  description: Reference thermal emission coefficient
+  unit: kg s^-3 K^-4
+  role: internal
+- name: H
+  description: Total absorbed stellar flux
+  unit: kg s^-3
+  role: internal
+- name: U
+  description: Surface thermal emission flux
+  unit: kg s^-3
+  role: internal
+- name: qa1
+  description: Patch 1 atmospheric shortwave heating per patch area
+  unit: kg s^-3
+  role: internal
+- name: ee1
+  description: Patch 1 effective longwave absorptivity
+  unit: '1'
+  role: internal
+- name: ell1
+  description: Patch 1 atmospheric export fraction
+  unit: '1'
+  role: internal
+- name: gamma1
+  description: Patch 1 nonradiative surface-transfer coefficient
+  unit: '1'
+  role: internal
+- name: plume1
+  description: Patch 1 atmospheric geothermal heating per patch area
+  unit: kg s^-3
+  role: internal
+- name: D1
+  description: Patch 1 downward atmospheric thermal flux per patch area
+  unit: kg s^-3
+  role: internal
+- name: qa2
+  description: Patch 2 atmospheric shortwave heating per patch area
+  unit: kg s^-3
+  role: internal
+- name: ee2
+  description: Patch 2 effective longwave absorptivity
+  unit: '1'
+  role: internal
+- name: ell2
+  description: Patch 2 atmospheric export fraction
+  unit: '1'
+  role: internal
+- name: gamma2
+  description: Patch 2 nonradiative surface-transfer coefficient
+  unit: '1'
+  role: internal
+- name: plume2
+  description: Patch 2 atmospheric geothermal heating per patch area
+  unit: kg s^-3
+  role: internal
+- name: D2
+  description: Patch 2 downward atmospheric thermal flux per patch area
+  unit: kg s^-3
+  role: internal
+mechanism_probes:
+- probe: D1
+  description: Patch 1 downward atmospheric thermal flux per patch area
+  answer: S*e*(1 - a)*(-19*e/(100*(e + 1)) + 1)/(8*(-e*(-19*e/(250*(e + 1)) + 2/5)/2 - e*(-93*e/(500*(2*e + 1)) + 3/5)/2 +
+    1))
+- probe: D2
+  description: Patch 2 downward atmospheric thermal flux per patch area
+  answer: S*e*(1 - a)*(-31*e/(100*(2*e + 1)) + 1)/(8*(-e*(-19*e/(250*(e + 1)) + 2/5)/2 - e*(-93*e/(500*(2*e + 1)) + 3/5)/2
+    + 1))

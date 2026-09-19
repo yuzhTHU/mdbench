@@ -1,0 +1,162 @@
+task_name: Geoscience Greenhouse Equilibrium - Variant 2-5
+task_description: A planetary surface exchanges radiation with its atmosphere and space. The target is the equilibrium surface temperature.
+mutation: Combines variants 2&5; all constitutive changes enter the same simultaneous balances.
+mechanism_model:
+- formula: sigma = 5670374419/100000000000000000.0
+  role: auxiliary/regime constraints
+  description: Reference thermal emission coefficient
+- formula: H = S*(1 - a)/4
+  role: kinematic/geometric constraints
+  description: Total absorbed stellar flux
+- formula: Hg = 1137/100
+  role: auxiliary/regime constraints
+  description: Geothermal heat input
+- formula: qa1 = 0
+  role: constitutive/component relations
+  description: Patch 1 atmospheric shortwave heating per patch area
+- formula: ee1 = e*(-17*a/(100*(a + 31/100)) + 1)
+  role: constitutive/component relations
+  description: Patch 1 effective longwave absorptivity
+- formula: ell1 = 0
+  role: constitutive/component relations
+  description: Patch 1 atmospheric export fraction
+- formula: gamma1 = 0
+  role: constitutive/component relations
+  description: Patch 1 nonradiative surface-transfer coefficient
+- formula: plume1 = 11*Hg*e/(100*(e + 1))
+  role: constitutive/component relations
+  description: Patch 1 atmospheric geothermal heating per patch area
+- formula: 2*D1 = (1 - ell1)*(U*(ee1 + gamma1) + plume1 + qa1)
+  role: conservation/balance relations
+  description: Patch 1 heating balances upward and downward thermal emission plus external export
+- formula: qa2 = 0
+  role: constitutive/component relations
+  description: Patch 2 atmospheric shortwave heating per patch area
+- formula: ee2 = e*(-29*a/(100*(a + 47/100)) + 1)
+  role: constitutive/component relations
+  description: Patch 2 effective longwave absorptivity
+- formula: ell2 = 0
+  role: constitutive/component relations
+  description: Patch 2 atmospheric export fraction
+- formula: gamma2 = 0
+  role: constitutive/component relations
+  description: Patch 2 nonradiative surface-transfer coefficient
+- formula: plume2 = 17*Hg*e/(100*(2*e + 1))
+  role: constitutive/component relations
+  description: Patch 2 atmospheric geothermal heating per patch area
+- formula: 2*D2 = (1 - ell2)*(U*(ee2 + gamma2) + plume2 + qa2)
+  role: conservation/balance relations
+  description: Patch 2 heating balances upward and downward thermal emission plus external export
+- formula: U*(2*gamma1/5 + 3*gamma2/5 + 1) = 2*D1/5 + 3*D2/5 + H + Hg - 2*plume1/5 - 3*plume2/5 - 2*qa1/5 - 3*qa2/5
+  role: conservation/balance relations
+  description: Surface energy balances exchanges with atmospheric patches occupying two-fifths and three-fifths of the area
+- formula: T = (U/sigma)**(1/4)
+  role: constitutive/component relations
+  description: Positive-temperature Stefan-Boltzmann surface emission
+phenomenal_model: T = 10000*10**(1/4)*5670374419**(3/4)*((S*(1 - a)/4 - 57987*e/(100000*(2*e + 1)) - 12507*e/(50000*(e + 1))
+  + 1137/100)/(-e*(-17*a/(100*(a + 31/100)) + 1)/5 - 3*e*(-29*a/(100*(a + 47/100)) + 1)/10 + 1))**(1/4)/5670374419
+variables:
+- name: S
+  description: Incident stellar irradiance
+  unit: kg s^-3
+  role: input
+  sampling:
+    min: 900.0
+    max: 1800.0
+    ood_boundary: 1350.0
+    distribution: uniform
+- name: a
+  description: Planetary shortwave albedo
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.1
+    max: 0.5
+    ood_boundary: 0.3
+    distribution: uniform
+- name: e
+  description: Reference atmospheric longwave absorptivity
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.2
+    max: 0.9
+    ood_boundary: 0.55
+    distribution: uniform
+- name: T
+  description: Equilibrium surface temperature
+  unit: K
+  role: target
+- name: sigma
+  description: Reference thermal emission coefficient
+  unit: kg s^-3 K^-4
+  role: internal
+- name: H
+  description: Total absorbed stellar flux
+  unit: kg s^-3
+  role: internal
+- name: Hg
+  description: Geothermal heat input
+  unit: kg s^-3
+  role: internal
+- name: U
+  description: Surface thermal emission flux
+  unit: kg s^-3
+  role: internal
+- name: qa1
+  description: Patch 1 atmospheric shortwave heating per patch area
+  unit: kg s^-3
+  role: internal
+- name: ee1
+  description: Patch 1 effective longwave absorptivity
+  unit: '1'
+  role: internal
+- name: ell1
+  description: Patch 1 atmospheric export fraction
+  unit: '1'
+  role: internal
+- name: gamma1
+  description: Patch 1 nonradiative surface-transfer coefficient
+  unit: '1'
+  role: internal
+- name: plume1
+  description: Patch 1 atmospheric geothermal heating per patch area
+  unit: kg s^-3
+  role: internal
+- name: D1
+  description: Patch 1 downward atmospheric thermal flux per patch area
+  unit: kg s^-3
+  role: internal
+- name: qa2
+  description: Patch 2 atmospheric shortwave heating per patch area
+  unit: kg s^-3
+  role: internal
+- name: ee2
+  description: Patch 2 effective longwave absorptivity
+  unit: '1'
+  role: internal
+- name: ell2
+  description: Patch 2 atmospheric export fraction
+  unit: '1'
+  role: internal
+- name: gamma2
+  description: Patch 2 nonradiative surface-transfer coefficient
+  unit: '1'
+  role: internal
+- name: plume2
+  description: Patch 2 atmospheric geothermal heating per patch area
+  unit: kg s^-3
+  role: internal
+- name: D2
+  description: Patch 2 downward atmospheric thermal flux per patch area
+  unit: kg s^-3
+  role: internal
+mechanism_probes:
+- probe: D1
+  description: Patch 1 downward atmospheric thermal flux per patch area
+  answer: e*(-17*a/(100*(a + 31/100)) + 1)*(S*(1 - a)/4 - 57987*e/(100000*(2*e + 1)) - 12507*e/(50000*(e + 1)) + 1137/100)/(2*(-e*(-17*a/(100*(a
+    + 31/100)) + 1)/5 - 3*e*(-29*a/(100*(a + 47/100)) + 1)/10 + 1)) + 12507*e/(20000*(e + 1))
+- probe: D2
+  description: Patch 2 downward atmospheric thermal flux per patch area
+  answer: e*(-29*a/(100*(a + 47/100)) + 1)*(S*(1 - a)/4 - 57987*e/(100000*(2*e + 1)) - 12507*e/(50000*(e + 1)) + 1137/100)/(2*(-e*(-17*a/(100*(a
+    + 31/100)) + 1)/5 - 3*e*(-29*a/(100*(a + 47/100)) + 1)/10 + 1)) + 19329*e/(20000*(2*e + 1))

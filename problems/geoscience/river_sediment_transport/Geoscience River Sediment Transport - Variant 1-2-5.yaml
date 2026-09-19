@@ -1,0 +1,206 @@
+task_name: Geoscience River Sediment Transport - Variant 1-2-5
+task_description: Flowing water entrains and transports riverbed sediment. The target is the steady downstream suspended-sediment mass transport rate.
+mutation: Combines variants 1&2&5; all constitutive changes enter the same simultaneous balances.
+mechanism_model:
+- formula: rho = 1000
+  role: auxiliary/regime constraints
+  description: Water mass density
+- formula: rhos = 2650
+  role: auxiliary/regime constraints
+  description: Sediment mass density
+- formula: g = 981/100
+  role: auxiliary/regime constraints
+  description: Gravitational acceleration
+- formula: mu = 1/1000
+  role: auxiliary/regime constraints
+  description: Water dynamic viscosity
+- formula: ke = 1/100000
+  role: auxiliary/regime constraints
+  description: Reference bed entrainment coefficient
+- formula: tau = H*g*rho*slope
+  role: governing/dynamical laws
+  description: Bed shear stress
+- formula: entrain = ke*tau
+  role: constitutive/component relations
+  description: Total bed entrainment mass flux
+- formula: tau0 = 5
+  role: auxiliary/regime constraints
+  description: Entrainment stress reference
+- formula: p = 1/(37*tau/(100*tau0) + 2)
+  role: constitutive/component relations
+  description: Fine-grain share of entrained mass
+- formula: wf = d**2*g*(-rho + rhos)/(18*mu)
+  role: constitutive/component relations
+  description: Fine-grain settling speed
+- formula: U0 = 1
+  role: auxiliary/regime constraints
+  description: Flocculation speed reference
+- formula: wc = 4*wf*(23*U/(100*U0) + 1)
+  role: constitutive/component relations
+  description: Coarse-grain settling speed
+- formula: vr = 0
+  role: constitutive/component relations
+  description: Fine-grain retention velocity
+- formula: va = 0
+  role: constitutive/component relations
+  description: Aggregation transfer velocity
+- formula: uf = U/(1 + 11*wf/(100*U))
+  role: constitutive/component relations
+  description: Fine-grain horizontal speed
+- formula: uc = U/(1 + 31*wc/(100*U))
+  role: constitutive/component relations
+  description: Coarse-grain horizontal speed
+- formula: entrain*p = cf*(va + vr + wf)
+  role: conservation/balance relations
+  description: Fine entrainment balances settling, retention, and conversion into coarse suspended mass
+- formula: cf*va + entrain*(1 - p) = cc*wc
+  role: conservation/balance relations
+  description: Coarse entrainment and aggregation supply balance coarse settling
+- formula: jf = H*cf*uf
+  role: kinematic/geometric constraints
+  description: Fine-grain velocity and inventory determine its downstream flux
+- formula: jc = H*cc*uc
+  role: kinematic/geometric constraints
+  description: Coarse-grain velocity and inventory determine its downstream flux
+- formula: qs = width*(jc + jf)
+  role: conservation/balance relations
+  description: The two grain-class transport rates add across channel width
+phenomenal_model: qs = width*(3*H**2*U*slope*(1 - 1/(36297*H*slope/50 + 2))/(110000000*d**2*(1 + 1115070*d**2*(23*U/100 +
+  1)/U)*(23*U/100 + 1)) + 3*H**2*U*slope/(27500000*d**2*(1 + 197835*d**2/(2*U))*(36297*H*slope/50 + 2)))
+variables:
+- name: U
+  description: Depth-averaged water speed
+  unit: m s^-1
+  role: input
+  sampling:
+    min: 0.3
+    max: 1.5
+    ood_boundary: 0.8
+    distribution: uniform
+- name: H
+  description: Water depth
+  unit: m
+  role: input
+  sampling:
+    min: 0.3
+    max: 2.0
+    ood_boundary: 1.0
+    distribution: uniform
+- name: width
+  description: Channel width
+  unit: m
+  role: input
+  sampling:
+    min: 3.0
+    max: 30.0
+    ood_boundary: 10.0
+    distribution: uniform
+- name: slope
+  description: Channel energy slope
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.0001
+    max: 0.002
+    ood_boundary: 0.0008
+    distribution: log_uniform
+- name: d
+  description: Reference sediment grain diameter
+  unit: m
+  role: input
+  sampling:
+    min: 2.0e-06
+    max: 1.0e-05
+    ood_boundary: 5.0e-06
+    distribution: log_uniform
+- name: qs
+  description: Suspended-sediment mass transport rate
+  unit: kg s^-1
+  role: target
+- name: rho
+  description: Water mass density
+  unit: kg m^-3
+  role: internal
+- name: rhos
+  description: Sediment mass density
+  unit: kg m^-3
+  role: internal
+- name: g
+  description: Gravitational acceleration
+  unit: m s^-2
+  role: internal
+- name: mu
+  description: Water dynamic viscosity
+  unit: kg m^-1 s^-1
+  role: internal
+- name: ke
+  description: Reference bed entrainment coefficient
+  unit: s m^-1
+  role: internal
+- name: tau
+  description: Bed shear stress
+  unit: kg m^-1 s^-2
+  role: internal
+- name: entrain
+  description: Total bed entrainment mass flux
+  unit: kg m^-2 s^-1
+  role: internal
+- name: tau0
+  description: Entrainment stress reference
+  unit: kg m^-1 s^-2
+  role: internal
+- name: p
+  description: Fine-grain share of entrained mass
+  unit: '1'
+  role: internal
+- name: wf
+  description: Fine-grain settling speed
+  unit: m s^-1
+  role: internal
+- name: U0
+  description: Flocculation speed reference
+  unit: m s^-1
+  role: internal
+- name: wc
+  description: Coarse-grain settling speed
+  unit: m s^-1
+  role: internal
+- name: vr
+  description: Fine-grain retention velocity
+  unit: m s^-1
+  role: internal
+- name: va
+  description: Aggregation transfer velocity
+  unit: m s^-1
+  role: internal
+- name: uf
+  description: Fine-grain horizontal speed
+  unit: m s^-1
+  role: internal
+- name: uc
+  description: Coarse-grain horizontal speed
+  unit: m s^-1
+  role: internal
+- name: cf
+  description: Depth-averaged fine-grain mass concentration
+  unit: kg m^-3
+  role: internal
+- name: cc
+  description: Depth-averaged coarse-grain mass concentration
+  unit: kg m^-3
+  role: internal
+- name: jf
+  description: Fine-grain downstream mass flux per channel width
+  unit: kg m^-1 s^-1
+  role: internal
+- name: jc
+  description: Coarse-grain downstream mass flux per channel width
+  unit: kg m^-1 s^-1
+  role: internal
+mechanism_probes:
+- probe: jf
+  description: Fine-grain downstream mass flux per channel width
+  answer: 3*H**2*U*slope/(27500000*d**2*(1 + 197835*d**2/(2*U))*(36297*H*slope/50 + 2))
+- probe: jc
+  description: Coarse-grain downstream mass flux per channel width
+  answer: 3*H**2*U*slope*(1 - 1/(36297*H*slope/50 + 2))/(110000000*d**2*(1 + 1115070*d**2*(23*U/100 + 1)/U)*(23*U/100 + 1))
