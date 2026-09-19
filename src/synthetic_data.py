@@ -61,7 +61,7 @@ def generate_synthetic_data(task: Task, *, seed=0, train_samples=1000,
 
 def get_parser(parser=None):
     parser = parser or argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--problems', nargs='+', default=['problems'])
+    parser.add_argument('--tasks', nargs='+', default=['tasks'])
     parser.add_argument('--output-dir', default='data/synthetic_data')
     parser.add_argument('--seed', type=int, default=0)
     for split in ('train', 'id-test', 'ood-test'):
@@ -73,7 +73,7 @@ def main(args):
     root = Path(args.output_dir)
     root.mkdir(parents=True, exist_ok=True)
     seen = set()
-    for path in discover_tasks(args.problems):
+    for path in discover_tasks(args.tasks):
         task = load_task(path)
         validate_task(task, path=path, seen=seen)
         data = generate_synthetic_data(task, seed=args.seed, train_samples=args.train_samples,

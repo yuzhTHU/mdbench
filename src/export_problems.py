@@ -36,7 +36,7 @@ def public_problem(task: Task) -> dict:
 def export_task(task: Task, output_dir: str | Path, *, force=False, **sampling) -> dict[str, Path]:
     validate_task(task)
     root = Path(output_dir)
-    public, private = root / 'agent', root / 'answer'
+    public, private = root / 'problem', root / 'answer'
     paths = {'problem': public / 'problem.json', 'train': public / 'train.npy',
              'answer': private / 'answer.json'}
     expected = [*paths.values(), *(private / f'{s}.npy' for s in ('train', 'id_test', 'ood_test'))]
@@ -59,7 +59,7 @@ def export_task(task: Task, output_dir: str | Path, *, force=False, **sampling) 
 
 def get_parser(parser=None):
     parser = parser or argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--problems', nargs='+', default=None, help='Task paths; defaults to the bundled task library.')
+    parser.add_argument('--tasks', nargs='+', default=None, help='Task paths; defaults to the bundled task library.')
     parser.add_argument('--output-dir', default='data/tasks')
     parser.add_argument('--force', action='store_true')
     parser.add_argument('--seed', type=int, default=0)
@@ -70,7 +70,7 @@ def get_parser(parser=None):
 
 def main(args):
     with ExitStack() as stack:
-        paths = args.problems or [stack.enter_context(resources.as_file(resources.files('problems')))]
+        paths = args.tasks or [stack.enter_context(resources.as_file(resources.files('tasks')))]
         return _export_collection(args, paths)
 
 

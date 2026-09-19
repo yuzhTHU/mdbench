@@ -40,7 +40,7 @@ def test_agent_runtime_shadows_mdbench_and_denies_private_paths(tmp_path, caplog
     save = tmp_path / 'run-artifacts'; save.mkdir()
     args = SimpleNamespace(
         codex_command='codex', codex_text_only=False,
-        save_path=save, answer=answer)
+        save_path=save, answer_file=answer)
     with caplog.at_level(logging.INFO):
         command = codex._command(
             args, workspace=workspace, blocked_bin=blocked,
@@ -52,7 +52,7 @@ def test_agent_runtime_shadows_mdbench_and_denies_private_paths(tmp_path, caplog
     assert f'{answer.parent.resolve()}' in configuration
     assert str(Path(codex.__file__).resolve().parents[1]) in configuration
     benchmark_root = Path(codex.__file__).resolve().parents[2]
-    for private_entry in ('.github', 'LICENSE', 'proposal.md', 'README.md', 'run.py', 'tests'):
+    for private_entry in ('.github', 'LICENSE', 'proposal.md', 'README.md', 'tests'):
         assert str(benchmark_root / private_entry) in configuration
     assert f'"{benchmark_root / "venv"}" = "deny"' not in configuration
     assert f'"{benchmark_root / "third-party"}" = "deny"' not in configuration

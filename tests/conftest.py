@@ -4,7 +4,7 @@ from src.validate_problem import load_task
 
 @pytest.fixture
 def demo():
-    return load_task(Path(__file__).parents[1] / 'demo_problem.yaml', check_filename=False)
+    return load_task(Path(__file__).parents[1] / 'demo_task.yaml', check_filename=False)
 
 @pytest.fixture
 def simple_raw():

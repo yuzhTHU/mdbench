@@ -510,8 +510,9 @@ def discover_tasks(paths):
     for value in paths:
         path = Path(value)
         if path.is_dir():
-            result.extend(path.rglob('*.yaml'))
-            result.extend(path.rglob('*.yml'))
+            candidates = [*path.rglob('*.yaml'), *path.rglob('*.yml')]
+            result.extend(candidate for candidate in candidates
+                          if 'legacy' not in candidate.relative_to(path).parts[:-1])
         elif path.is_file(): result.append(path)
         else: raise ValidationError(f'Task path does not exist: {path}')
     if not result: raise ValidationError('No task YAML files found.')
@@ -520,13 +521,13 @@ def discover_tasks(paths):
 
 def get_parser(parser=None):
     parser = parser or argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--problems', nargs='+', default=['problems'])
+    parser.add_argument('--tasks', nargs='+', default=['tasks'])
     return parser
 
 
 def main(args):
     reports, seen, families = [], set(), {}
-    for path in discover_tasks(args.problems):
+    for path in discover_tasks(args.tasks):
         try:
             task = load_task(path, validate=False)
             report = validate_task(task, path=path, seen=seen)

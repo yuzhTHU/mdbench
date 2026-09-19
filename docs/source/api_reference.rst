@@ -19,5 +19,8 @@ API reference
 .. automodule:: src.evaluate
    :members:
 
+.. automodule:: src.run_experiment
+   :members:
+
 .. automodule:: src.algorithms.codex
    :members:

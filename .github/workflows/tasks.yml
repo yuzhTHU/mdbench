@@ -1,19 +1,19 @@
-name: Publish benchmark problems
+name: Publish benchmark tasks
 
 on:
   push:
     branches:
       - main
     paths:
-      - problems/*.yaml
-      - problems/*.yml
+      - tasks/**/*.yaml
+      - tasks/**/*.yml
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: benchmark-problems-${{ github.ref }}
+  group: benchmark-tasks-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -54,7 +54,7 @@ jobs:
             tag_commit=$(git rev-list -n 1 "$TAG")
             if [ "$tag_commit" != "$GITHUB_SHA" ]; then
               echo "$TAG already points to $tag_commit."
-              echo "::error::Problem definitions changed after $TAG was released. Bump project.version before publishing new benchmark data."
+              echo "::error::Task definitions changed after $TAG was released. Bump project.version before publishing new benchmark data."
               exit 1
             fi
           fi
@@ -64,13 +64,13 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e .
 
-      - name: Validate problem definitions
-        run: mdbench validate --problems problems
+      - name: Validate task definitions
+        run: mdbench validate --tasks tasks
 
       - name: Generate public datasets and answers
         run: |
           mdbench export \
-            --problems problems \
+            --tasks tasks \
             --output-dir release-work/synthetic_data \
             --force
 
@@ -84,18 +84,18 @@ jobs:
           from pathlib import Path
           from zipfile import ZIP_DEFLATED, ZipFile
 
-          source = Path("problems")
+          source = Path("tasks")
           files = sorted(
-              path for path in source.iterdir()
+              path for path in source.rglob("*")
               if path.is_file() and path.suffix in {".yaml", ".yml"}
           )
-          output = Path("dist") / f"mdbench-problems-{os.environ['VERSION']}.zip"
+          output = Path("dist") / f"mdbench-tasks-{os.environ['VERSION']}.zip"
           with ZipFile(output, "w", compression=ZIP_DEFLATED, compresslevel=9) as archive:
               for path in files:
-                  archive.write(path, path.name)
+                  archive.write(path, path.relative_to(source.parent))
           PY
           (cd release-work && zip -9 -r "../dist/mdbench-synthetic-data-$VERSION.zip" synthetic_data)
-          unzip -t "dist/mdbench-problems-$VERSION.zip"
+          unzip -t "dist/mdbench-tasks-$VERSION.zip"
           unzip -t "dist/mdbench-synthetic-data-$VERSION.zip"
           sha256sum dist/*.zip
 
@@ -119,6 +119,6 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           gh release upload "$TAG" \
-            "dist/mdbench-problems-$VERSION.zip" \
+            "dist/mdbench-tasks-$VERSION.zip" \
             "dist/mdbench-synthetic-data-$VERSION.zip" \
             --clobber

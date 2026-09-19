@@ -2,12 +2,12 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 import requests
-import run as runner
+from src import run_experiment as runner
 from src.export_problems import export_task
 
 
 def test_runner_parser_matches_common_experiment_structure():
-    required = ['--problem_file', 'problem.json', '--answer', 'answer.json']
+    required = ['--problem_file', 'problem.json', '--answer_file', 'answer.json']
     parser = runner.build_argparser(required)
     args = parser.parse_args(required + ['--exp-name', 'demo', '--codex-text-only',
                                          '--no-codex-text-only', '--verbose', '--no-verbose'])
@@ -17,7 +17,7 @@ def test_runner_parser_matches_common_experiment_structure():
 
 
 def arguments(paths, save):
-    return SimpleNamespace(problem_file=paths['problem'], answer=paths['answer'],
+    return SimpleNamespace(problem_file=paths['problem'], answer_file=paths['answer'],
                            save_path=save, save_dir=save.parent, algorithm='codex', feedback_server_url=None,
                            feedback_host='127.0.0.1', feedback_port=0, feedback_workers=2, feedback_cache_size=4)
 
@@ -45,7 +45,7 @@ def test_runner_server_lifecycle_submission_and_performance(demo, tmp_path, monk
         return {'phenomenal': {'ok': True}, 'mechanism_probes': []}
     monkeypatch.setattr(runner, 'evaluate', evaluate)
     args = arguments(paths, tmp_path / 'run')
-    assert runner.main(args) == 0
+    assert runner.run_experiment(args) == 0
     assert checkpoint == {'nested': []}
     assert len(restored) == 2 and restored[0] is not restored[1]
     assert restored == [
@@ -73,7 +73,7 @@ def test_runner_records_failure_without_ansi(demo, tmp_path, monkeypatch):
     def algorithm(*args): raise ValueError('\x1b[31mfailed\x1b[0m')
     monkeypatch.setattr(runner, 'get_algorithm', lambda name: algorithm)
     args = arguments(paths, tmp_path / 'run')
-    assert runner.main(args) == 1
+    assert runner.run_experiment(args) == 1
     text = (Path(args.save_path) / 'performance.json').read_text()
     assert '\\u001b' not in text and json.loads(text)['error'] == 'failed'
 
@@ -83,7 +83,7 @@ def test_runner_requires_explicit_submission_return(demo, tmp_path, monkeypatch)
     monkeypatch.setattr(runner, 'get_algorithm', lambda name: lambda *args: {
         'session': 'session.jsonl', 'events': 'events.jsonl'})
     args = arguments(paths, tmp_path / 'run')
-    assert runner.main(args) == 1
+    assert runner.run_experiment(args) == 1
     performance = json.loads((Path(args.save_path) / 'performance.json').read_text())
     assert performance['error_type'] == 'TypeError'
     assert '(submission, checkpoint) tuple' in performance['error']
@@ -101,7 +101,7 @@ def test_runner_default_path_uses_experiment_and_task_names(demo, tmp_path, monk
     args.save_path = None
     args.save_dir = tmp_path / 'logs' / 'run'
     args.exp_name = 'codex-test-model'
-    assert runner.main(args) == 0
+    assert runner.run_experiment(args) == 0
     expected = (args.save_dir / args.exp_name / demo.task_name).resolve()
     assert Path(args.save_path) == expected
     assert (expected / 'performance.json').is_file()

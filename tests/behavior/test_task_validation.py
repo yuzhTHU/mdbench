@@ -36,7 +36,7 @@ def test_validate_cli_reports_success_for_a_complete_task_file(tmp_path):
     path.write_text(TASK_YAML)
 
     result = subprocess.run(
-        [sys.executable, '-m', 'src.validate_problem', '--problems', str(path)],
+        [sys.executable, '-m', 'src.validate_problem', '--tasks', str(path)],
         cwd=Path(__file__).resolve().parents[2], capture_output=True, text=True, timeout=15,
     )
 
@@ -62,7 +62,7 @@ def test_validate_collection_rejects_duplicate_names_in_different_directories(tm
         directory.mkdir()
         (directory / 'Response - Variant 1.yaml').write_text(TASK_YAML)
 
-    args = get_parser().parse_args(['--problems', str(tmp_path / 'first'), str(tmp_path / 'second')])
+    args = get_parser().parse_args(['--tasks', str(tmp_path / 'first'), str(tmp_path / 'second')])
     exit_code = main(args)
     reports = json.loads(capsys.readouterr().out)
 
@@ -80,7 +80,7 @@ def test_family_variants_must_have_identical_public_descriptions(tmp_path, capsy
         TASK_YAML.replace('Relate the input length to the output area.', 'Reveal the hidden offset.')
     )
 
-    exit_code = main(get_parser().parse_args(['--problems', str(tmp_path)]))
+    exit_code = main(get_parser().parse_args(['--tasks', str(tmp_path)]))
     reports = json.loads(capsys.readouterr().out)
 
     assert exit_code == 1
@@ -130,7 +130,7 @@ def test_validate_directory_ignores_legacy_and_archived_tasks(tmp_path, capsys):
     (tmp_path / 'legacy' / 'broken.yaml').write_text('not a task')
     (tmp_path / 'broken.yaml.archived').write_text('not a task')
 
-    exit_code = main(get_parser().parse_args(['--problems', str(tmp_path)]))
+    exit_code = main(get_parser().parse_args(['--tasks', str(tmp_path)]))
     reports = json.loads(capsys.readouterr().out)
 
     assert exit_code == 0

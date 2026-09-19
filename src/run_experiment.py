@@ -25,18 +25,16 @@ from src.evaluate import evaluate
 from src.feedback_server import PROTOCOL, create_server
 from src.validate_problem import parse_equation
 
-SCRIPT_NAME = Path(__file__).stem
+SCRIPT_NAME = 'run'
 _logger = logging.getLogger(f'mdbench.{SCRIPT_NAME}')
 
 
-def build_argparser(argv=None):
+def get_parser(parser=None, argv=None):
     preliminary = argparse.ArgumentParser(add_help=False)
     preliminary.add_argument('--algorithm', default='codex', choices=list_algorithms())
     args, _ = preliminary.parse_known_args(argv)
-    parser = argparse.ArgumentParser(
-        description=__doc__,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
+    parser = parser or argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--algorithm', default=args.algorithm, choices=list_algorithms(), help='Algorithm name.')
     parser.add_argument('--name', default=SCRIPT_NAME, help='Experiment task name used when auto-generating exp_name.')
     parser.add_argument('--exp_name', default=None, help='Experiment name. Defaults to a timestamped name.')
@@ -46,7 +44,7 @@ def build_argparser(argv=None):
     parser.add_argument('--verbose', action='store_true', help='Enable verbose runner logging.')
     parser.add_argument('--debug', action='store_true', default=False, help='Enable verbose logging and raise caught exceptions.')
     parser.add_argument('--problem_file', type=Path, required=True)
-    parser.add_argument('--answer', type=Path, required=True)
+    parser.add_argument('--answer_file', type=Path, required=True)
     parser.add_argument('--feedback_host', default='127.0.0.1')
     parser.add_argument('--feedback_port', type=int, default=0, help='0 selects a free local port.')
     parser.add_argument('--feedback_server_url', default=None, help='Reuse a running server at its /evaluate URL.')
@@ -59,6 +57,10 @@ def build_argparser(argv=None):
     add_minus_flags(parser)
     add_negation_flags(parser)
     return parser
+
+
+def build_argparser(argv=None):
+    return get_parser(argv=argv)
 
 
 def sanitize_filename(value):
@@ -78,13 +80,13 @@ def _stage_dataest(args, save):
     """Create a self-contained copy of all public and private task data."""
     root = save / 'dataest'
     root.mkdir(exist_ok=True)
-    answer = json.loads(Path(args.answer).read_text())
+    answer = json.loads(Path(args.answer_file).read_text())
     sources = {'problem': Path(args.problem_file)}
     arrays = answer.get('data') or {}
     for split in ('train', 'id_test', 'ood_test'):
         relative = arrays.get(split)
         if not isinstance(relative, str): raise ValueError(f'answer data has no {split} NPY path.')
-        sources[split] = Path(args.answer).parent / relative
+        sources[split] = Path(args.answer_file).parent / relative
     paths = {'problem': root / 'problem.json', 'answer': root / 'answer.json',
              'train': root / 'train.npy', 'id_test': root / 'id_test.npy',
              'ood_test': root / 'ood_test.npy'}
@@ -133,15 +135,15 @@ def feedback_service(args):
         thread.join(timeout=5)
 
 
-def main(args):
-    for path in (args.problem_file, args.answer):
+def run_experiment(args):
+    for path in (args.problem_file, args.answer_file):
         if not path.is_file(): raise FileNotFoundError(path)
     if args.save_path:
         save = Path(args.save_path)
     else:
         if not getattr(args, 'exp_name', None):
             raise ValueError('--exp_name is required unless --save-path is provided.')
-        save = Path(args.save_dir) / args.exp_name / _task_name(args.answer)
+        save = Path(args.save_dir) / args.exp_name / _task_name(args.answer_file)
     args.save_path = str(save.resolve())
     save = Path(args.save_path)
     save.mkdir(parents=True, exist_ok=True)
@@ -191,10 +193,8 @@ def main(args):
         print(text)
     return exit_code
 
-if __name__ == '__main__':
-    parser = build_argparser()
-    args, unknown = parser.parse_known_args()
 
+def main(args):
     explicit_save_path = args.save_path is not None
     if args.exp_name is None:
         if explicit_save_path:
@@ -216,10 +216,10 @@ if __name__ == '__main__':
     exp_path = Path(args.save_path).parent if explicit_save_path else Path(args.save_dir) / args.exp_name
     exp_path.mkdir(parents=True, exist_ok=True)
     if args.save_path is None:
-        args.save_path = str(exp_path / _task_name(args.answer))
+        args.save_path = str(exp_path / _task_name(args.answer_file))
     save_path = Path(args.save_path)
     save_path.mkdir(parents=True, exist_ok=True)
-    args.command = ' '.join(map(shlex.quote, [sys.executable, *sys.argv]))
+    args.invocation = ' '.join(map(shlex.quote, [sys.executable, *sys.argv]))
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
@@ -227,11 +227,13 @@ if __name__ == '__main__':
         handlers=[logging.FileHandler(save_path / 'info.log'), logging.StreamHandler()],
         force=True,
     )
-    if unknown:
-        _logger.warning('Unknown args: %s', unknown)
     _logger.info('Args: %s', args)
     (save_path / 'args.json').write_text(json.dumps(vars(args), indent=2, default=str) + '\n')
 
-    exit_code = main(args)
-    _logger.info('Experiment completed. Re-run the script with %s', args.command)
-    raise SystemExit(exit_code)
+    exit_code = run_experiment(args)
+    _logger.info('Experiment completed. Re-run the command with %s', args.invocation)
+    return exit_code
+
+
+if __name__ == '__main__':
+    raise SystemExit(main(get_parser(argv=sys.argv[1:]).parse_args()))

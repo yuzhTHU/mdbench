@@ -13,6 +13,19 @@ from src.validate_problem import load_task
 ROOT = Path(__file__).resolve().parents[2]
 CATALOGUE = json.loads((ROOT / 'playground/chemical_families/catalogue.json').read_text())
 FAMILIES = sorted({entry['task_name'].rsplit(' - ', 1)[0] for entry in CATALOGUE})
+TASK_FILES = {
+    path.name: path
+    for path in (ROOT / 'tasks' / 'chemistry').rglob('*')
+    if path.is_file()
+}
+
+
+def task_path(task_name):
+    return TASK_FILES[task_name + '.yaml']
+
+
+def catalogue_path(entry):
+    return TASK_FILES[Path(entry['path']).name]
 
 
 @pytest.mark.parametrize('family', FAMILIES)
@@ -22,18 +35,18 @@ def test_each_family_has_blueprint_and_every_combination_up_to_five(family):
     assert len(entries) == 32
     assert {tuple(entry['mutations']) for entry in entries} == expected
     for entry in entries:
-        path = ROOT / entry['path']
+        path = catalogue_path(entry)
         task = load_task(path, validate=False, check_filename=False)
         assert path.name.removesuffix('.archived') == task.task_name + '.yaml'
 
 
 @pytest.mark.parametrize('family', FAMILIES)
 def test_variants_preserve_every_public_description_and_sampling_range(family):
-    reference = load_task(ROOT / 'problems' / (family + ' - Original.yaml'), validate=False)
+    reference = load_task(task_path(family + ' - Original'), validate=False)
     for entry in CATALOGUE:
         if not entry['task_name'].startswith(family + ' - '):
             continue
-        task = load_task(ROOT / entry['path'], validate=False, check_filename=False)
+        task = load_task(catalogue_path(entry), validate=False, check_filename=False)
         assert task.task_description == reference.task_description
         assert task.variables == reference.variables
         assert not task.by_role('auxiliary')
@@ -67,7 +80,7 @@ def test_variants_preserve_every_public_description_and_sampling_range(family):
      {'a': 20, 'b': 30, 'h': 0.018 * 20 / 30, 'pH': -np.log10(1.8e-5 * 20 / 30)}),
 ])
 def test_blueprints_reproduce_independently_calculated_scientific_laws(family, inputs, expected):
-    task = load_task(ROOT / 'problems' / (family + ' - Original.yaml'))
+    task = load_task(task_path(family + ' - Original'))
     arrays = {name: np.array([value]) for name, value in inputs.items()}
     for name, value in expected.items():
         actual = evaluate_expression(task.solution[name], arrays, 1)
@@ -77,8 +90,8 @@ def test_blueprints_reproduce_independently_calculated_scientific_laws(family, i
 @pytest.mark.parametrize('family', FAMILIES)
 @pytest.mark.parametrize('suffix', ['Variant 5', 'Variant 1-2-3-4-5'])
 def test_component_change_and_full_combination_change_target_and_hidden_probe(family, suffix):
-    original = load_task(ROOT / 'problems' / (family + ' - Original.yaml'))
-    combined = load_task(ROOT / 'problems' / (family + ' - ' + suffix + '.yaml'))
+    original = load_task(task_path(family + ' - Original'))
+    combined = load_task(task_path(family + ' - ' + suffix))
     values = {v.name: np.array([v.sampling['ood_boundary']]) for v in original.by_role('input')}
     before = evaluate_expression(original.solution[original.target.name], values, 1)
     after = evaluate_expression(combined.solution[combined.target.name], values, 1)
@@ -90,7 +103,7 @@ def test_component_change_and_full_combination_change_target_and_hidden_probe(fa
 
 @pytest.mark.parametrize('family', FAMILIES)
 def test_combined_models_generate_finite_id_and_ood_observations(family):
-    task = load_task(ROOT / 'problems' / (family + ' - Variant 1-2-3-4-5.yaml'))
+    task = load_task(task_path(family + ' - Variant 1-2-3-4-5'))
     data = generate_synthetic_data(task, seed=7, train_samples=16, id_test_samples=16, ood_test_samples=16)
     for split in ('train', 'id_test', 'ood_test'):
         assert data[split].shape == (len(task.observed), 16)
@@ -110,5 +123,5 @@ def test_trivial_adsorption_probe_candidates_are_archived_from_automatic_discove
         assert entry['task_name'].startswith('Langmuir Surface Adsorption - Variant ')
         assert not set(entry['mutations']) & {4, 5}
         assert entry['path'].endswith('.yaml.archived')
-        assert not (ROOT / entry['path'].removesuffix('.archived')).exists()
+        assert not Path(str(catalogue_path(entry)).removesuffix('.archived')).exists()
         assert 'not identifiable' in entry['archive_reason']

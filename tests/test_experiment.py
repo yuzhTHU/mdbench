@@ -1,6 +1,5 @@
 """Offline checks for .env authentication, durable accounting and profile isolation."""
 from concurrent.futures import ThreadPoolExecutor
-import importlib.util
 import json
 from pathlib import Path
 import shlex
@@ -17,9 +16,7 @@ from src.algorithms import codex
 from src.algorithms.codex import _isolated_home, get_ask, run
 from src.export_problems import export_task
 
-spec = importlib.util.spec_from_file_location('benchmark_experiment', Path(__file__).resolve().parents[1] / 'run/openrouter_experiment.py')
-experiment = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(experiment)
+ROOT = Path(__file__).resolve().parents[1]
 PRICING = {'prompt': '0.00000006', 'completion': '0.00000012', 'input_cache_read': '0.000000012'}
 
 
@@ -127,10 +124,10 @@ def test_real_codex_tools_can_use_numpy_but_cannot_read_private_task_files(demo,
     if not shutil.which('codex') or not shutil.which('bwrap'):
         pytest.skip('Codex and its Linux filesystem helper are required.')
     calls = []
-    marker = experiment.ROOT / 'playground' / ('offline-private-' + tmp_path.name + '.txt')
+    marker = ROOT / 'playground' / ('offline-private-' + tmp_path.name + '.txt')
     marker.write_text('PRIVATE_VALUE_MUST_NOT_BE_VISIBLE')
-    private_paths = [marker, *(experiment.ROOT / name
-                               for name in ('Proposal.md', 'README.md', 'run.py'))]
+    private_paths = [marker, *(ROOT / name for name in (
+        'Proposal.md', 'README.md', 'src/run_experiment.py'))]
     private_paths = [str(path) for path in private_paths for path in
                      (path, Path(str(path).replace('/mnt/mergerfs/yuzihan/', '/data2/yuzihan/')))]
     script = f'''import numpy
@@ -173,7 +170,7 @@ for name in {private_paths!r}:
     monkeypatch.setenv('CODEX_HOME',str(original)); monkeypatch.setenv('MDBENCH_LOCAL_GATEWAY_TOKEN','offline-key')
     paths = export_task(demo,tmp_path/'data',train_samples=4,id_test_samples=4,ood_test_samples=4)
     try:
-        with tempfile.TemporaryDirectory(prefix='offline-permissions-',dir=experiment.ROOT/'logs/run') as directory:
+        with tempfile.TemporaryDirectory(prefix='offline-permissions-',dir=ROOT/'logs/run') as directory:
             args = SimpleNamespace(save_path=directory,codex_model='gpt-5',
                 codex_command='codex --profile openrouter',
                 codex_provider_base_url=f'http://127.0.0.1:{server.server_port}/v1',
@@ -205,53 +202,6 @@ for name in {private_paths!r}:
             assert (Path(directory)/'saved_checkpoint'/'codex.session.jsonl').read_bytes() == checkpoint
     finally:
         server.shutdown(); server.server_close(); marker.unlink()
-
-
-def test_batch_skips_four_model_timeouts_without_tripping_system_error_breaker(tmp_path, monkeypatch):
-    """Exercise dispatch/summary, not just the timeout-classification predicate."""
-    tasks=[]
-    for index in range(4):
-        source=tmp_path/f'task-{index}.yaml';source.write_text('offline source')
-        tasks.append({'id':f'task-{index}','task_name':f'Offline - Variant {index}',
-                      'path':str(source),'mutations':[1]})
-    metadata={'tasks':tasks,'families':['Offline'],'model':'offline/model','seed':1,
-              'timeout_seconds':600,'budget_usd':9.5}
-    (tmp_path/'experiment.json').write_text(json.dumps(metadata))
-    (tmp_path/'budget_plan.json').write_text(json.dumps({'selected_task_ids':[t['id'] for t in tasks]}))
-    (tmp_path/'capacity_probe.json').write_text('{}')
-    class Reply:
-        def raise_for_status(self): pass
-        def json(self):return {'data':[{'id':'offline/model','pricing':PRICING}]}
-    class Session:
-        def get(self,*args,**kwargs):return Reply()
-        def close(self):pass
-    class Process:
-        pid=999999999
-        def __init__(self,command,**kwargs):
-            save=Path(command[command.index('--save-path')+1]);save.mkdir(exist_ok=True,parents=True)
-            checkpoint=save/'saved_checkpoint';checkpoint.mkdir()
-            (checkpoint/'model.json').write_text(json.dumps({'timed_out':True}))
-            (checkpoint/'codex.session.jsonl').write_text('offline checkpoint')
-            (save/'performance.json').write_text(json.dumps({'error':'No submission before timeout','total_seconds':600}))
-        def wait(self,**kwargs):return 1
-        def poll(self):return 1
-    def export(task,root,**kwargs):
-        root.mkdir(parents=True,exist_ok=True)
-        return {name:root/name for name in ('problem','train','answer')}
-    monkeypatch.setattr(experiment,'load_api_key',lambda *args:'offline-key')
-    monkeypatch.setattr(experiment.requests,'Session',Session)
-    monkeypatch.setattr(experiment,'load_task',lambda *args,**kwargs:SimpleNamespace(mechanism_probes=[1,2]))
-    monkeypatch.setattr(experiment,'export_task',export)
-    monkeypatch.setattr(experiment.subprocess,'Popen',Process)
-    monkeypatch.setattr(experiment.subprocess,'check_output',lambda *args,**kwargs:'offline Codex')
-    experiment.experiment(SimpleNamespace(root=tmp_path,phase='batch',concurrency=2))
-    states=json.loads((tmp_path/'tasks.json').read_text())
-    assert len(states)==4 and all(s['status']=='failed' for s in states.values())
-    done=json.loads((tmp_path/'batch.done.json').read_text())
-    assert done['stopped'] is False and done['reason'] is None
-    group=json.loads((tmp_path/'summary.json').read_text())['groups']['Offline / Variants']
-    assert group['attempted']==4 and group['errors']==4 and group['probe_count']==8
-    assert group['phenomenal_id_accuracy']==0 and group['probe_id_accuracy']==0
 
 
 def test_gateway_environment_removes_inherited_secrets_and_shell_startup(tmp_path, monkeypatch):

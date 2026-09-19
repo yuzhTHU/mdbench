@@ -25,6 +25,8 @@ def test_sampling_export_privacy_reproducibility(demo, tmp_path):
         assert (first['train'][row] < variable.sampling['ood_boundary']).all()
         assert (first['ood_test'][row] >= variable.sampling['ood_boundary']).all()
     paths = export_task(demo, tmp_path, **counts)
+    assert paths['problem'].parent == tmp_path / 'problem'
+    assert paths['train'].parent == tmp_path / 'problem'
     raw = json.loads(paths['problem'].read_text())
     assert set(raw) == {'task_description', 'variables', 'data_columns', 'data_layout'}
     assert all(v['role'] in ('input', 'target') for v in raw['variables'])
