@@ -509,10 +509,12 @@ def discover_tasks(paths):
     result = []
     for value in paths:
         path = Path(value)
-        if path.is_dir(): result.extend(sorted(path.glob('*.yaml'))); result.extend(sorted(path.glob('*.yml')))
+        if path.is_dir():
+            result.extend(path.rglob('*.yaml'))
+            result.extend(path.rglob('*.yml'))
         elif path.is_file(): result.append(path)
         else: raise ValidationError(f'Task path does not exist: {path}')
-    if not result: raise ValidationError('No task YAML files found (legacy subdirectories are excluded).')
+    if not result: raise ValidationError('No task YAML files found.')
     return sorted(set(result))
 
 

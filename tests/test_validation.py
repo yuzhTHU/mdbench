@@ -2,7 +2,8 @@ import pytest
 import sympy as sp
 from src.scoring import symbolic_equivalent
 from src.validate_problem import (ValidationError, task_from_dict, validate_task, solve_model,
-                                  parse_expression, check_units, expand_expression, load_task)
+                                  parse_expression, check_units, expand_expression, load_task,
+                                  discover_tasks)
 from src.core import VariableSpec
 
 def test_bundled_demo_probes_expand_to_its_inputs(demo):
@@ -11,6 +12,17 @@ def test_bundled_demo_probes_expand_to_its_inputs(demo):
     for probe in demo.mechanism_probes:
         expression = expand_expression(probe.answer, demo, lhs=probe.probe)
         assert {str(symbol) for symbol in expression.free_symbols} <= inputs
+
+
+def test_task_discovery_is_recursive(tmp_path):
+    root_task = tmp_path / 'root.yaml'
+    nested_task = tmp_path / 'domain' / 'family' / 'nested.yml'
+    archived_task = tmp_path / 'domain' / 'ignored.yaml.archived'
+    nested_task.parent.mkdir(parents=True)
+    for path in (root_task, nested_task, archived_task):
+        path.write_text('task_name: placeholder\n')
+
+    assert discover_tasks([tmp_path]) == [nested_task, root_task]
 
 
 def test_sampling_rejects_nonfinite_limits(simple_raw):
