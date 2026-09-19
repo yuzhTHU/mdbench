@@ -99,16 +99,16 @@ HTTP proxies (e.g. `requests.Session().trust_env = False`).
 ```sh
 python run.py --algorithm codex \
   --problem-file 'data/tasks/Electrical Dissipation - Variant 1-2/agent/problem.json' \
-  --train-data-npy-file 'data/tasks/Electrical Dissipation - Variant 1-2/agent/train.npy' \
   --answer 'data/tasks/Electrical Dissipation - Variant 1-2/answer/answer.json' \
   --timeout 600 --probe-timeout 120 --save-path logs/demo
 ```
 
 The runner starts a local feedback service on a free port, or reuses a verified
-server with `--feedback-server-url http://127.0.0.1:8000/evaluate`. It copies only
-the public files to a temporary agent workspace, launches Codex, and saves
-`submission.txt`, `codex.events.jsonl`, `codex.session.jsonl`, `model.json`,
-`codex.stderr.txt`, `prompt.txt` and `performance.json`. The timeout interrupts
+server with `--feedback-server-url http://127.0.0.1:8000/evaluate`. Train, ID and
+OOD arrays are resolved from the private answer manifest; only the public problem
+and train array are copied to the temporary agent workspace. The runner launches Codex and saves
+`submission.txt`, `prompt.txt`, `performance.json`, audit logs under `audit/`, and
+the resumable session plus model metadata under `saved_checkpoint/`. The timeout interrupts
 the process and allows a short checkpoint-flush grace period. The agent is
 instructed to save a submission early and keep it updated; a valid final equation
 response also serves as a fallback submission. Missing submission/checkpoint
@@ -125,7 +125,7 @@ soft restriction on revising the mechanism, as specified in the proposal.
 Only submitted internal/target expressions may expand a probe reply; true
 internal states are never used to repair an agent answer.
 
-Probe artifacts are saved separately under `probes/`. Each probe receives train,
+Probe artifacts are saved separately under `probe/`. Each probe receives train,
 ID and OOD symbolic/numerical scores. A failed probe remains in the denominator
 of the mechanism recovery rates. Nonfinite predictions fail equivalence and
 return null errors rather than being silently filtered. Numerical equivalence
@@ -136,7 +136,7 @@ Standalone evaluation:
 ```sh
 mdbench evaluate --answer '<task>/answer/answer.json' \
   --submission logs/demo/submission.txt \
-  --checkpoint logs/demo/codex.session.jsonl --save-path logs/re-evaluate
+  --model logs/demo/saved_checkpoint/model.json --save-path logs/re-evaluate
 ```
 
 Use the same Codex model/provider configuration when resuming. The baseline

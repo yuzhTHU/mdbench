@@ -75,13 +75,26 @@ requires_openai_auth = false
     args = SimpleNamespace(save_path=tmp_path / 'run', codex_bin=executable, codex_model='gpt-5',
                            timeout=30, probe_timeout=30, probe_workers=2, algorithm='codex')
     try:
-        model = run(args, paths['problem'], paths['train'], 'http://127.0.0.1:1/evaluate')
-        checkpoint = Path(model['session']).read_bytes()
-        result = evaluate(args, paths['answer'], model['submission'], model['session'], model=model)
+        submission, ask = run(args, paths['problem'], paths['train'], 'http://127.0.0.1:1/evaluate')
+        save = Path(args.save_path)
+        assert {p.name for p in save.iterdir()} == {
+            'audit', 'saved_checkpoint', 'prompt.txt'}
+        assert {p.name for p in (save / 'audit').iterdir()} >= {
+            'codex.events.jsonl', 'stderr.txt', 'stdout.txt', 'last_message.txt', 'process.json'}
+        assert {p.name for p in (save / 'saved_checkpoint').iterdir()} == {
+            'codex.session.jsonl', 'model.json'}
+        checkpoint = (save / 'saved_checkpoint' / 'codex.session.jsonl').read_bytes()
+        result = evaluate(args, paths['answer'], submission, ask)
         assert result['phenomenal']['train']['numerically_equivalent']
         assert all(p['ok'] for p in result['mechanism_probes']), result
         assert result['mechanism_recovery']['ood_test']['numerically_equivalent'] == 1
-        assert Path(model['session']).read_bytes() == checkpoint
+        assert (save / 'saved_checkpoint' / 'codex.session.jsonl').read_bytes() == checkpoint
+        probe_dirs = list((save / 'probe').iterdir())
+        assert len(probe_dirs) == len(demo.mechanism_probes)
+        for probe_dir in probe_dirs:
+            assert {'prompt.txt', 'reply.txt', 'audit'} <= {p.name for p in probe_dir.iterdir()}
+            assert {'codex_events.jsonl', 'process.json', 'stderr.txt', 'stdout.txt', 'status.json'} <= {
+                p.name for p in (probe_dir / 'audit').iterdir()}
         assert len(calls) == 3
         for call in calls[1:]:
             context = json.dumps(call['input'])

@@ -80,21 +80,14 @@ def test_concurrent_multipart_and_cache(simple_raw, tmp_path):
 def test_independent_probe_restores_and_scoring(simple_raw, tmp_path):
     task = task_from_dict(simple_raw)
     paths = export_task(task, tmp_path / 'task', train_samples=16, id_test_samples=8, ood_test_samples=8)
-    submission = tmp_path / 'submission.txt'
-    submission.write_text('u=2*x+3\ny=u*x')  # different internals; probe expansion must use these.
-    checkpoint = tmp_path / 'checkpoint.jsonl'
-    checkpoint.write_text('{"type":"session_meta","payload":{"id":"fixed"}}\n')
+    submission = ['u=2*x+3', 'y=u*x']  # different internals; probe expansion must use these.
     calls = []
-    class Conversation:
-        def ask(self, question, output_dir):
-            assert 'answer:' not in question
-            calls.append((question, output_dir))
-            return 'h=u'
-    def restore(args, model):
-        assert model['session'] == str(checkpoint)
-        return Conversation()
+    def ask(question, output_dir=None):
+        assert 'answer:' not in question
+        calls.append((question, output_dir))
+        return 'h=u'
     args = SimpleNamespace(save_path=tmp_path / 'result', algorithm='codex', probe_workers=2)
-    result = evaluate(args, paths['answer'], submission, checkpoint, resume_fn=restore)
+    result = evaluate(args, paths['answer'], submission, ask)
     assert len(calls) == 1
     assert result['phenomenal']['ood_test']['r2'] == 1
     assert result['mechanism_probes'][0]['scores']['id_test']['symbolically_equivalent']
@@ -104,12 +97,10 @@ def test_independent_probe_restores_and_scoring(simple_raw, tmp_path):
 def test_bad_probe_does_not_use_ground_truth_to_repair(simple_raw, tmp_path):
     task = task_from_dict(simple_raw)
     paths = export_task(task, tmp_path / 'task', train_samples=4, id_test_samples=4, ood_test_samples=4)
-    submission = tmp_path / 'submission.txt'; submission.write_text('y=(2*x+3)*x')
-    checkpoint = tmp_path / 'checkpoint.jsonl'; checkpoint.write_text('frozen')
-    class Conversation:
-        def ask(self, *args, **kwargs): return 'h=h'
+    submission = ['y=(2*x+3)*x']
+    def ask(*args): return 'h=h'
     args = SimpleNamespace(save_path=tmp_path / 'result', algorithm='codex', probe_workers=2)
-    result = evaluate(args, paths['answer'], submission, checkpoint, resume_fn=lambda *a: Conversation())
+    result = evaluate(args, paths['answer'], submission, ask)
     assert result['phenomenal']['train']['symbolically_equivalent']
     assert not result['mechanism_probes'][0]['ok']
     assert result['mechanism_recovery']['train']['numerically_equivalent'] == 0

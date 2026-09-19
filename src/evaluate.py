@@ -1,13 +1,10 @@
 """Objective phenomenal and independent mechanism-probe evaluation."""
 from __future__ import annotations
-import argparse
 from concurrent.futures import ThreadPoolExecutor
-import hashlib
 import json
 from pathlib import Path
 import numpy as np
 import sympy as sp
-from .algorithms import get_resume, get_update_parser, list_algorithms
 from .core import Task
 from .scoring import (accuracy_metrics, submission_formulas,
                       symbolic_equivalent, score_expression, validate_data)
@@ -62,19 +59,14 @@ def expand_probe_reply(reply: str, probe_name: str, sources, solution) -> sp.Exp
     return expression
 
 
-def evaluate(args, answer_file: str | Path, submission_file: str | Path,
-             checkpoint: str | Path, *, model=None, resume_fn=None) -> dict:
+def evaluate(args, answer_file: str | Path, submission: list[str], ask) -> dict:
     task, arrays, columns = load_answer(answer_file)
-    submission = Path(submission_file).read_text()
-    checkpoint = Path(checkpoint).resolve()
-    if not checkpoint.is_file(): raise FileNotFoundError(checkpoint)
-    frozen_hash = hashlib.sha256(checkpoint.read_bytes()).hexdigest()
-    model = dict(model or {}, algorithm=getattr(args, 'algorithm', 'codex'), session=str(checkpoint))
+    submission_text = '\n'.join(submission)
     sources = task.by_role('input', 'auxiliary')
     solution = {}
     phenomenal = {}
     try:
-        solution = solve_model(submission_formulas(submission), sources, required=[task.target.name])
+        solution = solve_model(submission, sources, required=[task.target.name])
         predicted = solution[task.target.name]
         for split, data in arrays.items():
             values = {name: data[i] for i, name in enumerate(columns)}
@@ -84,15 +76,12 @@ def evaluate(args, answer_file: str | Path, submission_file: str | Path,
         phenomenal['ok'] = True
     except Exception as exc:
         phenomenal = {'ok': False, 'error': str(exc), 'error_type': type(exc).__name__}
-    resume_fn = resume_fn or get_resume(model['algorithm'])
-    output = Path(args.save_path) / 'probes'
+    output = Path(args.save_path) / 'probe'
     def ask_probe(item):
         index, probe = item
-        question = format_probe(task, probe) + '\nFrozen submitted mechanism model:\n' + submission
+        question = format_probe(task, probe) + '\nFrozen submitted mechanism model:\n' + submission_text
         try:
-            # Each call constructs a new restored conversation from the same file.
-            conversation = resume_fn(args, model)
-            reply = conversation.ask(question, output_dir=output / f'{index:03d}-{probe.probe}')
+            reply = ask(question, output_dir=output / f'{index:03d}-{probe.probe}')
             predicted = expand_probe_reply(reply, probe.probe, sources, solution)
             reference = expand_expression(probe.answer, task, lhs=probe.probe)
             return {'probe': probe.probe, 'ok': True, 'reply': reply, 'expression': str(predicted),
@@ -104,8 +93,6 @@ def evaluate(args, answer_file: str | Path, submission_file: str | Path,
     if workers < 1: raise ValueError('probe_workers must be positive.')
     with ThreadPoolExecutor(max_workers=workers) as executor:
         probes = list(executor.map(ask_probe, enumerate(task.mechanism_probes)))
-    if hashlib.sha256(checkpoint.read_bytes()).hexdigest() != frozen_hash:
-        raise RuntimeError('Original checkpoint was modified during probe evaluation.')
     rates = {}
     for split in arrays:
         rates[split] = {metric: (sum(bool(p.get('scores', {}).get(split, {}).get(metric, False)) for p in probes) / len(probes)
@@ -114,29 +101,4 @@ def evaluate(args, answer_file: str | Path, submission_file: str | Path,
     return {'task_name': task.task_name, 'phenomenal': phenomenal,
             'submitted_solution': {name: str(e) for name, e in solution.items()},
             'mechanism_probes': probes, 'mechanism_recovery': rates,
-            'checkpoint_sha256': frozen_hash, 'probe_count': len(probes)}
-
-
-def get_parser(parser=None):
-    parser = parser or argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--answer', required=True, type=Path)
-    parser.add_argument('--submission', required=True, type=Path)
-    parser.add_argument('--checkpoint', required=True, type=Path, help='Saved end-of-run session JSONL.')
-    parser.add_argument('--algorithm', choices=list_algorithms(), default='codex')
-    parser.add_argument('--save-path', default='logs/evaluate')
-    parser.add_argument('--probe-timeout', type=float, default=120)
-    parser.add_argument('--probe-workers', type=int, default=4)
-    get_update_parser('codex')(parser)
-    return parser
-
-
-def main(args):
-    result = evaluate(args, args.answer, args.submission, args.checkpoint)
-    root = Path(args.save_path)
-    root.mkdir(parents=True, exist_ok=True)
-    (root / 'evaluation.json').write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')
-    print(json.dumps(result, indent=2, allow_nan=False))
-    return int(not result['phenomenal']['ok'] or any(not p['ok'] for p in result['mechanism_probes']))
-
-if __name__ == '__main__':
-    raise SystemExit(main(get_parser().parse_args()))
+            'probe_count': len(probes)}

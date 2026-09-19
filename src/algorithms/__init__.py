@@ -1,4 +1,4 @@
-"""Algorithm registry. Every algorithm owns its run, parser and resume methods."""
+"""Algorithm registry. Every algorithm owns its run and parser methods."""
 from importlib import import_module
 from pathlib import Path
 
@@ -19,6 +19,3 @@ def get_algorithm(name):
 def get_update_parser(name):
     return getattr(_module(name), 'update_parser', None)
 
-
-def get_resume(name):
-    return _module(name).resume

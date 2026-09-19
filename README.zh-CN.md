@@ -11,7 +11,6 @@ mdbench validate --problems problems
 mdbench export --problems problems --output-dir data/tasks --seed 0
 python run.py --algorithm codex \
   --problem-file 'data/tasks/Electrical Dissipation - Variant 1-2/agent/problem.json' \
-  --train-data-npy-file 'data/tasks/Electrical Dissipation - Variant 1-2/agent/train.npy' \
   --answer 'data/tasks/Electrical Dissipation - Variant 1-2/answer/answer.json' \
   --timeout 600 --probe-timeout 120 --save-path logs/demo
 ```
