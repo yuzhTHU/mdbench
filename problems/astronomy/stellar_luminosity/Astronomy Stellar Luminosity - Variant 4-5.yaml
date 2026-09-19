@@ -1,0 +1,131 @@
+task_name: Astronomy Stellar Luminosity - Variant 4-5
+task_description: Relate stellar mass, radius, reference opacity, and specific heating rate to outgoing luminosity using normalized
+  measurements.
+mutation: Combines variants 4&5; each replacement applies to its own mechanism relation.
+mechanism_model:
+- formula: pi0 = 3.141592653589793
+  role: auxiliary/regime constraints
+  description: Circle constant.
+- formula: rho = 3*M/(4*pi0*R**3)
+  role: kinematic/geometric constraints
+  description: Normalized representative stellar density.
+- formula: Q = epsilon*M
+  role: governing/dynamical laws
+  description: Normalized total internal heating power.
+- formula: k_e = kappa
+  role: constitutive/component relations
+  description: Normalized effective transport opacity.
+- formula: C = 16*pi0*R/(3*k_e*rho*(1+(rho/17)**2))
+  role: governing/dynamical laws
+  description: Normalized core-to-surface radiative conductance.
+- formula: A = 4*pi0*R**2
+  role: kinematic/geometric constraints
+  description: Normalized surface emission coefficient.
+- formula: N = rho*M/5*(1+rho/19)
+  role: constitutive/component relations
+  description: Normalized non-photon cooling coefficient.
+- formula: U_c = Q/(C*A/(C+A)+N)
+  role: conservation/balance relations
+  description: Fourth power of normalized core temperature.
+- formula: U_s = C*U_c/(C+A)
+  role: conservation/balance relations
+  description: Fourth power of normalized surface temperature.
+- formula: L = A*U_s
+  role: governing/dynamical laws
+  description: Normalized outgoing photon luminosity.
+phenomenal_model: L = 31006276680299813114880451174049119330924860257.0*R**6*epsilon/(35156250000000000000000000000000000000000000.0*kappa*(3141592653589793*R**2/250000000000000
+  + 9869604401089357120529513782849.0*R**4/(140625000000000000000000000000.0*M*kappa*(562500000000000000000000000000.0*M**2/(2852315671914824207833029483243361.0*R**6)
+  + 1)))*(562500000000000000000000000000.0*M**2/(2852315671914824207833029483243361.0*R**6) + 1)*(150000000000000*M**2*(750000000000000*M/(59690260418206067.0*R**3)
+  + 1)/(3141592653589793*R**3) + 31006276680299813114880451174049119330924860257.0*R**6/(35156250000000000000000000000000000000000000.0*M*kappa*(3141592653589793*R**2/250000000000000
+  + 9869604401089357120529513782849.0*R**4/(140625000000000000000000000000.0*M*kappa*(562500000000000000000000000000.0*M**2/(2852315671914824207833029483243361.0*R**6)
+  + 1)))*(562500000000000000000000000000.0*M**2/(2852315671914824207833029483243361.0*R**6) + 1))))
+variables:
+- name: M
+  description: Normalized stellar mass.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.5
+    max: 3.0
+    ood_boundary: 1.75
+    distribution: uniform
+- name: R
+  description: Normalized stellar radius.
+  unit: '1'
+  role: input
+  sampling:
+    min: 1.0
+    max: 3.0
+    ood_boundary: 2.0
+    distribution: uniform
+- name: kappa
+  description: Normalized reference mass opacity.
+  unit: '1'
+  role: input
+  sampling:
+    min: 1000.0
+    max: 3000.0
+    ood_boundary: 2000.0
+    distribution: uniform
+- name: epsilon
+  description: Normalized specific heating rate.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.2
+    max: 3.0
+    ood_boundary: 1.6
+    distribution: uniform
+- name: L
+  description: Normalized outgoing photon luminosity.
+  unit: '1'
+  role: target
+- name: pi0
+  description: Circle constant.
+  unit: '1'
+  role: internal
+- name: rho
+  description: Normalized representative stellar density.
+  unit: '1'
+  role: internal
+- name: Q
+  description: Normalized total internal heating power.
+  unit: '1'
+  role: internal
+- name: k_e
+  description: Normalized effective transport opacity.
+  unit: '1'
+  role: internal
+- name: C
+  description: Normalized core-to-surface radiative conductance.
+  unit: '1'
+  role: internal
+- name: A
+  description: Normalized surface emission coefficient.
+  unit: '1'
+  role: internal
+- name: N
+  description: Normalized non-photon cooling coefficient.
+  unit: '1'
+  role: internal
+- name: U_c
+  description: Fourth power of normalized core temperature.
+  unit: '1'
+  role: internal
+- name: U_s
+  description: Fourth power of normalized surface temperature.
+  unit: '1'
+  role: internal
+mechanism_probes:
+- probe: U_c
+  description: Fourth power of normalized core temperature.
+  answer: M*epsilon/(150000000000000*M**2*(750000000000000*M/(59690260418206067.0*R**3) + 1)/(3141592653589793*R**3) + 31006276680299813114880451174049119330924860257.0*R**6/(35156250000000000000000000000000000000000000.0*M*kappa*(3141592653589793*R**2/250000000000000
+    + 9869604401089357120529513782849.0*R**4/(140625000000000000000000000000.0*M*kappa*(562500000000000000000000000000.0*M**2/(2852315671914824207833029483243361.0*R**6)
+    + 1)))*(562500000000000000000000000000.0*M**2/(2852315671914824207833029483243361.0*R**6) + 1)))
+- probe: C
+  description: Normalized core-to-surface radiative conductance.
+  answer: 9869604401089357120529513782849.0*R**4/(140625000000000000000000000000.0*M*kappa*(562500000000000000000000000000.0*M**2/(2852315671914824207833029483243361.0*R**6)
+    + 1))
+- probe: N
+  description: Normalized non-photon cooling coefficient.
+  answer: 150000000000000*M**2*(750000000000000*M/(59690260418206067.0*R**3) + 1)/(3141592653589793*R**3)

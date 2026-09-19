@@ -1,0 +1,191 @@
+task_name: Materials Multilayer Conduction - Variant 1-2-5
+task_description: Relate the electrical response of a layered specimen to its geometry and constituent material properties.
+mutation: Combines variants 1, 2, 5. The component changes act together.
+mechanism_model:
+- formula: Ac1 = A
+  role: kinematic/geometric constraints
+  description: Layer 1 conducting cross-sectional area
+- formula: p1 = rho1
+  role: constitutive/component relations
+  description: Layer 1 scattering resistivity
+- formula: Rc1 = (19/100) * rho2 * L / A
+  role: constitutive/component relations
+  description: Layer 1 interphase resistance
+- formula: R1 = p1 * L / Ac1 + Rc1
+  role: constitutive/component relations
+  description: Layer 1 primary branch resistance
+- formula: G1 = (23/100) * A / (rho2 * L)
+  role: constitutive/component relations
+  description: Layer 1 secondary branch conductance
+- formula: u1 = R1 * j1
+  role: constitutive/component relations
+  description: Potential drop in layer 1 primary conduction branch.
+- formula: Is = j1 + G1 * u1
+  role: conservation/balance relations
+  description: Current continuity through layer 1 region.
+- formula: Ac2 = A
+  role: kinematic/geometric constraints
+  description: Layer 2 conducting cross-sectional area
+- formula: p2 = rho2
+  role: constitutive/component relations
+  description: Layer 2 scattering resistivity
+- formula: Rc2 = (31/100) * rho1 * L / A
+  role: constitutive/component relations
+  description: Layer 2 interphase resistance
+- formula: R2 = p2 * L / Ac2 + Rc2
+  role: constitutive/component relations
+  description: Layer 2 primary branch resistance
+- formula: G2 = (37/100) * A / (rho1 * L)
+  role: constitutive/component relations
+  description: Layer 2 secondary branch conductance
+- formula: u2 = R2 * j2
+  role: constitutive/component relations
+  description: Potential drop in layer 2 primary conduction branch.
+- formula: Is = j2 + G2 * u2
+  role: conservation/balance relations
+  description: Current continuity through layer 2 region.
+- formula: Gb = (3/20) * A / ((rho1 + rho2) * L)
+  role: constitutive/component relations
+  description: Stack bypass conductance
+- formula: R0 = (3/20) * (rho1 + rho2) * L / A
+  role: constitutive/component relations
+  description: Shared terminal contact resistance
+- formula: Ib = Gb * (u1 + u2)
+  role: constitutive/component relations
+  description: Bypass spans both layers downstream of their shared contact.
+- formula: V = u1 + u2 + I * R0
+  role: conservation/balance relations
+  description: Terminal voltage includes the shared contact drop.
+- formula: I = Is + Ib
+  role: conservation/balance relations
+  description: Sum of stack and bypass terminal currents.
+phenomenal_model: I = 3*A*(V*(31*L*rho1/(100*A) + L*rho2/A)/((37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1)*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1) + L*(3*rho1/20 + 3*rho2/20)*(3*A*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1))/(20*L*(rho1 + rho2)) + 1)/A)) + V*(L*rho1/A + 19*L*rho2/(100*A))/((23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1)*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1) + L*(3*rho1/20 + 3*rho2/20)*(3*A*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1))/(20*L*(rho1 + rho2)) + 1)/A)))/(20*L*(rho1 + rho2)) + V/((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1) + L*(3*rho1/20 + 3*rho2/20)*(3*A*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1))/(20*L*(rho1 + rho2)) + 1)/A)
+variables:
+- name: I
+  description: Total terminal electric current
+  unit: A
+  role: target
+- name: V
+  description: Applied terminal voltage
+  unit: kg m^2 s^-3 A^-1
+  role: input
+  sampling:
+    min: 0.01
+    max: 1.0
+    ood_boundary: 0.1
+    distribution: log_uniform
+- name: rho1
+  description: First constituent reference resistivity
+  unit: kg m^3 s^-3 A^-2
+  role: input
+  sampling:
+    min: 0.0001
+    max: 0.01
+    ood_boundary: 0.001
+    distribution: log_uniform
+- name: rho2
+  description: Second constituent reference resistivity
+  unit: kg m^3 s^-3 A^-2
+  role: input
+  sampling:
+    min: 0.0002
+    max: 0.02
+    ood_boundary: 0.002
+    distribution: log_uniform
+- name: L
+  description: Reference layer thickness
+  unit: m
+  role: input
+  sampling:
+    min: 0.0001
+    max: 0.001
+    ood_boundary: 0.0003
+    distribution: log_uniform
+- name: A
+  description: Reference cross-sectional area
+  unit: m^2
+  role: input
+  sampling:
+    min: 1.0e-06
+    max: 1.0e-05
+    ood_boundary: 3.0e-06
+    distribution: log_uniform
+- name: Ac1
+  description: Layer 1 conducting cross-sectional area
+  unit: m^2
+  role: internal
+- name: p1
+  description: Layer 1 scattering resistivity
+  unit: kg m^3 s^-3 A^-2
+  role: internal
+- name: Rc1
+  description: Layer 1 interphase resistance
+  unit: kg m^2 s^-3 A^-2
+  role: internal
+- name: R1
+  description: Layer 1 primary branch resistance
+  unit: kg m^2 s^-3 A^-2
+  role: internal
+- name: G1
+  description: Layer 1 secondary branch conductance
+  unit: kg^-1 m^-2 s^3 A^2
+  role: internal
+- name: u1
+  description: Potential drop across the first layer region
+  unit: kg m^2 s^-3 A^-1
+  role: internal
+- name: j1
+  description: Layer 1 primary branch current
+  unit: A
+  role: internal
+- name: Ac2
+  description: Layer 2 conducting cross-sectional area
+  unit: m^2
+  role: internal
+- name: p2
+  description: Layer 2 scattering resistivity
+  unit: kg m^3 s^-3 A^-2
+  role: internal
+- name: Rc2
+  description: Layer 2 interphase resistance
+  unit: kg m^2 s^-3 A^-2
+  role: internal
+- name: R2
+  description: Layer 2 primary branch resistance
+  unit: kg m^2 s^-3 A^-2
+  role: internal
+- name: G2
+  description: Layer 2 secondary branch conductance
+  unit: kg^-1 m^-2 s^3 A^2
+  role: internal
+- name: u2
+  description: Potential drop across the second layer region
+  unit: kg m^2 s^-3 A^-1
+  role: internal
+- name: j2
+  description: Layer 2 primary branch current
+  unit: A
+  role: internal
+- name: Gb
+  description: Stack bypass conductance
+  unit: kg^-1 m^-2 s^3 A^2
+  role: internal
+- name: R0
+  description: Shared terminal contact resistance
+  unit: kg m^2 s^-3 A^-2
+  role: internal
+- name: Ib
+  description: Stack bypass current
+  unit: A
+  role: internal
+- name: Is
+  description: Current through the layer stack
+  unit: A
+  role: internal
+mechanism_probes:
+- probe: u1
+  description: Potential drop across the first layer region
+  answer: V*(L*rho1/A + 19*L*rho2/(100*A))/((23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1)*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1) + L*(3*rho1/20 + 3*rho2/20)*(3*A*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1))/(20*L*(rho1 + rho2)) + 1)/A))
+- probe: u2
+  description: Potential drop across the second layer region
+  answer: V*(31*L*rho1/(100*A) + L*rho2/A)/((37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1)*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1) + L*(3*rho1/20 + 3*rho2/20)*(3*A*((31*L*rho1/(100*A) + L*rho2/A)/(37*A*(31*L*rho1/(100*A) + L*rho2/A)/(100*L*rho1) + 1) + (L*rho1/A + 19*L*rho2/(100*A))/(23*A*(L*rho1/A + 19*L*rho2/(100*A))/(100*L*rho2) + 1))/(20*L*(rho1 + rho2)) + 1)/A))

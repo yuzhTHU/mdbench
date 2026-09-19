@@ -1,0 +1,159 @@
+task_name: Materials Thermoelastic Constraint - Variant 4-5
+task_description: Relate the measured thermal response of a constrained composite specimen to its material parameters.
+mutation: Combines variants 4, 5. The component changes act together.
+mechanism_model:
+- formula: T1 = dT / (1 + 12 * alpha * dT)
+  role: constitutive/component relations
+  description: First phase temperature increase
+- formula: T2 = dT
+  role: constitutive/component relations
+  description: Second phase temperature increase
+- formula: T3 = 3 * dT - T1 - T2
+  role: conservation/balance relations
+  description: Third phase temperature increase
+- formula: h1 = (1) * alpha * T1
+  role: constitutive/component relations
+  description: Phase 1 stress-free thermal strain
+- formula: A1 = 1 + 3 * alpha * T1
+  role: kinematic/geometric constraints
+  description: Phase 1 area relative to reference area
+- formula: K1 = 1 * E * A1
+  role: constitutive/component relations
+  description: Phase 1 axial stiffness per reference area
+- formula: h2 = (7/5) * alpha * T2
+  role: constitutive/component relations
+  description: Phase 2 stress-free thermal strain
+- formula: A2 = 1 + 5 * alpha * T2
+  role: kinematic/geometric constraints
+  description: Phase 2 area relative to reference area
+- formula: K2 = 2 * E * A2
+  role: constitutive/component relations
+  description: Phase 2 axial stiffness per reference area
+- formula: h3 = (19/10) * alpha * T3
+  role: constitutive/component relations
+  description: Phase 3 stress-free thermal strain
+- formula: A3 = 1 + 7 * alpha * T3
+  role: kinematic/geometric constraints
+  description: Phase 3 area relative to reference area
+- formula: K3 = 3 * E * A3
+  role: constitutive/component relations
+  description: Phase 3 axial stiffness per reference area
+- formula: k = 0
+  role: constitutive/component relations
+  description: Elastic interaction stiffness per reference area
+- formula: sigma = K1 * (h1 - e1) - k * (e1 - e2)
+  role: constitutive/component relations
+  description: First phase elastic and interaction forces.
+- formula: sigma = K2 * (h2 - e2) - k * (2 * e2 - e1 - e3)
+  role: constitutive/component relations
+  description: Second phase elastic and interaction forces.
+- formula: sigma = K3 * (h3 - e3) - k * (e3 - e2)
+  role: constitutive/component relations
+  description: Third phase elastic and interaction forces.
+- formula: e1 + e2 + e3 = 0
+  role: kinematic/geometric constraints
+  description: Fixed total length of three equal reference-length phases.
+phenomenal_model: sigma = (42*E^3*alpha*dT*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1)/5 + 6*E^3*alpha*dT*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1)/(12*alpha*dT + 1) + 57*E^3*alpha*(2*dT - dT/(12*alpha*dT + 1))*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1)/5)/(6*E^2*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1) + 2*E^2*(5*alpha*dT + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1) + 3*E^2*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1))
+variables:
+- name: sigma
+  description: Compressive force divided by reference cross-sectional area
+  unit: kg m^-1 s^-2
+  role: target
+- name: E
+  description: Reference elastic modulus
+  unit: kg m^-1 s^-2
+  role: input
+  sampling:
+    min: 2000000000.0
+    max: 200000000000.0
+    ood_boundary: 20000000000.0
+    distribution: log_uniform
+- name: alpha
+  description: Reference thermal expansion coefficient
+  unit: K^-1
+  role: input
+  sampling:
+    min: 5.0e-06
+    max: 4.0e-05
+    ood_boundary: 1.5e-05
+    distribution: log_uniform
+- name: dT
+  description: Mean specimen temperature increase
+  unit: K
+  role: input
+  sampling:
+    min: 10.0
+    max: 200.0
+    ood_boundary: 60.0
+    distribution: log_uniform
+- name: T1
+  description: First phase temperature increase
+  unit: K
+  role: internal
+- name: T2
+  description: Second phase temperature increase
+  unit: K
+  role: internal
+- name: T3
+  description: Third phase temperature increase
+  unit: K
+  role: internal
+- name: h1
+  description: Phase 1 stress-free thermal strain
+  unit: '1'
+  role: internal
+- name: A1
+  description: Phase 1 area relative to reference area
+  unit: '1'
+  role: internal
+- name: K1
+  description: Phase 1 axial stiffness per reference area
+  unit: kg m^-1 s^-2
+  role: internal
+- name: e1
+  description: Axial strain in the first phase
+  unit: '1'
+  role: internal
+- name: h2
+  description: Phase 2 stress-free thermal strain
+  unit: '1'
+  role: internal
+- name: A2
+  description: Phase 2 area relative to reference area
+  unit: '1'
+  role: internal
+- name: K2
+  description: Phase 2 axial stiffness per reference area
+  unit: kg m^-1 s^-2
+  role: internal
+- name: e2
+  description: Axial strain in the second phase
+  unit: '1'
+  role: internal
+- name: h3
+  description: Phase 3 stress-free thermal strain
+  unit: '1'
+  role: internal
+- name: A3
+  description: Phase 3 area relative to reference area
+  unit: '1'
+  role: internal
+- name: K3
+  description: Phase 3 axial stiffness per reference area
+  unit: kg m^-1 s^-2
+  role: internal
+- name: e3
+  description: Axial strain in the third phase
+  unit: '1'
+  role: internal
+- name: k
+  description: Elastic interaction stiffness per reference area
+  unit: kg m^-1 s^-2
+  role: internal
+mechanism_probes:
+- probe: e1
+  description: Axial strain in the first phase
+  answer: (-42*E^2*alpha*dT*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)/5 + 2*E^2*alpha*dT*(5*alpha*dT + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1)/(12*alpha*dT + 1) + 3*E^2*alpha*dT*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1)/(12*alpha*dT + 1) - 57*E^2*alpha*(2*dT - dT/(12*alpha*dT + 1))*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)/5)/(6*E^2*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1) + 2*E^2*(5*alpha*dT + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1) + 3*E^2*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1))
+- probe: e3
+  description: Axial strain in the third phase
+  answer: -(14*E^2*alpha*dT*(5*alpha*dT + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1)/5 + 2*E^2*alpha*dT*(5*alpha*dT + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1)/(12*alpha*dT + 1) - 57*E^2*alpha*(2*dT - dT/(12*alpha*dT + 1))*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)/5 - 57*E^2*alpha*(2*dT - dT/(12*alpha*dT + 1))*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1)/10)/(6*E^2*(5*alpha*dT + 1)*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1) + 2*E^2*(5*alpha*dT + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1) + 3*E^2*(7*alpha*(2*dT - dT/(12*alpha*dT + 1)) + 1)*(3*alpha*dT/(12*alpha*dT + 1) + 1))

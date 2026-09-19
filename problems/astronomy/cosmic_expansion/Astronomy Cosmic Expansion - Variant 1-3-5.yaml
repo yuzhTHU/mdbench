@@ -1,0 +1,117 @@
+task_name: Astronomy Cosmic Expansion - Variant 1-3-5
+task_description: Relate scale factor and reference matter, radiation, and vacuum densities to the expansion rate using normalized
+  measurements.
+mutation: Combines variants 1&3&5; each replacement applies to its own mechanism relation.
+mechanism_model:
+- formula: pi0 = 3.141592653589793
+  role: auxiliary/regime constraints
+  description: Circle constant.
+- formula: n_m = 67/20
+  role: auxiliary/regime constraints
+  description: Matter dilution exponent.
+- formula: n_r = 21/5
+  role: auxiliary/regime constraints
+  description: Radiation dilution exponent.
+- formula: eta = 0
+  role: auxiliary/regime constraints
+  description: Fractional radiation-to-matter transfer coefficient.
+- formula: rho_m = rho_m0/a**n_m+eta*rho_r0*(a**(-n_m)-a**(-n_r-eta))/(n_r+eta-n_m)
+  role: conservation/balance relations
+  description: Normalized matter density at the sampled epoch.
+- formula: rho_r = rho_r0/a**(n_r+eta)
+  role: conservation/balance relations
+  description: Normalized radiation mass-equivalent density at the sampled epoch.
+- formula: rho_v = rho_v0*(1+(a-1)**2/11)*(1+(rho_m-rho_m0)**2/17)
+  role: constitutive/component relations
+  description: Normalized vacuum mass-equivalent density at the sampled epoch.
+- formula: rho_e = rho_m+rho_r+rho_v
+  role: conservation/balance relations
+  description: Normalized combined gravitational source density.
+- formula: H = sqrt(8*pi0*rho_e/3)
+  role: governing/dynamical laws
+  description: Normalized positive cosmic expansion rate.
+phenomenal_model: H = sqrt(47123889803846895.0)*sqrt(rho_v0*((a - 1)**2/11 + 1)*((-rho_m0 + rho_m0/a**(67/20))**2/17 + 1)
+  + rho_r0/a**(21/5) + rho_m0/a**(67/20))/75000000
+variables:
+- name: a
+  description: Scale factor relative to the reference epoch.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.3
+    max: 2.0
+    ood_boundary: 1.15
+    distribution: uniform
+- name: rho_m0
+  description: Normalized matter density at the reference epoch.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.1
+    max: 0.6
+    ood_boundary: 0.35
+    distribution: uniform
+- name: rho_r0
+  description: Normalized radiation density at the reference epoch.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.001
+    max: 0.01
+    ood_boundary: 0.0055
+    distribution: uniform
+- name: rho_v0
+  description: Normalized vacuum density at the reference epoch.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.2
+    max: 0.8
+    ood_boundary: 0.5
+    distribution: uniform
+- name: H
+  description: Normalized positive cosmic expansion rate.
+  unit: '1'
+  role: target
+- name: pi0
+  description: Circle constant.
+  unit: '1'
+  role: internal
+- name: n_m
+  description: Matter dilution exponent.
+  unit: '1'
+  role: internal
+- name: n_r
+  description: Radiation dilution exponent.
+  unit: '1'
+  role: internal
+- name: eta
+  description: Fractional radiation-to-matter transfer coefficient.
+  unit: '1'
+  role: internal
+- name: rho_m
+  description: Normalized matter density at the sampled epoch.
+  unit: '1'
+  role: internal
+- name: rho_r
+  description: Normalized radiation mass-equivalent density at the sampled epoch.
+  unit: '1'
+  role: internal
+- name: rho_v
+  description: Normalized vacuum mass-equivalent density at the sampled epoch.
+  unit: '1'
+  role: internal
+- name: rho_e
+  description: Normalized combined gravitational source density.
+  unit: '1'
+  role: internal
+mechanism_probes:
+- probe: rho_m
+  description: Normalized matter density at the sampled epoch.
+  answer: rho_m0/a**(67/20)
+- probe: rho_r
+  description: Normalized radiation mass-equivalent density at the sampled epoch.
+  answer: rho_r0/a**(21/5)
+- probe: rho_v
+  description: Normalized vacuum mass-equivalent density at the sampled epoch.
+  answer: rho_v0*((a - 1)**2/11 + 1)*((-rho_m0 + rho_m0/a**(67/20))**2/17 + 1)

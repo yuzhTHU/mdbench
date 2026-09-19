@@ -1,0 +1,116 @@
+task_name: Astronomy Interstellar Extinction - Variant 1-3-4-5
+task_description: Relate incident flux, dust column, wavelength, reference opacity, and reference albedo to transmitted flux
+  using normalized measurements.
+mutation: Combines variants 1&3&4&5; each replacement applies to its own mechanism relation.
+mechanism_model:
+- formula: k_a = kappa*(1-w)/u**2
+  role: constitutive/component relations
+  description: Normalized absorption opacity.
+- formula: k_s = kappa*w*u**(-3)
+  role: constitutive/component relations
+  description: Normalized scattering opacity.
+- formula: S_a = Sigma*(1+Sigma/11)
+  role: kinematic/geometric constraints
+  description: Normalized absorption-weighted dust column.
+- formula: S_s = Sigma*(1+Sigma/13)
+  role: kinematic/geometric constraints
+  description: Normalized scattering-weighted dust column.
+- formula: tau_a = k_a*S_a*(1+w*u/23)*(1+k_s*S_s/17)
+  role: governing/dynamical laws
+  description: Absorption optical depth.
+- formula: tau_s = k_s*S_s*(1-w*u/13)*(1+k_a*S_a/19)
+  role: governing/dynamical laws
+  description: Scattering optical depth outside the measurement aperture.
+- formula: tau = tau_a+tau_s
+  role: conservation/balance relations
+  description: Total attenuation optical depth.
+- formula: F = F_0*exp(-tau)
+  role: governing/dynamical laws
+  description: Normalized transmitted radiation flux.
+phenomenal_model: F = F_0*exp(-Sigma*kappa*(1 - w)*(Sigma/11 + 1)*(u*w/23 + 1)*(Sigma*kappa*w*(Sigma/13 + 1)/(17*u**3) + 1)/u**2
+  - Sigma*kappa*w*(Sigma/13 + 1)*(-u*w/13 + 1)*(Sigma*kappa*(1 - w)*(Sigma/11 + 1)/(19*u**2) + 1)/u**3)
+variables:
+- name: F_0
+  description: Normalized incident radiation flux.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.2
+    max: 5.0
+    ood_boundary: 2.6
+    distribution: uniform
+- name: Sigma
+  description: Normalized dust column mass.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.1
+    max: 2.0
+    ood_boundary: 1.05
+    distribution: uniform
+- name: u
+  description: Wavelength divided by the fixed reference wavelength.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.7
+    max: 1.6
+    ood_boundary: 1.15
+    distribution: uniform
+- name: kappa
+  description: Normalized reference extinction opacity.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.2
+    max: 1.0
+    ood_boundary: 0.6
+    distribution: uniform
+- name: w
+  description: Reference single-scattering albedo.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.1
+    max: 0.6
+    ood_boundary: 0.35
+    distribution: uniform
+- name: F
+  description: Normalized transmitted radiation flux.
+  unit: '1'
+  role: target
+- name: k_a
+  description: Normalized absorption opacity.
+  unit: '1'
+  role: internal
+- name: k_s
+  description: Normalized scattering opacity.
+  unit: '1'
+  role: internal
+- name: S_a
+  description: Normalized absorption-weighted dust column.
+  unit: '1'
+  role: internal
+- name: S_s
+  description: Normalized scattering-weighted dust column.
+  unit: '1'
+  role: internal
+- name: tau_a
+  description: Absorption optical depth.
+  unit: '1'
+  role: internal
+- name: tau_s
+  description: Scattering optical depth outside the measurement aperture.
+  unit: '1'
+  role: internal
+- name: tau
+  description: Total attenuation optical depth.
+  unit: '1'
+  role: internal
+mechanism_probes:
+- probe: tau_a
+  description: Absorption optical depth.
+  answer: Sigma*kappa*(1 - w)*(Sigma/11 + 1)*(u*w/23 + 1)*(Sigma*kappa*w*(Sigma/13 + 1)/(17*u**3) + 1)/u**2
+- probe: tau_s
+  description: Scattering optical depth outside the measurement aperture.
+  answer: Sigma*kappa*w*(Sigma/13 + 1)*(-u*w/13 + 1)*(Sigma*kappa*(1 - w)*(Sigma/11 + 1)/(19*u**2) + 1)/u**3

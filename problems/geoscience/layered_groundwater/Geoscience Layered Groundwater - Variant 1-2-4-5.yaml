@@ -1,0 +1,268 @@
+task_name: Geoscience Layered Groundwater - Variant 1-2-4-5
+task_description: Relate hydraulic head and stratum properties to steady inlet water discharge through a layered column.
+mutation: Combines variants 1&2&4&5; all constitutive changes enter the same simultaneous balances.
+mechanism_model:
+- formula: ku1 = K1/(37*dh**2/(100*(L1 + L2)**2) + 1)
+  role: constitutive/component relations
+  description: Streamtube 1 upper operating conductivity
+- formula: path1 = L2*(23*K1/(100*(K1 + K2)) + 1)
+  role: kinematic/geometric constraints
+  description: Streamtube 1 lower hydraulic path length
+- formula: eta1 = 11*K2/(100*(K1 + K2))
+  role: constitutive/component relations
+  description: Streamtube 1 interface extraction ratio
+- formula: Rb1 = 0
+  role: constitutive/component relations
+  description: Streamtube 1 interface resistance per area
+- formula: cb1 = 19*K1*K2/(100*(K1 + K2)*(L1 + L2))
+  role: constitutive/component relations
+  description: Streamtube 1 fracture conductance per area
+- formula: Ra1 = (17*L1/100 + 17*L2/100)/sqrt(K1*K2)
+  role: constitutive/component relations
+  description: Streamtube 1 shared entrance resistance per area
+- formula: qu1 = q1*(eta1 + 1)
+  role: conservation/balance relations
+  description: Upper discharge supplies lower discharge and interface extraction
+- formula: hu1 = L1*qu1/ku1
+  role: constitutive/component relations
+  description: Upper-stratum Darcy head loss in this streamtube
+- formula: hl1 = path1*q1/K2
+  role: constitutive/component relations
+  description: Lower-stratum Darcy head loss in this streamtube
+- formula: hb1 = Rb1*q1
+  role: constitutive/component relations
+  description: Interface head loss is referenced to downstream matrix discharge
+- formula: qb1 = cb1*(hb1 + hl1 + hu1)
+  role: constitutive/component relations
+  description: Fracture and matrix share the post-entrance head difference
+- formula: ha1 = Ra1*(qb1 + qu1)
+  role: constitutive/component relations
+  description: Combined streamtube inlet flow crosses its shared entrance constriction
+- formula: dh = ha1 + hb1 + hl1 + hu1
+  role: conservation/balance relations
+  description: Entrance and matrix head losses exhaust the imposed head difference
+- formula: ku2 = K1/(61*dh**2/(100*(L1 + L2)**2) + 1)
+  role: constitutive/component relations
+  description: Streamtube 2 upper operating conductivity
+- formula: path2 = L2*(43*K1/(100*(K1 + K2)) + 1)
+  role: kinematic/geometric constraints
+  description: Streamtube 2 lower hydraulic path length
+- formula: eta2 = 19*K2/(100*(K1 + K2))
+  role: constitutive/component relations
+  description: Streamtube 2 interface extraction ratio
+- formula: Rb2 = 0
+  role: constitutive/component relations
+  description: Streamtube 2 interface resistance per area
+- formula: cb2 = 29*K1*K2/(100*(K1 + K2)*(L1 + L2))
+  role: constitutive/component relations
+  description: Streamtube 2 fracture conductance per area
+- formula: Ra2 = (31*L1/100 + 31*L2/100)/sqrt(K1*K2)
+  role: constitutive/component relations
+  description: Streamtube 2 shared entrance resistance per area
+- formula: qu2 = q2*(eta2 + 1)
+  role: conservation/balance relations
+  description: Upper discharge supplies lower discharge and interface extraction
+- formula: hu2 = L1*qu2/ku2
+  role: constitutive/component relations
+  description: Upper-stratum Darcy head loss in this streamtube
+- formula: hl2 = path2*q2/K2
+  role: constitutive/component relations
+  description: Lower-stratum Darcy head loss in this streamtube
+- formula: hb2 = Rb2*q2
+  role: constitutive/component relations
+  description: Interface head loss is referenced to downstream matrix discharge
+- formula: qb2 = cb2*(hb2 + hl2 + hu2)
+  role: constitutive/component relations
+  description: Fracture and matrix share the post-entrance head difference
+- formula: ha2 = Ra2*(qb2 + qu2)
+  role: constitutive/component relations
+  description: Combined streamtube inlet flow crosses its shared entrance constriction
+- formula: dh = ha2 + hb2 + hl2 + hu2
+  role: conservation/balance relations
+  description: Entrance and matrix head losses exhaust the imposed head difference
+- formula: qin = 2*qb1/5 + 3*qb2/5 + 2*qu1/5 + 3*qu2/5
+  role: conservation/balance relations
+  description: Streamtubes occupying two-fifths and three-fifths of the area determine total inlet discharge
+phenomenal_model: qin = 19*K1*K2*(L2*dh*(23*K1/(100*(K1 + K2)) + 1)/(K2*((17*L1/100 + 17*L2/100)*(19*K1*K2*(L2*(23*K1/(100*(K1
+  + K2)) + 1)/K2 + L1*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1 + L2)**2) + 1)/K1)/(100*(K1 + K2)*(L1 + L2)) + 11*K2/(100*(K1
+  + K2)) + 1)/sqrt(K1*K2) + L2*(23*K1/(100*(K1 + K2)) + 1)/K2 + L1*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1 + L2)**2)
+  + 1)/K1)) + L1*dh*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1 + L2)**2) + 1)/(K1*((17*L1/100 + 17*L2/100)*(19*K1*K2*(L2*(23*K1/(100*(K1
+  + K2)) + 1)/K2 + L1*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1 + L2)**2) + 1)/K1)/(100*(K1 + K2)*(L1 + L2)) + 11*K2/(100*(K1
+  + K2)) + 1)/sqrt(K1*K2) + L2*(23*K1/(100*(K1 + K2)) + 1)/K2 + L1*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1 + L2)**2)
+  + 1)/K1)))/(250*(K1 + K2)*(L1 + L2)) + 87*K1*K2*(L2*dh*(43*K1/(100*(K1 + K2)) + 1)/(K2*((31*L1/100 + 31*L2/100)*(29*K1*K2*(L2*(43*K1/(100*(K1
+  + K2)) + 1)/K2 + L1*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1 + L2)**2) + 1)/K1)/(100*(K1 + K2)*(L1 + L2)) + 19*K2/(100*(K1
+  + K2)) + 1)/sqrt(K1*K2) + L2*(43*K1/(100*(K1 + K2)) + 1)/K2 + L1*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1 + L2)**2)
+  + 1)/K1)) + L1*dh*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1 + L2)**2) + 1)/(K1*((31*L1/100 + 31*L2/100)*(29*K1*K2*(L2*(43*K1/(100*(K1
+  + K2)) + 1)/K2 + L1*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1 + L2)**2) + 1)/K1)/(100*(K1 + K2)*(L1 + L2)) + 19*K2/(100*(K1
+  + K2)) + 1)/sqrt(K1*K2) + L2*(43*K1/(100*(K1 + K2)) + 1)/K2 + L1*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1 + L2)**2)
+  + 1)/K1)))/(500*(K1 + K2)*(L1 + L2)) + 2*dh*(11*K2/(100*(K1 + K2)) + 1)/(5*((17*L1/100 + 17*L2/100)*(19*K1*K2*(L2*(23*K1/(100*(K1
+  + K2)) + 1)/K2 + L1*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1 + L2)**2) + 1)/K1)/(100*(K1 + K2)*(L1 + L2)) + 11*K2/(100*(K1
+  + K2)) + 1)/sqrt(K1*K2) + L2*(23*K1/(100*(K1 + K2)) + 1)/K2 + L1*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1 + L2)**2)
+  + 1)/K1)) + 3*dh*(19*K2/(100*(K1 + K2)) + 1)/(5*((31*L1/100 + 31*L2/100)*(29*K1*K2*(L2*(43*K1/(100*(K1 + K2)) + 1)/K2 +
+  L1*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1 + L2)**2) + 1)/K1)/(100*(K1 + K2)*(L1 + L2)) + 19*K2/(100*(K1 + K2)) +
+  1)/sqrt(K1*K2) + L2*(43*K1/(100*(K1 + K2)) + 1)/K2 + L1*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1 + L2)**2) + 1)/K1))
+variables:
+- name: dh
+  description: Hydraulic head difference across the column
+  unit: m
+  role: input
+  sampling:
+    min: 0.1
+    max: 3.0
+    ood_boundary: 1.0
+    distribution: uniform
+- name: L1
+  description: Upper stratum thickness
+  unit: m
+  role: input
+  sampling:
+    min: 2.0
+    max: 30.0
+    ood_boundary: 10.0
+    distribution: uniform
+- name: L2
+  description: Lower stratum thickness
+  unit: m
+  role: input
+  sampling:
+    min: 3.0
+    max: 40.0
+    ood_boundary: 15.0
+    distribution: uniform
+- name: K1
+  description: Upper stratum reference hydraulic conductivity
+  unit: m s^-1
+  role: input
+  sampling:
+    min: 1.0e-06
+    max: 0.001
+    ood_boundary: 0.0001
+    distribution: log_uniform
+- name: K2
+  description: Lower stratum reference hydraulic conductivity
+  unit: m s^-1
+  role: input
+  sampling:
+    min: 1.0e-07
+    max: 0.001
+    ood_boundary: 1.0e-05
+    distribution: log_uniform
+- name: qin
+  description: Steady inlet discharge per column area
+  unit: m s^-1
+  role: target
+- name: ku1
+  description: Streamtube 1 upper operating conductivity
+  unit: m s^-1
+  role: internal
+- name: path1
+  description: Streamtube 1 lower hydraulic path length
+  unit: m
+  role: internal
+- name: eta1
+  description: Streamtube 1 interface extraction ratio
+  unit: '1'
+  role: internal
+- name: Rb1
+  description: Streamtube 1 interface resistance per area
+  unit: s
+  role: internal
+- name: cb1
+  description: Streamtube 1 fracture conductance per area
+  unit: s^-1
+  role: internal
+- name: Ra1
+  description: Streamtube 1 shared entrance resistance per area
+  unit: s
+  role: internal
+- name: qb1
+  description: Streamtube 1 fracture discharge per streamtube area
+  unit: m s^-1
+  role: internal
+- name: q1
+  description: Streamtube 1 lower-stratum discharge per streamtube area
+  unit: m s^-1
+  role: internal
+- name: qu1
+  description: Streamtube 1 upper-stratum discharge per streamtube area
+  unit: m s^-1
+  role: internal
+- name: hu1
+  description: Streamtube 1 upper hydraulic head loss
+  unit: m
+  role: internal
+- name: hl1
+  description: Streamtube 1 lower hydraulic head loss
+  unit: m
+  role: internal
+- name: hb1
+  description: Streamtube 1 interface hydraulic head loss
+  unit: m
+  role: internal
+- name: ha1
+  description: Streamtube 1 entrance hydraulic head loss
+  unit: m
+  role: internal
+- name: ku2
+  description: Streamtube 2 upper operating conductivity
+  unit: m s^-1
+  role: internal
+- name: path2
+  description: Streamtube 2 lower hydraulic path length
+  unit: m
+  role: internal
+- name: eta2
+  description: Streamtube 2 interface extraction ratio
+  unit: '1'
+  role: internal
+- name: Rb2
+  description: Streamtube 2 interface resistance per area
+  unit: s
+  role: internal
+- name: cb2
+  description: Streamtube 2 fracture conductance per area
+  unit: s^-1
+  role: internal
+- name: Ra2
+  description: Streamtube 2 shared entrance resistance per area
+  unit: s
+  role: internal
+- name: qb2
+  description: Streamtube 2 fracture discharge per streamtube area
+  unit: m s^-1
+  role: internal
+- name: q2
+  description: Streamtube 2 lower-stratum discharge per streamtube area
+  unit: m s^-1
+  role: internal
+- name: qu2
+  description: Streamtube 2 upper-stratum discharge per streamtube area
+  unit: m s^-1
+  role: internal
+- name: hu2
+  description: Streamtube 2 upper hydraulic head loss
+  unit: m
+  role: internal
+- name: hl2
+  description: Streamtube 2 lower hydraulic head loss
+  unit: m
+  role: internal
+- name: hb2
+  description: Streamtube 2 interface hydraulic head loss
+  unit: m
+  role: internal
+- name: ha2
+  description: Streamtube 2 entrance hydraulic head loss
+  unit: m
+  role: internal
+mechanism_probes:
+- probe: q1
+  description: Streamtube 1 lower-stratum discharge per streamtube area
+  answer: dh/((17*L1/100 + 17*L2/100)*(19*K1*K2*(L2*(23*K1/(100*(K1 + K2)) + 1)/K2 + L1*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1
+    + L2)**2) + 1)/K1)/(100*(K1 + K2)*(L1 + L2)) + 11*K2/(100*(K1 + K2)) + 1)/sqrt(K1*K2) + L2*(23*K1/(100*(K1 + K2)) + 1)/K2
+    + L1*(11*K2/(100*(K1 + K2)) + 1)*(37*dh**2/(100*(L1 + L2)**2) + 1)/K1)
+- probe: q2
+  description: Streamtube 2 lower-stratum discharge per streamtube area
+  answer: dh/((31*L1/100 + 31*L2/100)*(29*K1*K2*(L2*(43*K1/(100*(K1 + K2)) + 1)/K2 + L1*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1
+    + L2)**2) + 1)/K1)/(100*(K1 + K2)*(L1 + L2)) + 19*K2/(100*(K1 + K2)) + 1)/sqrt(K1*K2) + L2*(43*K1/(100*(K1 + K2)) + 1)/K2
+    + L1*(19*K2/(100*(K1 + K2)) + 1)*(61*dh**2/(100*(L1 + L2)**2) + 1)/K1)

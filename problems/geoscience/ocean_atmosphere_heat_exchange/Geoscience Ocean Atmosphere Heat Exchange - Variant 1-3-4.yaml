@@ -1,0 +1,166 @@
+task_name: Geoscience Ocean Atmosphere Heat Exchange - Variant 1-3-4
+task_description: Relate imposed heating and thermal conductances to the steady temperature difference between ocean and atmosphere.
+mutation: Combines variants 1&3&4; all constitutive changes enter the same simultaneous balances.
+mechanism_model:
+- formula: Q0 = 100
+  role: auxiliary/regime constraints
+  description: Heating reference scale
+- formula: k = h/(1 + 17*Qo/(100*Q0))
+  role: constitutive/component relations
+  description: Operating interface thermal conductance
+- formula: ko = lo
+  role: constitutive/component relations
+  description: Operating ocean exterior thermal conductance
+- formula: ka = la*(1 + 23*Qa**2/(100*Q0**2))
+  role: constitutive/component relations
+  description: Operating atmospheric exterior thermal conductance
+- formula: W = 11*Qa*Qo/(100*(Q0/2 + Qa))
+  role: constitutive/component relations
+  description: Wave-mediated ocean-to-atmosphere heat transfer
+- formula: kb = 67*h/100
+  role: constitutive/component relations
+  description: Surface-to-subsurface ocean thermal conductance
+- formula: kh = 23*h/100
+  role: constitutive/component relations
+  description: Subsurface-ocean-to-atmosphere thermal conductance
+- formula: J = k*(-ta + to)
+  role: constitutive/component relations
+  description: Interface conductance transfers heat down the temperature difference
+- formula: Jb = kb*(-tb + to)
+  role: constitutive/component relations
+  description: A finite conductance transfers heat from surface to subsurface ocean
+- formula: Jh = kh*(-ta + tb)
+  role: constitutive/component relations
+  description: A separate circulation channel transfers subsurface heat to the atmosphere
+- formula: Qo = J + Jb + W
+  role: conservation/balance relations
+  description: Surface-ocean heating balances transfers to subsurface ocean and atmosphere
+- formula: Jb = Jh + ko*tb
+  role: conservation/balance relations
+  description: Subsurface heat input balances exterior cooling and circulation to the atmosphere
+- formula: J + Jh + Qa + W = ka*ta
+  role: conservation/balance relations
+  description: Atmospheric heating balances exterior cooling
+- formula: dt = -ta + to
+  role: kinematic/geometric constraints
+  description: Compartment temperatures determine the observed temperature difference
+phenomenal_model: dt = (-99*Qa*Qo*h*la*(23*Qa**2/1000000 + 1)/(1000*(Qa + 50)) - 99*Qa*Qo*h*lo/(1000*(Qa + 50)) - 11*Qa*Qo*la*lo*(23*Qa**2/1000000
+  + 1)/(100*(Qa + 50)) - 67*Qa*h*lo/100 + 9*Qo*h*la*(23*Qa**2/1000000 + 1)/10 + 23*Qo*h*lo/100 + Qo*la*lo*(23*Qa**2/1000000
+  + 1))/(1541*h**2*la*(23*Qa**2/1000000 + 1)/10000 + 9*h**2*la*(23*Qa**2/1000000 + 1)/(10*(17*Qo/10000 + 1)) + 1541*h**2*lo/10000
+  + 9*h**2*lo/(10*(17*Qo/10000 + 1)) + 67*h*la*lo*(23*Qa**2/1000000 + 1)/100 + h*la*lo*(23*Qa**2/1000000 + 1)/(17*Qo/10000
+  + 1))
+variables:
+- name: Qo
+  description: Ocean heating flux
+  unit: kg s^-3
+  role: input
+  sampling:
+    min: 100.0
+    max: 300.0
+    ood_boundary: 200.0
+    distribution: uniform
+- name: Qa
+  description: Atmospheric heating flux
+  unit: kg s^-3
+  role: input
+  sampling:
+    min: 10.0
+    max: 30.0
+    ood_boundary: 20.0
+    distribution: uniform
+- name: h
+  description: Reference interface thermal conductance
+  unit: kg s^-3 K^-1
+  role: input
+  sampling:
+    min: 2.0
+    max: 10.0
+    ood_boundary: 6.0
+    distribution: uniform
+- name: lo
+  description: Reference ocean thermal conductance to the surroundings
+  unit: kg s^-3 K^-1
+  role: input
+  sampling:
+    min: 0.2
+    max: 0.8
+    ood_boundary: 0.5
+    distribution: uniform
+- name: la
+  description: Reference atmospheric thermal conductance to the surroundings
+  unit: kg s^-3 K^-1
+  role: input
+  sampling:
+    min: 1.0
+    max: 5.0
+    ood_boundary: 3.0
+    distribution: uniform
+- name: dt
+  description: Ocean minus atmospheric temperature
+  unit: K
+  role: target
+- name: Q0
+  description: Heating reference scale
+  unit: kg s^-3
+  role: internal
+- name: k
+  description: Operating interface thermal conductance
+  unit: kg s^-3 K^-1
+  role: internal
+- name: ko
+  description: Operating ocean exterior thermal conductance
+  unit: kg s^-3 K^-1
+  role: internal
+- name: ka
+  description: Operating atmospheric exterior thermal conductance
+  unit: kg s^-3 K^-1
+  role: internal
+- name: W
+  description: Wave-mediated ocean-to-atmosphere heat transfer
+  unit: kg s^-3
+  role: internal
+- name: to
+  description: Ocean temperature anomaly relative to the exterior reference
+  unit: K
+  role: internal
+- name: ta
+  description: Atmospheric temperature anomaly relative to the exterior reference
+  unit: K
+  role: internal
+- name: kb
+  description: Surface-to-subsurface ocean thermal conductance
+  unit: kg s^-3 K^-1
+  role: internal
+- name: kh
+  description: Subsurface-ocean-to-atmosphere thermal conductance
+  unit: kg s^-3 K^-1
+  role: internal
+- name: tb
+  description: Subsurface ocean temperature anomaly relative to the exterior reference
+  unit: K
+  role: internal
+- name: J
+  description: Interface ocean-to-atmosphere heat flux
+  unit: kg s^-3
+  role: internal
+- name: Jb
+  description: Surface-to-subsurface ocean heat flux
+  unit: kg s^-3
+  role: internal
+- name: Jh
+  description: Subsurface-ocean-to-atmosphere heat flux
+  unit: kg s^-3
+  role: internal
+mechanism_probes:
+- probe: tb
+  description: Subsurface ocean temperature anomaly relative to the exterior reference
+  answer: (-737*Qa*Qo*h*la*(23*Qa**2/1000000 + 1)/(10000*(Qa + 50)) + 1541*Qa*h**2/10000 + 9*Qa*h**2/(10*(17*Qo/10000 + 1))
+    + 1541*Qo*h**2/10000 + 9*Qo*h**2/(10*(17*Qo/10000 + 1)) + 67*Qo*h*la*(23*Qa**2/1000000 + 1)/100)/(1541*h**2*la*(23*Qa**2/1000000
+    + 1)/10000 + 9*h**2*la*(23*Qa**2/1000000 + 1)/(10*(17*Qo/10000 + 1)) + 1541*h**2*lo/10000 + 9*h**2*lo/(10*(17*Qo/10000
+    + 1)) + 67*h*la*lo*(23*Qa**2/1000000 + 1)/100 + h*la*lo*(23*Qa**2/1000000 + 1)/(17*Qo/10000 + 1))
+- probe: Jh
+  description: Subsurface-ocean-to-atmosphere heat flux
+  answer: 23*h*(-737*Qa*Qo*h*la*(23*Qa**2/1000000 + 1)/(10000*(Qa + 50)) - 737*Qa*Qo*h*lo/(10000*(Qa + 50)) - 67*Qa*h*lo/100
+    - Qa*h*lo/(17*Qo/10000 + 1) + 67*Qo*h*la*(23*Qa**2/1000000 + 1)/100 - Qo*h*lo/(17*Qo/10000 + 1))/(100*(1541*h**2*la*(23*Qa**2/1000000
+    + 1)/10000 + 9*h**2*la*(23*Qa**2/1000000 + 1)/(10*(17*Qo/10000 + 1)) + 1541*h**2*lo/10000 + 9*h**2*lo/(10*(17*Qo/10000
+    + 1)) + 67*h*la*lo*(23*Qa**2/1000000 + 1)/100 + h*la*lo*(23*Qa**2/1000000 + 1)/(17*Qo/10000 + 1)))

@@ -1,0 +1,147 @@
+task_name: Geoscience Isostatic Compensation - Variant 1-4
+task_description: Relate neighboring topographic heights and reference densities to the compensation-root depth beneath the
+  first column.
+mutation: Combines variants 1&4; all constitutive changes enter the same simultaneous balances.
+mechanism_model:
+- formula: g = 981/100
+  role: auxiliary/regime constraints
+  description: Gravitational acceleration
+- formula: H0 = 2000
+  role: auxiliary/regime constraints
+  description: Topographic reference height
+- formula: c1 = H1*(-13*rc/100 + 13*rm/100)/(H0 + H1) + rc
+  role: constitutive/component relations
+  description: First column operating crustal density
+- formula: m2 = rm
+  role: constitutive/component relations
+  description: Second column operating mantle density
+- formula: k = g*(-3*rc/20 + 3*rm/20)
+  role: constitutive/component relations
+  description: Lateral support stiffness per surface area
+- formula: b1 = g*(-c1 + rm) + 19*H1*g*rc/(100*H0)
+  role: constitutive/component relations
+  description: First column restoring stiffness per surface area
+- formula: b2 = g*(m2 - rc)
+  role: constitutive/component relations
+  description: Second column buoyant stiffness per surface area
+- formula: P1 = H1*c1*g
+  role: governing/dynamical laws
+  description: First column surface-load pressure
+- formula: P2 = H2*g*rc
+  role: governing/dynamical laws
+  description: Second column surface-load pressure
+- formula: J = k*(r - r2)
+  role: constitutive/component relations
+  description: A finite lateral spring transfers equal and opposite vertical stress
+- formula: P1 = J + b1*r
+  role: conservation/balance relations
+  description: First-column load balances local restoring stress and lateral support
+- formula: J + P2 = b2*r2
+  role: conservation/balance relations
+  description: Second-column buoyancy supports its load and the opposite lateral reaction
+phenomenal_model: r = (981*H1*(-22563*rc/2000 + 22563*rm/2000)*(H1*(-13*rc/100 + 13*rm/100)/(H1 + 2000) + rc)/100 + 981*H2*rc*(-2943*rc/2000
+  + 2943*rm/2000)/100)/((-981*rc/100 + 981*rm/100)*(18639*H1*rc/20000000 - 981*H1*(-13*rc/100 + 13*rm/100)/(100*(H1 + 2000))
+  - 981*rc/100 + 981*rm/100) + (-2943*rc/2000 + 2943*rm/2000)*(18639*H1*rc/20000000 - 981*H1*(-13*rc/100 + 13*rm/100)/(100*(H1
+  + 2000)) - 981*rc/50 + 981*rm/50))
+variables:
+- name: H1
+  description: First column topographic height
+  unit: m
+  role: input
+  sampling:
+    min: 800.0
+    max: 3000.0
+    ood_boundary: 1800.0
+    distribution: uniform
+- name: H2
+  description: Second column topographic height
+  unit: m
+  role: input
+  sampling:
+    min: 100.0
+    max: 700.0
+    ood_boundary: 400.0
+    distribution: uniform
+- name: rc
+  description: Reference crustal mass density
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 2600.0
+    max: 2900.0
+    ood_boundary: 2750.0
+    distribution: uniform
+- name: rm
+  description: Reference mantle mass density
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 3200.0
+    max: 3500.0
+    ood_boundary: 3350.0
+    distribution: uniform
+- name: r
+  description: First column compensation-root depth
+  unit: m
+  role: target
+- name: g
+  description: Gravitational acceleration
+  unit: m s^-2
+  role: internal
+- name: H0
+  description: Topographic reference height
+  unit: m
+  role: internal
+- name: c1
+  description: First column operating crustal density
+  unit: kg m^-3
+  role: internal
+- name: m2
+  description: Second column operating mantle density
+  unit: kg m^-3
+  role: internal
+- name: k
+  description: Lateral support stiffness per surface area
+  unit: kg m^-2 s^-2
+  role: internal
+- name: b1
+  description: First column restoring stiffness per surface area
+  unit: kg m^-2 s^-2
+  role: internal
+- name: b2
+  description: Second column buoyant stiffness per surface area
+  unit: kg m^-2 s^-2
+  role: internal
+- name: P1
+  description: First column surface-load pressure
+  unit: kg m^-1 s^-2
+  role: internal
+- name: P2
+  description: Second column surface-load pressure
+  unit: kg m^-1 s^-2
+  role: internal
+- name: r2
+  description: Second column compensation-root depth
+  unit: m
+  role: internal
+- name: J
+  description: Lateral supporting stress transferred from the second column
+  unit: kg m^-1 s^-2
+  role: internal
+mechanism_probes:
+- probe: r2
+  description: Second column compensation-root depth
+  answer: (981*H1*(-2943*rc/2000 + 2943*rm/2000)*(H1*(-13*rc/100 + 13*rm/100)/(H1 + 2000) + rc)/100 + 981*H2*rc*(18639*H1*rc/20000000
+    - 981*H1*(-13*rc/100 + 13*rm/100)/(100*(H1 + 2000)) - 22563*rc/2000 + 22563*rm/2000)/100)/((-981*rc/100 + 981*rm/100)*(18639*H1*rc/20000000
+    - 981*H1*(-13*rc/100 + 13*rm/100)/(100*(H1 + 2000)) - 981*rc/100 + 981*rm/100) + (-2943*rc/2000 + 2943*rm/2000)*(18639*H1*rc/20000000
+    - 981*H1*(-13*rc/100 + 13*rm/100)/(100*(H1 + 2000)) - 981*rc/50 + 981*rm/50))
+- probe: J
+  description: Lateral supporting stress transferred from the second column
+  answer: (-2943*rc/2000 + 2943*rm/2000)*((981*H1*(-22563*rc/2000 + 22563*rm/2000)*(H1*(-13*rc/100 + 13*rm/100)/(H1 + 2000)
+    + rc)/100 + 981*H2*rc*(-2943*rc/2000 + 2943*rm/2000)/100)/((-981*rc/100 + 981*rm/100)*(18639*H1*rc/20000000 - 981*H1*(-13*rc/100
+    + 13*rm/100)/(100*(H1 + 2000)) - 981*rc/100 + 981*rm/100) + (-2943*rc/2000 + 2943*rm/2000)*(18639*H1*rc/20000000 - 981*H1*(-13*rc/100
+    + 13*rm/100)/(100*(H1 + 2000)) - 981*rc/50 + 981*rm/50)) - (981*H1*(-2943*rc/2000 + 2943*rm/2000)*(H1*(-13*rc/100 + 13*rm/100)/(H1
+    + 2000) + rc)/100 + 981*H2*rc*(18639*H1*rc/20000000 - 981*H1*(-13*rc/100 + 13*rm/100)/(100*(H1 + 2000)) - 22563*rc/2000
+    + 22563*rm/2000)/100)/((-981*rc/100 + 981*rm/100)*(18639*H1*rc/20000000 - 981*H1*(-13*rc/100 + 13*rm/100)/(100*(H1 + 2000))
+    - 981*rc/100 + 981*rm/100) + (-2943*rc/2000 + 2943*rm/2000)*(18639*H1*rc/20000000 - 981*H1*(-13*rc/100 + 13*rm/100)/(100*(H1
+    + 2000)) - 981*rc/50 + 981*rm/50)))
