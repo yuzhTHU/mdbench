@@ -1,6 +1,7 @@
 """Run an algorithm against an exported task and evaluate its frozen checkpoint."""
 from __future__ import annotations
 import argparse
+from copy import deepcopy
 from contextlib import contextmanager
 from datetime import datetime
 import json
@@ -17,7 +18,7 @@ import time
 import numpy as np
 from urllib.parse import urlsplit
 from urllib.request import build_opener, ProxyHandler
-from src.algorithms import get_algorithm, get_update_parser, list_algorithms
+from src.algorithms import get_algorithm, get_ask, get_update_parser, list_algorithms
 from src.algorithms.codex import clean_ansi
 from src.cli.flags import add_minus_flags, add_negation_flags
 from src.evaluate import evaluate
@@ -52,7 +53,7 @@ def build_argparser(argv=None):
     parser.add_argument('--feedback_workers', type=int, default=4)
     parser.add_argument('--feedback_cache_size', type=int, default=128)
     parser.add_argument('--probe_timeout', type=float, default=120)
-    parser.add_argument('--probe_workers', type=int, default=4)
+    parser.add_argument('--probe_workers', type=int, default=1)
     if (update_parser_fn := get_update_parser(args.algorithm)):
         parser = update_parser_fn(parser)
     add_minus_flags(parser)
@@ -157,17 +158,19 @@ def main(args):
             try:
                 output = get_algorithm(args.algorithm)(args, dataest['problem'], dataest['train'], url)
                 if not isinstance(output, tuple) or len(output) != 2:
-                    raise TypeError('Algorithm run() must return a (submission, ask) tuple.')
-                submission, ask = output
+                    raise TypeError('Algorithm run() must return a (submission, checkpoint) tuple.')
+                submission, checkpoint = output
                 if not isinstance(submission, list) or not submission or not all(isinstance(f, str) for f in submission):
                     raise TypeError('Algorithm submission must be a nonempty list of formula strings.')
                 for formula in submission: parse_equation(formula)
-                if not callable(ask): raise TypeError('Algorithm ask must be callable.')
                 submission_file.write_text('\n'.join(submission) + '\n')
             finally:
                 performance['agent_seconds'] = time.monotonic() - run_start
             evaluation_start = time.monotonic()
-            result = evaluate(args, dataest['answer'], submission, ask)
+            algorithm_get_ask = get_ask(args.algorithm)
+            result = evaluate(
+                args, dataest['answer'], submission,
+                lambda: algorithm_get_ask(args, deepcopy(checkpoint)))
             performance['evaluation_seconds'] = time.monotonic() - evaluation_start
             performance['evaluation'] = result
             exit_code = int(not result['phenomenal']['ok'] or any(not p['ok'] for p in result['mechanism_probes']))

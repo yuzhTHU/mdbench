@@ -94,7 +94,7 @@
 - 有关联性：$z$ 应当出现于 $\mathcal{M} \Rightarrow \mathcal{P}$ 的推导过程中
 - 客观性：$z$ 应有独立且明确的科学意义
 - 非平凡性：$z$ 可以从 $\mathcal{M}$ 中推出，却不能从 $\mathcal{P} + \text{领域知识}$ 中推出 (注: 对于作为蓝本的教科书机制, $\mathcal{M}$ 本身就是领域知识，因此无法选出满足此非平凡性的 $z$)
-- 可求解性：$z$ 必须能够仅根据任务中提供给 Agent 的 input variables (因变量之外的可观测变量) 与数值常数唯一表示为一个 Framework 可处理的显式代数表达式（注：如果没有使用 role=auxiliary 的variable，这一条通常都能被满足）。
+- 可求解性：$z$ 必须能够仅根据任务中提供给 Agent 的 variables（即 input 与 auxiliary variables）和数值常数，唯一表示为一个 Framework 可处理的显式代数表达式。
 
 ### 附：任务实例格式约定
 
@@ -172,22 +172,28 @@ mechanism_probes:
         对变量的描述，应当简洁、准确（体现探针变量的客观性），不额外添加任何机制提示。
         通常建议直接复用 variables 中对应 internal 变量的 description。
       answer: |
-        该变量关于 input variables 的数学公式。
-        也可以写成该变量关于 internal variable 的数学公式，Framework 会将此处所有 internal variable 自动展开成关于 input 的数学公式。
+        该变量关于 source variables（即 input 与 auxiliary variables）的数学公式。
+        也可以写成该变量关于 internal variable 的数学公式，Framework 会将此处所有 internal variable 自动展开成关于 source variables 的数学公式。
     - probe: a_demo_internal_variable # variables 中的一个 internal variable
       description: The description of a demo internal variable # 直接复用对应的 description
-      answer: 2.0 * another_internal_variable + input_variable_1 # Framework 会将这里面所有 internal variable 自动转换为它们关于 input variable 的表达式，因此原则上这里完全可以直接写 a_demo_internal_variable
+      answer: 2.0 * another_internal_variable + input_variable_1 # Framework 会将这里面所有 internal variable 自动转换为它们关于 source variables 的表达式，因此原则上这里完全可以直接写 a_demo_internal_variable
 
 ## 实际使用探针时，会将每个 probe / description / answer 字段格式化为下面的文本：
-# Using only the mechanism model you submitted before receiving this probe,
-# derive {probe} as a function of the input variables: {input-variables}.
+# Frozen submitted mechanism model:
+# <formula 1>
+# <formula 2>
+# ...
+#
+# Using only the mechanism model you submitted above,
+# derive {probe} ({description}) as a function of the variables: {variables}.
 #
 # Return exactly one equation in the form:
 # {probe} = <expression>
 #
-# The right-hand side may contain only the input variables, numeric literals,
+# The right-hand side may contain only the given variables (including internal
+# variables already defined in the frozen submitted mechanism model), numeric literals,
 # and mathematical operators/functions supported by the benchmark.
-# Do not introduce new variables, auxiliary equations, or prose.
+# Do not introduce new variables, additional equations, or prose.
 # Do not modify, replace, or extend your previously submitted mechanism model.
 ```
 
@@ -195,4 +201,3 @@ mechanism_probes:
 [^注1] 这个问题仅供示意，向心加速度不满足第四部分提到的 “非平凡性”，无法作为一个有效的探针
 
 [^注2] 这里的 “$+$” 并非加法，而是形式化地表示 “对 $\mathcal{M}$ 进行 $\Delta \mathcal{M}$ 这个修改，例如将 $\{F_g = GMm/r^2; F_g = F_a; F_a = mv^2/r; T = 2 \pi r/v\}$ 改成 $\{F_g = GMm/r^{1.5}; F_g = F_a; F_a = mv^2/r; T = 2 \pi r/v\}$”
-

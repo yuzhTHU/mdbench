@@ -6,8 +6,7 @@ COMMANDS = {
     'validate': 'validate_problem', 
     'synthetic': 'synthetic_data',
     'export': 'export_problems', 
-    'feedback': 'feedback_server', 
-    'evaluate': 'evaluate'
+    'feedback': 'feedback_server',
 }
 
 def get_parser():

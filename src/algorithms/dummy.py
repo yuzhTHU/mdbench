@@ -1,15 +1,16 @@
 """Minimal linear baseline used to demonstrate the algorithm interface."""
 from __future__ import annotations
-import re
 import json
 import random
+from typing import Any, Callable
 import numpy as np
 from pathlib import Path
 from ..scoring import public_variables
 from ..validate_problem import ValidationError
 
-def run(args, problem_file: Path, train_data_npy_file: Path, feedback_server_url):
-    """Fit a zero-intercept linear model and return its submission and model.
+def run(args, problem_file: Path, train_data_npy_file: Path,
+        feedback_server_url) -> tuple[list[str], Any]:
+    """Fit a zero-intercept linear model and return submission plus checkpoint.
 
     ``feedback_server_url`` is intentionally unused: this baseline performs one
     ordinary least-squares fit and makes no iterative feedback requests.
@@ -39,12 +40,28 @@ def run(args, problem_file: Path, train_data_npy_file: Path, feedback_server_url
     lines.append(f"{target} = " + " + ".join(f"z{i}" for i in range(1, len(terms) + 1)))
     submission = lines
 
-    def ask(question: str, *, output_dir=None) -> str:
-        del output_dir
-        PROBE_NAME = re.compile(r"\bderive\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(")
-        match = PROBE_NAME.search(question)
-        if not match:
-            raise ValidationError("Could not find the requested probe variable in the question.")
-        return f"{match.group(1)} = {random.choice(terms)}"
+    return submission, {'terms': tuple(terms), 'random_state': random.getstate()}
 
-    return submission, ask
+
+def get_ask(args, checkpoint: Any) -> Callable:
+    """Restore one independent probe callable from a frozen checkpoint.
+
+    An ``ask`` callable's behavior must be determined entirely by its checkpoint:
+    restoring equivalent checkpoints must produce equivalent behavior for the
+    same sequence of calls, without relying on shared mutable runtime state. If a
+    checkpoint contains a path or other reference to an on-disk artifact, both
+    ``get_ask`` and the returned callable must treat that artifact as immutable;
+    a backend that requires writes must first work on a private copy.
+    """
+    del args
+    terms = tuple(checkpoint['terms'])
+    rng = random.Random()
+    rng.setstate(checkpoint['random_state'])
+
+    def ask(prompt: str, probe_name: str, probe_description: str, *, output_dir=None) -> str:
+        # Custom baselines may use the explicit probe metadata, though algorithms
+        # should normally send the standardized prompt through unchanged.
+        del prompt, probe_description, output_dir
+        return f"{probe_name} = {rng.choice(terms)}"
+
+    return ask

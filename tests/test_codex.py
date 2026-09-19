@@ -1,16 +1,114 @@
 """Codex subprocess tests, including a real CLI against an offline mock provider."""
+import argparse
 from concurrent.futures import ThreadPoolExecutor
+from copy import deepcopy
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import logging
 from pathlib import Path
 import shutil
 import sys
 import threading
 from types import SimpleNamespace
 import pytest
-from src.algorithms.codex import run, resume, _invoke, clean_ansi
+import src.algorithms.codex as codex
+from src.algorithms.codex import run, get_ask, resume, _invoke, clean_ansi
 from src.export_problems import export_task
 from src.evaluate import evaluate
+
+
+def test_codex_command_accepts_machine_specific_global_options():
+    args = SimpleNamespace(
+        codex_command='custom-codex --profile lab -m provider/model',
+        codex_text_only=False)
+    command = codex._command(args)
+    assert command[:7] == [
+        'custom-codex', '--profile', 'lab', '-m', 'provider/model', 'exec', '--json']
+    assert codex._selected_profile(args) == 'lab'
+    assert codex._selected_model(args) == 'provider/model'
+    with pytest.raises(ValueError, match='sandbox'):
+        codex._codex_prefix(SimpleNamespace(
+            codex_command='codex --sandbox danger-full-access'))
+
+
+def test_agent_runtime_shadows_mdbench_and_denies_private_paths(tmp_path, caplog):
+    root = tmp_path / 'temporary-runtime'; root.mkdir()
+    workspace = root / 'workspace'; workspace.mkdir()
+    blocked = codex._blocked_command_directory(root)
+    answer = tmp_path / 'private' / 'answer.json'
+    answer.parent.mkdir(); answer.write_text('{}')
+    save = tmp_path / 'run-artifacts'; save.mkdir()
+    args = SimpleNamespace(
+        codex_command='codex', codex_text_only=False,
+        save_path=save, answer=answer)
+    with caplog.at_level(logging.INFO):
+        command = codex._command(
+            args, workspace=workspace, blocked_bin=blocked,
+            allowed_network_hosts=('127.0.0.1',))
+    configuration = '\n'.join(command)
+    assert (blocked / 'mdbench').is_file()
+    assert str(blocked) in configuration
+    assert f'{save.resolve()}' in configuration
+    assert f'{answer.parent.resolve()}' in configuration
+    assert str(Path(codex.__file__).resolve().parents[1]) in configuration
+    benchmark_root = Path(codex.__file__).resolve().parents[2]
+    for private_entry in ('.github', 'LICENSE', 'proposal.md', 'README.md', 'run.py', 'tests'):
+        assert str(benchmark_root / private_entry) in configuration
+    assert f'"{benchmark_root / "venv"}" = "deny"' not in configuration
+    assert f'"{benchmark_root / "third-party"}" = "deny"' not in configuration
+    assert f'Codex project deny: {benchmark_root / "proposal.md"}' in caplog.text
+    assert f'readable exceptions: {benchmark_root / "third-party"}, {benchmark_root / "venv"}' in caplog.text
+    assert 'features.network_proxy=true' in configuration
+    assert '127.0.0.1' in configuration
+    assert 'allow_upstream_proxy' in configuration
+
+
+def test_feedback_host_allowlist_accepts_only_loopback():
+    assert codex._local_feedback_host('http://127.0.0.1:8123/evaluate') == '127.0.0.1'
+    assert codex._local_feedback_host('http://localhost:8123/evaluate') == 'localhost'
+    assert codex._local_feedback_host('http://[::1]:8123/evaluate') == '::1'
+    with pytest.raises(ValueError, match='loopback'):
+        codex._local_feedback_host('https://feedback.example.com/evaluate')
+
+
+def test_codex_owns_openrouter_gateway_and_reads_environment(tmp_path, monkeypatch):
+    secret = 'environment-only-upstream-key'
+    monkeypatch.setenv('OPENROUTER_API_KEY', secret)
+
+    class Response:
+        def raise_for_status(self): pass
+        def json(self):
+            return {'data': [{'id': 'provider/model', 'pricing': {
+                'prompt': '0.000001', 'completion': '0.000002'}}]}
+
+    class Session:
+        trust_env = True
+        def get(self, *args, **kwargs): return Response()
+        def close(self): pass
+
+    class Gateway:
+        server_port = 43210
+        def shutdown(self): pass
+        def server_close(self): pass
+
+    captured = {}
+    def start(account, key, model, parallel, **kwargs):
+        captured.update(key=key, model=model, parallel=parallel, kwargs=kwargs)
+        return Gateway()
+
+    monkeypatch.setattr(codex.requests, 'Session', Session)
+    monkeypatch.setattr(codex, 'start_responses_gateway', start)
+    args = SimpleNamespace(
+        openrouter_gateway=True, openrouter_budget_usd=1.25,
+        codex_command='codex -m provider/model', probe_workers=3)
+    try:
+        codex._ensure_openrouter_gateway(args, tmp_path)
+        assert captured['key'] == secret and captured['parallel'] == 3
+        assert args._codex_copy_auth is False
+        assert 'OPENROUTER_API_KEY' not in args._codex_child_env
+        assert args._codex_isolated_config['model_provider'] == 'openrouter'
+    finally:
+        codex._shutdown_openrouter_gateways()
 
 
 def test_timeout_and_ansi_artifact(tmp_path):
@@ -18,6 +116,14 @@ def test_timeout_and_ansi_artifact(tmp_path):
                      __import__('os').environ, tmp_path / 'events', tmp_path / 'stderr', .1)
     assert status['timed_out'] and status['elapsed_seconds'] < 10
     assert clean_ansi('\x1b[31merror\x1b[0m') == 'error'
+
+
+def test_codex_defaults_to_long_run_and_unlimited_accounting():
+    parser = argparse.ArgumentParser()
+    codex.update_parser(parser)
+    args = parser.parse_args([])
+    assert args.timeout == 900
+    assert args.openrouter_budget_usd is None
 
 
 def test_real_cli_checkpoint_and_independent_probe_recovery(demo, tmp_path, monkeypatch):
@@ -75,7 +181,7 @@ requires_openai_auth = false
     args = SimpleNamespace(save_path=tmp_path / 'run', codex_bin=executable, codex_model='gpt-5',
                            timeout=30, probe_timeout=30, probe_workers=2, algorithm='codex')
     try:
-        submission, ask = run(args, paths['problem'], paths['train'], 'http://127.0.0.1:1/evaluate')
+        submission, model = run(args, paths['problem'], paths['train'], 'http://127.0.0.1:1/evaluate')
         save = Path(args.save_path)
         assert {p.name for p in save.iterdir()} == {
             'audit', 'saved_checkpoint', 'prompt.txt'}
@@ -84,7 +190,8 @@ requires_openai_auth = false
         assert {p.name for p in (save / 'saved_checkpoint').iterdir()} == {
             'codex.session.jsonl', 'model.json'}
         checkpoint = (save / 'saved_checkpoint' / 'codex.session.jsonl').read_bytes()
-        result = evaluate(args, paths['answer'], submission, ask)
+        result = evaluate(args, paths['answer'], submission,
+                          lambda: get_ask(args, deepcopy(model)))
         assert result['phenomenal']['train']['numerically_equivalent']
         assert all(p['ok'] for p in result['mechanism_probes']), result
         assert result['mechanism_recovery']['ood_test']['numerically_equivalent'] == 1

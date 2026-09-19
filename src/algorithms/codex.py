@@ -1,10 +1,12 @@
 """Codex CLI baseline with persisted end-of-run checkpoints.
 
-Each probe restores the exact saved rollout into a fresh CODEX_HOME. No probe
-turns are ever appended to the original checkpoint or seen by another probe.
+The evaluator requests a fresh callable for every probe. Each callable restores
+the exact saved rollout into a fresh CODEX_HOME, so no probe turns are appended
+to the original checkpoint or seen by another probe.
 """
 from __future__ import annotations
-from contextlib import nullcontext
+import argparse
+import atexit
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -13,10 +15,14 @@ import threading
 import uuid
 import requests
 import hashlib
+import ipaddress
 import json
+import logging
+import math
 import os
 from pathlib import Path
 import re
+import secrets
 import shutil
 import signal
 import subprocess
@@ -24,48 +30,152 @@ import sys
 import tempfile
 import time
 import tomllib
+from typing import Any, Callable
+from urllib.parse import urlsplit
 
-__all__ = ["update_parser", "run"]
+__all__ = ["update_parser", "run", "get_ask"]
 ANSI = re.compile(r'\x1b(?:\[[0-?]*[ -/]*[@-~]|\][^\x07]*(?:\x07|\x1b\\))')
+_logger = logging.getLogger(__name__)
+_OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1'
+_gateway_lock = threading.RLock()
+_gateways = {}
 
 
 def update_parser(parser):
     """ Add Algorithm-specific arguments to the parser. """
-    parser.add_argument('--timeout', type=float, default=600, help='Agent run time limit in seconds.')
+    parser.add_argument('--timeout', type=float, default=900, help='Agent run time limit in seconds.')
     parser.add_argument('--codex_bin', default='codex')
+    parser.add_argument('--codex_command', default=None,
+                        help='Codex executable plus global options, e.g. "codex --profile lab -m provider/model".')
     parser.add_argument('--codex_model', default=None)
-    parser.add_argument('--codex_profile', default=None)
     parser.add_argument('--codex_text_only', action='store_true', help='Disable tools that can add unsupported image input to text-only models.')
-    parser.add_argument('--codex_provider_base_url', default=None)
-    parser.add_argument('--codex_provider_env_key', default=None)
+    # Kept as hidden compatibility hooks for older experiment manifests. New
+    # users should select their local installation with --codex-command.
+    parser.add_argument('--codex_provider_base_url', default=None, help=argparse.SUPPRESS)
+    parser.add_argument('--codex_provider_env_key', default=None, help=argparse.SUPPRESS)
     parser.add_argument('--codex_reasoning_effort', default=None)
-    parser.add_argument('--persist_runtime', action='store_true', help='Keep live workspace and rollouts under save_path for interrupted-run recovery.')
-    parser.add_argument('--codex_private_root', default=None, help='Deny agent tool access to private benchmark files, while allowing its workspace and the project venv.')
     parser.add_argument('--codex_blocked_tools', default=None)
     parser.add_argument('--codex_tool_path', default=None)
+    parser.add_argument('--openrouter_gateway', action='store_true',
+                        help='Route Codex through a local metered OpenRouter gateway.')
+    parser.add_argument('--openrouter_budget_usd', type=float, default=None,
+                        help='Optional positive request budget. Omit to record usage without enforcing a spending limit.')
     return parser
 
 
+def _codex_prefix(args):
+    configured = getattr(args, 'codex_command', None)
+    command = shlex.split(configured) if configured else [getattr(args, 'codex_bin', 'codex')]
+    if not command:
+        raise ValueError('--codex-command must contain an executable.')
+    forbidden = {'--sandbox', '-s', '--dangerously-bypass-approvals-and-sandbox',
+                 '--yolo', '--full-auto'}
+    if any(token in forbidden or token.startswith('--sandbox=') for token in command[1:]):
+        raise ValueError('--codex-command may not override the benchmark sandbox.')
+    protected = ('sandbox_mode', 'sandbox_workspace_write', 'default_permissions',
+                 'permissions.', 'features.network_proxy')
+    for index, token in enumerate(command[:-1]):
+        if token in ('-c', '--config') and command[index + 1].lstrip().startswith(protected):
+            raise ValueError('--codex-command may not override benchmark permissions.')
+    return command
 
-def run(args, problem_file: Path, train_data_npy_file: Path, feedback_server_url):
+
+def _command_option(command, *names):
+    for index, token in enumerate(command):
+        for name in names:
+            if token == name:
+                if index + 1 >= len(command):
+                    raise ValueError(f'{name} in --codex-command requires a value.')
+                return command[index + 1]
+            if name.startswith('--') and token.startswith(name + '='):
+                return token.split('=', 1)[1]
+    return None
+
+
+def _selected_profile(args):
+    return _command_option(_codex_prefix(args), '--profile', '-p')
+
+
+def _user_configuration(profile=None):
+    home = Path(os.environ.get('CODEX_HOME', Path.home() / '.codex'))
+    config_file = home / 'config.toml'
+    config = tomllib.loads(config_file.read_text()) if config_file.is_file() else {}
+    selected = {}
+    if profile:
+        legacy = home / f'{profile}.config.toml'
+        if legacy.is_file():
+            selected = tomllib.loads(legacy.read_text())
+        elif isinstance(config.get('profiles', {}).get(profile), dict):
+            selected = dict(config['profiles'][profile])
+    return home, config, selected
+
+
+def _selected_model(args):
+    explicit = (_command_option(_codex_prefix(args), '--model', '-m')
+                or getattr(args, 'codex_model', None))
+    if explicit:
+        return explicit
+    isolated = getattr(args, '_codex_isolated_config', None) or {}
+    if isolated.get('model'):
+        return isolated['model']
+    _, config, selected = _user_configuration(_selected_profile(args))
+    return selected.get('model') or config.get('model')
+
+
+def _blocked_command_directory(root):
+    """Shadow benchmark administration commands inside the agent environment."""
+    directory = Path(root) / 'blocked-bin'
+    directory.mkdir()
+    command = directory / 'mdbench'
+    command.write_text(
+        '#!/bin/sh\n'
+        'echo "mdbench is unavailable inside the benchmark agent" >&2\n'
+        'exit 126\n')
+    command.chmod(0o755)
+    return directory
+
+
+def _local_feedback_host(url):
+    """Return one exact loopback allowlist entry or reject the endpoint."""
+    parts = urlsplit(url)
+    host = (parts.hostname or '').rstrip('.').lower()
+    if parts.scheme not in ('http', 'https') or not host:
+        raise ValueError('Feedback URL must be an HTTP(S) URL with a hostname.')
+    if host == 'localhost':
+        return host
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError as exc:
+        raise ValueError('Codex feedback URL must use localhost or a loopback IP address.') from exc
+    if not address.is_loopback:
+        raise ValueError('Codex feedback URL must use localhost or a loopback IP address.')
+    return host
+
+
+
+def run(args, problem_file: Path, train_data_npy_file: Path,
+        feedback_server_url) -> tuple[list[str], Any]:
     save = Path(args.save_path).resolve()
     save.mkdir(parents=True, exist_ok=True)
+    _ensure_openrouter_gateway(args, save)
     audit, saved_checkpoint = save / 'audit', save / 'saved_checkpoint'
     audit.mkdir(exist_ok=True); saved_checkpoint.mkdir(exist_ok=True)
     events, errors = audit / 'codex.events.jsonl', audit / 'stderr.txt'
     stdout, process_log = audit / 'stdout.txt', audit / 'process.json'
     checkpoint = saved_checkpoint / 'codex.session.jsonl'
-    if getattr(args, 'persist_runtime', False) and not getattr(args, 'codex_profile', None):
-        raise ValueError('Persistent runtimes require an environment-authenticated profile.')
-    runtime = audit / 'runtime'
-    context = nullcontext(str(runtime)) if getattr(args, 'persist_runtime', False) else tempfile.TemporaryDirectory(prefix='mdbench-codex-')
-    with context as directory:
+    feedback_host = _local_feedback_host(feedback_server_url)
+    with tempfile.TemporaryDirectory(prefix='mdbench-codex-') as directory:
         root = Path(directory)
         workspace = root / 'workspace'
         workspace.mkdir(parents=True)
+        blocked_bin = _blocked_command_directory(root)
         shutil.copy2(problem_file, workspace / 'problem.json')
         shutil.copy2(train_data_npy_file, workspace / 'train.npy')
-        env = _isolated_home(root / 'home', getattr(args, 'codex_profile', None))
+        env = _isolated_home(root / 'home', _selected_profile(args),
+                             base_env=getattr(args, '_codex_child_env', None),
+                             copy_auth=getattr(args, '_codex_copy_auth', True),
+                             isolated_config=getattr(args, '_codex_isolated_config', None))
+        env['PATH'] = str(blocked_bin) + os.pathsep + env.get('PATH', '')
         prompt = f'''Discover a scientific mechanism from the observations in problem.json and train.npy.
 Only observed variables are provided. The NPY array has shape (variables, samples);
 row names and their scientific meanings are in problem.json data_columns/variables.
@@ -81,25 +191,30 @@ Write submission.txt now, then improve it within {args.timeout} seconds. Keep th
 file updated so it is available if the time limit interrupts you. One equality
 per line, no markdown or prose. Do not change problem.json or train.npy.
 You can obtain objective train accuracy feedback by POST to {feedback_server_url}.
-Use a requests.Session with trust_env=False for local feedback endpoints.
+Keep the environment-provided HTTP proxy enabled: it is the sandbox's controlled
+route to this local feedback endpoint. Do not set trust_env=False or override it.
 Upload three multipart file fields: problem (problem.json), train_data (train.npy),
 submission (submission.txt). For example use Python session.post(url, files={{
 "problem": open("problem.json", "rb"), "train_data": open("train.npy", "rb"),
 "submission": open("submission.txt", "rb")}}).json().
 Internal predictions may be queried later. Do not use external reference answers.
 Do not run git commands. Do not read shell startup files or credentials.
+The mdbench command and benchmark package are intentionally unavailable; use
+only the feedback endpoint described above.
 Do not inspect files outside this workspace, except the provided Python environment.
 End with the same equations as your submission, so the final conversation records it.
 '''
         (save / 'prompt.txt').write_text(prompt)
         final = workspace / 'last_message.txt'
-        status = _invoke(_command(args, workspace=workspace) + ['-o', str(final), '-'],
+        status = _invoke(_command(args, workspace=workspace, blocked_bin=blocked_bin,
+                                  allowed_network_hosts=(feedback_host,))
+                         + ['-o', str(final), '-'],
                          prompt, workspace, env, events, errors, args.timeout,
                          stdout=stdout, process_log=process_log)
         model = {'algorithm': 'codex', 'events': str(events),
-                 'session': str(checkpoint), 'codex_model': getattr(args, 'codex_model', None), **status}
-        model['codex_profile'] = getattr(args, 'codex_profile', None)
-        if getattr(args, 'persist_runtime', False): model['runtime'] = str(runtime)
+                 'session': str(checkpoint), 'codex_model': _selected_model(args), **status}
+        model['codex_profile'] = _selected_profile(args)
+        model['codex_command'] = getattr(args, 'codex_command', None)
         submission = None
         if (workspace / 'submission.txt').is_file():
             candidate = clean_ansi((workspace / 'submission.txt').read_text())
@@ -130,7 +245,7 @@ End with the same equations as your submission, so the final conversation record
         # Freeze the saved checkpoint; future probe turns only ever modify copies.
         checkpoint.chmod(0o444)
         from ..scoring import submission_formulas
-        return submission_formulas(submission), resume(args, model).ask
+        return submission_formulas(submission), model
 
 
 
@@ -163,7 +278,7 @@ def load_api_key(env_file: Path, key_name: str):
 
 
 class UsageAccounting:
-    """Fsync request accounting, reserve concurrent costs and recover interrupted calls.
+    """Fsync request accounting, optionally enforce a budget, and recover interrupted calls.
 
     Pricing values are USD per token, using prompt/completion/input_cache_read.
     One controller owns a ledger; its request threads share this instance.
@@ -219,7 +334,8 @@ class UsageAccounting:
         with self.lock:
             reserve = (size + 4096) * float(self.pricing['prompt']) + maximum * float(self.pricing['completion'])
             if self.stop.is_set(): return None
-            if self.cost + sum(r['reserved_usd'] for r in self.pending.values()) + reserve > self.budget:
+            if (self.budget is not None
+                    and self.cost + sum(r['reserved_usd'] for r in self.pending.values()) + reserve > self.budget):
                 self.trip('budget_limit')
                 return None
             self.counter += 1
@@ -416,6 +532,104 @@ def gateway_environment(env_key, local_token, *, path_prefix=()):
     return env
 
 
+def _ensure_openrouter_gateway(args, save):
+    """Start the Codex-owned gateway once; keep it alive through probe turns."""
+    if not getattr(args, 'openrouter_gateway', False):
+        return
+    budget = getattr(args, 'openrouter_budget_usd', None)
+    if budget is not None and budget <= 0:
+        raise ValueError('--openrouter-budget-usd must be positive when provided.')
+    key = os.environ.get('OPENROUTER_API_KEY') or os.environ.get('OPENROUTER_API')
+    if not key:
+        raise ValueError('Set OPENROUTER_API_KEY in the environment to use --openrouter-gateway.')
+    model = _selected_model(args)
+    if not model:
+        raise ValueError(
+            'OpenRouter gateway could not determine the model; select it in '
+            '--codex-command, --codex-model, or the active Codex profile.')
+    identity = str(Path(save).resolve())
+    with _gateway_lock:
+        if identity in _gateways:
+            for name, value in _gateways[identity]['settings'].items():
+                setattr(args, name, value)
+            return
+        if _gateways:
+            raise RuntimeError('The Codex OpenRouter runtime supports one benchmark task per process.')
+        session = requests.Session(); session.trust_env = False
+        try:
+            response = session.get(
+                _OPENROUTER_BASE_URL + '/models',
+                headers={'Authorization': 'Bearer ' + key}, timeout=30)
+            response.raise_for_status()
+            metadata = next((item for item in response.json().get('data', [])
+                             if item.get('id') == model), None)
+        finally:
+            session.close()
+        if metadata is None:
+            raise ValueError(f'OpenRouter model metadata not found: {model}')
+        pricing = metadata.get('pricing')
+        if not isinstance(pricing, dict) or not all(name in pricing for name in ('prompt', 'completion')):
+            raise ValueError(f'OpenRouter model has incomplete pricing metadata: {model}')
+        try:
+            prices = [float(pricing[name]) for name in ('prompt', 'completion')]
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f'OpenRouter model has invalid pricing metadata: {model}') from exc
+        if any(not math.isfinite(price) or price < 0 for price in prices):
+            raise ValueError(f'OpenRouter model has invalid pricing metadata: {model}')
+        root = Path(save) / 'openrouter'
+        root.mkdir(parents=True, exist_ok=True)
+        atomic_json(root / 'model_metadata.json', metadata)
+        account = UsageAccounting(root, budget, pricing)
+        local_key = 'MDBENCH_LOCAL_GATEWAY_TOKEN'
+        local_token = secrets.token_urlsafe(32)
+        parallel = max(1, int(getattr(args, 'probe_workers', 1)))
+        gateway = start_responses_gateway(
+            account, key, model, parallel, upstream_base_url=_OPENROUTER_BASE_URL,
+            local_token=local_token, max_output_tokens=16000, retry_attempts=4)
+        local_url = f'http://127.0.0.1:{gateway.server_port}/single-task/api/v1'
+        settings = {
+            'codex_provider_base_url': local_url,
+            'codex_provider_env_key': local_key,
+            '_codex_child_env': gateway_environment(local_key, local_token),
+            '_codex_copy_auth': False,
+            '_codex_isolated_config': {
+                'model': model,
+                'model_provider': 'openrouter',
+                'model_providers': {'openrouter': {
+                    'name': 'MDBench local OpenRouter gateway', 'base_url': local_url,
+                    'env_key': local_key, 'wire_api': 'responses'}},
+            },
+        }
+        if effort := getattr(args, 'codex_reasoning_effort', None):
+            settings['_codex_isolated_config']['model_reasoning_effort'] = effort
+        for name, value in settings.items():
+            setattr(args, name, value)
+        _gateways[identity] = {
+            'server': gateway, 'account': account, 'settings': settings}
+        _logger.info(
+            'Codex OpenRouter gateway enabled for one task: model=%s '
+            'budget_usd=%s max_in_flight=%s', model, budget, parallel)
+
+
+def _shutdown_openrouter_gateways():
+    with _gateway_lock:
+        runtimes = list(_gateways.values())
+        _gateways.clear()
+    for runtime in runtimes:
+        gateway, account = runtime['server'], runtime['account']
+        gateway.shutdown(); gateway.server_close(); account.snapshot()
+        _logger.info(
+            'Codex OpenRouter usage: charged_usd=%.9f provider_reported_usd=%.9f '
+            'estimated_or_uncertain_usd=%.9f requests=%s input_tokens=%s '
+            'cached_tokens=%s output_tokens=%s stopped=%s stop_reason=%s',
+            account.cost, account.actual_cost, account.estimated_cost,
+            account.counter, account.input_tokens, account.cached_tokens,
+            account.output_tokens, account.stop.is_set(), account.reason)
+
+
+atexit.register(_shutdown_openrouter_gateways)
+
+
 def stop_codex_processes(destination):
     """Interrupt saved process groups only when their Linux PID identity matches."""
     for file in Path(destination).rglob('process.json'):
@@ -446,66 +660,95 @@ def _toml(value):
     raise TypeError('Unsupported Codex provider configuration value.')
 
 
-def _isolated_home(home: Path, profile=None):
+def _isolated_home(home: Path, profile=None, *, base_env=None, copy_auth=None,
+                   isolated_config=None):
     home.mkdir(parents=True, exist_ok=True)
+    if copy_auth is None:
+        copy_auth = not profile  # Preserve the historical helper default.
     original = Path(os.environ.get('CODEX_HOME', Path.home() / '.codex'))
     auth = original / 'auth.json'
-    if auth.is_file() and not profile:
+    if auth.is_file() and copy_auth:
         shutil.copy2(auth, home / 'auth.json')
         (home / 'auth.json').chmod(0o600)
     # Preserve account/provider configuration, but not user instructions, MCP,
     # plugins, skills or hooks. Credentials are never written into run artifacts.
     config = {}
-    config_file = original / 'config.toml'
-    if config_file.is_file():
-        config = tomllib.loads(config_file.read_text())
-        keys = ('model', 'model_provider', 'model_providers', 'model_reasoning_effort',
-                'chatgpt_base_url', 'openai_base_url')
-        (home / 'config.toml').write_text('\n'.join(f'{k} = {_toml(config[k])}' for k in keys if k in config))
-    if profile:
+    if isolated_config is not None:
+        # A gateway-provided configuration is already credential-free and
+        # self-contained; do not inspect or copy the user's Codex config.
+        material = dict(isolated_config)
+        text = '\n'.join(f'{k} = {_toml(v)}' for k, v in material.items())
+        (home / 'config.toml').write_text(text)
+        if profile:
+            if not re.fullmatch(r'[A-Za-z0-9_-]+', profile):
+                raise ValueError('Invalid Codex profile name.')
+            (home / f'{profile}.config.toml').write_text(text)
+    else:
+        config_file = original / 'config.toml'
+        if config_file.is_file():
+            config = tomllib.loads(config_file.read_text())
+            keys = ('model', 'model_provider', 'model_providers', 'model_reasoning_effort',
+                    'chatgpt_base_url', 'openai_base_url')
+            (home / 'config.toml').write_text('\n'.join(f'{k} = {_toml(config[k])}' for k in keys if k in config))
+    if profile and isolated_config is None:
         if not re.fullmatch(r'[A-Za-z0-9_-]+', profile): raise ValueError('Invalid Codex profile name.')
-        profile_file = original / f'{profile}.config.toml'
-        selected = tomllib.loads(profile_file.read_text())
-        provider = selected['model_provider']
-        definition = dict(config.get('model_providers', {}).get(provider, {}))
-        definition.update(selected.get('model_providers', {}).get(provider, {}))
-        # Profiles used for experiments authenticate through environment values;
-        # never copy account credentials into their persistent runtime artifacts.
-        safe = {k: definition[k] for k in ('name', 'base_url', 'wire_api', 'env_key',
-                                          'request_max_retries', 'stream_max_retries',
-                                          'stream_idle_timeout_ms') if k in definition}
-        if provider == 'openrouter': safe['env_key'] = 'OPENROUTER_API_KEY'
-        elif 'env_key' not in safe: raise ValueError('Persistent profiles require an env_key provider.')
+        _, config, selected = _user_configuration(profile)
+        if not selected:
+            raise ValueError(f'Codex profile not found: {profile}')
+        provider = selected.get('model_provider', config.get('model_provider'))
+        profile_definition = selected.get('model_providers', {})
         selected = {k: selected[k] for k in ('model', 'model_provider', 'model_reasoning_effort') if k in selected}
-        selected['model_providers'] = {provider: safe}
-        # The base also contains only this provider, with no inherited auth.
+        if provider:
+            definition = dict(config.get('model_providers', {}).get(provider, {}))
+            definition.update(config.get('profiles', {}).get(profile, {}).get(
+                'model_providers', {}).get(provider, {}))
+            definition.update(profile_definition.get(provider, {}))
+            safe = {k: definition[k] for k in ('name', 'base_url', 'wire_api', 'env_key',
+                                              'request_max_retries', 'stream_max_retries',
+                                              'stream_idle_timeout_ms') if k in definition}
+            if provider == 'openrouter' and 'env_key' not in safe:
+                safe['env_key'] = 'OPENROUTER_API_KEY'
+            if not copy_auth and 'env_key' not in safe:
+                raise ValueError('Credential-free Codex profiles require an env_key provider.')
+            selected.setdefault('model_provider', provider)
+            if safe:
+                selected['model_providers'] = {provider: safe}
+        elif not copy_auth:
+            raise ValueError('Credential-free Codex profiles require an environment provider.')
         text = '\n'.join(f'{k} = {_toml(v)}' for k, v in selected.items())
         (home / 'config.toml').write_text(text)
         (home / f'{profile}.config.toml').write_text(text)
-    env = dict(os.environ, CODEX_HOME=str(home))
+    env = dict(os.environ if base_env is None else base_env, CODEX_HOME=str(home))
     no_proxy = env.get('NO_PROXY', env.get('no_proxy', ''))
     env['NO_PROXY'] = env['no_proxy'] = no_proxy + ',localhost,127.0.0.1,::1'
     return env
 
 
-def _command(args, *, probe=False, workspace=None):
-    command = [getattr(args, 'codex_bin', 'codex'), 'exec']
+def _command(args, *, probe=False, workspace=None, blocked_bin=None,
+             allowed_network_hosts=()):
+    prefix = _codex_prefix(args)
+    command = [*prefix, 'exec']
     if probe: command.append('resume')
     command += ['--json', '--skip-git-repo-check', '-c', 'approval_policy="never"',
                 '-c', 'web_search="disabled"', '-c', 'features.apps=false',
                 '-c', 'features.plugins=false', '-c', 'features.hooks=false',
                 '-c', 'features.multi_agent=false', '-c', 'features.memories=false',
-                '-c', 'features.shell_snapshot=false',
+                '-c', 'features.shell_snapshot=false', '-c', 'features.network_proxy=true',
                 '-c', 'allow_login_shell=false', '-c', 'analytics.enabled=false']
     if getattr(args, 'codex_text_only', False):
         command += ['-c', 'features.view_image=false', '-c', 'features.image_generation=false',
                     '-c', 'features.browser_use=false', '-c', 'features.computer_use=false']
-    if tool_path := getattr(args, 'codex_tool_path', None):
+    tool_path = getattr(args, 'codex_tool_path', None)
+    if blocked_bin:
+        path = str(blocked_bin) + os.pathsep + (tool_path or os.environ.get('PATH', ''))
+        command += ['-c', f'shell_environment_policy.set.PATH={_toml(path)}']
+    elif tool_path:
         command += ['-c', f'shell_environment_policy.set.PATH={_toml(tool_path)}']
-    if getattr(args, 'codex_model', None): command += ['--model', args.codex_model]
+    if (getattr(args, 'codex_model', None)
+            and not _command_option(prefix, '--model', '-m')):
+        command += ['--model', args.codex_model]
     # exec resume lacks --profile on current Codex; its isolated base config
     # already contains the same provider/settings as the selected profile.
-    if not probe and getattr(args, 'codex_profile', None): command += ['--profile', args.codex_profile]
     for attribute, key in [('codex_provider_base_url', 'model_providers.openrouter.base_url'),
                            ('codex_provider_env_key', 'model_providers.openrouter.env_key'),
                            ('codex_reasoning_effort', 'model_reasoning_effort')]:
@@ -517,8 +760,10 @@ def _command(args, *, probe=False, workspace=None):
                     '-c', 'features.image_generation=false', '-c', 'features.browser_use=false',
                     '-c', 'features.computer_use=false', '-c', 'features.sleep_tool=false']
     else:
-        if private := getattr(args, 'codex_private_root', None):
-            private = Path(private).resolve()
+        if workspace is not None:
+            if not allowed_network_hosts:
+                raise ValueError('Codex agent network requires an explicit feedback host allowlist.')
+            workspace = Path(workspace).resolve()
             scratch = Path(workspace) / '.tmp'
             scratch.mkdir(exist_ok=True)
             for key, value in {'TMPDIR':str(scratch), 'TMPPREFIX':str(scratch/'zsh'),
@@ -527,11 +772,49 @@ def _command(args, *, probe=False, workspace=None):
             permissions = {'filesystem': {':root': 'read', str(workspace): 'write',
                             str(Path.home() / '.codex/auth.json'): 'deny',
                             str(Path.home() / '.zshrc'): 'deny'},
-                           'network': {'enabled': True}}
-            aliases = {str(private)}
-            for alias in aliases:
-                for hidden in ('.env', '.git', 'problems', 'playground', 'legacy', 'docs', 'src', 'logs/run'):
-                    permissions['filesystem'][str(Path(alias) / hidden)] = 'deny'
+                           'network': {
+                               'enabled': True,
+                               'allow_local_binding': False,
+                               'allow_upstream_proxy': False,
+                               'domains': {host: 'allow' for host in allowed_network_hosts},
+                           }}
+            # This is a mandatory benchmark boundary, not a caller-controlled
+            # option. Resolve it from this module so it remains correct for any
+            # process working directory.
+            benchmark_root = Path(__file__).resolve().parents[2]
+            denied_roots = set()
+            readable_project_entries = {'venv', 'third-party'}
+            for child in benchmark_root.iterdir():
+                # These roots supply the scientific Python environment and
+                # native/vendor resources required by some installed packages.
+                # Every other project-root entry is private from the agent.
+                if child.name in readable_project_entries:
+                    continue
+                denied = child.resolve()
+                denied_roots.add(denied)
+                permissions['filesystem'][str(denied)] = 'deny'
+            readable = ', '.join(str(benchmark_root / name)
+                                 for name in sorted(readable_project_entries))
+            _logger.info('Codex project deny rules (%d; readable exceptions: %s):',
+                         len(denied_roots), readable)
+            for denied in sorted(denied_roots, key=str):
+                _logger.info('Codex project deny: %s', denied)
+            # Nested deny mounts cannot be installed after a denied parent has
+            # already been hidden by bubblewrap. Avoid redundant child rules.
+            def deny_unless_covered(path):
+                path = Path(path).resolve()
+                if not any(path == root or root in path.parents for root in denied_roots):
+                    permissions['filesystem'][str(path)] = 'deny'
+            deny_unless_covered(Path(__file__).resolve().parents[1])
+            deny_unless_covered(args.save_path)
+            if answer := getattr(args, 'answer', None):
+                deny_unless_covered(Path(answer).resolve().parent)
+            search_path = os.pathsep.join(filter(None, (
+                tool_path, os.environ.get('PATH', ''), str(Path(sys.executable).parent))))
+            for directory in search_path.split(os.pathsep):
+                executable = Path(directory) / 'mdbench'
+                if executable.is_file():
+                    permissions['filesystem'][str(executable.resolve())] = 'deny'
             if git_binary := shutil.which('git', path='/usr/local/bin:/usr/bin:/bin'):
                 permissions['filesystem'][git_binary] = 'deny'
             if blocked := getattr(args, 'codex_blocked_tools', None):
@@ -608,17 +891,29 @@ class CodexConversation:
         self.session_id = _session_id(self.checkpoint)
         self.frozen_hash = hashlib.sha256(self.checkpoint.read_bytes()).hexdigest()
 
-    def ask(self, prompt: str, *, output_dir: str | Path) -> str:
+    def ask(self, prompt: str, probe_name: str, probe_description: str,
+            *, output_dir: str | Path) -> str:
+        """Ask one probe question and return exactly one parsed equation.
+
+        ``probe_name`` and ``probe_description`` are available for custom prompt
+        construction. Using the supplied standardized ``prompt`` unchanged is
+        recommended for consistency across algorithms.
+        """
+        del probe_name, probe_description
         output = Path(output_dir).resolve()
         output.mkdir(parents=True, exist_ok=True)
         audit = output / 'audit'; audit.mkdir(exist_ok=True)
-        context = nullcontext(str(audit / 'runtime')) if getattr(self.args, 'persist_runtime', False) else tempfile.TemporaryDirectory(prefix='mdbench-probe-')
-        with context as directory:
+        with tempfile.TemporaryDirectory(prefix='mdbench-probe-') as directory:
             root = Path(directory)
             workspace = root / 'workspace'
             workspace.mkdir(parents=True)
+            blocked_bin = _blocked_command_directory(root)
             home = root / 'home'
-            env = _isolated_home(home, getattr(self.args, 'codex_profile', None))
+            env = _isolated_home(home, _selected_profile(self.args),
+                                 base_env=getattr(self.args, '_codex_child_env', None),
+                                 copy_auth=getattr(self.args, '_codex_copy_auth', True),
+                                 isolated_config=getattr(self.args, '_codex_isolated_config', None))
+            env['PATH'] = str(blocked_bin) + os.pathsep + env.get('PATH', '')
             sessions = home / 'sessions'
             sessions.mkdir()
             # Rebind the now-deleted training workspace; conversation content and
@@ -635,7 +930,8 @@ class CodexConversation:
             if Path(filename).name != filename: raise ValueError('Invalid rollout filename.')
             (sessions / filename).write_text('\n'.join(lines) + '\n')
             reply = output / 'reply.txt'
-            status = _invoke(_command(self.args, probe=True) + ['-o', str(reply), self.session_id, '-'],
+            status = _invoke(_command(self.args, probe=True, blocked_bin=blocked_bin)
+                             + ['-o', str(reply), self.session_id, '-'],
                              prompt, workspace, env, audit / 'codex_events.jsonl', audit / 'stderr.txt',
                              getattr(self.args, 'probe_timeout', 120), stdout=audit / 'stdout.txt',
                              process_log=audit / 'process.json')
@@ -647,13 +943,26 @@ class CodexConversation:
             reply.write_text(text + '\n')
             if hashlib.sha256(self.checkpoint.read_bytes()).hexdigest() != self.frozen_hash:
                 raise RuntimeError('Original Codex checkpoint was modified during probe evaluation.')
-            return text
+            from ..scoring import submission_formulas
+            formulas = submission_formulas(text)
+            if len(formulas) != 1:
+                raise ValueError('Codex probe response must contain exactly one equation.')
+            return formulas[0]
+
+
+def get_ask(args, checkpoint: Any) -> Callable:
+    """Create a fresh probe callable from one frozen Codex checkpoint."""
+    conversation = resume(args, checkpoint)
+    if getattr(conversation.args, 'openrouter_gateway', False):
+        save = Path(checkpoint['session']).resolve().parents[1]
+        _ensure_openrouter_gateway(conversation.args, save)
+    return conversation.ask
 
 
 def resume(args, model):
-    """Return an ask-capable conversation; each ask restores an isolated checkpoint."""
+    """Backward-compatible wrapper returning a conversation for one checkpoint."""
     import copy
     args = copy.copy(args)
+    if not getattr(args, 'codex_command', None): args.codex_command = model.get('codex_command')
     if not getattr(args, 'codex_model', None): args.codex_model = model.get('codex_model')
-    if not getattr(args, 'codex_profile', None): args.codex_profile = model.get('codex_profile')
     return CodexConversation(args, model)

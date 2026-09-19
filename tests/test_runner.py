@@ -24,20 +24,33 @@ def arguments(paths, save):
 
 def test_runner_server_lifecycle_submission_and_performance(demo, tmp_path, monkeypatch):
     paths = export_task(demo, tmp_path / 'task', train_samples=4, id_test_samples=4, ood_test_samples=4)
-    seen = []
+    seen, restored = [], []
+    checkpoint = {'nested': []}
     def algorithm(args, problem, train, url):
         session = requests.Session(); session.trust_env = False
         assert session.get(url.replace('/evaluate', '/health'), timeout=5).json()['ok']
         seen.append(url)
-        return ['y=x'], lambda question, output_dir=None: 'h=x'
+        return ['y=x'], checkpoint
     monkeypatch.setattr(runner, 'get_algorithm', lambda name: algorithm)
-    def evaluate(args, answer, submission, ask):
+    def ask_factory(args, received):
+        restored.append(received)
+        received['nested'].append('probe-local-mutation')
+        return lambda question, probe_name, probe_description, output_dir=None: 'h=x'
+    monkeypatch.setattr(runner, 'get_ask', lambda name: ask_factory)
+    def evaluate(args, answer, submission, make_ask):
         assert submission == ['y=x']
-        assert ask('derive h (h) as a function') == 'h=x'
+        first, second = make_ask(), make_ask()
+        assert first('derive h (h) as a function', 'h', 'h') == 'h=x'
+        assert second('derive h (h) as a function', 'h', 'h') == 'h=x'
         return {'phenomenal': {'ok': True}, 'mechanism_probes': []}
     monkeypatch.setattr(runner, 'evaluate', evaluate)
     args = arguments(paths, tmp_path / 'run')
     assert runner.main(args) == 0
+    assert checkpoint == {'nested': []}
+    assert len(restored) == 2 and restored[0] is not restored[1]
+    assert restored == [
+        {'nested': ['probe-local-mutation']},
+        {'nested': ['probe-local-mutation']}]
     performance = json.loads((Path(args.save_path) / 'performance.json').read_text())
     assert performance['agent_seconds'] >= 0 and performance['evaluation_seconds'] >= 0
     assert (Path(args.save_path) / 'submission.txt').read_text() == 'y=x\n'
@@ -73,14 +86,15 @@ def test_runner_requires_explicit_submission_return(demo, tmp_path, monkeypatch)
     assert runner.main(args) == 1
     performance = json.loads((Path(args.save_path) / 'performance.json').read_text())
     assert performance['error_type'] == 'TypeError'
-    assert '(submission, ask) tuple' in performance['error']
+    assert '(submission, checkpoint) tuple' in performance['error']
     assert not (Path(args.save_path) / 'submission.txt').exists()
 
 
 def test_runner_default_path_uses_experiment_and_task_names(demo, tmp_path, monkeypatch):
     paths = export_task(demo, tmp_path / 'task', train_samples=4, id_test_samples=4, ood_test_samples=4)
     monkeypatch.setattr(runner, 'get_algorithm', lambda name: lambda *args: (
-        ['y=x'], lambda question, output_dir=None: 'h=x'))
+        ['y=x'], {'frozen': True}))
+    monkeypatch.setattr(runner, 'get_ask', lambda name: lambda args, checkpoint: None)
     monkeypatch.setattr(runner, 'evaluate', lambda *args, **kwargs: {
         'phenomenal': {'ok': True}, 'mechanism_probes': []})
     args = arguments(paths, tmp_path / 'unused')

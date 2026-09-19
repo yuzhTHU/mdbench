@@ -100,19 +100,66 @@ HTTP proxies (e.g. `requests.Session().trust_env = False`).
 python run.py --algorithm codex \
   --problem-file 'data/tasks/Electrical Dissipation - Variant 1-2/agent/problem.json' \
   --answer 'data/tasks/Electrical Dissipation - Variant 1-2/answer/answer.json' \
-  --timeout 600 --probe-timeout 120 --save-path logs/demo
+  --timeout 900 --probe-timeout 120 --save-path logs/demo
 ```
+
+For one metered task through OpenRouter, the same entry point can own the local
+gateway and upstream credential:
+
+```sh
+python run.py --algorithm codex \
+  --problem-file '<task>/agent/problem.json' \
+  --answer '<task>/answer/answer.json' \
+  --codex-command 'codex --profile openrouter -m provider/model' \
+  --timeout 900 --probe-timeout 120 \
+  --openrouter-gateway \
+  --save-path logs/demo
+```
+
+Set `OPENROUTER_API_KEY` in the Runner process environment. This mode runs exactly
+one benchmark task and does not schedule or batch tasks. The Codex algorithm owns
+the gateway; its internal request concurrency follows `--probe-workers`.
+
+`--codex-command` describes how Codex is invoked on the current machine. For
+example, `codex`, `codex --profile lab`, and
+`codex --profile lab -m provider/model` are all supported. The older
+`--codex-bin` and `--codex-model` options remain available.
 
 The runner starts a local feedback service on a free port, or reuses a verified
 server with `--feedback-server-url http://127.0.0.1:8000/evaluate`. Train, ID and
 OOD arrays are resolved from the private answer manifest; only the public problem
 and train array are copied to the temporary agent workspace. The runner launches Codex and saves
 `submission.txt`, `prompt.txt`, `performance.json`, audit logs under `audit/`, and
-the resumable session plus model metadata under `saved_checkpoint/`. The timeout interrupts
-the process and allows a short checkpoint-flush grace period. The agent is
+the resumable session plus model metadata under `saved_checkpoint/`. The Codex
+adapter's timeout interrupts its subprocess and allows a short checkpoint-flush grace period. The agent is
 instructed to save a submission early and keep it updated; a valid final equation
 response also serves as a fallback submission. Missing submission/checkpoint
 artifacts fail the run and are recorded.
+
+Codex workspaces and temporary homes always live in disposable system temporary
+directories; there is no persistent-runtime mode. The agent environment shadows
+the `mdbench` executable and denies the installed benchmark package, the run
+artifact directory, and the original private answer directory. Agents obtain
+training feedback through a loopback HTTP endpoint. Codex's command-network proxy
+allows only the exact loopback hostname used by that endpoint and blocks public
+network destinations; non-loopback feedback URLs are rejected before launch.
+The native policy is host-based rather than port-based, so unrelated services on
+the same loopback host should not be exposed during an experiment.
+
+With `--openrouter-gateway`, only the Codex adapter reads the upstream key. Codex gets a
+fresh loopback-only token and a minimal generated provider configuration; the
+user's Codex authentication and provider files are not copied into the runtime.
+The selected model, budget, request cap and final token/cost totals are written to
+`info.log`. Durable detailed accounting is stored in `openrouter/usage.json` and
+`openrouter/usage.jsonl`, with per-request audit artifacts under `openrouter/api/`.
+The configured budget is a hard admission limit based on conservative reservation;
+an over-budget request is rejected before it reaches OpenRouter.
+
+Every algorithm `run()` returns `(submission, checkpoint)` and provides
+`get_ask(args, checkpoint)`. The runner gives the evaluator a zero-argument
+factory that deep-copies the frozen checkpoint before calling `get_ask`; the
+evaluator invokes that factory separately for every probe instead of reusing one
+potentially stateful conversation.
 
 Phenomenal evaluation scores train, ID and OOD predictions and symbolic
 agreement. Each mechanism probe restores the same saved end-of-run session into

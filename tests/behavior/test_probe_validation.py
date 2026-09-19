@@ -1,4 +1,4 @@
-"""Probe contracts: unobservable, relevant, consistent and input-only after expansion."""
+"""Probe contracts: unobservable, relevant, consistent and source-only after expansion."""
 import pytest
 import sympy as sp
 
@@ -94,7 +94,7 @@ def test_a_solvable_hidden_state_cannot_be_a_probe_if_it_does_not_derive_the_tar
         load_task(path)
 
 
-def test_auxiliary_variables_warn_but_all_states_are_solved_and_input_only_probes_remain_valid(tmp_path):
+def test_auxiliary_variables_warn_but_all_states_are_solved_and_source_only_probes_remain_valid(tmp_path):
     path = tmp_path / 'Auxiliary Response - Variant 1.yaml'
     path.write_text(AUXILIARY_YAML)
 
@@ -106,7 +106,7 @@ def test_auxiliary_variables_warn_but_all_states_are_solved_and_input_only_probe
     assert expand_expression('s', task) == x
 
 
-def test_a_probe_that_still_depends_on_auxiliary_variables_is_rejected(tmp_path):
+def test_a_probe_may_depend_on_an_observed_auxiliary_variable(tmp_path):
     path = tmp_path / 'Auxiliary Response - Variant 1.yaml'
     path.write_text(AUXILIARY_YAML.replace(
         'probe: s, description: Balanced length., answer: s',
@@ -114,8 +114,10 @@ def test_a_probe_that_still_depends_on_auxiliary_variables_is_rejected(tmp_path)
     ))
 
     with pytest.warns(UserWarning, match='Auxiliary variables'):
-        with pytest.raises(ValueError, match='input variables only'):
-            load_task(path)
+        task = load_task(path)
+
+    x, a = sp.symbols('x a', positive=True)
+    assert expand_expression(task.mechanism_probes[0].answer, task, lhs='h') == x + a
 
 
 def test_constant_internal_probes_warn_without_invalidating_the_task(tmp_path):

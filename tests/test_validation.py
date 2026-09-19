@@ -1,5 +1,6 @@
 import pytest
 import sympy as sp
+from src.scoring import symbolic_equivalent
 from src.validate_problem import (ValidationError, task_from_dict, validate_task, solve_model,
                                   parse_expression, check_units, expand_expression, load_task)
 from src.core import VariableSpec
@@ -24,13 +25,41 @@ def test_declared_units_of_a_product_must_match_the_target(simple_raw):
     with pytest.raises(ValidationError, match='dimensions'):
         check_units(task)
 
-def test_model_coupled_equations_and_alternative_names():
+
+def test_model_coupled_equations_and_alternative_names(monkeypatch):
     sources = [VariableSpec('x', 'Input', '1', 'input')]
+    calls = []
+    original_solve = sp.solve
+    def recording_solve(equations, *args, **kwargs):
+        calls.append(len(equations) if isinstance(equations, (list, tuple)) else 1)
+        return original_solve(equations, *args, **kwargs)
+    monkeypatch.setattr(sp, 'solve', recording_solve)
     result = solve_model(['u+w=3*x', 'u-w=x', 'y=u*w'], sources, required=['y'])
     x = sp.Symbol('x', real=True)
     assert result['y'] == 2*x**2
+    assert calls[:2] == [2, 1]  # Solve {u,w} first, then the downstream y equation.
     for formulas in (['y*y=x'], ['y=u*x'], ['y=x', 'y=2*x'], ['x=2', 'y=x']):
         with pytest.raises(ValidationError): solve_model(formulas, sources, required=['y'])
+
+
+def test_explicit_decimal_power_constants_are_solved_by_substitution():
+    sources = [VariableSpec('A0', 'Acid', '1', 'input'),
+               VariableSpec('B0', 'Base', '1', 'input')]
+    result = solve_model([
+        'Ka = 10^(-4.7447274948967)',
+        'Hplus = Ka * A0 / B0',
+        'pH = -log(Hplus)/log(10)',
+    ], sources, required=['pH'])
+    assert {str(symbol) for symbol in result['pH'].free_symbols} == {'A0', 'B0'}
+    assert abs(float(result['Ka']) - 1.8e-5) < 1e-16
+
+
+def test_symbolic_equivalence_quickly_rejects_decimal_approximation():
+    x = sp.Symbol('x', positive=True)
+    predicted = sp.log(x) / sp.log(10) + sp.Rational('4.7447274948966935')
+    truth = -sp.log(sp.Rational(9, 500000) / x) / sp.log(10)
+    assert not symbolic_equivalent(predicted, truth)
+    assert symbolic_equivalent((x + 1) ** 2, x**2 + 2*x + 1)
 
 def test_no_untrusted_code_execution():
     for text in ('__import__("os").system("touch /tmp/unsafe")', 'x.__class__', 'x[0]',

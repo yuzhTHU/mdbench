@@ -6,6 +6,7 @@ Algebraic ambiguity is an error: no fitting, branch guessing or numeric fallback
 from __future__ import annotations
 import argparse
 import ast
+from itertools import combinations
 import json
 import math
 import re
@@ -108,30 +109,79 @@ def solve_model(formulas: list[str], source_variables: list[VariableSpec], *, re
         raise ValidationError('Model does not define any internal or target variable.')
     solved: dict[sp.Symbol, sp.Expr] = {}
     pending = list(residuals)
-    # Peel equations with one remaining unknown, independently of their order.
+
+    def complete_solutions(equations, variables, *, simplify=True):
+        """Return complete explicit real candidates for one equation block."""
+        try:
+            if len(equations) == len(variables) == 1:
+                variable = variables[0]
+                candidates = [
+                    {variable: expression}
+                    for expression in sp.solve(
+                        equations[0], variable, check=True, simplify=simplify)
+                ]
+            else:
+                candidates = sp.solve(equations, variables, dict=True, check=True,
+                                      simplify=simplify)
+        except (NotImplementedError, ValueError):
+            return []
+        complete = []
+        for candidate in candidates:
+            if set(candidate) != set(variables):
+                continue
+            # SymPy can return block members in terms of one another. Expand the
+            # finite dependency chain before checking that only sources remain.
+            for _ in range(len(variables)):
+                candidate = {v: e.subs(candidate) for v, e in candidate.items()}
+            if simplify:
+                candidate = {v: sp.simplify(e) for v, e in candidate.items()}
+            if all(e.free_symbols <= sources and e.is_real is not False
+                   for e in candidate.values()):
+                if candidate not in complete:
+                    complete.append(candidate)
+        return complete
+
+    # Repeatedly select the first strictly solvable smallest square block.
     while pending:
-        progress = False
-        for residual in list(pending):
-            reduced = sp.simplify(residual.subs(solved))
-            remaining = reduced.free_symbols - sources
-            if not remaining:
-                if reduced != 0:
+        # Keep substituted expressions structural. Simplifying products with a
+        # decimal-derived rational power such as 10^(-4.7447) can be extremely
+        # expensive even when the equation is already explicit.
+        reduced_pending = [residual.subs(solved) for residual in pending]
+        resolved = []
+        for index, reduced in enumerate(reduced_pending):
+            if reduced.free_symbols <= sources:
+                if reduced != 0 and sp.simplify(reduced) != 0:
                     raise ValidationError(f'Inconsistent equation or constraint on inputs: {reduced} = 0')
-                pending.remove(residual)
+                resolved.append(index)
+        if resolved:
+            resolved = set(resolved)
+            pending = [residual for index, residual in enumerate(pending)
+                       if index not in resolved]
+            continue
+
+        progress = False
+        for size in range(1, len(pending) + 1):
+            for indices in combinations(range(len(pending)), size):
+                equations = [reduced_pending[index] for index in indices]
+                variables = sorted(
+                    set().union(*(equation.free_symbols for equation in equations)) - sources,
+                    key=str)
+                if len(variables) != size:
+                    continue
+                # N=1 retains the no-simplification fast path needed for exact
+                # rational representations of decimal exponents.
+                complete = complete_solutions(
+                    equations, variables, simplify=size != 1)
+                if len(complete) != 1:
+                    continue
+                solved.update(complete[0])
+                selected = set(indices)
+                pending = [residual for index, residual in enumerate(pending)
+                           if index not in selected]
                 progress = True
-                continue
-            if len(remaining) != 1:
-                continue
-            variable = next(iter(remaining))
-            try:
-                candidates = sp.solve(reduced, variable, check=True)
-            except (NotImplementedError, ValueError):
-                continue
-            explicit = [sp.simplify(e) for e in candidates if e.free_symbols <= sources and e.is_real is not False]
-            if len(explicit) == 1:
-                solved[variable] = explicit[0]
-                pending.remove(residual)
-                progress = True
+                break
+            if progress:
+                break
         if not progress:
             break
     if pending:
@@ -142,17 +192,18 @@ def solve_model(formulas: list[str], source_variables: list[VariableSpec], *, re
             raise ValidationError(f'Cannot solve algebraic model: {exc}') from exc
         complete = []
         for candidate in candidates:
-            if set(candidate) != set(remaining):
-                continue
-            for _ in range(len(remaining)):
-                candidate = {v: sp.simplify(e.subs(candidate)) for v, e in candidate.items()}
-            if all(e.free_symbols <= sources and e.is_real is not False for e in candidate.values()):
-                if candidate not in complete:
+            if set(candidate) == set(remaining):
+                for _ in range(len(remaining)):
+                    candidate = {v: e.subs(candidate) for v, e in candidate.items()}
+                candidate = {v: sp.simplify(e) for v, e in candidate.items()}
+                if (all(e.free_symbols <= sources and e.is_real is not False
+                        for e in candidate.values()) and candidate not in complete):
                     complete.append(candidate)
         if len(complete) != 1:
             raise ValidationError('Model has no unique explicit algebraic solution (underdetermined, inconsistent, or multiple branches).')
         solved.update(complete[0])
-    if any(sp.simplify(r.subs(solved)) != 0 for r in residuals):
+    if any((value := r.subs(solved)) != 0 and sp.simplify(value) != 0
+           for r in residuals):
         raise ValidationError('Solved model fails an original equation.')
     result = {str(v): e for v, e in solved.items()}
     if missing := set(required) - set(result):
@@ -169,9 +220,9 @@ def expand_expression(text: str, task: Task, *, lhs: str | None = None) -> sp.Ex
             raise ValidationError(f'Expected {lhs} on the left side.')
     expression = parse_expression(text, symbols)
     expression = sp.simplify(expression.subs({symbols[n]: e for n, e in task.solution.items()}))
-    allowed = {symbols[v.name] for v in task.by_role('input')}
+    allowed = {symbols[v.name] for v in task.by_role('input', 'auxiliary')}
     if expression.free_symbols - allowed:
-        raise ValidationError('Probe/phenomenal expression must expand to input variables only.')
+        raise ValidationError('Probe expression must expand to input and auxiliary variables only.')
     return expression
 
 

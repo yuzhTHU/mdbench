@@ -27,7 +27,8 @@ def task_to_dict(task: Task) -> dict:
 def public_problem(task: Task) -> dict:
     # Even the original/variant suffix can hint at a mutation; expose no task name.
     return {'task_description': task.task_description,
-            'variables': [{'name': v.name, 'description': v.description, 'unit': v.unit, 'role': v.role}
+            'variables': [{'name': v.name, 'description': v.description, 'unit': v.unit,
+                           'role': 'input' if v.role == 'auxiliary' else v.role}
                           for v in task.observed],
             'data_columns': [v.name for v in task.observed], 'data_layout': 'variables_by_samples'}
 

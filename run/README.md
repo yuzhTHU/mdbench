@@ -4,7 +4,7 @@
 
 直接运行 `run.py` 时通过 `--exp_name NAME` 指定实验名，默认结果目录为 `logs/run/NAME/<task_name>/`。批量控制器也将每道题的 dataset、运行产物和评估结果放在实验根目录下以 `task_name` 命名的独立目录中；实验级账本和汇总仍位于实验根目录。
 
-一次实验的 `experiment.json` 固定随机种子、问题族、问题清单、模型、时间上限和预算。先运行两题 smoke；只有生成 submission、可恢复会话、evaluation 后，才写出 `budget_plan.json`。预算估计使用预跑最大单题成本的三倍，且设置最低每题估计；必要时按问题族交替删减题数。默认每题发现阶段 600 秒，每个探针独立恢复 checkpoint、120 秒，最多两个探针并发。
+一次实验的 `experiment.json` 固定随机种子、问题族、问题清单、模型、时间上限和预算。先运行两题 smoke；只有生成 submission、可恢复会话、evaluation 后，才写出 `budget_plan.json`。预算估计使用预跑最大单题成本的三倍，且设置最低每题估计；必要时按问题族交替删减题数。默认每题发现阶段 900 秒，每个探针独立恢复 checkpoint、120 秒；普通 `run.py` 调用默认串行执行探针。
 
 ```sh
 venv/bin/python -u run/openrouter_experiment.py --root logs/run/<experiment> --phase smoke --concurrency 2

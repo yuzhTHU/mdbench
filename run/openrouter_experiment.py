@@ -5,6 +5,7 @@ gateway credential. Every request and stream is saved before forwarding.
 """
 from __future__ import annotations
 import argparse
+from copy import deepcopy
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 from datetime import datetime, timezone
 import hashlib
@@ -28,9 +29,10 @@ sys.path.insert(0, str(ROOT))
 from src.algorithms.codex import (
     clean_ansi, utc, atomic_json, load_api_key, UsageAccounting,
     start_responses_gateway, probe_gateway_capacity, gateway_environment,
-    stop_codex_processes, is_infrastructure_failure,
+    stop_codex_processes, is_infrastructure_failure, get_ask as get_codex_ask,
 )
 from src.export_problems import export_task
+from src.scoring import submission_formulas
 from src.validate_problem import load_task
 
 
@@ -135,7 +137,10 @@ def experiment(args):
         performance = json.loads((destination/'performance.json').read_text())
         model = json.loads((destination/'saved_checkpoint'/'model.json').read_text())
         started = time.monotonic()
-        performance['evaluation'] = evaluate(run_args,run_args.answer,destination/'submission.txt',model)
+        submission = submission_formulas((destination/'submission.txt').read_text())
+        performance['evaluation'] = evaluate(
+            run_args, run_args.answer, submission,
+            lambda: get_codex_ask(run_args, deepcopy(model)))
         performance['evaluation_seconds'] = time.monotonic()-started
         performance['total_seconds'] = performance['agent_seconds']+performance['evaluation_seconds']
         valid = performance['evaluation']['phenomenal']['ok'] and all(p['ok'] for p in performance['evaluation']['mechanism_probes'])
@@ -170,12 +175,11 @@ def experiment(args):
                 '--answer', str(paths['answer']),
                 '--save-path', str(destination), '--timeout', str(metadata['timeout_seconds']),
                 '--probe-timeout', '120', '--probe-workers', '2', '--feedback-workers', '2',
-                '--codex-profile', 'openrouter', '--codex-text-only', '--codex-model', metadata['model'],
+                '--codex-text-only', '--codex-model', metadata['model'],
                 '--codex-reasoning-effort', 'high', '--codex-provider-env-key', 'MDBENCH_LOCAL_GATEWAY_TOKEN',
                 '--codex-provider-base-url', f'http://127.0.0.1:{server.server_port}/{task_id}/api/v1',
-                '--codex-private-root', str(ROOT), '--codex-blocked-tools', str(tools),
-                '--codex-tool-path', str(tools)+':'+str(ROOT/'venv/bin')+':/usr/local/bin:/usr/bin:/bin',
-                '--persist-runtime']
+                '--codex-blocked-tools', str(tools),
+                '--codex-tool-path', str(tools)+':'+str(ROOT/'venv/bin')+':/usr/local/bin:/usr/bin:/bin']
             atomic_json(audit / 'command.json', command)
             env = gateway_environment('MDBENCH_LOCAL_GATEWAY_TOKEN', 'local-experiment-only',
                                       path_prefix=(tools, ROOT / 'venv/bin'))

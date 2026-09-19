@@ -79,7 +79,24 @@ def symbolic_equivalent(predicted: sp.Expr, truth: sp.Expr) -> bool:
     # Normalize independently parsed symbol objects while retaining task assumptions.
     canonical = {str(s): s for s in truth.free_symbols}
     predicted = predicted.xreplace({s: canonical.get(str(s), s) for s in predicted.free_symbols})
-    return bool(sp.simplify(predicted - truth) == 0)
+    difference = predicted - truth
+    # A high-precision counterexample is enough to prove non-equivalence and
+    # avoids pathological simplify() calls for decimal approximations of exact
+    # transcendental constants.  Expressions that survive still receive the
+    # exact symbolic check below; numerical agreement alone is never rewarded.
+    symbols = sorted(difference.free_symbols, key=str)
+    for offset in range(3):
+        substitutions = {symbol: sp.Rational(index + offset + 2)
+                         for index, symbol in enumerate(symbols)}
+        try:
+            value = sp.N(difference.subs(substitutions), 50)
+            if value.is_number and value.is_finite:
+                numeric = complex(value)
+                if abs(numeric) > 1e-30:
+                    return False
+        except (TypeError, ValueError, OverflowError):
+            continue
+    return bool(sp.simplify(difference) == 0)
 
 
 def score_expression(expression, reference, data, columns):
