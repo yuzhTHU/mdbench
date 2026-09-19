@@ -1,0 +1,101 @@
+task_name: Reconstructed 20260919 Enzyme Product Release Cycle - Variant 2
+task_description: Initial enzyme-catalyzed product rates are measured with controlled substrate, total enzyme and
+  solution-modifier concentrations.
+mutation: Allow a nonproductive second-substrate complex.
+mechanism_model:
+- formula: k_on = 2
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: substrate association rate constant; unit m^3 mol^-1 s^-1. Assumptions: Induced-fit
+    cycle E+S reversibly forms ES; ES converts to EP; EP releases product; quasi-steady complexes; rapid-equilibrium
+    dormant and second-substrate states; substrate buffered.'
+- formula: k_off = 3
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: substrate dissociation rate constant; unit s^-1.'
+- formula: k_forward = 4
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: bound-substrate chemical conversion; unit s^-1.'
+- formula: k_release = 5
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: enzyme-bound product release; unit s^-1.'
+- formula: K_second = 2.5
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: second-substrate binding scale; unit mol m^-3.'
+- formula: w_sub = k_on*S_free/(k_off+k_forward)
+  role: conservation/balance relations
+  description: ES-to-free-enzyme concentration ratio from quasi-steady ES balance.
+- formula: w_prod = k_forward*w_sub/k_release
+  role: conservation/balance relations
+  description: EP-to-free-enzyme concentration ratio from product-complex balance.
+- formula: w_second = w_sub*S_free/K_second
+  role: constitutive/component relations
+  description: Doubly substrate-bound inactive-to-free-enzyme ratio.
+- formula: E_free = E_total/(1+w_sub+w_prod+w_second)
+  role: conservation/balance relations
+  description: Free enzyme concentration from conservation across all allowed states.
+- formula: ES = w_sub*E_free
+  role: constitutive/component relations
+  description: Singly substrate-bound enzyme concentration before chemical conversion.
+- formula: EP = k_forward*ES/k_release
+  role: conservation/balance relations
+  description: Enzyme-bound product concentration before release.
+- formula: rate = k_release*EP
+  role: governing/dynamical laws
+  description: Initial released-product formation rate.
+phenomenal_model: rate = E_total*K_second*S_free*k_forward*k_on*k_release/(K_second*S_free*k_forward*k_on + K_second*S_free*k_on*k_release
+  + K_second*k_forward*k_release + K_second*k_off*k_release + S_free**2*k_on*k_release)
+variables:
+- name: S_free
+  description: Free substrate concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 8
+    ood_boundary: 1.5
+    distribution: log_uniform
+- name: E_total
+  description: Total enzyme concentration over all enzyme states.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-06
+    max: 0.0001
+    ood_boundary: 2.0e-05
+    distribution: log_uniform
+- name: w_sub
+  description: ES-to-free-enzyme concentration ratio from quasi-steady ES balance.
+  unit: '1'
+  role: internal
+- name: w_prod
+  description: EP-to-free-enzyme concentration ratio from product-complex balance.
+  unit: '1'
+  role: internal
+- name: w_second
+  description: Doubly substrate-bound inactive-to-free-enzyme ratio.
+  unit: '1'
+  role: internal
+- name: E_free
+  description: Free enzyme concentration from conservation across all allowed states.
+  unit: mol m^-3
+  role: internal
+- name: ES
+  description: Singly substrate-bound enzyme concentration before chemical conversion.
+  unit: mol m^-3
+  role: internal
+- name: EP
+  description: Enzyme-bound product concentration before release.
+  unit: mol m^-3
+  role: internal
+- name: rate
+  description: Initial released-product formation rate.
+  unit: mol m^-3 s^-1
+  role: target
+mechanism_probes:
+- probe: E_free
+  description: Concentration of free, catalytically available enzyme, excluding all bound and dormant states.
+  answer: E_free = E_total*K_second*k_release*(k_forward + k_off)/(K_second*S_free*k_forward*k_on + K_second*S_free*k_on*k_release
+    + K_second*k_forward*k_release + K_second*k_off*k_release + S_free**2*k_on*k_release)
+- probe: ES
+  description: Concentration of singly substrate-bound enzyme before the chemical conversion step.
+  answer: ES = E_total*K_second*S_free*k_on*k_release/(K_second*S_free*k_forward*k_on + K_second*S_free*k_on*k_release
+    + K_second*k_forward*k_release + K_second*k_off*k_release + S_free**2*k_on*k_release)

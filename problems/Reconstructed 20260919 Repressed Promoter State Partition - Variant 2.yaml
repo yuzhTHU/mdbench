@@ -1,0 +1,111 @@
+task_name: Reconstructed 20260919 Repressed Promoter State Partition - Variant 2
+task_description: Mean gene-initiation rates per promoter are measured under independently varied free repressor
+  and polymerase concentrations.
+mutation: Permit weakly productive repressor-polymerase co-occupancy.
+mechanism_model:
+- formula: Kr = 3
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: repressor association constant; unit m^3 mol^-1. Assumptions: Equilibrium
+    occupancy before rare initiation; free proteins buffered; looped state excludes polymerase; loop supported by
+    two bound repressors; co-occupied state has reduced initiation competence.'
+- formula: Kp = 5
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: polymerase association constant; unit m^3 mol^-1.'
+- formula: k_init = .08
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: uninhibited initiation frequency; unit s^-1.'
+- formula: chi = .3
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: repressor-polymerase co-occupancy factor; unit 1.'
+- formula: leak = .12
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: relative co-occupied initiation competence; unit 1.'
+- formula: wR = Kr*R_free
+  role: constitutive/component relations
+  description: Repressor-only binding weight.
+- formula: wP = Kp*P_free
+  role: constitutive/component relations
+  description: Polymerase-only binding weight.
+- formula: wRP = chi*wR*wP
+  role: constitutive/component relations
+  description: Co-occupied repressor-polymerase weight.
+- formula: Z = 1+wR+wP+wRP
+  role: conservation/balance relations
+  description: Normalization over all promoter states.
+- formula: P_empty = 1/Z
+  role: constitutive/component relations
+  description: Probability of empty promoter.
+- formula: P_repressor = wR/Z
+  role: constitutive/component relations
+  description: Probability of a singly repressor-bound promoter without polymerase.
+- formula: P_RP = wRP/Z
+  role: constitutive/component relations
+  description: Probability of repressor-polymerase co-occupied promoter.
+- formula: P_poly = 1-P_empty-P_repressor-P_RP
+  role: conservation/balance relations
+  description: Polymerase-only probability from promoter-state conservation.
+- formula: rate = k_init*(P_poly+leak*P_RP)
+  role: governing/dynamical laws
+  description: Mean initiation frequency from polymerase-only and allowed leaky states.
+phenomenal_model: rate = Kp*P_free*k_init*(Kr*R_free*chi*leak + 1)/(Kp*Kr*P_free*R_free*chi + Kp*P_free + Kr*R_free
+  + 1)
+variables:
+- name: R_free
+  description: Free repressor concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.003
+    max: 1.5
+    ood_boundary: 0.3
+    distribution: log_uniform
+- name: P_free
+  description: Free polymerase concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.005
+    max: 0.8
+    ood_boundary: 0.2
+    distribution: log_uniform
+- name: wR
+  description: Repressor-only binding weight.
+  unit: '1'
+  role: internal
+- name: wP
+  description: Polymerase-only binding weight.
+  unit: '1'
+  role: internal
+- name: wRP
+  description: Co-occupied repressor-polymerase weight.
+  unit: '1'
+  role: internal
+- name: Z
+  description: Normalization over all promoter states.
+  unit: '1'
+  role: internal
+- name: P_empty
+  description: Probability of empty promoter.
+  unit: '1'
+  role: internal
+- name: P_repressor
+  description: Probability of a singly repressor-bound promoter without polymerase.
+  unit: '1'
+  role: internal
+- name: P_RP
+  description: Probability of repressor-polymerase co-occupied promoter.
+  unit: '1'
+  role: internal
+- name: P_poly
+  description: Polymerase-only probability from promoter-state conservation.
+  unit: '1'
+  role: internal
+- name: rate
+  description: Mean initiation frequency from polymerase-only and allowed leaky states.
+  unit: s^-1
+  role: target
+mechanism_probes:
+- probe: P_repressor
+  description: Probability of exactly the singly repressor-bound state without polymerase, excluding looped and
+    co-occupied states.
+  answer: P_repressor = Kr*R_free/(Kp*Kr*P_free*R_free*chi + Kp*P_free + Kr*R_free + 1)

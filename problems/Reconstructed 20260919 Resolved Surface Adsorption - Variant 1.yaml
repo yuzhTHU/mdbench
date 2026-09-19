@@ -1,0 +1,89 @@
+task_name: Reconstructed 20260919 Resolved Surface Adsorption - Variant 1
+task_description: Equilibrium adsorbed amounts are measured with controlled free solute, surface capacity and solution-composition
+  variables.
+mutation: Allow a second adsorbate on one site class.
+mechanism_model:
+- formula: Ka = 1.4
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: class A first-adsorbate association constant; unit m^3 mol^-1. Assumptions:
+    Two fixed surface-site classes with fraction fA; independent cells; equilibrium reservoirs; only class A permits
+    sequential second occupancy; competitor excludes analyte on a cell.'
+- formula: Kb = .25
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: class B adsorbate association constant; unit m^3 mol^-1.'
+- formula: fA = .4
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: fraction of class A cells; unit 1.'
+- formula: K2 = .6
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: class A sequential second-adsorbate association constant; unit m^3 mol^-1.'
+- formula: ZA = 1+Ka*C_free+Ka*K2*C_free**2
+  role: conservation/balance relations
+  description: Normalization required by class A cell-state conservation.
+- formula: ZB = 1+Kb*C_free
+  role: conservation/balance relations
+  description: Normalization required by class B cell-state conservation.
+- formula: theta_A1 = Ka*C_free/ZA
+  role: constitutive/component relations
+  description: Fraction of class A cells carrying exactly one analyte molecule.
+- formula: theta_B = Kb*C_free/ZB
+  role: constitutive/component relations
+  description: Fraction of class B cells occupied by analyte.
+- formula: theta_A2 = Ka*K2*C_free**2/ZA
+  role: constitutive/component relations
+  description: Fraction of class A cells carrying two analyte molecules.
+- formula: adsorbed = N_sites*(fA*(theta_A1+2*theta_A2)+(1-fA)*theta_B)
+  role: conservation/balance relations
+  description: Total adsorbed analyte amount per geometric surface area.
+phenomenal_model: adsorbed = C_free*N_sites*(C_free**2*K2*Ka*Kb*fA + C_free**2*K2*Ka*Kb + 2*C_free*K2*Ka*fA + C_free*Ka*Kb
+  + Ka*fA - Kb*fA + Kb)/((C_free*Kb + 1)*(C_free**2*K2*Ka + C_free*Ka + 1))
+variables:
+- name: C_free
+  description: Free analyte concentration in the reservoir.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.01
+    max: 8
+    ood_boundary: 1.5
+    distribution: log_uniform
+- name: N_sites
+  description: Total surface adsorption-cell capacity.
+  unit: mol m^-2
+  role: input
+  sampling:
+    min: 1.0e-07
+    max: 1.0e-05
+    ood_boundary: 2.0e-06
+    distribution: log_uniform
+- name: ZA
+  description: Normalization required by class A cell-state conservation.
+  unit: '1'
+  role: internal
+- name: ZB
+  description: Normalization required by class B cell-state conservation.
+  unit: '1'
+  role: internal
+- name: theta_A1
+  description: Fraction of class A cells carrying exactly one analyte molecule.
+  unit: '1'
+  role: internal
+- name: theta_B
+  description: Fraction of class B cells occupied by analyte.
+  unit: '1'
+  role: internal
+- name: theta_A2
+  description: Fraction of class A cells carrying two analyte molecules.
+  unit: '1'
+  role: internal
+- name: adsorbed
+  description: Total adsorbed analyte amount per geometric surface area.
+  unit: mol m^-2
+  role: target
+mechanism_probes:
+- probe: theta_A1
+  description: Fraction within surface class A occupied by exactly one analyte molecule.
+  answer: theta_A1 = C_free*Ka/(C_free**2*K2*Ka + C_free*Ka + 1)
+- probe: theta_B
+  description: Analyte occupation fraction within surface class B.
+  answer: theta_B = C_free*Kb/(C_free*Kb + 1)

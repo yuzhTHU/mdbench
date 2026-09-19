@@ -1,0 +1,113 @@
+task_name: Reconstructed 20260919 Buoyant Cavity Equilibrium - Variant 1-2
+task_description: Neutral-buoyancy depths of sealed deformable bodies are measured against total mass, enclosed
+  gas amount and liquid density.
+mutation: Include gas excluded volume. Include nonlinear membrane elasticity.
+mechanism_model:
+- formula: V_solid = 1e-6
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: incompressible solid displaced volume; unit m^3. Assumptions: Fully submerged
+    body; fixed solid displaced volume; isothermal sealed gas; neutral-force depth, not a claim of stable equilibrium;
+    membrane tension adds interior pressure; liquid incompressible.'
+- formula: Rgas = 8.314462618
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: gas constant; unit J mol^-1 K^-1.'
+- formula: Tgas = 293
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: fixed gas temperature; unit K.'
+- formula: p_surface = 101325
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: surface absolute pressure; unit Pa.'
+- formula: g0 = 9.81
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: gravitational acceleration; unit m s^-2.'
+- formula: V_ref = 1e-5
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: unstressed gas-cavity volume; unit m^3.'
+- formula: Kmem = 1000
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: membrane pressure modulus; unit Pa.'
+- formula: b_gas = .0001
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: excluded volume per mole; unit m^3 mol^-1.'
+- formula: V_gas = mass/rho-V_solid
+  role: conservation/balance relations
+  description: Cavity gas volume selected by neutral buoyancy.
+- formula: p_gas = n_gas*Rgas*Tgas/(V_gas-n_gas*b_gas)
+  role: constitutive/component relations
+  description: Gas absolute pressure under the selected isothermal equation of state.
+- formula: strain = V_gas/V_ref-1
+  role: kinematic/geometric constraints
+  description: Relative volumetric membrane strain.
+- formula: p_mem = Kmem*(strain+strain**2/2)
+  role: constitutive/component relations
+  description: Interior-minus-exterior pressure supported by membrane tension.
+- formula: p_out = p_gas-p_mem
+  role: conservation/balance relations
+  description: Liquid pressure at the cavity from membrane force balance.
+- formula: depth = (p_out-p_surface)/(rho*g0)
+  role: conservation/balance relations
+  description: Neutral-force depth below the free liquid surface.
+phenomenal_model: depth = (Kmem*V_ref**2*V_solid*rho**3 + Kmem*V_ref**2*b_gas*n_gas*rho**3 - Kmem*V_ref**2*mass*rho**2
+  - Kmem*V_solid**3*rho**3 - Kmem*V_solid**2*b_gas*n_gas*rho**3 + 3*Kmem*V_solid**2*mass*rho**2 + 2*Kmem*V_solid*b_gas*mass*n_gas*rho**2
+  - 3*Kmem*V_solid*mass**2*rho - Kmem*b_gas*mass**2*n_gas*rho + Kmem*mass**3 - 2*Rgas*Tgas*V_ref**2*n_gas*rho**3
+  - 2*V_ref**2*V_solid*p_surface*rho**3 - 2*V_ref**2*b_gas*n_gas*p_surface*rho**3 + 2*V_ref**2*mass*p_surface*rho**2)/(2*V_ref**2*g0*rho**3*(V_solid*rho
+  + b_gas*n_gas*rho - mass))
+variables:
+- name: mass
+  description: Measured total body mass including enclosed gas.
+  unit: kg
+  role: input
+  sampling:
+    min: 0.015
+    max: 0.04
+    ood_boundary: 0.025
+    distribution: uniform
+- name: n_gas
+  description: Enclosed gas amount.
+  unit: mol
+  role: input
+  sampling:
+    min: 0.003
+    max: 0.008
+    ood_boundary: 0.006
+    distribution: uniform
+- name: rho
+  description: Surrounding liquid density.
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 900
+    max: 1150
+    ood_boundary: 1050
+    distribution: uniform
+- name: V_gas
+  description: Cavity gas volume selected by neutral buoyancy.
+  unit: m^3
+  role: internal
+- name: p_gas
+  description: Gas absolute pressure under the selected isothermal equation of state.
+  unit: Pa
+  role: internal
+- name: strain
+  description: Relative volumetric membrane strain.
+  unit: '1'
+  role: internal
+- name: p_mem
+  description: Interior-minus-exterior pressure supported by membrane tension.
+  unit: Pa
+  role: internal
+- name: p_out
+  description: Liquid pressure at the cavity from membrane force balance.
+  unit: Pa
+  role: internal
+- name: depth
+  description: Neutral-force depth below the free liquid surface.
+  unit: m
+  role: target
+mechanism_probes:
+- probe: p_mem
+  description: Pressure difference supported by the deformed membrane, distinct from ambient hydrostatic pressure.
+  answer: p_mem = -Kmem*(V_ref*rho - V_solid*rho + mass)*(V_ref*rho + V_solid*rho - mass)/(2*V_ref**2*rho**2)
+- probe: p_gas
+  description: Absolute pressure of the enclosed gas.
+  answer: p_gas = -Rgas*Tgas*n_gas*rho/(V_solid*rho + b_gas*n_gas*rho - mass)

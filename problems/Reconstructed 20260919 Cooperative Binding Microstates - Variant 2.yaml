@@ -1,0 +1,104 @@
+task_name: Reconstructed 20260919 Cooperative Binding Microstates - Variant 2
+task_description: Mean fractional ligand occupancy is measured for two-site binding macromolecules over controlled
+  free ligand and solution-modifier concentrations.
+mutation: Add a second binding conformation.
+mechanism_model:
+- formula: K_open = .5
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: single-site open-conformation dissociation scale; unit mol m^-3. Assumptions:
+    Two equivalent sites per conformation; equilibrium binding; large ligand reservoir; singly occupied degeneracy
+    two; conformation weights normalized jointly; effector alters pair affinity without ligand depletion.'
+- formula: L_conf = 2.3
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: empty closed-to-open conformational weight; unit 1.'
+- formula: K_closed = 2
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: closed-conformation single-site dissociation scale; unit mol m^-3.'
+- formula: omega_closed = .6
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: closed-conformation pair cooperativity; unit 1.'
+- formula: z_open = L_free/K_open
+  role: constitutive/component relations
+  description: Single-site ligand binding activity in the open conformation.
+- formula: omega_open = 1
+  role: constitutive/component relations
+  description: Open-conformation second-occupancy cooperative factor.
+- formula: z_closed = L_free/K_closed
+  role: constitutive/component relations
+  description: Single-site binding activity in the closed conformation.
+- formula: Z = 1+2*z_open+omega_open*z_open**2+L_conf*(1+2*z_closed+omega_closed*z_closed**2)
+  role: conservation/balance relations
+  description: Normalization over all empty, singly occupied and doubly occupied microstates.
+- formula: P_open1 = 2*z_open/Z
+  role: constitutive/component relations
+  description: Probability of open conformation with exactly one bound ligand.
+- formula: P_open2 = omega_open*z_open**2/Z
+  role: constitutive/component relations
+  description: Probability of open conformation with two bound ligands.
+- formula: P_closed1 = 2*L_conf*z_closed/Z
+  role: constitutive/component relations
+  description: Probability of closed conformation with exactly one ligand.
+- formula: P_closed2 = L_conf*omega_closed*z_closed**2/Z
+  role: constitutive/component relations
+  description: Probability of closed conformation with two ligands.
+- formula: occupancy = (P_open1+2*P_open2+P_closed1+2*P_closed2)/2
+  role: conservation/balance relations
+  description: Mean fraction of the two ligand sites occupied.
+phenomenal_model: occupancy = L_free*(K_closed**2*K_open + K_closed**2*L_free + K_closed*K_open**2*L_conf + K_open**2*L_conf*L_free*omega_closed)/(K_closed**2*K_open**2*L_conf
+  + K_closed**2*K_open**2 + 2*K_closed**2*K_open*L_free + K_closed**2*L_free**2 + 2*K_closed*K_open**2*L_conf*L_free
+  + K_open**2*L_conf*L_free**2*omega_closed)
+variables:
+- name: L_free
+  description: Free ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.01
+    max: 4
+    ood_boundary: 0.8
+    distribution: log_uniform
+- name: z_open
+  description: Single-site ligand binding activity in the open conformation.
+  unit: '1'
+  role: internal
+- name: omega_open
+  description: Open-conformation second-occupancy cooperative factor.
+  unit: '1'
+  role: internal
+- name: z_closed
+  description: Single-site binding activity in the closed conformation.
+  unit: '1'
+  role: internal
+- name: Z
+  description: Normalization over all empty, singly occupied and doubly occupied microstates.
+  unit: '1'
+  role: internal
+- name: P_open1
+  description: Probability of open conformation with exactly one bound ligand.
+  unit: '1'
+  role: internal
+- name: P_open2
+  description: Probability of open conformation with two bound ligands.
+  unit: '1'
+  role: internal
+- name: P_closed1
+  description: Probability of closed conformation with exactly one ligand.
+  unit: '1'
+  role: internal
+- name: P_closed2
+  description: Probability of closed conformation with two ligands.
+  unit: '1'
+  role: internal
+- name: occupancy
+  description: Mean fraction of the two ligand sites occupied.
+  unit: '1'
+  role: target
+mechanism_probes:
+- probe: P_open2
+  description: Joint probability of open conformation and double ligand occupancy, not the mean occupied-site fraction.
+  answer: P_open2 = K_closed**2*L_free**2/(K_closed**2*K_open**2*L_conf + K_closed**2*K_open**2 + 2*K_closed**2*K_open*L_free
+    + K_closed**2*L_free**2 + 2*K_closed*K_open**2*L_conf*L_free + K_open**2*L_conf*L_free**2*omega_closed)
+- probe: P_closed1
+  description: Joint probability of closed conformation and exactly one ligand bound.
+  answer: P_closed1 = 2*K_closed*K_open**2*L_conf*L_free/(K_closed**2*K_open**2*L_conf + K_closed**2*K_open**2 +
+    2*K_closed**2*K_open*L_free + K_closed**2*L_free**2 + 2*K_closed*K_open**2*L_conf*L_free + K_open**2*L_conf*L_free**2*omega_closed)

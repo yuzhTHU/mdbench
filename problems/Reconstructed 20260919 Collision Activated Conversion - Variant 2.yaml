@@ -1,0 +1,88 @@
+task_name: Reconstructed 20260919 Collision Activated Conversion - Variant 2
+task_description: Initial product-formation rates are measured against reactant, collision-partner and bath-composition
+  controls in an isothermal dilute reaction system.
+mutation: Add a product-forming isomeric intermediate.
+mechanism_model:
+- formula: k_act = .6
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: collisional activation rate constant; unit m^3 mol^-1 s^-1. Assumptions:
+    Chemostatted free reactant and bath concentrations; dilute mass-action kinetics; stationary excited intermediates;
+    negligible product back-reaction; batch rate constants fixed.'
+- formula: k_deact = .9
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: collisional return-to-ground rate constant; unit m^3 mol^-1 s^-1.'
+- formula: k_prod = .7
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: direct excited-state product conversion; unit s^-1.'
+- formula: k_iso = .8
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: conversion to product-forming isomer; unit s^-1.'
+- formula: k_ret = .5
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: isomer collisional return to ground reactant; unit m^3 mol^-1 s^-1.'
+- formula: k_iso_prod = 1.1
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: isomer product conversion; unit s^-1.'
+- formula: J_activation = k_act*A_free*B_bath
+  role: governing/dynamical laws
+  description: Volumetric rate of producing the activated reactant.
+- formula: loss_star = k_deact*B_bath+k_prod+k_iso
+  role: conservation/balance relations
+  description: Total first-order exit frequency from the activated state.
+- formula: A_star = J_activation/loss_star
+  role: conservation/balance relations
+  description: Stationary activated-reactant concentration.
+- formula: A_iso = k_iso*A_star/(k_ret*B_bath+k_iso_prod)
+  role: conservation/balance relations
+  description: Stationary concentration of the product-forming isomer.
+- formula: rate = k_prod*A_star+k_iso_prod*A_iso
+  role: conservation/balance relations
+  description: Total initial product-formation rate from both allowed pathways.
+phenomenal_model: rate = A_free*B_bath*k_act*(B_bath*k_prod*k_ret + k_iso*k_iso_prod + k_iso_prod*k_prod)/((B_bath*k_ret
+  + k_iso_prod)*(B_bath*k_deact + k_iso + k_prod))
+variables:
+- name: A_free
+  description: Free ground-state reactant concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.05
+    max: 4
+    ood_boundary: 1
+    distribution: log_uniform
+- name: B_bath
+  description: Collision-partner concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 6
+    ood_boundary: 1.5
+    distribution: log_uniform
+- name: J_activation
+  description: Volumetric rate of producing the activated reactant.
+  unit: mol m^-3 s^-1
+  role: internal
+- name: loss_star
+  description: Total first-order exit frequency from the activated state.
+  unit: s^-1
+  role: internal
+- name: A_star
+  description: Stationary activated-reactant concentration.
+  unit: mol m^-3
+  role: internal
+- name: A_iso
+  description: Stationary concentration of the product-forming isomer.
+  unit: mol m^-3
+  role: internal
+- name: rate
+  description: Total initial product-formation rate from both allowed pathways.
+  unit: mol m^-3 s^-1
+  role: target
+mechanism_probes:
+- probe: A_star
+  description: Stationary concentration of the collisionally activated reactant, excluding the ground state.
+  answer: A_star = A_free*B_bath*k_act/(B_bath*k_deact + k_iso + k_prod)
+- probe: A_iso
+  description: Stationary concentration of the product-forming isomer.
+  answer: A_iso = A_free*B_bath*k_act*k_iso/((B_bath*k_ret + k_iso_prod)*(B_bath*k_deact + k_iso + k_prod))

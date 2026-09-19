@@ -1,0 +1,122 @@
+task_name: Reconstructed 20260919 Hall Carrier Partition - Variant 2
+task_description: Transverse voltages are measured in a conducting slab under longitudinal current and magnetic
+  field while carrier preparation, thickness and chemical conditions are varied.
+mutation: Allow reversible immobilization of the majority carriers.
+mechanism_model:
+- formula: qe = 1.602176634e-19
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: elementary charge magnitude; unit C. Assumptions: Low-field two-carrier Drude
+    closure; mu*B much smaller than one; no transverse total current; uniform slab; positive charge magnitude; signed
+    Hall voltage.'
+- formula: mu_e = .06
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: majority carrier mobility; unit m^2 V^-1 s^-1.'
+- formula: mu_h = .02
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: minority carrier mobility; unit m^2 V^-1 s^-1.'
+- formula: width = .001
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: fixed slab width; unit m.'
+- formula: Kc = .7
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: trap dissociation scale; unit mol m^-3.'
+- formula: n_mobile = n_total/(1+c/Kc)
+  role: conservation/balance relations
+  description: Mobile majority-carrier number density.
+- formula: n_holes = 0
+  role: constitutive/component relations
+  description: Mobile minority-carrier number density.
+- formula: sigma_long = qe*(n_mobile*mu_e+n_holes*mu_h)
+  role: constitutive/component relations
+  description: Longitudinal electrical conductivity.
+- formula: E_long = I_long/(width*thickness*sigma_long)
+  role: conservation/balance relations
+  description: Longitudinal internal electric field.
+- formula: j_e = qe*n_mobile*mu_e*E_long
+  role: constitutive/component relations
+  description: Majority-carrier longitudinal conventional current density.
+- formula: j_h = qe*n_holes*mu_h*E_long
+  role: constitutive/component relations
+  description: Minority-carrier longitudinal conventional current density.
+- formula: V_hall = width*Bfield*(mu_h*j_h-mu_e*j_e)/sigma_long
+  role: conservation/balance relations
+  description: Signed Hall voltage from zero net transverse current at first order in magnetic field.
+phenomenal_model: V_hall = -Bfield*I_long*(Kc + c)/(Kc*n_total*qe*thickness)
+variables:
+- name: n_total
+  description: Prepared majority-charge number density, including immobilized charges.
+  unit: m^-3
+  role: input
+  sampling:
+    min: 1.0e+20
+    max: 5.0e+22
+    ood_boundary: 1.0e+22
+    distribution: log_uniform
+- name: I_long
+  description: Imposed positive longitudinal current.
+  unit: A
+  role: input
+  sampling:
+    min: 0.0001
+    max: 0.02
+    ood_boundary: 0.005
+    distribution: log_uniform
+- name: Bfield
+  description: Applied positive perpendicular magnetic induction.
+  unit: kg s^-2 A^-1
+  role: input
+  sampling:
+    min: 0.001
+    max: 0.08
+    ood_boundary: 0.02
+    distribution: log_uniform
+- name: thickness
+  description: Slab thickness.
+  unit: m
+  role: input
+  sampling:
+    min: 2.0e-05
+    max: 0.0005
+    ood_boundary: 0.0001
+    distribution: log_uniform
+- name: c
+  description: Free trapping-agent concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 5
+    ood_boundary: 1
+    distribution: log_uniform
+- name: n_mobile
+  description: Mobile majority-carrier number density.
+  unit: m^-3
+  role: internal
+- name: n_holes
+  description: Mobile minority-carrier number density.
+  unit: m^-3
+  role: internal
+- name: sigma_long
+  description: Longitudinal electrical conductivity.
+  unit: A V^-1 m^-1
+  role: internal
+- name: E_long
+  description: Longitudinal internal electric field.
+  unit: V m^-1
+  role: internal
+- name: j_e
+  description: Majority-carrier longitudinal conventional current density.
+  unit: A m^-2
+  role: internal
+- name: j_h
+  description: Minority-carrier longitudinal conventional current density.
+  unit: A m^-2
+  role: internal
+- name: V_hall
+  description: Signed Hall voltage from zero net transverse current at first order in magnetic field.
+  unit: V
+  role: target
+mechanism_probes:
+- probe: n_mobile
+  description: Mobile majority-carrier density, excluding immobilized charges.
+  answer: n_mobile = Kc*n_total/(Kc + c)

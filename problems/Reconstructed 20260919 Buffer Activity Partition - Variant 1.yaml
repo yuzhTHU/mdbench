@@ -1,0 +1,78 @@
+task_name: Reconstructed 20260919 Buffer Activity Partition - Variant 1
+task_description: Final pH values of prepared weak-acid buffers are measured against acid, base-equivalent and salt-composition
+  variables.
+mutation: Use a salt-dependent anion activity coefficient.
+mechanism_model:
+- formula: Ka = .0001
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: acid equilibrium constant in concentration-equivalent activity convention;
+    unit mol m^-3. Assumptions: Buffer regime: proton and hydroxide concentrations negligible relative to buffer
+    pools; neutral acid ideal; constant temperature; rapid acid/base and pairing equilibria; cation reservoir; synthetic
+    activity closure.'
+- formula: c_standard = 1000
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: one-molar concentration standard for pH; unit mol m^-3.'
+- formula: I0 = 400
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: ionic-strength scale; unit mol m^-3.'
+- formula: gamma_A = 1/(1+.7*sqrt(salt_strength/I0))
+  role: constitutive/component relations
+  description: Dimensionless activity coefficient of unpaired conjugate-base anions.
+- formula: A_free = B_total
+  role: conservation/balance relations
+  description: Unpaired conjugate-base concentration from base-equivalent conservation.
+- formula: H_activity = Ka*HAc/(gamma_A*A_free)
+  role: conservation/balance relations
+  description: Proton activity expressed as a concentration equivalent from acid equilibrium.
+- formula: pH = log(c_standard/H_activity)/log(10)
+  role: constitutive/component relations
+  description: Negative base-ten logarithm of dimensionless proton activity, written as the log of its reciprocal.
+phenomenal_model: pH = log(10*B_total*c_standard/(7*HAc*Ka*sqrt(salt_strength)*sqrt(1/I0) + 10*HAc*Ka))/log(10)
+variables:
+- name: HAc
+  description: Neutral weak-acid concentration in the buffer regime.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 5
+    max: 50
+    ood_boundary: 25
+    distribution: uniform
+- name: B_total
+  description: Analytical conjugate-base equivalents including paired base.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 5
+    max: 60
+    ood_boundary: 30
+    distribution: uniform
+- name: salt_strength
+  description: Measured total solution ionic strength, adjusted with supporting electrolyte.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 200
+    max: 1200
+    ood_boundary: 600
+    distribution: uniform
+- name: gamma_A
+  description: Dimensionless activity coefficient of unpaired conjugate-base anions.
+  unit: '1'
+  role: internal
+- name: A_free
+  description: Unpaired conjugate-base concentration from base-equivalent conservation.
+  unit: mol m^-3
+  role: internal
+- name: H_activity
+  description: Proton activity expressed as a concentration equivalent from acid equilibrium.
+  unit: mol m^-3
+  role: internal
+- name: pH
+  description: Negative base-ten logarithm of dimensionless proton activity, written as the log of its reciprocal.
+  unit: '1'
+  role: target
+mechanism_probes:
+- probe: gamma_A
+  description: Activity coefficient of unpaired conjugate-base anions under the specified salt condition.
+  answer: gamma_A = 10/(7*sqrt(salt_strength)*sqrt(1/I0) + 10)

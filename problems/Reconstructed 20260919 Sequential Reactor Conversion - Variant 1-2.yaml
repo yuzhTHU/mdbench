@@ -1,0 +1,83 @@
+task_name: Reconstructed 20260919 Sequential Reactor Conversion - Variant 1-2
+task_description: Steady product concentrations in a well-mixed flow reactor are measured versus feed concentration
+  and residence time.
+mutation: Permit reversal of the first conversion. Add an intermediate-consuming side pathway.
+mechanism_model:
+- formula: k1 = .8
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: first conversion rate constant; unit s^-1. Assumptions: Isothermal ideal
+    stirred tank; first-order A-to-B-to-P reactions; feed contains only A; equal volumetric inflow and outflow;
+    all species share dilution frequency.'
+- formula: k2 = .4
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: second conversion rate constant; unit s^-1.'
+- formula: kr = .6
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: B-to-A reverse rate constant; unit s^-1.'
+- formula: kw = .3
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: B-to-waste side-conversion rate constant; unit s^-1.'
+- formula: dilution = 1/tau
+  role: kinematic/geometric constraints
+  description: Volumetric dilution frequency.
+- formula: loss_B = dilution+k2+kr+kw
+  role: conservation/balance relations
+  description: Total loss frequency of the intermediate.
+- formula: A_tank = dilution*C_feed/(dilution+k1-kr*k1/loss_B)
+  role: conservation/balance relations
+  description: Tank concentration of A from coupled A/B stationary species balances.
+- formula: B_tank = k1*A_tank/loss_B
+  role: conservation/balance relations
+  description: Tank concentration of the unobserved intermediate.
+- formula: P_out = k2*B_tank/dilution
+  role: conservation/balance relations
+  description: Steady product concentration in tank and outlet.
+phenomenal_model: P_out = C_feed*k1*k2*tau**2/(k1*k2*tau**2 + k1*kw*tau**2 + k1*tau + k2*tau + kr*tau + kw*tau +
+  1)
+variables:
+- name: C_feed
+  description: Feed concentration of starting reactant.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.1
+    max: 8
+    ood_boundary: 2
+    distribution: log_uniform
+- name: tau
+  description: Hydraulic residence time.
+  unit: s
+  role: input
+  sampling:
+    min: 0.1
+    max: 10
+    ood_boundary: 2
+    distribution: log_uniform
+- name: dilution
+  description: Volumetric dilution frequency.
+  unit: s^-1
+  role: internal
+- name: loss_B
+  description: Total loss frequency of the intermediate.
+  unit: s^-1
+  role: internal
+- name: A_tank
+  description: Tank concentration of A from coupled A/B stationary species balances.
+  unit: mol m^-3
+  role: internal
+- name: B_tank
+  description: Tank concentration of the unobserved intermediate.
+  unit: mol m^-3
+  role: internal
+- name: P_out
+  description: Steady product concentration in tank and outlet.
+  unit: mol m^-3
+  role: target
+mechanism_probes:
+- probe: A_tank
+  description: Residual starting-reactant concentration inside the reactor, distinct from feed concentration.
+  answer: A_tank = C_feed*(k2*tau + kr*tau + kw*tau + 1)/(k1*k2*tau**2 + k1*kw*tau**2 + k1*tau + k2*tau + kr*tau
+    + kw*tau + 1)
+- probe: B_tank
+  description: Stationary intermediate concentration inside the reactor.
+  answer: B_tank = C_feed*k1*tau/(k1*k2*tau**2 + k1*kw*tau**2 + k1*tau + k2*tau + kr*tau + kw*tau + 1)

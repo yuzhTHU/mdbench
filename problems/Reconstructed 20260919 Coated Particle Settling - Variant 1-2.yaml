@@ -1,0 +1,136 @@
+task_name: Reconstructed 20260919 Coated Particle Settling - Variant 1-2
+task_description: Terminal settling speeds of spherical particles are measured while particle size, density contrast,
+  liquid viscosity and preparation controls are varied.
+mutation: Add saturable adsorption to coating friction. Add control-dependent interfacial momentum transfer.
+mechanism_model:
+- formula: pi0 = 3.141592653589793
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: circle constant; unit 1. Assumptions: Synthetic passive lumped coating model:
+    parallel bulk drag and a series coating/contact drag path; massless coating; dilute isolated spheres; steady
+    creeping motion.'
+- formula: g0 = 9.81
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: gravitational acceleration; unit m s^-2.'
+- formula: zeta0 = 1000
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: coating drag per unit area per unit speed; unit Pa s m^-1.'
+- formula: kc0 = 0.3
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: contact drag coefficient per radius; unit Pa s.'
+- formula: Kc = 1.5
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: adsorption dissociation concentration; unit mol m^-3.'
+- formula: theta = c/(Kc+c)
+  role: conservation/balance relations
+  description: Fraction of occupied coating adsorption sites.
+- formula: k_bulk = 6*pi0*eta*a
+  role: constitutive/component relations
+  description: Bulk-fluid translational drag coefficient.
+- formula: k_layer = 4*pi0*a**2*zeta0*(1+3*theta)
+  role: constitutive/component relations
+  description: Drag coefficient of the permeable coating relative to the far liquid.
+- formula: k_contact = kc0*a/(1+q)
+  role: constitutive/component relations
+  description: Coefficient of momentum transfer between core and coating.
+- formula: f_shell = k_contact/(k_contact+k_layer)
+  role: conservation/balance relations
+  description: Coating-to-core speed ratio from force balance on the massless coating.
+- formula: W_net = 4*pi0*a**3*drho*g0/3
+  role: conservation/balance relations
+  description: Weight minus static buoyancy.
+- formula: u_shell = W_net/(k_bulk/f_shell+k_layer)
+  role: conservation/balance relations
+  description: Coating translation speed relative to stationary far liquid from total force balance.
+- formula: v_terminal = u_shell/f_shell
+  role: kinematic/geometric constraints
+  description: Core terminal settling speed.
+phenomenal_model: v_terminal = 2*a**2*drho*g0*(4*Kc*a*pi0*q*zeta0 + 4*Kc*a*pi0*zeta0 + Kc*kc0 + 16*a*c*pi0*q*zeta0
+  + 16*a*c*pi0*zeta0 + c*kc0)/(3*(12*Kc*a*eta*pi0*q*zeta0 + 12*Kc*a*eta*pi0*zeta0 + 2*Kc*a*kc0*zeta0 + 3*Kc*eta*kc0
+  + 48*a*c*eta*pi0*q*zeta0 + 48*a*c*eta*pi0*zeta0 + 8*a*c*kc0*zeta0 + 3*c*eta*kc0))
+variables:
+- name: a
+  description: Geometric particle radius.
+  unit: m
+  role: input
+  sampling:
+    min: 2.0e-06
+    max: 2.0e-05
+    ood_boundary: 8.0e-06
+    distribution: log_uniform
+- name: drho
+  description: Particle density minus surrounding liquid density.
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 200
+    max: 1500
+    ood_boundary: 800
+    distribution: uniform
+- name: eta
+  description: Independently measured bulk liquid viscosity.
+  unit: Pa s
+  role: input
+  sampling:
+    min: 0.01
+    max: 0.08
+    ood_boundary: 0.03
+    distribution: log_uniform
+- name: c
+  description: Free preparation-solute concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.05
+    max: 10
+    ood_boundary: 2
+    distribution: log_uniform
+- name: q
+  description: Dimensionless externally set coating treatment dose.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.1
+    max: 5
+    ood_boundary: 2
+    distribution: uniform
+- name: theta
+  description: Fraction of occupied coating adsorption sites.
+  unit: '1'
+  role: internal
+- name: k_bulk
+  description: Bulk-fluid translational drag coefficient.
+  unit: kg s^-1
+  role: internal
+- name: k_layer
+  description: Drag coefficient of the permeable coating relative to the far liquid.
+  unit: kg s^-1
+  role: internal
+- name: k_contact
+  description: Coefficient of momentum transfer between core and coating.
+  unit: kg s^-1
+  role: internal
+- name: f_shell
+  description: Coating-to-core speed ratio from force balance on the massless coating.
+  unit: '1'
+  role: internal
+- name: W_net
+  description: Weight minus static buoyancy.
+  unit: N
+  role: internal
+- name: u_shell
+  description: Coating translation speed relative to stationary far liquid from total force balance.
+  unit: m s^-1
+  role: internal
+- name: v_terminal
+  description: Core terminal settling speed.
+  unit: m s^-1
+  role: target
+mechanism_probes:
+- probe: u_shell
+  description: Translation speed of the permeable coating relative to the far liquid, distinct from the observed
+    core speed.
+  answer: u_shell = 2*a**2*drho*g0*kc0*(Kc + c)/(3*(12*Kc*a*eta*pi0*q*zeta0 + 12*Kc*a*eta*pi0*zeta0 + 2*Kc*a*kc0*zeta0
+    + 3*Kc*eta*kc0 + 48*a*c*eta*pi0*q*zeta0 + 48*a*c*eta*pi0*zeta0 + 8*a*c*kc0*zeta0 + 3*c*eta*kc0))
+- probe: theta
+  description: Fraction of surface adsorption sites occupied by preparation solute.
+  answer: theta = c/(Kc + c)

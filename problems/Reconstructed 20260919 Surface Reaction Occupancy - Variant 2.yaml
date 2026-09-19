@@ -1,0 +1,95 @@
+task_name: Reconstructed 20260919 Surface Reaction Occupancy - Variant 2
+task_description: Product fluxes per catalyst area are measured against free reactant concentrations, total surface-cell
+  capacity and bath composition.
+mutation: Add a cooperative two-reactant cell state.
+mechanism_model:
+- formula: Ka = 1.2
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: A adsorption affinity; unit m^3 mol^-1. Assumptions: Rapid adsorption equilibrium;
+    dilute product; independent surface cells; mean-field neighboring-cell reaction; cell may contain A, B, or the
+    cooperative AB pair; kinetics slow compared with adsorption.'
+- formula: Kb = .8
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: B adsorption affinity; unit m^3 mol^-1.'
+- formula: k_pair = .15
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: neighboring-cell reaction coefficient including coordination number; unit
+    s^-1.'
+- formula: omega = 2.5
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: cooperative AB binding factor; unit 1.'
+- formula: k_intra = .22
+  role: constitutive/component relations
+  description: 'Fixed batch parameter: within-cell AB reaction coefficient; unit s^-1.'
+- formula: Z = 1+Ka*A_free+Kb*B_free+omega*Ka*Kb*A_free*B_free
+  role: conservation/balance relations
+  description: Surface-cell state normalization; AB is one occupied cell with two molecules.
+- formula: theta_A = Ka*A_free/Z
+  role: constitutive/component relations
+  description: Fraction of cells carrying A alone.
+- formula: theta_B = Kb*B_free/Z
+  role: constitutive/component relations
+  description: Fraction of cells carrying B alone.
+- formula: theta_AB = omega*Ka*Kb*A_free*B_free/Z
+  role: constitutive/component relations
+  description: Fraction of cells carrying the cooperative AB pair.
+- formula: flux = N_cells*(k_pair*theta_A*theta_B+k_intra*theta_AB)
+  role: governing/dynamical laws
+  description: Total product flux from neighboring-cell and allowed within-cell reactions.
+phenomenal_model: flux = A_free*B_free*Ka*Kb*N_cells*(A_free*B_free*Ka*Kb*k_intra*omega**2 + A_free*Ka*k_intra*omega
+  + B_free*Kb*k_intra*omega + k_intra*omega + k_pair)/(A_free*B_free*Ka*Kb*omega + A_free*Ka + B_free*Kb + 1)**2
+variables:
+- name: A_free
+  description: Free concentration of first reactant.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.02
+    max: 6
+    ood_boundary: 1.5
+    distribution: log_uniform
+- name: B_free
+  description: Free concentration of second reactant.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.03
+    max: 8
+    ood_boundary: 2
+    distribution: log_uniform
+- name: N_cells
+  description: Total surface reactive-cell capacity per area.
+  unit: mol m^-2
+  role: input
+  sampling:
+    min: 2.0e-07
+    max: 1.0e-05
+    ood_boundary: 3.0e-06
+    distribution: log_uniform
+- name: Z
+  description: Surface-cell state normalization; AB is one occupied cell with two molecules.
+  unit: '1'
+  role: internal
+- name: theta_A
+  description: Fraction of cells carrying A alone.
+  unit: '1'
+  role: internal
+- name: theta_B
+  description: Fraction of cells carrying B alone.
+  unit: '1'
+  role: internal
+- name: theta_AB
+  description: Fraction of cells carrying the cooperative AB pair.
+  unit: '1'
+  role: internal
+- name: flux
+  description: Total product flux from neighboring-cell and allowed within-cell reactions.
+  unit: mol m^-2 s^-1
+  role: target
+mechanism_probes:
+- probe: theta_A
+  description: Fraction of catalytic cells occupied by A alone, excluding cells containing an AB pair.
+  answer: theta_A = A_free*Ka/(A_free*B_free*Ka*Kb*omega + A_free*Ka + B_free*Kb + 1)
+- probe: theta_B
+  description: Fraction of catalytic cells occupied by B alone.
+  answer: theta_B = B_free*Kb/(A_free*B_free*Ka*Kb*omega + A_free*Ka + B_free*Kb + 1)
