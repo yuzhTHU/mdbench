@@ -1,0 +1,113 @@
+task_name: Drude Transport - Original
+task_description: Determine electrical current density from the applied electric field, carrier density, and bath temperature.
+mutation: Textbook blueprint.
+mechanism_model:
+- formula: charge = 1.602176634e-19
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Homogeneous stationary transport; charge magnitude fixed.
+- formula: mass0 = 9.1093837e-31
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. All changes are synthetic constitutive closures, not asserted material laws.
+- formula: nu0 = 2e13
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Backflow stores momentum but carries no electric current; bath and field are externally
+    clamped.
+- formula: tref = 300
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: inertia = mass0
+  role: constitutive/component relations
+  description: Effective carrier inertial mass.
+- formula: mobile = density
+  role: constitutive/component relations
+  description: Mobile carrier number density.
+- formula: phonon_temp = temp
+  role: constitutive/component relations
+  description: Local phonon reservoir temperature.
+- formula: collision_extra = 0
+  role: constitutive/component relations
+  description: Additional momentum relaxation frequency.
+- formula: collision = nu0*phonon_temp/tref+collision_extra
+  role: constitutive/component relations
+  description: Total momentum relaxation frequency.
+- formula: momentum = charge*field/collision
+  role: governing/dynamical laws
+  description: Momentum delivered per carrier between relaxation events.
+- formula: backflow = 0
+  role: constitutive/component relations
+  description: Momentum per carrier stored in the backflow reservoir.
+- formula: drift = (momentum-backflow)/inertia
+  role: conservation/balance relations
+  description: Carrier drift speed.
+- formula: current_density = charge*mobile*drift
+  role: conservation/balance relations
+  description: Electrical current density.
+phenomenal_model: current_density = charge**2*density*field*tref/(mass0*nu0*temp)
+variables:
+- name: field
+  description: Applied electric field magnitude.
+  unit: V m^-1
+  role: input
+  sampling:
+    min: 100
+    max: 5000
+    ood_boundary: 2000
+    distribution: log_uniform
+- name: density
+  description: Total carrier number density.
+  unit: m^-3
+  role: input
+  sampling:
+    min: 1.0e+23
+    max: 5.0e+24
+    ood_boundary: 2.0e+24
+    distribution: log_uniform
+- name: temp
+  description: Bath temperature.
+  unit: K
+  role: input
+  sampling:
+    min: 250
+    max: 600
+    ood_boundary: 450
+    distribution: uniform
+- name: inertia
+  description: Effective carrier inertial mass.
+  unit: kg
+  role: internal
+- name: mobile
+  description: Mobile carrier number density.
+  unit: m^-3
+  role: internal
+- name: phonon_temp
+  description: Local phonon reservoir temperature.
+  unit: K
+  role: internal
+- name: collision_extra
+  description: Additional momentum relaxation frequency.
+  unit: s^-1
+  role: internal
+- name: collision
+  description: Total momentum relaxation frequency.
+  unit: s^-1
+  role: internal
+- name: momentum
+  description: Momentum delivered per carrier between relaxation events.
+  unit: kg m s^-1
+  role: internal
+- name: backflow
+  description: Momentum per carrier stored in the backflow reservoir.
+  unit: kg m s^-1
+  role: internal
+- name: drift
+  description: Carrier drift speed.
+  unit: m s^-1
+  role: internal
+- name: current_density
+  description: Electrical current density.
+  unit: A m^-2
+  role: target
+mechanism_probes:
+- probe: drift
+  description: Carrier drift speed.
+  answer: charge*field*tref/(mass0*nu0*temp)
