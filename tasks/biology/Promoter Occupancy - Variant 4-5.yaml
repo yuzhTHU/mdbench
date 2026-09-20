@@ -1,0 +1,109 @@
+task_name: Promoter Occupancy - Variant 4-5
+task_description: Determine transcription initiation rate from activator and polymerase concentrations.
+mutation: Combines variants 4, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: ka = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. One promoter; well-mixed buffered factor pools; quasi-stationary state occupancy.
+- formula: kp = 0.0008
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Initiation resets the productive state without changing the assumed occupancy closure.
+- formula: kbas = 0.02
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. All added closures are synthetic.
+- formula: kact = 0.2
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: recruitment = 3
+  role: constitutive/component relations
+  description: Activator-polymerase recruitment coupling factor.
+- formula: local_polymerase = polymerase/(1+0.2*activator/ka)
+  role: constitutive/component relations
+  description: Promoter-local free polymerase concentration.
+- formula: active_rate = kact/(1+0.2*(polymerase/kp)**2)
+  role: constitutive/component relations
+  description: Initiation rate within an activated productive state.
+- formula: free = (1)-a_bound-p_bound-ap_bound
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: a_bound = (activator/ka)*free
+  role: constitutive/component relations
+  description: Activator-only promoter fraction.
+- formula: p_bound = (local_polymerase/kp)*free
+  role: constitutive/component relations
+  description: Polymerase-only promoter fraction.
+- formula: ap_bound = (recruitment*activator*local_polymerase/(ka*kp))*free
+  role: constitutive/component relations
+  description: Activator-polymerase promoter fraction.
+- formula: activated_flux = active_rate*(ap_bound)
+  role: governing/dynamical laws
+  description: Activated-state transcription initiation flux.
+- formula: initiation = kbas*p_bound+activated_flux
+  role: conservation/balance relations
+  description: Transcription initiation rate per promoter.
+phenomenal_model: initiation = 3*activator*kact*polymerase/(ka*kp*(1 + polymerase**2/(5*kp**2))*(activator/(5*ka) + 1)*(activator/ka
+  + 3*activator*polymerase/(ka*kp*(activator/(5*ka) + 1)) + 1 + polymerase/(kp*(activator/(5*ka) + 1)))) + kbas*polymerase/(kp*(activator/(5*ka)
+  + 1)*(activator/ka + 3*activator*polymerase/(ka*kp*(activator/(5*ka) + 1)) + 1 + polymerase/(kp*(activator/(5*ka) + 1))))
+variables:
+- name: activator
+  description: Free activator concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.006
+    ood_boundary: 0.002
+    distribution: log_uniform
+- name: polymerase
+  description: Free polymerase concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.004
+    ood_boundary: 0.001
+    distribution: log_uniform
+- name: recruitment
+  description: Activator-polymerase recruitment coupling factor.
+  unit: '1'
+  role: internal
+- name: local_polymerase
+  description: Promoter-local free polymerase concentration.
+  unit: mol m^-3
+  role: internal
+- name: active_rate
+  description: Initiation rate within an activated productive state.
+  unit: s^-1
+  role: internal
+- name: free
+  description: Unbound reference state abundance.
+  unit: '1'
+  role: internal
+- name: a_bound
+  description: Activator-only promoter fraction.
+  unit: '1'
+  role: internal
+- name: p_bound
+  description: Polymerase-only promoter fraction.
+  unit: '1'
+  role: internal
+- name: ap_bound
+  description: Activator-polymerase promoter fraction.
+  unit: '1'
+  role: internal
+- name: activated_flux
+  description: Activated-state transcription initiation flux.
+  unit: s^-1
+  role: internal
+- name: initiation
+  description: Transcription initiation rate per promoter.
+  unit: s^-1
+  role: target
+mechanism_probes:
+- probe: local_polymerase
+  description: Promoter-local free polymerase concentration.
+  answer: polymerase/(activator/(5*ka) + 1)
+- probe: activated_flux
+  description: Activated-state transcription initiation flux.
+  answer: 3*activator*kact*polymerase/(ka*kp*(1 + polymerase**2/(5*kp**2))*(activator/(5*ka) + 1)*(activator/ka + 3*activator*polymerase/(ka*kp*(activator/(5*ka)
+    + 1)) + 1 + polymerase/(kp*(activator/(5*ka) + 1))))

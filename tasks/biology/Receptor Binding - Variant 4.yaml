@@ -1,0 +1,61 @@
+task_name: Receptor Binding - Variant 4
+task_description: Determine surface receptor occupancy from free ligand concentration.
+mutation: Partition ligand into a pericellular compartment.
+mechanism_model:
+- formula: kd = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Steady state; extracellular ligand buffered, total receptor number conserved.
+- formula: lref = 0.002
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Occupancy counts surface receptors bearing ligand, not ligand molecules.
+- formula: local_ligand = ligand/(1+0.2*(ligand/lref)**2)
+  role: constitutive/component relations
+  description: Pericellular free ligand concentration. Inaccessible-state gating and receptor recycling are driven steady-state
+    processes; do not impose detailed balance on them.
+- formula: affinity = kd
+  role: constitutive/component relations
+  description: Effective receptor dissociation concentration.
+- formula: free = (1)-bound
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: bound = (local_ligand/affinity)*free
+  role: constitutive/component relations
+  description: Singly liganded surface receptor fraction.
+- formula: occupancy = bound
+  role: conservation/balance relations
+  description: Ligand-bearing surface receptor fraction.
+phenomenal_model: occupancy = ligand/(kd*(1 + ligand/(kd*(ligand**2/(5*lref**2) + 1)))*(ligand**2/(5*lref**2) + 1))
+variables:
+- name: ligand
+  description: Free extracellular ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.01
+    ood_boundary: 0.003
+    distribution: log_uniform
+- name: local_ligand
+  description: Pericellular free ligand concentration.
+  unit: mol m^-3
+  role: internal
+- name: affinity
+  description: Effective receptor dissociation concentration.
+  unit: mol m^-3
+  role: internal
+- name: free
+  description: Unbound reference state abundance.
+  unit: '1'
+  role: internal
+- name: bound
+  description: Singly liganded surface receptor fraction.
+  unit: '1'
+  role: internal
+- name: occupancy
+  description: Ligand-bearing surface receptor fraction.
+  unit: '1'
+  role: target
+mechanism_probes:
+- probe: local_ligand
+  description: Pericellular free ligand concentration.
+  answer: ligand/(ligand**2/(5*lref**2) + 1)

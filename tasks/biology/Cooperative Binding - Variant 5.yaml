@@ -1,0 +1,75 @@
+task_name: Cooperative Binding - Variant 5
+task_description: Determine mean primary-site occupancy from free ligand concentration.
+mutation: Partition the local free ligand pool.
+mechanism_model:
+- formula: kd = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Two primary binding sites per protein; measured occupancy excludes the third allosteric
+    ligand.
+- formula: local_ligand = ligand/(1+0.14*(ligand/kd)**2)
+  role: constitutive/component relations
+  description: Local free ligand concentration. Receptor pool conserved; extracellular ligand buffered.
+- formula: coupling = 2
+  role: constitutive/component relations
+  description: Cooperative statistical coupling factor. Additional gating and affinity closures describe a driven stationary
+    protein population.
+- formula: second_affinity = kd
+  role: constitutive/component relations
+  description: Second-site dissociation concentration.
+- formula: free = (1)-single-double
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: single = (2*local_ligand/kd)*free
+  role: constitutive/component relations
+  description: Protein fraction with one primary ligand.
+- formula: double = (coupling*local_ligand**2/(kd*second_affinity))*free
+  role: constitutive/component relations
+  description: Protein fraction with two primary ligands only.
+- formula: occupancy = (single+2*double)/2
+  role: conservation/balance relations
+  description: Mean primary-site occupancy.
+phenomenal_model: occupancy = ligand/(kd*(1 + 7*ligand**2/(50*kd**2))*(1 + 2*ligand/(kd*(1 + 7*ligand**2/(50*kd**2))) + 2*ligand**2/(kd**2*(1
+  + 7*ligand**2/(50*kd**2))**2))) + 2*ligand**2/(kd**2*(1 + 7*ligand**2/(50*kd**2))**2*(1 + 2*ligand/(kd*(1 + 7*ligand**2/(50*kd**2)))
+  + 2*ligand**2/(kd**2*(1 + 7*ligand**2/(50*kd**2))**2)))
+variables:
+- name: ligand
+  description: Free extracellular ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.01
+    ood_boundary: 0.003
+    distribution: log_uniform
+- name: local_ligand
+  description: Local free ligand concentration.
+  unit: mol m^-3
+  role: internal
+- name: coupling
+  description: Cooperative statistical coupling factor.
+  unit: '1'
+  role: internal
+- name: second_affinity
+  description: Second-site dissociation concentration.
+  unit: mol m^-3
+  role: internal
+- name: free
+  description: Unbound reference state abundance.
+  unit: '1'
+  role: internal
+- name: single
+  description: Protein fraction with one primary ligand.
+  unit: '1'
+  role: internal
+- name: double
+  description: Protein fraction with two primary ligands only.
+  unit: '1'
+  role: internal
+- name: occupancy
+  description: Mean primary-site occupancy.
+  unit: '1'
+  role: target
+mechanism_probes:
+- probe: local_ligand
+  description: Local free ligand concentration.
+  answer: ligand/(1 + 7*ligand**2/(50*kd**2))
