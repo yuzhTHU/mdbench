@@ -1,0 +1,160 @@
+task_name: Hall Response - Variant 1-2-5
+task_description: Determine transverse Hall voltage from carrier density, longitudinal current, magnetic field, and sample
+  thickness.
+mutation: Combines variants 1, 2, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: charge = 1.602176634e-19
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Homogeneous slab; weak magnetic field; longitudinal Ohmic response; transverse open
+    circuit.
+- formula: nref = 1e22
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Hall voltage equals width times signed transverse field, negative for the reference
+    electron-only sample.
+- formula: bref = 0.05
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Electric-response modification is common to both species; hole magnetic response remains
+    standard.
+- formula: iref = 0.008
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Optional bypass lies outside the transverse voltage taps and shares the longitudinal
+    electric field.
+- formula: width = 0.002
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: mu0 = 0.08
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: mu_h = 0.03
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: mobile = density/(1+0.23*density/nref)
+  role: constitutive/component relations
+  description: Mobile electron number density.
+- formula: deflection = 1+0.13*(magnetic/bref)**2
+  role: constitutive/component relations
+  description: Electron magnetic deflection multiplier.
+- formula: holes = 0
+  role: constitutive/component relations
+  description: Minority hole number density.
+- formula: electric_factor = 1
+  role: constitutive/component relations
+  description: Transverse electric-force multiplier.
+- formula: mu_e = mu0
+  role: constitutive/component relations
+  description: Electron longitudinal mobility.
+- formula: conductivity = charge*(mobile*mu_e+holes*mu_h)
+  role: constitutive/component relations
+  description: Longitudinal electrical conductivity.
+- formula: bypass_conductivity = 0.16*charge*mobile*mu_e*(current/iref)**2/(1+current/iref)
+  role: constitutive/component relations
+  description: Longitudinal bypass conductivity per reference cross section.
+- formula: long_field = current/(width*thickness*(conductivity+bypass_conductivity))
+  role: conservation/balance relations
+  description: Longitudinal electric field.
+- formula: electron_current = charge*mobile*mu_e*long_field
+  role: constitutive/component relations
+  description: Electron longitudinal current density.
+- formula: hole_current = charge*holes*mu_h*long_field
+  role: constitutive/component relations
+  description: Hole longitudinal current density.
+- formula: bypass_current = bypass_conductivity*long_field
+  role: constitutive/component relations
+  description: Longitudinal bypass current density.
+- formula: hall_voltage = width*magnetic*(mu_h*hole_current-deflection*mu_e*electron_current)/(electric_factor*conductivity)
+  role: conservation/balance relations
+  description: Signed transverse Hall voltage.
+phenomenal_model: hall_voltage = -current*magnetic*mu0*(1 + 13*magnetic**2/(100*bref**2))/(thickness*(4*charge*current**2*density*mu0/(25*iref**2*(current/iref
+  + 1)*(23*density/(100*nref) + 1)) + charge*density*mu0/(23*density/(100*nref) + 1)))
+variables:
+- name: density
+  description: Nominal electron number density.
+  unit: m^-3
+  role: input
+  sampling:
+    min: 1.0e+21
+    max: 2.0e+22
+    ood_boundary: 7.0e+21
+    distribution: log_uniform
+- name: current
+  description: Applied longitudinal electric current.
+  unit: A
+  role: input
+  sampling:
+    min: 0.001
+    max: 0.015
+    ood_boundary: 0.008
+    distribution: uniform
+- name: magnetic
+  description: Transverse magnetic flux density.
+  unit: kg s^-2 A^-1
+  role: input
+  sampling:
+    min: 0.005
+    max: 0.07
+    ood_boundary: 0.04
+    distribution: uniform
+- name: thickness
+  description: Sample thickness.
+  unit: m
+  role: input
+  sampling:
+    min: 5.0e-05
+    max: 0.0004
+    ood_boundary: 0.0002
+    distribution: log_uniform
+- name: mobile
+  description: Mobile electron number density.
+  unit: m^-3
+  role: internal
+- name: deflection
+  description: Electron magnetic deflection multiplier.
+  unit: '1'
+  role: internal
+- name: holes
+  description: Minority hole number density.
+  unit: m^-3
+  role: internal
+- name: electric_factor
+  description: Transverse electric-force multiplier.
+  unit: '1'
+  role: internal
+- name: mu_e
+  description: Electron longitudinal mobility.
+  unit: m^2 V^-1 s^-1
+  role: internal
+- name: conductivity
+  description: Longitudinal electrical conductivity.
+  unit: A V^-1 m^-1
+  role: internal
+- name: bypass_conductivity
+  description: Longitudinal bypass conductivity per reference cross section.
+  unit: A V^-1 m^-1
+  role: internal
+- name: long_field
+  description: Longitudinal electric field.
+  unit: V m^-1
+  role: internal
+- name: electron_current
+  description: Electron longitudinal current density.
+  unit: A m^-2
+  role: internal
+- name: hole_current
+  description: Hole longitudinal current density.
+  unit: A m^-2
+  role: internal
+- name: bypass_current
+  description: Longitudinal bypass current density.
+  unit: A m^-2
+  role: internal
+- name: hall_voltage
+  description: Signed transverse Hall voltage.
+  unit: V
+  role: target
+mechanism_probes:
+- probe: mobile
+  description: Mobile electron number density.
+  answer: density/(23*density/(100*nref) + 1)
+- probe: bypass_conductivity
+  description: Longitudinal bypass conductivity per reference cross section.
+  answer: 4*charge*current**2*density*mu0/(25*iref**2*(current/iref + 1)*(23*density/(100*nref) + 1))

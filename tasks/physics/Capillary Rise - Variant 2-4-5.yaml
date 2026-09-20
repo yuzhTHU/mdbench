@@ -1,0 +1,101 @@
+task_name: Capillary Rise - Variant 2-4-5
+task_description: Determine equilibrium rise height from tube size and bulk liquid density.
+mutation: Combines variants 2, 4, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: grav = 9.81
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Static column; constant ambient pressure; negligible meniscus volume; uniform liquid
+    properties within each column.
+- formula: pi0 = 3.141592653589793
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Tube size denotes wetted perimeter divided by two pi, including noncircular variants.
+- formula: scale = 0.0002
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Added pressure and local-density closures are independently controlled synthetic effects.
+- formula: sigma0 = 0.072
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: tension = sigma0
+  role: constitutive/component relations
+  description: Local liquid surface tension.
+- formula: contact_cos = 0.8/(1+0.13*size/scale)
+  role: constitutive/component relations
+  description: Cosine of the liquid-side contact angle.
+- formula: disjoining = 0
+  role: constitutive/component relations
+  description: Additional disjoining pressure.
+- formula: column_density = density*(1+0.11*size/(size+scale))
+  role: constitutive/component relations
+  description: Mean liquid-column mass density.
+- formula: area = pi0*size**2/(1+0.12*(size/scale)**2)
+  role: kinematic/geometric constraints
+  description: Tube internal cross-sectional area.
+- formula: perimeter = 2*pi0*size
+  role: kinematic/geometric constraints
+  description: Wetted tube perimeter.
+- formula: capillary_pressure = tension*contact_cos*perimeter/area+disjoining
+  role: conservation/balance relations
+  description: Total upward supporting pressure.
+- formula: height = capillary_pressure/(column_density*grav)
+  role: conservation/balance relations
+  description: Equilibrium liquid rise height.
+phenomenal_model: height = 8*sigma0*(1 + 3*size**2/(25*scale**2))/(5*density*grav*size*(1 + 13*size/(100*scale))*(11*size/(100*(scale
+  + size)) + 1))
+variables:
+- name: size
+  description: Nominal tube size.
+  unit: m
+  role: input
+  sampling:
+    min: 5.0e-05
+    max: 0.0006
+    ood_boundary: 0.0003
+    distribution: log_uniform
+- name: density
+  description: Bulk liquid density.
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 800
+    max: 1300
+    ood_boundary: 1100
+    distribution: uniform
+- name: tension
+  description: Local liquid surface tension.
+  unit: N m^-1
+  role: internal
+- name: contact_cos
+  description: Cosine of the liquid-side contact angle.
+  unit: '1'
+  role: internal
+- name: disjoining
+  description: Additional disjoining pressure.
+  unit: Pa
+  role: internal
+- name: column_density
+  description: Mean liquid-column mass density.
+  unit: kg m^-3
+  role: internal
+- name: area
+  description: Tube internal cross-sectional area.
+  unit: m^2
+  role: internal
+- name: perimeter
+  description: Wetted tube perimeter.
+  unit: m
+  role: internal
+- name: capillary_pressure
+  description: Total upward supporting pressure.
+  unit: Pa
+  role: internal
+- name: height
+  description: Equilibrium liquid rise height.
+  unit: m
+  role: target
+mechanism_probes:
+- probe: contact_cos
+  description: Cosine of the liquid-side contact angle.
+  answer: 4/(5*(1 + 13*size/(100*scale)))
+- probe: area
+  description: Tube internal cross-sectional area.
+  answer: pi0*size**2/(1 + 3*size**2/(25*scale**2))

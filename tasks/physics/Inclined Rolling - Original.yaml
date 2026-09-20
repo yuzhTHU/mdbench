@@ -1,0 +1,85 @@
+task_name: Inclined Rolling - Original
+task_description: Determine downslope acceleration from incline angle.
+mutation: Textbook blueprint.
+mechanism_model:
+- formula: mass = 1
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Body mass and contact radius fixed; planar translation and rotation; initial rest.
+- formula: radius = 0.1
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. When slipping, translation exceeds contact rotation and traction dissipates energy.
+- formula: grav = 9.81
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Internal rotor is locked to body angular acceleration; added torque and force oppose
+    downslope motion.
+- formula: body_inertia = 0.5*mass*radius**2
+  role: constitutive/component relations
+  description: Body moment of inertia about the rolling axis.
+- formula: slip_ratio = 1
+  role: kinematic/geometric constraints
+  description: Translational to contact rotational acceleration ratio.
+- formula: rotor_inertia = 0
+  role: constitutive/component relations
+  description: Coupled internal rotor moment of inertia.
+- formula: resist_torque = 0
+  role: governing/dynamical laws
+  description: Externally imposed resisting torque.
+- formula: upward_force = 0
+  role: governing/dynamical laws
+  description: External tangential force directed upslope.
+- formula: angular_accel = acceleration/(slip_ratio*radius)
+  role: kinematic/geometric constraints
+  description: Body angular acceleration.
+- formula: traction = ((body_inertia+rotor_inertia)*angular_accel+resist_torque)/radius
+  role: governing/dynamical laws
+  description: Contact force directed upslope.
+- formula: acceleration = grav*sin(angle)-(upward_force+traction)/mass
+  role: governing/dynamical laws
+  description: Downslope translational acceleration.
+phenomenal_model: acceleration = 2*grav*sin(angle)/3
+variables:
+- name: angle
+  description: Incline angle from horizontal.
+  unit: rad
+  role: input
+  sampling:
+    min: 0.1
+    max: 0.8
+    ood_boundary: 0.5
+    distribution: uniform
+- name: body_inertia
+  description: Body moment of inertia about the rolling axis.
+  unit: kg m^2
+  role: internal
+- name: slip_ratio
+  description: Translational to contact rotational acceleration ratio.
+  unit: '1'
+  role: internal
+- name: rotor_inertia
+  description: Coupled internal rotor moment of inertia.
+  unit: kg m^2
+  role: internal
+- name: resist_torque
+  description: Externally imposed resisting torque.
+  unit: N m
+  role: internal
+- name: upward_force
+  description: External tangential force directed upslope.
+  unit: N
+  role: internal
+- name: angular_accel
+  description: Body angular acceleration.
+  unit: s^-2
+  role: internal
+- name: traction
+  description: Contact force directed upslope.
+  unit: N
+  role: internal
+- name: acceleration
+  description: Downslope translational acceleration.
+  unit: m s^-2
+  role: target
+mechanism_probes:
+- probe: traction
+  description: Contact force directed upslope.
+  answer: grav*mass*sin(angle)/3
