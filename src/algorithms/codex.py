@@ -178,14 +178,22 @@ def run(args, problem_file: Path, train_data_npy_file: Path,
         env['PATH'] = str(blocked_bin) + os.pathsep + env.get('PATH', '')
         prompt = f'''# Objective
 Reconstruct the scientific mechanism that generated the observations in
-problem.json and train.npy.
+problem.json and train.npy and maxmimize the feedback score provided by {feedback_server_url}.
 
 The primary goal is a mechanism model, not merely a phenomenological model. A
 phenomenological model can fit the observable input-target relation directly;
-while your model must instead describe scientifically meaningful unobserved 
-internal components, states, or activities and how they are organized so that 
-their equations generate the observed relation; otherwise, even a perfectly 
-accurate direct fit is insufficient.
+while your mechanism model must instead describe scientifically meaningful
+unobserved internal components, states, or activities and how they are organized
+so that their equations generate the observed relation; otherwise, even a
+perfectly accurate direct fit is insufficient.
+
+Please ensure that your mechanistic model fully describes the underlying mechanisms
+of the observations. Upon completion of the run, you will be asked several questions
+regarding your proposed mechanistic model to verify your understanding of the underlying
+mechanisms that generated the data.
+
+You will have {args.timeout} seconds to iteratively refine your mechanistic model and
+maximize the feedback score.
 
 # Provided data
 - Only observed variables are provided.
@@ -203,48 +211,43 @@ accurate direct fit is insufficient.
   inputs, the target, and scientifically meaningful unobserved internal variables.
 - The equations must jointly and uniquely solve the target and every introduced
   internal variables as explicit expressions of the supplied inputs.
-- A direct target-versus-input equation may follow from your mechanism cannot
-  replace the internal mechanistic equations.
 - Do not leave free symbolic parameters. Estimate necessary constants and define
-  each one numerically in an equation (for example, k = 1.2345).
-- Use only ordinary algebra, ^ or ** powers, sqrt, exp, log, trigonometric
+  each one numerically as an equation in your model (for example, k = 1.2345).
+- Use only ordinary algebra, powers (^ or **), sqrt, exp, log, trigonometric
   functions, and abs. Do not use differential equations.
 - Prefer the smallest scientifically coherent mechanism that explains the data.
   Use variable meanings, units, scaling, and numerical behavior to distinguish
   causal/mechanistic hypotheses from curve fits.
 
-# Investigation and feedback
+# Investigation
 Inspect the metadata and data, formulate candidate mechanisms, test their
-observable consequences, and refine the best mechanism. Write a valid initial
-submission.txt immediately, then keep it updated while improving it within
-{args.timeout} seconds so it survives a time-limit interruption.
+observable consequences using the provided URL, and refine the best mechanism.
+Write a valid initial submission.txt immediately, then keep it updated while
+improving it within {args.timeout} seconds so it survives a time-limit interruption.
 
-You can obtain objective accuracy feedback by POST to {feedback_server_url}. 
-This feedback checks observable fit only; it does not establish that you recovered 
-the mechanism. After this run, you may be asked to derive several unobserved 
-internal quantities using your frozen submitted model, and you will not be allowed 
-to revise that model then.
-
-Keep the environment-provided HTTP proxy enabled: it is the sandbox's controlled
-route to this local feedback endpoint. Do not set trust_env=False or override it.
-Upload three multipart file fields: problem (problem.json), train_data (train.npy),
-and submission (submission.txt). For example, use Python:
-session.post(url, files={{
+# Get Feedback
+The provided URL give an objective accuracy feedback that you have to maximize. To
+use this URL, you should keep the environment-provided HTTP proxy enabled and POST
+three multipart file fields to the URL, including problem (problem.json), train_data
+(train.npy), and submission (submission.txt). For example, you can use Python:
+session.post({feedback_server_url}, files={{
     "problem": open("problem.json", "rb"),
     "train_data": open("train.npy", "rb"),
     "submission": open("submission.txt", "rb")
 }}).json()
+Do not set trust_env=False or override it, because the sandbox's controlled route
+to the feedback endpoint is required.
 
-# Submission format
 submission.txt must contain only equations, with one equality per line and no
-Markdown or prose. End your final response with exactly the same equations as
-submission.txt so the conversation records the submitted model.
+Markdown or prose. Do not use any filename other than submission.txt to submit
+your answers. Upon completion of the run, ensure that the submission.txt file
+represents the mechanism model that maximizes URL feedback.
 
 # Boundaries
-Do not modify problem.json or train.npy. Do not use external reference answers,
+Do NOT modify problem.json or train.npy. Do NOT use external reference answers,
 run git commands, or read shell startup files or credentials. The mdbench command
 and benchmark package are intentionally unavailable; use only the feedback
-endpoint described above. Do not inspect files outside this workspace except the
+endpoint described above. Do NOT inspect files outside this workspace except the
 provided Python environment.
 '''
         (save / 'prompt.txt').write_text(prompt)
