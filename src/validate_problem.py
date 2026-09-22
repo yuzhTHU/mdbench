@@ -14,8 +14,14 @@ import warnings
 from pathlib import Path
 import numpy as np
 import sympy as sp
+from sympy.solvers.solveset import NonlinearError
 import yaml
 from .core import Task, VariableSpec, MechanismItem, MechanismProbe, MECHANISM_ROLES
+
+try:
+    from flint import fmpq, fmpq_mpoly_ctx
+except ImportError:  # Optional acceleration; exact SymPy arithmetic remains available.
+    fmpq = fmpq_mpoly_ctx = None
 
 class ValidationError(ValueError):
     pass
@@ -93,6 +99,140 @@ def symbols_for(variables: list[VariableSpec]) -> dict[str, sp.Symbol]:
     return result
 
 
+def _substitute(expression: sp.Expr, mapping: dict) -> sp.Expr:
+    """Replace resolved symbols in one pass; preserve subs for dependencies/binders."""
+    if not mapping:
+        return expression
+    if (all(isinstance(key, sp.Symbol) and isinstance(value, sp.Basic)
+            for key, value in mapping.items())
+            and not any(value.free_symbols.intersection(mapping) for value in mapping.values())
+            and not expression.has(sp.Integral, sp.Sum, sp.Product, sp.Lambda,
+                                   sp.Subs, sp.Derivative, sp.Limit)):
+        return expression.xreplace(mapping)
+    return expression.subs(mapping)
+
+
+def _is_exact_rational_zero(expression: sp.Expr) -> bool:
+    """Prove a rational identity with exact arithmetic, never by sampling.
+
+    Unsupported atoms return False (no proof). FLINT keeps intermediate
+    numerator/denominator polynomials reduced instead of expanding the entire
+    expression at once. Without it, use the same exact identity in SymPy.
+    """
+    if fmpq_mpoly_ctx is None:
+        return sp.cancel(sp.cancel(sp.factor_terms(expression), expand=False)) == 0
+    symbols = sorted(expression.free_symbols, key=sp.default_sort_key)
+    context = fmpq_mpoly_ctx.get(tuple(f'x{i}' for i in range(max(1, len(symbols)))))
+    zero, one = context.constant(0), context.constant(1)
+    values = {symbol: (generator, one) for symbol, generator in zip(symbols, context.gens())}
+
+    def normalize(numerator, denominator):
+        if denominator.is_zero():
+            raise ZeroDivisionError('Zero polynomial denominator.')
+        if numerator.is_zero():
+            return zero, one
+        common = numerator.gcd(denominator)
+        numerator, denominator = numerator // common, denominator // common
+        scale = denominator.leading_coefficient()
+        return numerator / scale, denominator / scale
+
+    pending = [(expression, False)]
+    while pending:
+        part, ready = pending.pop()
+        if part in values:
+            continue
+        if part.is_Rational:
+            values[part] = context.constant(fmpq(int(part.p), int(part.q))), one
+            continue
+        if not (part.is_Add or part.is_Mul or (part.is_Pow and part.exp.is_Integer)):
+            return False
+        if not ready:
+            pending.append((part, True))
+            pending.extend((child, False) for child in reversed(part.args))
+        elif part.is_Add:
+            numerator, denominator = zero, one
+            for child in part.args:
+                n, d = values[child]
+                if denominator == d:
+                    numerator, denominator = normalize(numerator + n, denominator)
+                else:
+                    numerator, denominator = normalize(numerator * d + n * denominator, denominator * d)
+            values[part] = numerator, denominator
+        elif part.is_Mul:
+            numerator, denominator = one, one
+            for child in part.args:
+                n, d = values[child]
+                numerator, denominator = normalize(numerator * n, denominator * d)
+            values[part] = numerator, denominator
+        else:
+            numerator, denominator = values[part.base]
+            power = int(part.exp)
+            if power < 0:
+                numerator, denominator = denominator, numerator
+            values[part] = normalize(numerator ** abs(power), denominator ** abs(power))
+    return values[expression][0].is_zero()
+
+
+def _is_zero(expression: sp.Expr) -> bool:
+    """Try sufficient exact proofs before general-purpose simplification.
+
+    Functions and fractional powers may be treated as independent symbols:
+    zero for those symbols proves zero after substitution, but a nonzero
+    remainder proves nothing. CSE uses the same one-way implication.
+    """
+    if expression == 0:
+        return True
+    opaque, visit = {}, [expression]
+    while visit:
+        part = visit.pop()
+        if part.is_Function or (part.is_Pow and not part.exp.is_Integer):
+            opaque.setdefault(part, sp.Dummy())
+        else:
+            visit.extend(part.args)
+    try:
+        if opaque and _is_exact_rational_zero(expression.xreplace(opaque)):
+            return True
+        _, reduced = sp.cse(expression)
+        if _is_exact_rational_zero(reduced[0]):
+            return True
+    except (NotImplementedError, ValueError, ZeroDivisionError):
+        pass  # An unsupported exact proof must not change the validation result.
+    return sp.simplify(expression) == 0
+
+
+def _solve_block(equations, variables, *, simplify):
+    """Solve explicit/linear blocks directly; leave nonlinear branches to solve.
+
+    Linear elimination does not need solve's recursive real/imaginary splitting.
+    Keeping a unit-coefficient RHS intact also avoids expression swell in
+    solve_linear. All returned candidates still undergo the original checks.
+    """
+    try:
+        matrix, rhs = sp.linear_eq_to_matrix(equations, variables)
+    except NonlinearError:
+        pass
+    else:
+        if len(equations) == len(variables) == 1:
+            coefficient = matrix[0, 0]
+            if coefficient in (sp.S.One, sp.S.NegativeOne):
+                return [{variables[0]: rhs[0] / coefficient}]
+        else:
+            candidate = sp.solve_linear_system(matrix.row_join(rhs), *variables)
+            return [] if candidate is None else [candidate]
+    if len(equations) == len(variables) == 1:
+        return [{variables[0]: expression} for expression in
+                sp.solve(equations[0], variables[0], check=True, simplify=simplify)]
+    return sp.solve(equations, variables, dict=True, check=True, simplify=simplify)
+
+
+def _real_rational_equation(expression, variables):
+    """Whether solve's real/imaginary split cannot add another equation."""
+    if not expression.is_rational_function(*variables):
+        return False
+    numerator, denominator = expression.as_numer_denom()
+    return numerator.is_extended_real is True and denominator.is_extended_real is True
+
+
 def solve_model(formulas: list[str], source_variables: list[VariableSpec], *, required=()) -> dict[str, sp.Expr]:
     """Solve all non-source symbols explicitly in terms of source symbols.
 
@@ -113,16 +253,7 @@ def solve_model(formulas: list[str], source_variables: list[VariableSpec], *, re
     def complete_solutions(equations, variables, *, simplify=True):
         """Return complete explicit real candidates for one equation block."""
         try:
-            if len(equations) == len(variables) == 1:
-                variable = variables[0]
-                candidates = [
-                    {variable: expression}
-                    for expression in sp.solve(
-                        equations[0], variable, check=True, simplify=simplify)
-                ]
-            else:
-                candidates = sp.solve(equations, variables, dict=True, check=True,
-                                      simplify=simplify)
+            candidates = _solve_block(equations, variables, simplify=simplify)
         except (NotImplementedError, ValueError):
             return []
         complete = []
@@ -132,7 +263,7 @@ def solve_model(formulas: list[str], source_variables: list[VariableSpec], *, re
             # SymPy can return block members in terms of one another. Expand the
             # finite dependency chain before checking that only sources remain.
             for _ in range(len(variables)):
-                candidate = {v: e.subs(candidate) for v, e in candidate.items()}
+                candidate = {v: _substitute(e, candidate) for v, e in candidate.items()}
             if simplify:
                 candidate = {v: sp.simplify(e) for v, e in candidate.items()}
             if all(e.free_symbols <= sources and e.is_real is not False
@@ -146,11 +277,11 @@ def solve_model(formulas: list[str], source_variables: list[VariableSpec], *, re
         # Keep substituted expressions structural. Simplifying products with a
         # decimal-derived rational power such as 10^(-4.7447) can be extremely
         # expensive even when the equation is already explicit.
-        reduced_pending = [residual.subs(solved) for residual in pending]
+        reduced_pending = [_substitute(residual, solved) for residual in pending]
         resolved = []
         for index, reduced in enumerate(reduced_pending):
             if reduced.free_symbols <= sources:
-                if reduced != 0 and sp.simplify(reduced) != 0:
+                if not _is_zero(reduced):
                     raise ValidationError(f'Inconsistent equation or constraint on inputs: {reduced} = 0')
                 resolved.append(index)
         if resolved:
@@ -186,15 +317,25 @@ def solve_model(formulas: list[str], source_variables: list[VariableSpec], *, re
             break
     if pending:
         remaining = [v for v in unknowns if v not in solved]
+        equations = [_substitute(r, solved) for r in pending]
+        # In SymPy 1.14.0, solve's underdetermined rational-system branch
+        # returns dictionaries for subsets of the requested unknowns. None
+        # can satisfy our complete-key contract below. Require real numerators
+        # and denominators: complex coefficients could add equations when split
+        # into real/imaginary parts. This is a solver-version
+        # shortcut, NOT the claim that m<n excludes isolated real solutions.
+        if (sp.__version__ == '1.14.0' and len(equations) < len(remaining)
+                and all(_real_rational_equation(e, remaining) for e in equations)):
+            raise ValidationError('Model has no unique explicit algebraic solution (underdetermined rational system).')
         try:
-            candidates = sp.solve([r.subs(solved) for r in pending], remaining, dict=True, check=True)
+            candidates = sp.solve(equations, remaining, dict=True, check=True)
         except (NotImplementedError, ValueError) as exc:
             raise ValidationError(f'Cannot solve algebraic model: {exc}') from exc
         complete = []
         for candidate in candidates:
             if set(candidate) == set(remaining):
                 for _ in range(len(remaining)):
-                    candidate = {v: e.subs(candidate) for v, e in candidate.items()}
+                    candidate = {v: _substitute(e, candidate) for v, e in candidate.items()}
                 candidate = {v: sp.simplify(e) for v, e in candidate.items()}
                 if (all(e.free_symbols <= sources and e.is_real is not False
                         for e in candidate.values()) and candidate not in complete):
@@ -202,8 +343,7 @@ def solve_model(formulas: list[str], source_variables: list[VariableSpec], *, re
         if len(complete) != 1:
             raise ValidationError('Model has no unique explicit algebraic solution (underdetermined, inconsistent, or multiple branches).')
         solved.update(complete[0])
-    if any((value := r.subs(solved)) != 0 and sp.simplify(value) != 0
-           for r in residuals):
+    if any(not _is_zero(_substitute(r, solved)) for r in residuals):
         raise ValidationError('Solved model fails an original equation.')
     result = {str(v): e for v, e in solved.items()}
     if missing := set(required) - set(result):
@@ -219,7 +359,7 @@ def expand_expression(text: str, task: Task, *, lhs: str | None = None) -> sp.Ex
         if lhs is not None and left != lhs:
             raise ValidationError(f'Expected {lhs} on the left side.')
     expression = parse_expression(text, symbols)
-    expression = sp.simplify(expression.subs({symbols[n]: e for n, e in task.solution.items()}))
+    expression = sp.simplify(_substitute(expression, {symbols[n]: e for n, e in task.solution.items()}))
     allowed = {symbols[v.name] for v in task.by_role('input', 'auxiliary')}
     if expression.free_symbols - allowed:
         raise ValidationError('Probe expression must expand to input and auxiliary variables only.')
@@ -474,10 +614,10 @@ def validate_task(task: Task, *, path: Path | None = None, seen: set[str] | None
         raise ValidationError(f'Unused derived variables: {sorted(unused)}')
     task.solution = solve_model(formulas, sources, required=required)
     constants = {sp.Symbol(name, real=True): expr for name, expr in task.solution.items() if not expr.free_symbols}
-    phenomenal = sp.simplify(phenomenal.subs(constants))
+    phenomenal = sp.simplify(_substitute(phenomenal, constants))
     if phenomenal.free_symbols != input_symbols:
         raise ValidationError('phenomenal_model RHS must use precisely the declared input variables, after expanding numeric constants.')
-    if sp.simplify(task.solution[target.name] - phenomenal) != 0:
+    if not _is_zero(task.solution[target.name] - phenomenal):
         raise ValidationError('Mechanism does not imply the declared phenomenal_model.')
     probe_names = [p.probe for p in task.mechanism_probes]
     if not probe_names: warn('Task has no mechanism probes; mechanism recovery cannot be scored.')
@@ -488,7 +628,7 @@ def validate_task(task: Task, *, path: Path | None = None, seen: set[str] | None
         if probe.probe in [v.name for v in task.observed]: raise ValidationError('Probe cannot be observable.')
         answer = expand_expression(probe.answer, task, lhs=probe.probe)
         if probe.probe in task.solution:
-            if sp.simplify(answer - task.solution[probe.probe]) != 0:
+            if not _is_zero(answer - task.solution[probe.probe]):
                 raise ValidationError(f'Probe answer disagrees with mechanism: {probe.probe}')
             if not answer.free_symbols: warn(f'Constant probe {probe.probe} is discouraged.')
             reduced = [f for f in formulas if probe.probe not in set(map(str, parse_equation(f).free_symbols))]
@@ -496,7 +636,7 @@ def validate_task(task: Task, *, path: Path | None = None, seen: set[str] | None
                 alternative = solve_model(reduced, sources, required=[target.name])
             except ValidationError:
                 alternative = None
-            if alternative is not None and sp.simplify(alternative[target.name] - phenomenal) == 0:
+            if alternative is not None and _is_zero(alternative[target.name] - phenomenal):
                 raise ValidationError(f'Probe {probe.probe} does not participate in deriving the target.')
         else:
             warn(f'Probe {probe.probe} is outside declared internal variables; review its relevance manually.')

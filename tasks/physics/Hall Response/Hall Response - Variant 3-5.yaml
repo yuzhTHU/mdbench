@@ -1,24 +1,19 @@
 task_name: Hall Response - Variant 3-5
-task_description: Determine transverse Hall voltage from carrier density, longitudinal current, magnetic field, and sample
-  thickness.
+task_description: Determine the recorded sample voltage from the supplied electrical and geometric conditions.
 mutation: Combines variants 3, 5 using their shared state and balance equations.
 mechanism_model:
 - formula: charge = 1.602176634e-19
   role: auxiliary/regime constraints
-  description: Fixed model coefficient. Homogeneous slab; weak magnetic field; longitudinal Ohmic response; transverse open
-    circuit.
+  description: Fixed model coefficient. Homogeneous slab; weak magnetic field; longitudinal Ohmic response; transverse open circuit.
 - formula: nref = 1e22
   role: auxiliary/regime constraints
-  description: Fixed model coefficient. Hall voltage equals width times signed transverse field, negative for the reference
-    electron-only sample.
+  description: Fixed model coefficient. Hall voltage equals width times signed transverse field, negative for the reference electron-only sample.
 - formula: iref = 0.008
   role: auxiliary/regime constraints
-  description: Fixed model coefficient. Electric-response modification is common to both species; hole magnetic response remains
-    standard.
+  description: Fixed model coefficient. Electric-response modification is common to both species; hole magnetic response remains standard.
 - formula: width = 0.002
   role: auxiliary/regime constraints
-  description: Fixed model coefficient. Optional bypass lies outside the transverse voltage taps and shares the longitudinal
-    electric field.
+  description: Fixed model coefficient. Optional bypass lies outside the transverse voltage taps and shares the longitudinal electric field.
 - formula: mu0 = 0.08
   role: auxiliary/regime constraints
   description: Fixed model coefficient.
@@ -61,10 +56,7 @@ mechanism_model:
 - formula: hall_voltage = width*magnetic*(mu_h*hole_current-deflection*mu_e*electron_current)/(electric_factor*conductivity)
   role: conservation/balance relations
   description: Signed transverse Hall voltage.
-phenomenal_model: hall_voltage = magnetic*width*(3*charge*current*density**2*mu_h**2/(25*thickness*width*(density + nref)*(4*charge*current**2*density*mu0/(25*iref**2*(current/iref
-  + 1)) + charge*(3*density**2*mu_h/(25*(density + nref)) + density*mu0))) - charge*current*density*mu0**2/(thickness*width*(4*charge*current**2*density*mu0/(25*iref**2*(current/iref
-  + 1)) + charge*(3*density**2*mu_h/(25*(density + nref)) + density*mu0))))/(charge*(3*density**2*mu_h/(25*(density + nref))
-  + density*mu0))
+phenomenal_model: hall_voltage = magnetic*width*(3*charge*current*density**2*mu_h**2/(25*thickness*width*(density + nref)*(4*charge*current**2*density*mu0/(25*iref**2*(current/iref + 1)) + charge*(3*density**2*mu_h/(25*(density + nref)) + density*mu0))) - charge*current*density*mu0**2/(thickness*width*(4*charge*current**2*density*mu0/(25*iref**2*(current/iref + 1)) + charge*(3*density**2*mu_h/(25*(density + nref)) + density*mu0))))/(charge*(3*density**2*mu_h/(25*(density + nref)) + density*mu0))
 variables:
 - name: density
   description: Nominal electron number density.
@@ -153,8 +145,7 @@ variables:
 mechanism_probes:
 - probe: hole_current
   description: Hole longitudinal current density.
-  answer: 3*charge*current*density**2*mu_h/(25*thickness*width*(density + nref)*(4*charge*current**2*density*mu0/(25*iref**2*(current/iref
-    + 1)) + charge*(3*density**2*mu_h/(25*(density + nref)) + density*mu0)))
+  answer: 3*charge*current*density**2*mu_h/(25*thickness*width*(density + nref)*(4*charge*current**2*density*mu0/(25*iref**2*(current/iref + 1)) + charge*(3*density**2*mu_h/(25*(density + nref)) + density*mu0)))
 - probe: bypass_conductivity
   description: Longitudinal bypass conductivity per reference cross section.
   answer: 4*charge*current**2*density*mu0/(25*iref**2*(current/iref + 1))

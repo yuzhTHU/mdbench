@@ -1,5 +1,7 @@
 import pytest
 import sympy as sp
+from pathlib import Path
+from src import validate_problem as validator
 from src.scoring import symbolic_equivalent
 from src.validate_problem import (ValidationError, task_from_dict, validate_task, solve_model,
                                   parse_expression, check_units, expand_expression, load_task,
@@ -41,11 +43,11 @@ def test_declared_units_of_a_product_must_match_the_target(simple_raw):
 def test_model_coupled_equations_and_alternative_names(monkeypatch):
     sources = [VariableSpec('x', 'Input', '1', 'input')]
     calls = []
-    original_solve = sp.solve
+    original_solve = validator._solve_block
     def recording_solve(equations, *args, **kwargs):
         calls.append(len(equations) if isinstance(equations, (list, tuple)) else 1)
         return original_solve(equations, *args, **kwargs)
-    monkeypatch.setattr(sp, 'solve', recording_solve)
+    monkeypatch.setattr(validator, '_solve_block', recording_solve)
     result = solve_model(['u+w=3*x', 'u-w=x', 'y=u*w'], sources, required=['y'])
     x = sp.Symbol('x', real=True)
     assert result['y'] == 2*x**2
@@ -87,3 +89,97 @@ def test_proposal_scientific_notation_and_duplicate_yaml(simple_raw, tmp_path):
     assert load_task(path).variables[1].sampling['min'] == 1.0
     path.write_text(text + '\ntask_name: Other - Original\n')
     with pytest.raises(ValidationError, match='Duplicate YAML'): load_task(path)
+
+
+def test_resolved_substitution_preserves_dependencies_and_bound_variables(monkeypatch):
+    x, y, z = sp.symbols('x y z', real=True)
+    dependent = {x: y + 1, y: sp.Integer(2)}
+    assert validator._substitute(x, dependent) == x.subs(dependent) == 3
+    bound = sp.Integral(x, (x, 0, 1)) + x
+    assert validator._substitute(bound, {x: y}) == bound.subs({x: y})
+    expression, mapping = x*y + x, {x: z + 1, y: z**2}
+    expected = expression.subs(mapping)
+
+    def unexpected_subs(*args, **kwargs):
+        pytest.fail('Resolved independent symbols should be replaced in one pass.')
+
+    monkeypatch.setattr(sp.Basic, 'subs', unexpected_subs)
+    assert validator._substitute(expression, mapping) == expected
+
+
+@pytest.mark.parametrize('use_flint', [False, True])
+def test_exact_zero_proofs_and_fallback_do_not_accept_nearby_nonidentities(monkeypatch, use_flint):
+    if use_flint and validator.fmpq_mpoly_ctx is None:
+        pytest.skip('Optional python-flint is not installed.')
+    if not use_flint:
+        monkeypatch.setattr(validator, 'fmpq_mpoly_ctx', None)
+    x, y = sp.symbols('x y', positive=True)
+    rational = (x**2-y**2)/(x-y) - (x+y)
+    function = sp.exp(x) + sp.sqrt(y)
+    opaque = (function**2-1)/(function-1) - (function+1)
+    assert validator._is_zero(rational)
+    assert validator._is_zero(opaque)
+    # Treating sin/cos as independent symbols is insufficient; simplify must
+    # still handle their relationship instead of rejecting a valid identity.
+    assert validator._is_zero(sp.sin(x)**2 + sp.cos(x)**2 - 1)
+    assert not validator._is_zero(rational + sp.Rational(1, 10**30))
+    assert not validator._is_zero(sp.sqrt(x**2 + 1) - x)
+
+
+def test_linear_fast_path_keeps_large_rhs_compact_and_does_not_call_general_solve(monkeypatch):
+    sources = [VariableSpec('x', 'Input', '1', 'input')]
+
+    def unexpected_solve(*args, **kwargs):
+        pytest.fail('Explicit and coupled linear equations do not need general solve.')
+
+    monkeypatch.setattr(sp, 'solve', unexpected_solve)
+    result = solve_model(['u+w=3*exp(x)', 'u-w=exp(x)',
+                          'y=(u+w+1)^40'], sources, required=['y'])
+    x = sp.Symbol('x', real=True)
+    assert result['y'] == (3*sp.exp(x) + 1)**40
+
+
+def test_nonlinear_branch_checks_remain_in_effect():
+    sources = [VariableSpec('x', 'Input', '1', 'input', sampling={'min': 1})]
+    assert solve_model(['y^3=x'], sources)['y'] == sp.Symbol('x', positive=True)**sp.Rational(1, 3)
+    for equations in (['y^2=x'], ['y^2=-1'], ['u^2+v^2=0', 'y=u+v']):
+        with pytest.raises(ValidationError):
+            solve_model(equations, sources, required=['y'])
+
+
+def test_underdetermined_shortcut_is_restricted_to_audited_sympy_version(monkeypatch):
+    sources = [VariableSpec('x', 'Input', '1', 'input')]
+    calls = []
+    original = sp.solve
+
+    def recording_solve(*args, **kwargs):
+        calls.append(args)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(sp, 'solve', recording_solve)
+    monkeypatch.setattr(sp, '__version__', 'future-version')
+    with pytest.raises(ValidationError):
+        solve_model(['u+v=x', 'y=u+v'], sources, required=['y'])
+    assert calls  # Unreviewed versions must use the existing solver contract.
+
+
+def test_complex_equation_can_constrain_two_real_unknowns():
+    # Counting equations before real/imaginary splitting would reject this
+    # complete solution incorrectly, even though the expression is rational.
+    assert solve_model(['u+sqrt(-1)*v=0'], []) == {'u': 0, 'v': 0}
+
+
+@pytest.mark.parametrize(('family', 'variant'), [
+    ('Thermoelastic Heating Response', '1-2'),
+    ('Drude Transport', '1-2-5'),
+])
+def test_previously_slow_tasks_validate_without_global_sympy_patches(family, variant):
+    before = (sp.solve, sp.simplify, sp.Basic.subs, sp.Add.as_real_imag,
+              sp.Mul.as_real_imag, sp.Pow.as_real_imag)
+    path = Path(__file__).resolve().parents[1] / 'tasks' / 'material' / family / f'{family} - Variant {variant}.yaml'
+    task = load_task(path, validate=False)
+    report = validate_task(task, path=path)
+    assert report['ok']
+    assert sum(len(text) for text in report['solution'].values()) < 20000
+    assert before == (sp.solve, sp.simplify, sp.Basic.subs, sp.Add.as_real_imag,
+                      sp.Mul.as_real_imag, sp.Pow.as_real_imag)

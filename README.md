@@ -41,6 +41,11 @@ mdbench run \
 
 Run `mdbench <command> --help` for all options.
 
+`validate` uses exact symbolic fast paths by default. For complex tasks,
+`pip install -e '.[dev,fast]'` adds the optional FLINT polynomial backend;
+otherwise it uses SymPy. Acceleration retains equation, probe and unit checks
+and does not replace symbolic validation with numerical sampling.
+
 ## Benchmark workflow
 
 1. **Define a task.** A YAML file describes observed and hidden variables,

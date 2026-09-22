@@ -36,6 +36,10 @@ mdbench run \
 
 完整参数见 `mdbench <command> --help`。
 
+`validate` 默认使用精确符号运算的加速路径。复杂任务可用
+`pip install -e '.[dev,fast]'` 安装可选的 FLINT 多项式后端；未安装时自动使用
+SymPy。加速不跳过方程、探针或量纲检查，也不用数值抽样代替符号验证。
+
 
 ## 基准流程
 

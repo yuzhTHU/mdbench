@@ -1,94 +1,62 @@
 task_name: Lindemann Pulse Reaction - Variant 2
-task_description: Determine product formation in the second of two equal-volume, well-mixed flow vessels in series,
-  supplied with reactant and separately buffered collision-partner concentrations.
+task_description: Determine the Laplace-weighted product rate after a reactant pulse in a homogeneous, buffered
+  collision bath.
 mutation: Insert a second reactive activated intermediate.
 mechanism_model:
-- formula: concentration_scale = 1
-  role: auxiliary/regime constraints
-  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
 - formula: rate_scale = 1
   role: auxiliary/regime constraints
-  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
-- formula: first_bath_ratio = collider/concentration_scale
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: bath_ratio = collider/concentration_scale
+  description: Dimensionless buffered collision-partner concentration.
   role: constitutive/component relations
-  description: First-vessel dimensionless collision-partner concentration.
-- formula: first_activation_rate = rate_scale*(1.3*first_bath_ratio)
-  role: constitutive/component relations
-  description: First-vessel local elementary reaction frequency.
-- formula: first_deactivation_rate = rate_scale*(0.8*first_bath_ratio)
-  role: constitutive/component relations
-  description: First-vessel local elementary reaction frequency.
-- formula: first_conversion_rate = rate_scale*(1.7)
-  role: constitutive/component relations
-  description: First-vessel local elementary reaction frequency.
-- formula: first_product_rate = rate_scale*(2.3)
-  role: constitutive/component relations
-  description: First-vessel local elementary reaction frequency.
-- formula: flow_rate*first_reactant_pool+first_activation_rate*first_reactant_pool = flow_rate*dose+first_deactivation_rate*first_activated_pool
-  role: conservation/balance relations
-  description: First-vessel steady material balance including nonselective through-flow.
-- formula: flow_rate*first_activated_pool+first_deactivation_rate*first_activated_pool+first_conversion_rate*first_activated_pool
-    = flow_rate*0+first_activation_rate*first_reactant_pool
-  role: conservation/balance relations
-  description: First-vessel steady material balance including nonselective through-flow.
-- formula: flow_rate*first_secondary_pool+first_product_rate*first_secondary_pool = flow_rate*0+first_conversion_rate*first_activated_pool
-  role: conservation/balance relations
-  description: First-vessel steady material balance including nonselective through-flow.
-- formula: bath_ratio = second_collider/concentration_scale
-  role: constitutive/component relations
-  description: Second-vessel dimensionless collision-partner concentration.
 - formula: activation_rate = rate_scale*(1.3*bath_ratio)
+  description: Pseudo-first-order transition frequency.
   role: constitutive/component relations
-  description: Second-vessel local elementary reaction frequency.
 - formula: deactivation_rate = rate_scale*(0.8*bath_ratio)
+  description: Pseudo-first-order transition frequency.
   role: constitutive/component relations
-  description: Second-vessel local elementary reaction frequency.
 - formula: conversion_rate = rate_scale*(1.7)
+  description: Pseudo-first-order transition frequency.
   role: constitutive/component relations
-  description: Second-vessel local elementary reaction frequency.
 - formula: product_rate = rate_scale*(2.3)
+  description: Pseudo-first-order transition frequency.
   role: constitutive/component relations
-  description: Second-vessel local elementary reaction frequency.
-- formula: flow_rate*reactant_pool+activation_rate*reactant_pool = flow_rate*first_reactant_pool+deactivation_rate*activated_pool
+- formula: activation_flux = activation_rate*reactant_pool
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  role: constitutive/component relations
+- formula: laplace_rate*reactant_pool+activation_flux = laplace_rate*(dose)+deactivation_rate*activated_pool
   role: conservation/balance relations
-  description: Second-vessel steady material balance including nonselective through-flow.
-- formula: flow_rate*activated_pool+deactivation_rate*activated_pool+conversion_rate*activated_pool = flow_rate*first_activated_pool+activation_rate*reactant_pool
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*activated_pool+deactivation_rate*activated_pool+conversion_rate*activated_pool = 0+activation_flux
   role: conservation/balance relations
-  description: Second-vessel steady material balance including nonselective through-flow.
-- formula: flow_rate*secondary_pool+product_rate*secondary_pool = flow_rate*first_secondary_pool+conversion_rate*activated_pool
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*secondary_pool+product_rate*secondary_pool = 0+conversion_rate*activated_pool
   role: conservation/balance relations
-  description: Second-vessel steady material balance including nonselective through-flow.
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
 - formula: response = product_rate*secondary_pool
+  description: Laplace-weighted measured response; the same readout is used for every family member.
   role: conservation/balance relations
-  description: Steady product formation rate per volume in the second vessel.
-phenomenal_model: response = (collider*dose*flow_rate**2*(flow_rate*(10166000*flow_rate + 21348600*second_collider
-  + 20332000) + 35784320*second_collider) + dose*flow_rate**2*(flow_rate*(5083000*flow_rate*second_collider + 20332000*second_collider)
-  + 19874530*second_collider))/(collider*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(2100000*flow_rate + 4410000*second_collider
-  + 15440000) + 29568000*second_collider + 41454000) + 70910200*second_collider + 47858400) + 71568640*second_collider
-  + 19874530) + 25836889*second_collider) + flow_rate*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(1000000*flow_rate
-  + 2100000*second_collider + 8000000) + 15440000*second_collider + 23820000) + 41454000*second_collider + 31280000)
-  + 47858400*second_collider + 15288100) + 19874530*second_collider))
+phenomenal_model: response = 5083*collider*dose*laplace_rate/((10*laplace_rate + 23)*(210*collider*laplace_rate
+  + 221*collider + 100*laplace_rate**2 + 170*laplace_rate))
 variables:
-- name: second_collider
-  role: input
-  unit: mol m^-3
-  description: Independently buffered collision-partner concentration in the second vessel.
-  sampling:
-    min: 0.005
-    max: 0.075
-    ood_boundary: 0.04
-    distribution: log_uniform
-- name: flow_rate
-  role: input
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
   unit: s^-1
-  description: Volumetric flow divided by the volume of each vessel.
+  role: input
   sampling:
     min: 0.03
-    max: 35
     ood_boundary: 5
+    max: 35
     distribution: log_uniform
 - name: collider
-  description: Buffered collision-partner concentration in the first vessel.
+  description: Buffered collision-partner molar concentration.
   unit: mol m^-3
   role: input
   sampling:
@@ -97,7 +65,7 @@ variables:
     max: 6
     distribution: log_uniform
 - name: dose
-  description: Reactant concentration in the feed entering the first vessel.
+  description: Initial unactivated reactant pulse concentration.
   unit: mol m^-3
   role: input
   sampling:
@@ -105,80 +73,48 @@ variables:
     ood_boundary: 0.002
     max: 0.008
     distribution: log_uniform
-- name: first_bath_ratio
-  role: internal
-  unit: '1'
-  description: First-vessel dimensionless collision-partner concentration.
-- name: first_activation_rate
-  role: internal
-  unit: s^-1
-  description: First-vessel local elementary reaction frequency.
-- name: first_deactivation_rate
-  role: internal
-  unit: s^-1
-  description: First-vessel local elementary reaction frequency.
-- name: first_conversion_rate
-  role: internal
-  unit: s^-1
-  description: First-vessel local elementary reaction frequency.
-- name: first_product_rate
-  role: internal
-  unit: s^-1
-  description: First-vessel local elementary reaction frequency.
-- name: first_reactant_pool
-  description: First-vessel steady unactivated reactant concentration.
-  unit: mol m^-3
-  role: internal
-- name: first_activated_pool
-  description: First-vessel steady primary activated-intermediate concentration.
-  unit: mol m^-3
-  role: internal
-- name: first_secondary_pool
-  description: First-vessel steady second reactive intermediate concentration.
-  unit: mol m^-3
-  role: internal
 - name: bath_ratio
-  role: internal
+  description: Dimensionless buffered collision-partner concentration.
   unit: '1'
-  description: Second-vessel dimensionless collision-partner concentration.
+  role: internal
 - name: activation_rate
-  role: internal
+  description: Pseudo-first-order transition frequency.
   unit: s^-1
-  description: Second-vessel local elementary reaction frequency.
+  role: internal
 - name: deactivation_rate
-  role: internal
+  description: Pseudo-first-order transition frequency.
   unit: s^-1
-  description: Second-vessel local elementary reaction frequency.
+  role: internal
 - name: conversion_rate
-  role: internal
+  description: Pseudo-first-order transition frequency.
   unit: s^-1
-  description: Second-vessel local elementary reaction frequency.
+  role: internal
 - name: product_rate
-  role: internal
+  description: Pseudo-first-order transition frequency.
   unit: s^-1
-  description: Second-vessel local elementary reaction frequency.
+  role: internal
 - name: reactant_pool
-  description: Second-vessel steady unactivated reactant concentration.
+  description: Laplace-weighted unactivated reactant concentration.
   unit: mol m^-3
   role: internal
 - name: activated_pool
-  description: Second-vessel steady primary activated-intermediate concentration.
+  description: Laplace-weighted primary activated-intermediate concentration.
   unit: mol m^-3
   role: internal
 - name: secondary_pool
-  description: Second-vessel steady second reactive intermediate concentration.
+  description: Laplace-weighted second reactive intermediate concentration.
   unit: mol m^-3
   role: internal
-- name: response
-  role: target
+- name: activation_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
   unit: mol m^-3 s^-1
-  description: Steady product formation rate per volume in the second vessel.
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: mol m^-3 s^-1
+  role: target
 mechanism_probes:
 - probe: secondary_pool
-  description: Second-vessel steady second reactive intermediate concentration.
-  answer: (collider*dose*flow_rate**2*(flow_rate*(4420000*flow_rate + 9282000*second_collider + 8840000) + 15558400*second_collider)
-    + dose*flow_rate**2*(flow_rate*(2210000*flow_rate*second_collider + 8840000*second_collider) + 8641100*second_collider))/(collider*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(2100000*flow_rate
-    + 4410000*second_collider + 15440000) + 29568000*second_collider + 41454000) + 70910200*second_collider + 47858400)
-    + 71568640*second_collider + 19874530) + 25836889*second_collider) + flow_rate*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(1000000*flow_rate
-    + 2100000*second_collider + 8000000) + 15440000*second_collider + 23820000) + 41454000*second_collider + 31280000)
-    + 47858400*second_collider + 15288100) + 19874530*second_collider))
+  description: Laplace-weighted second reactive intermediate concentration.
+  answer: 2210*collider*dose*laplace_rate/((10*laplace_rate + 23)*(210*collider*laplace_rate + 221*collider + 100*laplace_rate**2
+    + 170*laplace_rate))
