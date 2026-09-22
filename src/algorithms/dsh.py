@@ -505,41 +505,73 @@ def _run_headless(args, prompt: str, output: Path, runtime: dict[str, Any],
 def _prompt(args, feedback_server_url: str) -> str:
     return f'''# Objective
 Reconstruct the scientific mechanism that generated the observations in
-problem.json and train.npy.
+problem.json and train.npy and maxmimize the feedback score provided by {feedback_server_url}.
 
-The primary goal is a mechanism model, not merely a phenomenological fit. Your
-model must describe scientifically meaningful unobserved internal components,
-states, or activities and how their equations generate the observed relation.
+The primary goal is a mechanism model, not merely a phenomenological model. A
+phenomenological model can fit the observable input-target relation directly;
+while your mechanism model must instead describe scientifically meaningful
+unobserved internal components, states, or activities and how they are organized
+so that their equations generate the observed relation; otherwise, even a
+perfectly accurate direct fit is insufficient.
+
+Please ensure that your mechanistic model fully describes the underlying mechanisms
+of the observations. Upon completion of the run, you will be asked several questions
+regarding your proposed mechanistic model to verify your understanding of the underlying
+mechanisms that generated the data.
+
+You will have {args.timeout} seconds to iteratively refine your mechanistic model and
+maximize the feedback score.
 
 # Provided data
+- Only observed variables are provided.
 - train.npy has shape (variables, samples).
-- problem.json data_columns gives row order and variables gives roles, meanings,
-  and units. Scientific Python is available at {sys.executable}.
+- problem.json data_columns gives the row order; problem.json variables gives
+  each observed variable's role, scientific meaning, and unit when available.
+- Scientific Python is available at {sys.executable} for numpy/sympy analysis.
 
 # Model requirements
-- Submit a self-contained algebraic system involving supplied inputs, the target,
-  and scientifically meaningful unobserved internal variables.
+- Submit a self-contained system of algebraic equations involving the supplied
+  inputs, the target, and scientifically meaningful unobserved internal variables.
 - The equations must jointly and uniquely solve the target and every introduced
-  internal variable as explicit expressions of supplied inputs.
-- Define every fitted constant numerically. Use ordinary algebra, ^ or **, sqrt,
-  exp, log, trigonometric functions, and abs; do not use differential equations.
+  internal variables as explicit expressions of the supplied inputs.
+- Do not leave free symbolic parameters. Estimate necessary constants and define
+  each one numerically as an equation in your model (for example, k = 1.2345).
+- Use only ordinary algebra, powers (^ or **), sqrt, exp, log, trigonometric
+  functions, and abs. Do not use differential equations.
 - Prefer the smallest scientifically coherent mechanism that explains the data.
+  Use variable meanings, units, scaling, and numerical behavior to distinguish
+  causal/mechanistic hypotheses from curve fits.
 
-# Investigation and feedback
-Inspect the files, formulate and test candidates, and immediately create a valid
-submission.txt, keeping it updated throughout the {args.timeout}-second run.
-POST multipart fields problem, train_data, and submission to
-{feedback_server_url} for objective observable-fit feedback. Keep proxy settings
-unchanged. Python requests may be used for the POST.
+# Investigation
+Inspect the metadata and data, formulate candidate mechanisms, test their
+observable consequences using the provided URL, and refine the best mechanism.
+Write a valid initial submission.txt immediately, then keep it updated while
+improving it within {args.timeout} seconds so it survives a time-limit interruption.
 
-# Submission format
-submission.txt must contain only equations, one equality per line, with no prose
-or Markdown. End your final response with exactly those same equations.
+# Get Feedback
+The provided URL give an objective accuracy feedback that you have to maximize. To
+use this URL, you should keep the environment-provided HTTP proxy enabled and POST
+three multipart file fields to the URL, including problem (problem.json), train_data
+(train.npy), and submission (submission.txt). For example, you can use Python:
+session.post({feedback_server_url}, files={{
+    "problem": open("problem.json", "rb"),
+    "train_data": open("train.npy", "rb"),
+    "submission": open("submission.txt", "rb")
+}}).json()
+Do not set trust_env=False or override it, because the sandbox's controlled route
+to the feedback endpoint is required.
+
+submission.txt must contain only equations, with one equality per line and no
+Markdown or prose. Do not use any filename other than submission.txt to submit
+your answers. Upon completion of the run, ensure that the submission.txt file
+represents the mechanism model that maximizes URL feedback.
 
 # Boundaries
-Do not modify problem.json or train.npy. Do not use external reference answers,
-git, mdbench, or files outside this workspace. Do not inspect credentials. The
-feedback endpoint is the only network service you may access.
+Do NOT modify problem.json or train.npy. Do NOT use external reference answers,
+run git commands, or read shell startup files or credentials. The mdbench command
+and benchmark package are intentionally unavailable; use only the feedback
+endpoint described above. Do NOT inspect files outside this workspace except the
+provided Python environment.
 '''
 
 

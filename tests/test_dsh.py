@@ -26,6 +26,25 @@ def test_dsh_defaults_and_command_protection():
         dsh._dsh_prefix(SimpleNamespace(dsh_command="dsh --profile web"))
 
 
+def test_prompt_matches_codex_benchmark_contract():
+    prompt = dsh._prompt(SimpleNamespace(timeout=321), "http://127.0.0.1:8123/evaluate")
+    required = [
+        "Only observed variables are provided.",
+        "phenomenological model can fit the observable input-target relation directly",
+        "You will have 321 seconds",
+        "Do not leave free symbolic parameters.",
+        "Write a valid initial submission.txt immediately",
+        '"problem": open("problem.json", "rb")',
+        '"train_data": open("train.npy", "rb")',
+        '"submission": open("submission.txt", "rb")',
+        "Do not set trust_env=False",
+        "Do not use any filename other than submission.txt",
+        "Do NOT inspect files outside this workspace except the",
+    ]
+    assert all(text in prompt for text in required)
+    assert prompt.count("http://127.0.0.1:8123/evaluate") == 2
+
+
 def test_isolated_home_selects_gateway_and_disables_probe_tools(tmp_path):
     runtime = {"provider": "mdbench-gateway", "model": "provider/model",
                "context_window": 123456, "max_output_tokens": 4096,
