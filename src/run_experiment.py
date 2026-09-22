@@ -51,7 +51,7 @@ def get_parser(parser=None, argv=None):
     parser.add_argument('--feedback_workers', type=int, default=4)
     parser.add_argument('--feedback_cache_size', type=int, default=128)
     parser.add_argument('--probe_timeout', type=float, default=120)
-    parser.add_argument('--probe_workers', type=int, default=1)
+    parser.add_argument('--probe_workers', type=int, default=1, help="Number of parallel evaluation workers. Suggested to set to 1 since most tasks have only a few probes.")
     if (update_parser_fn := get_update_parser(args.algorithm)):
         parser = update_parser_fn(parser)
     add_minus_flags(parser)
