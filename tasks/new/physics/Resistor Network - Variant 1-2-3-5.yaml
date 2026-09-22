@@ -1,0 +1,146 @@
+task_name: Resistor Network - Variant 1-2-3-5
+task_description: Determine terminal current from applied voltage and bath temperature.
+mutation: Combines variants 1, 2, 3, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: tref = 300
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Stationary two-branch circuit; ideal voltage source; all currents oriented
+    from positive terminal.
+- formula: vref = 2
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Temperature closure is imposed by an external thermal controller, not inferred
+    from energy conservation.
+- formula: r10 = 120
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. All channels are passive over the sampling range.
+- formula: r20 = 220
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: rc0 = 20
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: beta = 0.0003
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: gleak = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: core_temp = temp
+  role: constitutive/component relations
+  description: Local resistor temperature.
+- formula: resistance_one = r10*core_temp/tref
+  role: constitutive/component relations
+  description: First branch linear resistance.
+- formula: resistance_two = r20*core_temp/tref
+  role: constitutive/component relations
+  description: Second branch body resistance.
+- formula: nonlinear_current = beta*voltage**3
+  role: constitutive/component relations
+  description: First-branch cubic channel current.
+- formula: contact_resistance = rc0*(temp/tref)**2
+  role: constitutive/component relations
+  description: Second-branch series contact resistance.
+- formula: leak_current = gleak*voltage**3/(vref**2+voltage**2)
+  role: constitutive/component relations
+  description: Parallel leakage current.
+- formula: connected_fraction = 1/(1+0.2*(temp/tref)**2)
+  role: constitutive/component relations
+  description: Electrically connected fraction of the first branch.
+- formula: branch_one = connected_fraction*(voltage/(resistance_one+insert_resistance)+nonlinear_current)
+  role: constitutive/component relations
+  description: First parallel-branch current.
+- formula: branch_two = (voltage-contact_voltage)/resistance_two
+  role: constitutive/component relations
+  description: Second parallel-branch current.
+- formula: contact_voltage = contact_resistance*branch_two
+  role: constitutive/component relations
+  description: Voltage drop across the second-branch contact.
+- formula: current = branch_one+branch_two+leak_current
+  role: conservation/balance relations
+  description: Total terminal current.
+phenomenal_model: current = voltage*(675*insert_resistance*voltage**2/(5*insert_resistance*temp**2 + 2250000*insert_resistance
+  + 2*temp**3 + 900000*temp) + 270*temp*voltage**2/(5*insert_resistance*temp**2 + 2250000*insert_resistance + 2*temp**3
+  + 900000*temp) + voltage**2/(1000*(voltage**2 + 4)) + 2250000/(5*insert_resistance*temp**2 + 2250000*insert_resistance
+  + 2*temp**3 + 900000*temp) + 4500/(temp*(temp + 3300)))
+variables:
+- name: insert_resistance
+  role: input
+  unit: ohm
+  description: Calibrated resistance of each insert in the linear conduction paths.
+  sampling:
+    min: 20
+    max: 600
+    ood_boundary: 150
+    distribution: log_uniform
+- name: voltage
+  description: Applied terminal voltage.
+  unit: V
+  role: input
+  sampling:
+    min: 0.1
+    max: 6
+    ood_boundary: 3
+    distribution: uniform
+- name: temp
+  description: Bath temperature.
+  unit: K
+  role: input
+  sampling:
+    min: 260
+    max: 450
+    ood_boundary: 360
+    distribution: uniform
+- name: core_temp
+  description: Local resistor temperature.
+  unit: K
+  role: internal
+- name: resistance_one
+  description: First branch linear resistance.
+  unit: ohm
+  role: internal
+- name: resistance_two
+  description: Second branch body resistance.
+  unit: ohm
+  role: internal
+- name: nonlinear_current
+  description: First-branch cubic channel current.
+  unit: A
+  role: internal
+- name: contact_resistance
+  description: Second-branch series contact resistance.
+  unit: ohm
+  role: internal
+- name: leak_current
+  description: Parallel leakage current.
+  unit: A
+  role: internal
+- name: connected_fraction
+  description: Electrically connected fraction of the first branch.
+  unit: '1'
+  role: internal
+- name: branch_one
+  description: First parallel-branch current.
+  unit: A
+  role: internal
+- name: branch_two
+  description: Second parallel-branch current.
+  unit: A
+  role: internal
+- name: contact_voltage
+  description: Voltage drop across the second-branch contact.
+  unit: V
+  role: internal
+- name: current
+  description: Total terminal current.
+  unit: A
+  role: target
+mechanism_probes:
+- probe: nonlinear_current
+  description: First-branch cubic channel current.
+  answer: 3*voltage**3/10000
+- probe: connected_fraction
+  description: Electrically connected fraction of the first branch.
+  answer: 450000/(temp**2 + 450000)
+- probe: resistance_one
+  description: First branch linear resistance.
+  answer: 2*temp/5

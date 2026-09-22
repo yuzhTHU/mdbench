@@ -1,0 +1,255 @@
+task_name: Competitive Inhibition Pulse Reaction - Variant 1-2-4-5
+task_description: Determine the Laplace-weighted product rate after substrate and inhibitor exposure of initially
+  unbound enzyme in a buffered solution.
+mutation: Combines variants 1, 2, 4, 5 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: substrate_ratio = substrate/concentration_scale
+  description: Dimensionless free substrate concentration.
+  role: constitutive/component relations
+- formula: association_rate = rate_scale*(1.4*substrate_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: dissociation_rate = rate_scale*(0.73)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: release_rate = rate_scale*(1.9+0.28*substrate_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: inhibitor_ratio = inhibitor/concentration_scale
+  description: Dimensionless free inhibitor concentration.
+  role: constitutive/component relations
+- formula: inhibitor_binding_rate = rate_scale*(0.92*inhibitor_ratio+0.18*inhibitor_ratio**2)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: inhibitor_release_rate = rate_scale*(0.61)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: locking_rate = rate_scale*(0.27)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: unlocking_rate = rate_scale*(0.44)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: mixed_inhibitor_binding = rate_scale*(0.92*inhibitor_ratio+0.18*inhibitor_ratio**2)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: mixed_inhibitor_release = rate_scale*(0.61)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: mixed_substrate_binding = rate_scale*(1.4*substrate_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: mixed_substrate_release = rate_scale*(0.73)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: laplace_rate*free_enzyme+association_rate*free_enzyme+inhibitor_binding_rate*free_enzyme = laplace_rate*(enzyme_total)+dissociation_rate*substrate_complex+release_rate*substrate_complex+inhibitor_release_rate*inhibitor_complex
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*substrate_complex+dissociation_rate*substrate_complex+release_rate*substrate_complex+mixed_inhibitor_binding*substrate_complex
+    = 0+association_rate*free_enzyme+mixed_inhibitor_release*mixed_complex
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*inhibitor_complex+inhibitor_release_rate*inhibitor_complex+locking_rate*inhibitor_complex+mixed_substrate_binding*inhibitor_complex
+    = 0+inhibitor_binding_rate*free_enzyme+unlocking_rate*locked_complex+mixed_substrate_release*mixed_complex
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*locked_complex+unlocking_rate*locked_complex = 0+locking_rate*inhibitor_complex
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*mixed_complex+mixed_inhibitor_release*mixed_complex+mixed_substrate_release*mixed_complex
+    = 0+mixed_inhibitor_binding*substrate_complex+mixed_substrate_binding*inhibitor_complex
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: response = release_rate*substrate_complex
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  role: conservation/balance relations
+phenomenal_model: response = enzyme_total*(inhibitor*(inhibitor*(laplace_rate*substrate*(5380200*substrate + 36508500)
+  + substrate*(2367288*substrate + 16063740)) + laplace_rate*substrate*(27498800*substrate + 186599000) + substrate*(12099472*substrate
+  + 82103560)) + laplace_rate*(laplace_rate*(laplace_rate*substrate*(49000000*substrate + 332500000) + substrate*(substrate*(68600000*substrate
+  + 595840000) + 884450000)) + substrate*(substrate*(72030000*substrate + 588597800) + 677369000)) + substrate*(substrate*(18412240*substrate
+  + 142563344) + 119585620))/(inhibitor*(inhibitor*(inhibitor*(inhibitor*(laplace_rate*(4050000*laplace_rate + 5670000*substrate
+  + 5832000) + 2494800*substrate + 2099115) + laplace_rate*(41400000*laplace_rate + 57960000*substrate + 59616000)
+  + 25502400*substrate + 21457620) + laplace_rate*(laplace_rate*(45000000*laplace_rate + 100800000*substrate + 257225000)
+  + substrate*(52920000*substrate + 355390000) + 322787250) + substrate*(23284800*substrate + 140854070) + 115543705)
+  + laplace_rate*(laplace_rate*(230000000*laplace_rate + 515200000*substrate + 773950000) + substrate*(270480000*substrate
+  + 1059380000) + 871113500) + substrate*(119011200*substrate + 386815380) + 310283110) + laplace_rate*(laplace_rate*(laplace_rate*(125000000*laplace_rate
+  + 385000000*substrate + 661250000) + substrate*(294000000*substrate + 1202600000) + 1129125000) + substrate*(308700000*substrate
+  + 958044500) + 714686500) + substrate*(78909600*substrate + 199058860) + 118236910)
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: substrate
+  description: Buffered free substrate concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.04
+    ood_boundary: 1.6
+    max: 5
+    distribution: log_uniform
+- name: enzyme_total
+  description: Conserved enzyme concentration before exposure.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 5.0e-05
+    ood_boundary: 0.0004
+    max: 0.001
+    distribution: log_uniform
+- name: substrate_ratio
+  description: Dimensionless free substrate concentration.
+  unit: '1'
+  role: internal
+- name: association_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: dissociation_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: release_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: inhibitor
+  description: Buffered free inhibitor concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 1.3
+    max: 4
+    distribution: log_uniform
+- name: inhibitor_ratio
+  description: Dimensionless free inhibitor concentration.
+  unit: '1'
+  role: internal
+- name: inhibitor_binding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: inhibitor_release_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: locking_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: unlocking_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: mixed_inhibitor_binding
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: mixed_inhibitor_release
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: mixed_substrate_binding
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: mixed_substrate_release
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: free_enzyme
+  description: Laplace-weighted free enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: substrate_complex
+  description: Laplace-weighted enzyme-substrate complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: inhibitor_complex
+  description: Laplace-weighted inhibitor-bound enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: locked_complex
+  description: Laplace-weighted locked inhibitor-bound enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: mixed_complex
+  description: Laplace-weighted enzyme carrying both substrate and inhibitor.
+  unit: mol m^-3
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: mol m^-3 s^-1
+  role: target
+mechanism_probes:
+- probe: free_enzyme
+  description: Laplace-weighted free enzyme concentration.
+  answer: enzyme_total*(inhibitor*(inhibitor*(laplace_rate*(laplace_rate*(4500000*laplace_rate + 6300000*substrate
+    + 9225000) + 2772000*substrate + 5544000) + 881694) + laplace_rate*(laplace_rate*(23000000*laplace_rate + 32200000*substrate
+    + 47150000) + 14168000*substrate + 28336000) + 4506436) + laplace_rate*(laplace_rate*(laplace_rate*(25000000*laplace_rate
+    + 42000000*substrate + 132250000) + substrate*(9800000*substrate + 147420000) + 225825000) + substrate*(10290000*substrate
+    + 120306900) + 142937300) + substrate*(2630320*substrate + 27223812) + 23647382)/(inhibitor*(inhibitor*(inhibitor*(inhibitor*(laplace_rate*(810000*laplace_rate
+    + 1134000*substrate + 1166400) + 498960*substrate + 419823) + laplace_rate*(8280000*laplace_rate + 11592000*substrate
+    + 11923200) + 5100480*substrate + 4291524) + laplace_rate*(laplace_rate*(9000000*laplace_rate + 20160000*substrate
+    + 51445000) + substrate*(10584000*substrate + 71078000) + 64557450) + substrate*(4656960*substrate + 28170814)
+    + 23108741) + laplace_rate*(laplace_rate*(46000000*laplace_rate + 103040000*substrate + 154790000) + substrate*(54096000*substrate
+    + 211876000) + 174222700) + substrate*(23802240*substrate + 77363076) + 62056622) + laplace_rate*(laplace_rate*(laplace_rate*(25000000*laplace_rate
+    + 77000000*substrate + 132250000) + substrate*(58800000*substrate + 240520000) + 225825000) + substrate*(61740000*substrate
+    + 191608900) + 142937300) + substrate*(15781920*substrate + 39811772) + 23647382)
+- probe: inhibitor_complex
+  description: Laplace-weighted inhibitor-bound enzyme concentration.
+  answer: enzyme_total*inhibitor*(inhibitor*(inhibitor*(inhibitor*(laplace_rate*(810000*laplace_rate + 947700) +
+    260172) + laplace_rate*(8280000*laplace_rate + 9687600) + 2659536) + laplace_rate*(laplace_rate*(4500000*laplace_rate
+    + 1260000*substrate + 41005000) + 6841800*substrate + 48476700) + 2766456*substrate + 13774508) + laplace_rate*(laplace_rate*(23000000*laplace_rate
+    + 6440000*substrate + 101430000) + 34969200*substrate + 121233000) + 14139664*substrate + 35664904)/(inhibitor*(inhibitor*(inhibitor*(inhibitor*(laplace_rate*(810000*laplace_rate
+    + 1134000*substrate + 1166400) + 498960*substrate + 419823) + laplace_rate*(8280000*laplace_rate + 11592000*substrate
+    + 11923200) + 5100480*substrate + 4291524) + laplace_rate*(laplace_rate*(9000000*laplace_rate + 20160000*substrate
+    + 51445000) + substrate*(10584000*substrate + 71078000) + 64557450) + substrate*(4656960*substrate + 28170814)
+    + 23108741) + laplace_rate*(laplace_rate*(46000000*laplace_rate + 103040000*substrate + 154790000) + substrate*(54096000*substrate
+    + 211876000) + 174222700) + substrate*(23802240*substrate + 77363076) + 62056622) + laplace_rate*(laplace_rate*(laplace_rate*(25000000*laplace_rate
+    + 77000000*substrate + 132250000) + substrate*(58800000*substrate + 240520000) + 225825000) + substrate*(61740000*substrate
+    + 191608900) + 142937300) + substrate*(15781920*substrate + 39811772) + 23647382)
+- probe: locked_complex
+  description: Laplace-weighted locked inhibitor-bound enzyme concentration.
+  answer: enzyme_total*inhibitor*(inhibitor*(inhibitor*(inhibitor*(218700*laplace_rate + 159651) + 2235600*laplace_rate
+    + 1631988) + laplace_rate*(1215000*laplace_rate + 340200*substrate + 10536750) + 1697598*substrate + 8452539)
+    + laplace_rate*(6210000*laplace_rate + 1738800*substrate + 24653700) + 8676612*substrate + 21885282)/(inhibitor*(inhibitor*(inhibitor*(inhibitor*(laplace_rate*(810000*laplace_rate
+    + 1134000*substrate + 1166400) + 498960*substrate + 419823) + laplace_rate*(8280000*laplace_rate + 11592000*substrate
+    + 11923200) + 5100480*substrate + 4291524) + laplace_rate*(laplace_rate*(9000000*laplace_rate + 20160000*substrate
+    + 51445000) + substrate*(10584000*substrate + 71078000) + 64557450) + substrate*(4656960*substrate + 28170814)
+    + 23108741) + laplace_rate*(laplace_rate*(46000000*laplace_rate + 103040000*substrate + 154790000) + substrate*(54096000*substrate
+    + 211876000) + 174222700) + substrate*(23802240*substrate + 77363076) + 62056622) + laplace_rate*(laplace_rate*(laplace_rate*(25000000*laplace_rate
+    + 77000000*substrate + 132250000) + substrate*(58800000*substrate + 240520000) + 225825000) + substrate*(61740000*substrate
+    + 191608900) + 142937300) + substrate*(15781920*substrate + 39811772) + 23647382)
+- probe: mixed_complex
+  description: Laplace-weighted enzyme carrying both substrate and inhibitor.
+  answer: enzyme_total*inhibitor*(inhibitor*(inhibitor*(inhibitor*(1134000*laplace_rate*substrate + 498960*substrate)
+    + 11592000*laplace_rate*substrate + 5100480*substrate) + laplace_rate*(12600000*laplace_rate*substrate + substrate*(10584000*substrate
+    + 57281000)) + substrate*(4656960*substrate + 22015840)) + laplace_rate*(64400000*laplace_rate*substrate + substrate*(54096000*substrate
+    + 141358000)) + substrate*(23802240*substrate + 45904320))/(inhibitor*(inhibitor*(inhibitor*(inhibitor*(laplace_rate*(810000*laplace_rate
+    + 1134000*substrate + 1166400) + 498960*substrate + 419823) + laplace_rate*(8280000*laplace_rate + 11592000*substrate
+    + 11923200) + 5100480*substrate + 4291524) + laplace_rate*(laplace_rate*(9000000*laplace_rate + 20160000*substrate
+    + 51445000) + substrate*(10584000*substrate + 71078000) + 64557450) + substrate*(4656960*substrate + 28170814)
+    + 23108741) + laplace_rate*(laplace_rate*(46000000*laplace_rate + 103040000*substrate + 154790000) + substrate*(54096000*substrate
+    + 211876000) + 174222700) + substrate*(23802240*substrate + 77363076) + 62056622) + laplace_rate*(laplace_rate*(laplace_rate*(25000000*laplace_rate
+    + 77000000*substrate + 132250000) + substrate*(58800000*substrate + 240520000) + 225825000) + substrate*(61740000*substrate
+    + 191608900) + 142937300) + substrate*(15781920*substrate + 39811772) + 23647382)

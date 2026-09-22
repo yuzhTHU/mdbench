@@ -1,0 +1,247 @@
+task_name: Michaelis Menten Pulse Reaction - Variant 2-3
+task_description: Determine the steady net product formation rate in the second of two equal-volume, well-mixed
+  flow vessels in series, supplied with unbound enzyme and separately buffered substrate.
+mutation: Combines variants 2, 3 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: substrate_ratio = substrate/concentration_scale
+  description: Dimensionless first-vessel free substrate concentration.
+  role: constitutive/component relations
+- formula: second_substrate_ratio = second_substrate/concentration_scale
+  description: Dimensionless second-vessel free substrate concentration.
+  role: constitutive/component relations
+- formula: first_association_rate = rate_scale*(1.4*substrate_ratio)
+  description: First-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: association_rate = rate_scale*(1.4*second_substrate_ratio)
+  description: Second-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: first_dissociation_rate = rate_scale*(0.73)
+  description: First-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: dissociation_rate = rate_scale*(0.73)
+  description: Second-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: first_chemistry_rate = rate_scale*(1.9)
+  description: First-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: chemistry_rate = rate_scale*(1.9)
+  description: Second-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: first_release_rate = rate_scale*(2.6)
+  description: First-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: release_rate = rate_scale*(2.6)
+  description: Second-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: first_sequestration_rate = rate_scale*(0.31)
+  description: First-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: sequestration_rate = rate_scale*(0.31)
+  description: Second-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: first_recovery_rate = rate_scale*(0.57)
+  description: First-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: recovery_rate = rate_scale*(0.57)
+  description: Second-vessel local reaction frequency.
+  role: constitutive/component relations
+- formula: flow_rate*first_free_enzyme+first_association_rate*first_free_enzyme+first_sequestration_rate*first_free_enzyme
+    = flow_rate*enzyme_total+first_dissociation_rate*first_substrate_complex+first_release_rate*first_product_complex+first_recovery_rate*first_sequestered_enzyme
+  role: conservation/balance relations
+  description: 'First-vessel steady species balance: inflow and reaction production equal outflow and reaction consumption.'
+- formula: flow_rate*first_substrate_complex+first_dissociation_rate*first_substrate_complex+first_chemistry_rate*first_substrate_complex
+    = flow_rate*0+first_association_rate*first_free_enzyme
+  role: conservation/balance relations
+  description: 'First-vessel steady species balance: inflow and reaction production equal outflow and reaction consumption.'
+- formula: flow_rate*first_product_complex+first_release_rate*first_product_complex = flow_rate*0+first_chemistry_rate*first_substrate_complex
+  role: conservation/balance relations
+  description: 'First-vessel steady species balance: inflow and reaction production equal outflow and reaction consumption.'
+- formula: flow_rate*first_sequestered_enzyme+first_recovery_rate*first_sequestered_enzyme = flow_rate*0+first_sequestration_rate*first_free_enzyme
+  role: conservation/balance relations
+  description: 'First-vessel steady species balance: inflow and reaction production equal outflow and reaction consumption.'
+- formula: flow_rate*free_enzyme+association_rate*free_enzyme+sequestration_rate*free_enzyme = flow_rate*first_free_enzyme+dissociation_rate*substrate_complex+release_rate*product_complex+recovery_rate*sequestered_enzyme
+  role: conservation/balance relations
+  description: 'Second-vessel steady species balance: inflow and reaction production equal outflow and reaction
+    consumption.'
+- formula: flow_rate*substrate_complex+dissociation_rate*substrate_complex+chemistry_rate*substrate_complex = flow_rate*first_substrate_complex+association_rate*free_enzyme
+  role: conservation/balance relations
+  description: 'Second-vessel steady species balance: inflow and reaction production equal outflow and reaction
+    consumption.'
+- formula: flow_rate*product_complex+release_rate*product_complex = flow_rate*first_product_complex+chemistry_rate*substrate_complex
+  role: conservation/balance relations
+  description: 'Second-vessel steady species balance: inflow and reaction production equal outflow and reaction
+    consumption.'
+- formula: flow_rate*sequestered_enzyme+recovery_rate*sequestered_enzyme = flow_rate*first_sequestered_enzyme+sequestration_rate*free_enzyme
+  role: conservation/balance relations
+  description: 'Second-vessel steady species balance: inflow and reaction production equal outflow and reaction
+    consumption.'
+- formula: response = release_rate*product_complex
+  description: Steady net product formation rate per unit volume in the second vessel.
+  role: conservation/balance relations
+phenomenal_model: response = enzyme_total*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(4322500000*second_substrate
+  + 8645000000*substrate) + second_substrate*(12103000000*substrate + 27534325000) + 35141925000*substrate) + second_substrate*(41029170000*substrate
+  + 57497030500) + 37116010750*substrate) + second_substrate*(34976459700*substrate + 45034778880) + 11339508180*substrate)
+  + second_substrate*(8847595575*substrate + 14825919108))/(flow_rate*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(625000000*flow_rate
+  + 875000000*second_substrate + 875000000*substrate + 7637500000) + second_substrate*(1225000000*substrate + 9782500000)
+  + 9782500000*substrate + 37633062500) + second_substrate*(12421500000*substrate + 39360212500) + 39360212500*substrate
+  + 94897855000) + second_substrate*(37772752500*substrate + 69730865750) + 69730865750*substrate + 127759918100)
+  + second_substrate*(31861147500*substrate + 52371415950) + 52371415950*substrate + 86052400720) + second_substrate*(8059550625*substrate
+  + 13505391900) + 13505391900*substrate + 22630990096)
+variables:
+- name: flow_rate
+  description: Volumetric flow divided by the volume of each vessel.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: substrate
+  description: Buffered free substrate concentration in the first vessel.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.2
+    ood_boundary: 1.6
+    max: 5
+    distribution: log_uniform
+- name: second_substrate
+  description: Buffered free substrate concentration in the second vessel.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.004
+    ood_boundary: 0.06
+    max: 0.16
+    distribution: log_uniform
+- name: enzyme_total
+  description: Concentration of unbound enzyme in the feed entering the first vessel.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 5.0e-05
+    ood_boundary: 0.0004
+    max: 0.001
+    distribution: log_uniform
+- name: substrate_ratio
+  description: Dimensionless first-vessel free substrate concentration.
+  unit: '1'
+  role: internal
+- name: second_substrate_ratio
+  description: Dimensionless second-vessel free substrate concentration.
+  unit: '1'
+  role: internal
+- name: first_association_rate
+  description: First-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: association_rate
+  description: Second-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: first_dissociation_rate
+  description: First-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: dissociation_rate
+  description: Second-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: first_chemistry_rate
+  description: First-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: chemistry_rate
+  description: Second-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: first_release_rate
+  description: First-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: release_rate
+  description: Second-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: first_sequestration_rate
+  description: First-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: sequestration_rate
+  description: Second-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: first_recovery_rate
+  description: First-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: recovery_rate
+  description: Second-vessel local reaction frequency.
+  unit: s^-1
+  role: internal
+- name: first_free_enzyme
+  description: First-vessel steady free enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: first_substrate_complex
+  description: First-vessel steady enzyme-substrate complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: first_product_complex
+  description: First-vessel steady product-bound enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: first_sequestered_enzyme
+  description: First-vessel steady reversibly sequestered enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: free_enzyme
+  description: Second-vessel steady free enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: substrate_complex
+  description: Second-vessel steady enzyme-substrate complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: product_complex
+  description: Second-vessel steady product-bound enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: sequestered_enzyme
+  description: Second-vessel steady reversibly sequestered enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: response
+  description: Steady net product formation rate per unit volume in the second vessel.
+  unit: mol m^-3 s^-1
+  role: target
+mechanism_probes:
+- probe: product_complex
+  description: Second-vessel steady product-bound enzyme concentration.
+  answer: enzyme_total*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(1662500000*second_substrate + 3325000000*substrate)
+    + second_substrate*(4655000000*substrate + 10590125000) + 13516125000*substrate) + second_substrate*(15780450000*substrate
+    + 22114242500) + 14275388750*substrate) + second_substrate*(13452484500*substrate + 17321068800) + 4361349300*substrate)
+    + second_substrate*(3402921375*substrate + 5702276580))/(flow_rate*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(625000000*flow_rate
+    + 875000000*second_substrate + 875000000*substrate + 7637500000) + second_substrate*(1225000000*substrate +
+    9782500000) + 9782500000*substrate + 37633062500) + second_substrate*(12421500000*substrate + 39360212500) +
+    39360212500*substrate + 94897855000) + second_substrate*(37772752500*substrate + 69730865750) + 69730865750*substrate
+    + 127759918100) + second_substrate*(31861147500*substrate + 52371415950) + 52371415950*substrate + 86052400720)
+    + second_substrate*(8059550625*substrate + 13505391900) + 13505391900*substrate + 22630990096)
+- probe: sequestered_enzyme
+  description: Second-vessel steady reversibly sequestered enzyme concentration.
+  answer: enzyme_total*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(775000000*flow_rate + 542500000*second_substrate
+    + 8447500000) + 5278525000*second_substrate + 396025000*substrate + 35364257500) + 16477352500*second_substrate
+    + 7644964250*substrate + 69423101900) + 16693267500*second_substrate + 20922228600*substrate + 60627827780)
+    + 9515162475*substrate + 15944561204)/(flow_rate*(flow_rate*(flow_rate*(flow_rate*(flow_rate*(1250000000*flow_rate
+    + 1750000000*second_substrate + 1750000000*substrate + 15275000000) + second_substrate*(2450000000*substrate
+    + 19565000000) + 19565000000*substrate + 75266125000) + second_substrate*(24843000000*substrate + 78720425000)
+    + 78720425000*substrate + 189795710000) + second_substrate*(75545505000*substrate + 139461731500) + 139461731500*substrate
+    + 255519836200) + second_substrate*(63722295000*substrate + 104742831900) + 104742831900*substrate + 172104801440)
+    + second_substrate*(16119101250*substrate + 27010783800) + 27010783800*substrate + 45261980192)

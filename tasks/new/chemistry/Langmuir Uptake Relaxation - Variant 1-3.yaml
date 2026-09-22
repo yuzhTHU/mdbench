@@ -1,0 +1,125 @@
+task_name: Langmuir Uptake Relaxation - Variant 1-3
+task_description: Determine Laplace-weighted coverage after exposing an initially empty homogeneous surface to a
+  buffered adsorbate concentration.
+mutation: Combines variants 1, 3 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: ligand_ratio = ligand/concentration_scale
+  description: Dimensionless buffered free ligand concentration.
+  role: constitutive/component relations
+- formula: binding_rate = rate_scale*(1.1*ligand_ratio*(1+(0.23/1.1)*ligand_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: desorption_rate = rate_scale*(0.67*(1+(0.23/1.1)*ligand_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: second_binding_rate = rate_scale*(0.38*ligand_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: second_unbinding_rate = rate_scale*(0.94)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: binding_flux = binding_rate*unoccupied_pool
+  description: Laplace-weighted transition flux per adsorption cell.
+  role: constitutive/component relations
+- formula: dissociation_flux = desorption_rate*bound_pool
+  description: Laplace-weighted transition flux per adsorption cell.
+  role: constitutive/component relations
+- formula: laplace_rate*unoccupied_pool+binding_flux = laplace_rate*(1)+dissociation_flux
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*bound_pool+dissociation_flux+second_binding_rate*bound_pool = 0+binding_flux+second_unbinding_rate*double_bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*double_bound_pool+second_unbinding_rate*double_bound_pool = 0+second_binding_rate*bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: response = bound_pool+double_bound_pool
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  role: conservation/balance relations
+phenomenal_model: response = (laplace_rate*ligand*(126500*ligand + 605000) + ligand*(ligand*(48070*ligand + 348810)
+  + 568700))/(laplace_rate*(550000*laplace_rate + ligand*(126500*ligand + 891050) + 885500) + ligand*(ligand*(48070*ligand
+  + 348810) + 641127) + 346390)
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: ligand
+  description: Buffered free adsorbate or ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.04
+    ood_boundary: 1.8
+    max: 5
+    distribution: log_uniform
+- name: ligand_ratio
+  description: Dimensionless buffered free ligand concentration.
+  unit: '1'
+  role: internal
+- name: binding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: desorption_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: second_binding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: second_unbinding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: unoccupied_pool
+  description: Laplace-weighted empty-site fraction.
+  unit: '1'
+  role: internal
+- name: bound_pool
+  description: Laplace-weighted primary bound-state population.
+  unit: '1'
+  role: internal
+- name: double_bound_pool
+  description: Laplace-weighted population carrying a second ligand.
+  unit: '1'
+  role: internal
+- name: binding_flux
+  description: Laplace-weighted transition flux per adsorption cell.
+  unit: s^-1
+  role: internal
+- name: dissociation_flux
+  description: Laplace-weighted transition flux per adsorption cell.
+  unit: s^-1
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: '1'
+  role: target
+mechanism_probes:
+- probe: double_bound_pool
+  description: Laplace-weighted population carrying a second ligand.
+  answer: ligand**2*(48070*ligand + 229900)/(laplace_rate*(550000*laplace_rate + ligand*(126500*ligand + 891050)
+    + 885500) + ligand*(ligand*(48070*ligand + 348810) + 641127) + 346390)
+- probe: binding_flux
+  description: Laplace-weighted transition flux per adsorption cell.
+  answer: (laplace_rate*(laplace_rate*ligand*(12650000*ligand + 60500000) + ligand*(ligand*(6579150*ligand + 51832000)
+    + 97405000)) + ligand*(ligand*(1665821*ligand + 15933940) + 38102900))/(laplace_rate*(55000000*laplace_rate
+    + ligand*(12650000*ligand + 89105000) + 88550000) + ligand*(ligand*(4807000*ligand + 34881000) + 64112700) +
+    34639000)

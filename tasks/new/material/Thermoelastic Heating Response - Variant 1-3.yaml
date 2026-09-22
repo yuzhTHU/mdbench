@@ -1,0 +1,230 @@
+task_name: Thermoelastic Heating Response - Variant 1-3
+task_description: Determine Laplace-weighted compressive stress after a small heating step in a bar attached to
+  an elastic frame.
+mutation: Combines variants 1, 3 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: reference_length = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: geometric_factor = (reference_length/length_scale)**2
+  description: Dimensionless geometric factor.
+  role: constitutive/component relations
+- formula: bar_modulus = 2000000000.0
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: expansion_coefficient = 1.8e-05
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: measurement_bath_temperature = 300
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: preparation_exposure = (conditioning_temperature-measurement_bath_temperature)**2/(2*conditioning_cooling_rate)
+  description: Integrated preparation temperature excess during cooling.
+  role: constitutive/component relations
+- formula: preparation_onset_0 = 0
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: preparation_width_0 = 9000
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: preparation_coordinate_0 = (preparation_exposure-preparation_onset_0)/preparation_width_0
+  description: Normalized preparation exposure for this population.
+  role: constitutive/component relations
+- formula: prepared_expansion_fraction = ((1+Abs(preparation_coordinate_0)-Abs(preparation_coordinate_0-1))/2)**2
+  description: Fraction of susceptible expansion units recruited during preparation.
+  role: constitutive/component relations
+- formula: preparation_onset_1 = 500
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: preparation_width_1 = 9500
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: preparation_coordinate_1 = (preparation_exposure-preparation_onset_1)/preparation_width_1
+  description: Normalized preparation exposure for this population.
+  role: constitutive/component relations
+- formula: prepared_slow_thermal_fraction = ((1+Abs(preparation_coordinate_1)-Abs(preparation_coordinate_1-1))/2)**2
+  description: Fraction of susceptible slow thermal regions recruited during preparation.
+  role: constitutive/component relations
+- formula: preparation_onset_3 = 1600
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: preparation_width_3 = 10400
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: preparation_coordinate_3 = (preparation_exposure-preparation_onset_3)/preparation_width_3
+  description: Normalized preparation exposure for this population.
+  role: constitutive/component relations
+- formula: prepared_adhesive_fraction = ((1+Abs(preparation_coordinate_3)-Abs(preparation_coordinate_3-1))/2)**2
+  description: Fraction of susceptible compliant adhesive regions recruited during preparation.
+  role: constitutive/component relations
+- formula: effective_expansion_coefficient = expansion_coefficient*prepared_expansion_fraction
+  description: Thermal expansion coefficient of the prepared bar.
+  role: constitutive/component relations
+- formula: fast_temperature = temperature_step*1.3*rate_scale*geometric_factor/(laplace_rate+1.3*rate_scale*geometric_factor)
+  description: Laplace-weighted fast-region temperature increase.
+  role: constitutive/component relations
+- formula: slow_temperature = temperature_step*0.24*rate_scale*geometric_factor/(laplace_rate+0.24*rate_scale*geometric_factor)
+  description: Laplace-weighted temperature increase in a slow thermal region.
+  role: constitutive/component relations
+- formula: thermal_temperature = (1-0.28*prepared_slow_thermal_fraction)*fast_temperature+0.28*prepared_slow_thermal_fraction*slow_temperature
+  description: Expansion-weighted bar temperature increase.
+  role: constitutive/component relations
+- formula: eigenstrain = effective_expansion_coefficient*thermal_temperature
+  description: Total stress-free thermal eigenstrain.
+  role: constitutive/component relations
+- formula: adhesive_compliance = 0.14*prepared_adhesive_fraction/bar_modulus
+  description: Elastic compliance of the adhesive layer.
+  role: constitutive/component relations
+- formula: total_compliance = 1/bar_modulus+1/frame_modulus+adhesive_compliance
+  description: Total series compliance enforcing bar-frame compatibility.
+  role: constitutive/component relations
+- formula: assembly_shortening = eigenstrain*(total_compliance-1/frame_modulus)/total_compliance
+  description: Mechanical shortening of the bar and any adhesive relative to free expansion, normalized to bar length.
+  role: constitutive/component relations
+- formula: stress = eigenstrain/total_compliance
+  description: Laplace-weighted compressive stress.
+  role: conservation/balance relations
+phenomenal_model: stress = temperature_step*(13*(36100000000 - 7*(Abs(1000 - (conditioning_temperature - 300)**2/conditioning_cooling_rate)
+  - Abs(20000 - (conditioning_temperature - 300)**2/conditioning_cooling_rate) + 19000)**2)/(10000000*laplace_rate
+  + 13/length_scale**2) + 21*(Abs(1000 - (conditioning_temperature - 300)**2/conditioning_cooling_rate) - Abs(20000
+  - (conditioning_temperature - 300)**2/conditioning_cooling_rate) + 19000)**2/(12500000*laplace_rate + 3/length_scale**2))*((conditioning_temperature
+  - 300)**2*Abs(1/conditioning_cooling_rate) - 18000*Abs(1 - (conditioning_temperature - 300)**2/(18000*conditioning_cooling_rate))
+  + 18000)**2/(2599200000000000000000000*length_scale**2*(7*(Abs(3200 - (conditioning_temperature - 300)**2/conditioning_cooling_rate)
+  - Abs(24000 - (conditioning_temperature - 300)**2/conditioning_cooling_rate) + 20800)**2/173056000000000000000
+  + 1/2000000000 + 1/frame_modulus))
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: temperature_step
+  description: Small imposed bath-temperature increase.
+  unit: K
+  role: input
+  sampling:
+    min: 0.2
+    ood_boundary: 2
+    max: 5
+    distribution: log_uniform
+- name: frame_modulus
+  description: Independently calibrated axial stiffness of the external frame in stress-strain units.
+  unit: Pa
+  role: input
+  sampling:
+    min: 100000000.0
+    ood_boundary: 2000000000.0
+    max: 8000000000.0
+    distribution: log_uniform
+- name: length_scale
+  description: Characteristic length of the sample.
+  unit: m
+  role: input
+  sampling:
+    min: 0.0005
+    ood_boundary: 0.0015
+    max: 0.003
+    distribution: log_uniform
+- name: conditioning_temperature
+  description: Peak preparation temperature before returning the sample to the measurement bath.
+  unit: K
+  role: input
+  sampling:
+    min: 330
+    ood_boundary: 600
+    max: 800
+    distribution: uniform
+- name: conditioning_cooling_rate
+  description: Constant cooling rate used to return the prepared sample to the measurement bath.
+  unit: K s^-1
+  role: input
+  sampling:
+    min: 2
+    ood_boundary: 8
+    max: 20
+    distribution: uniform
+- name: geometric_factor
+  description: Dimensionless geometric factor.
+  unit: '1'
+  role: internal
+- name: preparation_exposure
+  description: Integrated preparation temperature excess during cooling.
+  unit: K s
+  role: internal
+- name: preparation_coordinate_0
+  description: Normalized preparation exposure for this population.
+  unit: '1'
+  role: internal
+- name: prepared_expansion_fraction
+  description: Fraction of susceptible expansion units recruited during preparation.
+  unit: '1'
+  role: internal
+- name: preparation_coordinate_1
+  description: Normalized preparation exposure for this population.
+  unit: '1'
+  role: internal
+- name: prepared_slow_thermal_fraction
+  description: Fraction of susceptible slow thermal regions recruited during preparation.
+  unit: '1'
+  role: internal
+- name: preparation_coordinate_3
+  description: Normalized preparation exposure for this population.
+  unit: '1'
+  role: internal
+- name: prepared_adhesive_fraction
+  description: Fraction of susceptible compliant adhesive regions recruited during preparation.
+  unit: '1'
+  role: internal
+- name: effective_expansion_coefficient
+  description: Thermal expansion coefficient of the prepared bar.
+  unit: K^-1
+  role: internal
+- name: fast_temperature
+  description: Laplace-weighted fast-region temperature increase.
+  unit: K
+  role: internal
+- name: slow_temperature
+  description: Laplace-weighted temperature increase in a slow thermal region.
+  unit: K
+  role: internal
+- name: thermal_temperature
+  description: Expansion-weighted bar temperature increase.
+  unit: K
+  role: internal
+- name: eigenstrain
+  description: Total stress-free thermal eigenstrain.
+  unit: '1'
+  role: internal
+- name: adhesive_compliance
+  description: Elastic compliance of the adhesive layer.
+  unit: Pa^-1
+  role: internal
+- name: total_compliance
+  description: Total series compliance enforcing bar-frame compatibility.
+  unit: Pa^-1
+  role: internal
+- name: assembly_shortening
+  description: Mechanical shortening of the bar and any adhesive relative to free expansion, normalized to bar length.
+  unit: '1'
+  role: internal
+- name: stress
+  description: Laplace-weighted compressive stress.
+  unit: Pa
+  role: target
+mechanism_probes:
+- probe: prepared_slow_thermal_fraction
+  description: Fraction of susceptible slow thermal regions recruited during preparation.
+  answer: (Abs(1000 - (conditioning_temperature - 300)**2/conditioning_cooling_rate)/19000 - Abs(20000 - (conditioning_temperature
+    - 300)**2/conditioning_cooling_rate)/19000 + 1)**2/4
+- probe: prepared_adhesive_fraction
+  description: Fraction of susceptible compliant adhesive regions recruited during preparation.
+  answer: (Abs(3200 - (conditioning_temperature - 300)**2/conditioning_cooling_rate)/20800 - Abs(24000 - (conditioning_temperature
+    - 300)**2/conditioning_cooling_rate)/20800 + 1)**2/4

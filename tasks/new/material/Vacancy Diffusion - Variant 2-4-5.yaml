@@ -1,0 +1,121 @@
+task_name: Vacancy Diffusion - Variant 2-4-5
+task_description: Determine atomic diffusivity from temperature, hydrostatic pressure, and lattice spacing.
+mutation: Combines variants 2, 4, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: kb = 1.380649e-23
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Dilute vacancies; stationary random walk in three dimensions.
+- formula: ef = 1.12e-19
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Formation and migration statistics factorize.
+- formula: em = 6.4e-20
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Pressure is positive compression; synthetic closures share the same pressure and temperature.
+- formula: ealt = 9e-20
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: volume = 1e-30
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: attempt = 1e13
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: pref = 1e9
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: tref = 600
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: vacancies = exp(-(ef+pressure*volume)/(kb*temp))
+  role: constitutive/component relations
+  description: Equilibrium vacancy site fraction.
+- formula: mobile_vacancies = vacancies
+  role: constitutive/component relations
+  description: Mobile vacancy site fraction.
+- formula: barrier = em+volume*pressure**2/pref
+  role: constitutive/component relations
+  description: Primary migration activation energy.
+- formula: primary_rate = attempt*exp(-barrier/(kb*temp))
+  role: constitutive/component relations
+  description: Primary atomic jump frequency.
+- formula: jump_distance = spacing
+  role: kinematic/geometric constraints
+  description: Effective jump distance.
+- formula: return_prob = 0.23*(tref/temp)/(1+pressure/pref)
+  role: constitutive/component relations
+  description: Conditional return-jump probability.
+- formula: alternate_rate = 0.4*attempt*exp(-ealt/(kb*temp))
+  role: constitutive/component relations
+  description: Alternate-channel jump frequency.
+- formula: diffusivity = jump_distance**2*mobile_vacancies*(primary_rate+alternate_rate)*(1-return_prob)/(6*(1+return_prob))
+  role: governing/dynamical laws
+  description: Atomic tracer diffusivity.
+phenomenal_model: diffusivity = spacing**2*(1 - 23*tref/(100*temp*(1 + pressure/pref)))*(attempt*exp(-(em + pressure**2*volume/pref)/(kb*temp))
+  + 2*attempt*exp(-ealt/(kb*temp))/5)*exp((-ef - pressure*volume)/(kb*temp))/(6 + 69*tref/(50*temp*(1 + pressure/pref)))
+variables:
+- name: temp
+  description: Temperature.
+  unit: K
+  role: input
+  sampling:
+    min: 600
+    max: 1300
+    ood_boundary: 1000
+    distribution: uniform
+- name: pressure
+  description: Hydrostatic pressure.
+  unit: Pa
+  role: input
+  sampling:
+    min: 1000000.0
+    max: 1000000000.0
+    ood_boundary: 400000000.0
+    distribution: log_uniform
+- name: spacing
+  description: Lattice spacing.
+  unit: m
+  role: input
+  sampling:
+    min: 2.0e-10
+    max: 4.0e-10
+    ood_boundary: 3.0e-10
+    distribution: uniform
+- name: vacancies
+  description: Equilibrium vacancy site fraction.
+  unit: '1'
+  role: internal
+- name: mobile_vacancies
+  description: Mobile vacancy site fraction.
+  unit: '1'
+  role: internal
+- name: barrier
+  description: Primary migration activation energy.
+  unit: J
+  role: internal
+- name: primary_rate
+  description: Primary atomic jump frequency.
+  unit: s^-1
+  role: internal
+- name: jump_distance
+  description: Effective jump distance.
+  unit: m
+  role: internal
+- name: return_prob
+  description: Conditional return-jump probability.
+  unit: '1'
+  role: internal
+- name: alternate_rate
+  description: Alternate-channel jump frequency.
+  unit: s^-1
+  role: internal
+- name: diffusivity
+  description: Atomic tracer diffusivity.
+  unit: m^2 s^-1
+  role: target
+mechanism_probes:
+- probe: barrier
+  description: Primary migration activation energy.
+  answer: em + pressure**2*volume/pref
+- probe: alternate_rate
+  description: Alternate-channel jump frequency.
+  answer: 2*attempt*exp(-ealt/(kb*temp))/5

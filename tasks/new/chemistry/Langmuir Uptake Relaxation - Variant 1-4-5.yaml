@@ -1,0 +1,158 @@
+task_name: Langmuir Uptake Relaxation - Variant 1-4-5
+task_description: Determine Laplace-weighted coverage after exposing an initially empty homogeneous surface to a
+  buffered adsorbate concentration.
+mutation: Combines variants 1, 4, 5 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: ligand_ratio = ligand/concentration_scale
+  description: Dimensionless buffered free ligand concentration.
+  role: constitutive/component relations
+- formula: binding_rate = rate_scale*(1.1*ligand_ratio*(1+(0.19/0.67)*ligand_ratio**2))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: desorption_rate = rate_scale*(0.67*(1+(0.19/0.67)*ligand_ratio**2))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: precursor_binding = rate_scale*(1.43)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: precursor_return = rate_scale*(0.48)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: second_binding_rate = rate_scale*(0.38*ligand_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: second_unbinding_rate = rate_scale*(0.94)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: binding_flux = binding_rate*unoccupied_pool
+  description: Laplace-weighted transition flux per adsorption cell.
+  role: constitutive/component relations
+- formula: dissociation_flux = desorption_rate*precursor_pool
+  description: Laplace-weighted transition flux per adsorption cell.
+  role: constitutive/component relations
+- formula: laplace_rate*unoccupied_pool+binding_flux = laplace_rate*(1)+dissociation_flux
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*bound_pool+precursor_return*bound_pool+second_binding_rate*bound_pool = 0+precursor_binding*precursor_pool+second_unbinding_rate*double_bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*precursor_pool+dissociation_flux+precursor_binding*precursor_pool = 0+binding_flux+precursor_return*bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*double_bound_pool+second_unbinding_rate*double_bound_pool = 0+second_binding_rate*bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: response = bound_pool+precursor_pool+double_bound_pool
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  role: conservation/balance relations
+phenomenal_model: response = (laplace_rate*(laplace_rate*ligand*(5225000*ligand**2 + 18425000) + ligand*(ligand*(ligand*(1985500*ligand
+  + 14891250) + 7001500) + 52511250)) + ligand*(ligand*(ligand*(2839265*ligand + 9380965) + 10012145) + 33080245))/(laplace_rate*(laplace_rate*(16750000*laplace_rate
+  + ligand*(ligand*(5225000*ligand + 3182500) + 24790000) + 58960000) + ligand*(ligand*(ligand*(1985500*ligand +
+  16100600) + 11520650) + 65877750) + 46008900) + ligand*(ligand*(ligand*(2839265*ligand + 9380965) + 11448089)
+  + 33080245) + 5063592)
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: ligand
+  description: Buffered free adsorbate or ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.04
+    ood_boundary: 1.8
+    max: 5
+    distribution: log_uniform
+- name: ligand_ratio
+  description: Dimensionless buffered free ligand concentration.
+  unit: '1'
+  role: internal
+- name: binding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: desorption_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: precursor_binding
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: precursor_return
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: second_binding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: second_unbinding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: unoccupied_pool
+  description: Laplace-weighted empty-site fraction.
+  unit: '1'
+  role: internal
+- name: bound_pool
+  description: Laplace-weighted primary bound-state population.
+  unit: '1'
+  role: internal
+- name: precursor_pool
+  description: Laplace-weighted reversible encounter-complex population.
+  unit: '1'
+  role: internal
+- name: double_bound_pool
+  description: Laplace-weighted population carrying a second ligand.
+  unit: '1'
+  role: internal
+- name: binding_flux
+  description: Laplace-weighted transition flux per adsorption cell.
+  unit: s^-1
+  role: internal
+- name: dissociation_flux
+  description: Laplace-weighted transition flux per adsorption cell.
+  unit: s^-1
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: '1'
+  role: target
+mechanism_probes:
+- probe: double_bound_pool
+  description: Laplace-weighted population carrying a second ligand.
+  answer: ligand**2*(2839265*ligand**2 + 10012145)/(laplace_rate*(laplace_rate*(16750000*laplace_rate + ligand*(ligand*(5225000*ligand
+    + 3182500) + 24790000) + 58960000) + ligand*(ligand*(ligand*(1985500*ligand + 16100600) + 11520650) + 65877750)
+    + 46008900) + ligand*(ligand*(ligand*(2839265*ligand + 9380965) + 11448089) + 33080245) + 5063592)
+- probe: dissociation_flux
+  description: Laplace-weighted transition flux per adsorption cell.
+  answer: (laplace_rate*(laplace_rate*ligand*(ligand**2*(4963750*ligand**2 + 35007500) + 61723750) + ligand*(ligand*(ligand*(ligand*(ligand*(1886225*ligand
+    + 7048525) + 13302850) + 49710650) + 23455025) + 87647725)) + ligand*(ligand**2*(2239644*ligand**2 + 15795384)
+    + 27849756))/(laplace_rate*(laplace_rate*(83750000*laplace_rate + ligand*(ligand*(26125000*ligand + 15912500)
+    + 123950000) + 294800000) + ligand*(ligand*(ligand*(9927500*ligand + 80503000) + 57603250) + 329388750) + 230044500)
+    + ligand*(ligand*(ligand*(14196325*ligand + 46904825) + 57240445) + 165401225) + 25317960)
+- probe: precursor_pool
+  description: Laplace-weighted reversible encounter-complex population.
+  answer: (laplace_rate*(laplace_rate*ligand*(5225000*ligand**2 + 18425000) + ligand*(ligand*(ligand*(1985500*ligand
+    + 7419500) + 7001500) + 26163500)) + ligand*(2357520*ligand**2 + 8313360))/(laplace_rate*(laplace_rate*(16750000*laplace_rate
+    + ligand*(ligand*(5225000*ligand + 3182500) + 24790000) + 58960000) + ligand*(ligand*(ligand*(1985500*ligand
+    + 16100600) + 11520650) + 65877750) + 46008900) + ligand*(ligand*(ligand*(2839265*ligand + 9380965) + 11448089)
+    + 33080245) + 5063592)

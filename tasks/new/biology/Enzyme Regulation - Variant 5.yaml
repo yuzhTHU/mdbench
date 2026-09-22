@@ -1,0 +1,119 @@
+task_name: Enzyme Regulation - Variant 5
+task_description: Determine metabolic production flux from substrate, regulator, and total enzyme concentrations.
+mutation: Partition substrate near the enzyme.
+mechanism_model:
+- formula: delivery_diffusivity = 1e-09
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: access_ref = 1e-05
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: ks = 0.01
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Buffered substrate and regulator; conserved enzyme pool; rapid state equilibration
+    relative to turnover.
+- formula: ki = 0.003
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Only the singly substrate-bound state is catalytic.
+- formula: kcat = 20
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Dormant-state gating and partition closures are driven synthetic controls.
+- formula: local_substrate = delivery_flux/removal_speed
+  role: constitutive/component relations
+  description: Enzyme-local free substrate concentration.
+- formula: turnover = kcat
+  role: constitutive/component relations
+  description: Catalytic turnover frequency.
+- formula: free_enzyme = (enzyme_total)-es-ei
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: es = (local_substrate/ks)*free_enzyme
+  role: constitutive/component relations
+  description: Catalytic enzyme-substrate complex concentration.
+- formula: ei = (regulator/ki)*free_enzyme
+  role: constitutive/component relations
+  description: Enzyme-regulator complex concentration.
+- formula: flux = turnover*es
+  role: governing/dynamical laws
+  description: Metabolic production flux.
+- formula: removal_speed = delivery_diffusivity/access_ref*(0.2*(regulator/ki)*(substrate/ks))
+  role: constitutive/component relations
+  description: Positive uptake coefficient of a maintained local sink in the delivery layer.
+- formula: delivery_flux = delivery_diffusivity*(substrate-local_substrate)/access_length
+  role: constitutive/component relations
+  description: Steady diffusive supply flux from the buffered feed.
+phenomenal_model: flux = 18000*enzyme_total*substrate/(access_length*regulator*(2000000000000*regulator*substrate
+  + 6000000000*substrate) + 3000*regulator + 900*substrate + 9)
+variables:
+- name: access_length
+  role: input
+  unit: m
+  description: Measured thickness of the solution layer between the well-mixed feed and the assay surface.
+  sampling:
+    min: 2.0e-06
+    max: 4.0e-05
+    ood_boundary: 1.2e-05
+    distribution: log_uniform
+- name: substrate
+  description: Free substrate concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.0001
+    max: 0.06
+    ood_boundary: 0.02
+    distribution: log_uniform
+- name: regulator
+  description: Free regulator concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.02
+    ood_boundary: 0.006
+    distribution: log_uniform
+- name: enzyme_total
+  description: Total enzyme concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-07
+    max: 5.0e-06
+    ood_boundary: 2.0e-06
+    distribution: log_uniform
+- name: local_substrate
+  description: Enzyme-local free substrate concentration.
+  unit: mol m^-3
+  role: internal
+- name: turnover
+  description: Catalytic turnover frequency.
+  unit: s^-1
+  role: internal
+- name: free_enzyme
+  description: Unbound reference state abundance.
+  unit: mol m^-3
+  role: internal
+- name: es
+  description: Catalytic enzyme-substrate complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: ei
+  description: Enzyme-regulator complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: flux
+  description: Metabolic production flux.
+  unit: mol m^-3 s^-1
+  role: target
+- name: removal_speed
+  role: internal
+  unit: m s^-1
+  description: Positive uptake coefficient of a maintained local sink in the delivery layer.
+- name: delivery_flux
+  role: internal
+  unit: mol m^-2 s^-1
+  description: Steady diffusive supply flux from the buffered feed.
+mechanism_probes:
+- probe: local_substrate
+  description: Enzyme-local free substrate concentration.
+  answer: 3*substrate/(2000000000*access_length*regulator*substrate + 3)

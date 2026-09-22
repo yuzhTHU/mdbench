@@ -1,0 +1,134 @@
+task_name: Promoter Occupancy - Variant 4
+task_description: Determine transcription initiation rate from activator and polymerase concentrations.
+mutation: Partition polymerase near the promoter.
+mechanism_model:
+- formula: delivery_diffusivity = 1e-09
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: access_ref = 1e-05
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: ka = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. One promoter; well-mixed buffered factor pools; quasi-stationary state occupancy.
+- formula: kp = 0.0008
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Initiation resets the productive state without changing the assumed occupancy
+    closure.
+- formula: kbas = 0.02
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. All added closures are synthetic.
+- formula: kact = 0.2
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: recruitment = 3
+  role: constitutive/component relations
+  description: Activator-polymerase recruitment coupling factor.
+- formula: local_polymerase = delivery_flux/removal_speed
+  role: constitutive/component relations
+  description: Promoter-local free polymerase concentration.
+- formula: active_rate = kact
+  role: constitutive/component relations
+  description: Initiation rate within an activated productive state.
+- formula: free = (1)-a_bound-p_bound-ap_bound
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: a_bound = (activator/ka)*free
+  role: constitutive/component relations
+  description: Activator-only promoter fraction.
+- formula: p_bound = (local_polymerase/kp)*free
+  role: constitutive/component relations
+  description: Polymerase-only promoter fraction.
+- formula: ap_bound = (recruitment*activator*local_polymerase/(ka*kp))*free
+  role: constitutive/component relations
+  description: Activator-polymerase promoter fraction.
+- formula: activated_flux = active_rate*(ap_bound)
+  role: governing/dynamical laws
+  description: Activated-state transcription initiation flux.
+- formula: initiation = kbas*p_bound+activated_flux
+  role: conservation/balance relations
+  description: Transcription initiation rate per promoter.
+- formula: removal_speed = delivery_diffusivity/access_ref*(0.2*activator/ka)
+  role: constitutive/component relations
+  description: Positive uptake coefficient of a maintained local sink in the delivery layer.
+- formula: delivery_flux = delivery_diffusivity*(polymerase-local_polymerase)/access_length
+  role: constitutive/component relations
+  description: Steady diffusive supply flux from the buffered feed.
+phenomenal_model: initiation = (750000*activator*polymerase + 25*polymerase)/(access_length*activator*(20000000000*activator
+  + 20000000) + activator*(3750000*polymerase + 1000) + 1250*polymerase + 1)
+variables:
+- name: access_length
+  role: input
+  unit: m
+  description: Measured thickness of the solution layer between the well-mixed feed and the assay surface.
+  sampling:
+    min: 2.0e-06
+    max: 4.0e-05
+    ood_boundary: 1.2e-05
+    distribution: log_uniform
+- name: activator
+  description: Free activator concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.006
+    ood_boundary: 0.002
+    distribution: log_uniform
+- name: polymerase
+  description: Free polymerase concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.004
+    ood_boundary: 0.001
+    distribution: log_uniform
+- name: recruitment
+  description: Activator-polymerase recruitment coupling factor.
+  unit: '1'
+  role: internal
+- name: local_polymerase
+  description: Promoter-local free polymerase concentration.
+  unit: mol m^-3
+  role: internal
+- name: active_rate
+  description: Initiation rate within an activated productive state.
+  unit: s^-1
+  role: internal
+- name: free
+  description: Unbound reference state abundance.
+  unit: '1'
+  role: internal
+- name: a_bound
+  description: Activator-only promoter fraction.
+  unit: '1'
+  role: internal
+- name: p_bound
+  description: Polymerase-only promoter fraction.
+  unit: '1'
+  role: internal
+- name: ap_bound
+  description: Activator-polymerase promoter fraction.
+  unit: '1'
+  role: internal
+- name: activated_flux
+  description: Activated-state transcription initiation flux.
+  unit: s^-1
+  role: internal
+- name: initiation
+  description: Transcription initiation rate per promoter.
+  unit: s^-1
+  role: target
+- name: removal_speed
+  role: internal
+  unit: m s^-1
+  description: Positive uptake coefficient of a maintained local sink in the delivery layer.
+- name: delivery_flux
+  role: internal
+  unit: mol m^-2 s^-1
+  description: Steady diffusive supply flux from the buffered feed.
+mechanism_probes:
+- probe: local_polymerase
+  description: Promoter-local free polymerase concentration.
+  answer: polymerase/(20000000*access_length*activator + 1)

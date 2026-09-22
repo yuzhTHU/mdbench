@@ -1,0 +1,126 @@
+task_name: Reversible Association Relaxation - Variant 3-4
+task_description: Determine the Laplace-weighted stable bound-molecule concentration after mixing initially unassociated
+  molecules with buffered ligand.
+mutation: Combines variants 3, 4 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: ligand_ratio = ligand/concentration_scale
+  description: Dimensionless buffered free ligand concentration.
+  role: constitutive/component relations
+- formula: binding_rate = rate_scale*(1.1*ligand_ratio*(1+(0.23/1.1)*ligand_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: desorption_rate = rate_scale*(0.67*(1+(0.23/1.1)*ligand_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: compaction_rate = rate_scale*(0.34)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: expansion_rate = rate_scale*(0.78)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: binding_flux = binding_rate*unoccupied_pool
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  role: constitutive/component relations
+- formula: laplace_rate*unoccupied_pool+binding_flux = laplace_rate*(molecule_total)+desorption_rate*bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*bound_pool+desorption_rate*bound_pool+compaction_rate*bound_pool = 0+binding_flux+expansion_rate*compact_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*compact_pool+expansion_rate*compact_pool = 0+compaction_rate*bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: response = bound_pool+compact_pool
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  role: conservation/balance relations
+phenomenal_model: response = (laplace_rate*ligand*(126500*ligand*molecule_total + 605000*molecule_total) + ligand*(141680*ligand*molecule_total
+  + 677600*molecule_total))/(laplace_rate*(550000*laplace_rate + ligand*(126500*ligand + 682050) + 984500) + ligand*(141680*ligand
+  + 737699) + 287430)
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: ligand
+  description: Buffered free adsorbate or ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.04
+    ood_boundary: 1.8
+    max: 5
+    distribution: log_uniform
+- name: ligand_ratio
+  description: Dimensionless buffered free ligand concentration.
+  unit: '1'
+  role: internal
+- name: molecule_total
+  description: Conserved concentration of initially unassociated binding molecules.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.0001
+    ood_boundary: 0.001
+    max: 0.004
+    distribution: log_uniform
+- name: binding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: desorption_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: compaction_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: expansion_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: unoccupied_pool
+  description: Laplace-weighted free molecule concentration.
+  unit: mol m^-3
+  role: internal
+- name: bound_pool
+  description: Laplace-weighted primary bound-state population.
+  unit: mol m^-3
+  role: internal
+- name: compact_pool
+  description: Laplace-weighted compact bound-complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: binding_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  unit: mol m^-3 s^-1
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: mol m^-3
+  role: target
+mechanism_probes:
+- probe: compact_pool
+  description: Laplace-weighted compact bound-complex concentration.
+  answer: ligand*(43010*ligand*molecule_total + 205700*molecule_total)/(laplace_rate*(550000*laplace_rate + ligand*(126500*ligand
+    + 682050) + 984500) + ligand*(141680*ligand + 737699) + 287430)
+- probe: binding_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  answer: 11*ligand*molecule_total*(23*ligand/110 + 1)*(550000*laplace_rate**2 + 77050*laplace_rate*ligand + 984500*laplace_rate
+    + 60099*ligand + 287430)/(10*(550000*laplace_rate**2 + 126500*laplace_rate*ligand**2 + 682050*laplace_rate*ligand
+    + 984500*laplace_rate + 141680*ligand**2 + 737699*ligand + 287430))

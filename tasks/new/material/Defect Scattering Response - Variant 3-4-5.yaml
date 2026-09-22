@@ -1,0 +1,132 @@
+task_name: Defect Scattering Response - Variant 3-4-5
+task_description: Determine real-Laplace electrical resistivity from temperature and defect concentration after
+  a weak electric-field pulse.
+mutation: Combines variants 3, 4, 5 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1000000000000.0
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: temperature_scale = 300
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: defect_scale = 0.01
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: resistivity_scale = 2e-06
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: collision_scale = 1000000000000.0
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: thermal_ratio = temperature/temperature_scale
+  description: Dimensionless bath temperature.
+  role: constitutive/component relations
+- formula: defect_ratio = defect_fraction/defect_scale
+  description: Dimensionless total defect concentration.
+  role: constitutive/component relations
+- formula: phonon_collision = collision_scale*(0.4+0.8*thermal_ratio)
+  description: Background phonon momentum-relaxation frequency.
+  role: constitutive/component relations
+- formula: defect_collision = 0.63*collision_scale*defect_ratio
+  description: Momentum relaxation by static defect populations.
+  role: constitutive/component relations
+- formula: memory_collision = 0.29*collision_scale*defect_ratio*0.73*rate_scale/(laplace_rate+0.73*rate_scale)
+  description: Real-Laplace transform of a passive exponentially relaxing defect-friction kernel.
+  role: constitutive/component relations
+- formula: activated_collision = 0.37*collision_scale*defect_ratio*exp(-1.4/thermal_ratio)
+  description: Thermally activated defect scattering frequency.
+  role: constitutive/component relations
+- formula: mixed_collision = 0.22*collision_scale*defect_ratio*thermal_ratio**2
+  description: Mixed phonon-defect momentum-relaxation frequency.
+  role: constitutive/component relations
+- formula: total_collision = phonon_collision+defect_collision+memory_collision+activated_collision+mixed_collision
+  description: Total causal momentum-relaxation kernel in the measured transform.
+  role: constitutive/component relations
+- formula: momentum_response = collision_scale/(laplace_rate+total_collision)
+  description: Normalized drift response to a weak electric-field pulse.
+  role: constitutive/component relations
+- formula: resistivity = resistivity_scale/momentum_response
+  description: Real-Laplace dynamic resistivity.
+  role: conservation/balance relations
+phenomenal_model: resistivity = 11*defect_fraction*temperature**2/22500000000 + 63*defect_fraction/500000 + 37*defect_fraction*exp(-420/temperature)/500000
+  + 42340000*defect_fraction/(laplace_rate + 730000000000) + laplace_rate/500000000000000000 + temperature/187500000
+  + 1/1250000
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 30000000000.0
+    ood_boundary: 5000000000000.0
+    max: 35000000000000.0
+    distribution: log_uniform
+- name: temperature
+  description: Controlled bath temperature.
+  unit: K
+  role: input
+  sampling:
+    min: 220
+    ood_boundary: 370
+    max: 580
+    distribution: uniform
+- name: defect_fraction
+  description: Independently measured total defect site fraction.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.0002
+    ood_boundary: 0.012
+    max: 0.04
+    distribution: log_uniform
+- name: thermal_ratio
+  description: Dimensionless bath temperature.
+  unit: '1'
+  role: internal
+- name: defect_ratio
+  description: Dimensionless total defect concentration.
+  unit: '1'
+  role: internal
+- name: phonon_collision
+  description: Background phonon momentum-relaxation frequency.
+  unit: s^-1
+  role: internal
+- name: defect_collision
+  description: Momentum relaxation by static defect populations.
+  unit: s^-1
+  role: internal
+- name: memory_collision
+  description: Real-Laplace transform of a passive exponentially relaxing defect-friction kernel.
+  unit: s^-1
+  role: internal
+- name: activated_collision
+  description: Thermally activated defect scattering frequency.
+  unit: s^-1
+  role: internal
+- name: mixed_collision
+  description: Mixed phonon-defect momentum-relaxation frequency.
+  unit: s^-1
+  role: internal
+- name: total_collision
+  description: Total causal momentum-relaxation kernel in the measured transform.
+  unit: s^-1
+  role: internal
+- name: momentum_response
+  description: Normalized drift response to a weak electric-field pulse.
+  unit: '1'
+  role: internal
+- name: resistivity
+  description: Real-Laplace dynamic resistivity.
+  unit: ohm m
+  role: target
+mechanism_probes:
+- probe: memory_collision
+  description: Real-Laplace transform of a passive exponentially relaxing defect-friction kernel.
+  answer: 21170000000000000000000000*defect_fraction/(laplace_rate + 730000000000)
+- probe: activated_collision
+  description: Thermally activated defect scattering frequency.
+  answer: 37000000000000*defect_fraction*exp(-420/temperature)
+- probe: mixed_collision
+  description: Mixed phonon-defect momentum-relaxation frequency.
+  answer: 2200000000*defect_fraction*temperature**2/9

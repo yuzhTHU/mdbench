@@ -1,0 +1,136 @@
+task_name: Resistor Network - Variant 5
+task_description: Determine terminal current from applied voltage and bath temperature.
+mutation: Reduce the connected fraction of the first branch.
+mechanism_model:
+- formula: path_capacitance = 1e-07
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: tref = 300
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Stationary two-branch circuit; ideal voltage source; all currents oriented
+    from positive terminal.
+- formula: r10 = 120
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Temperature closure is imposed by an external thermal controller, not inferred
+    from energy conservation.
+- formula: r20 = 220
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. All channels are passive over the sampling range.
+- formula: core_temp = temp
+  role: constitutive/component relations
+  description: Local resistor temperature.
+- formula: resistance_one = r10*core_temp/tref
+  role: constitutive/component relations
+  description: First branch linear resistance.
+- formula: resistance_two = r20*core_temp/tref
+  role: constitutive/component relations
+  description: Second branch body resistance.
+- formula: nonlinear_current = 0
+  role: constitutive/component relations
+  description: First-branch cubic channel current.
+- formula: contact_resistance = 0
+  role: constitutive/component relations
+  description: Second-branch series contact resistance.
+- formula: leak_current = 0
+  role: constitutive/component relations
+  description: Parallel leakage current.
+- formula: connected_fraction = 1/(1+0.2*(temp/tref)**2)
+  role: constitutive/component relations
+  description: Electrically connected fraction of the first branch.
+- formula: branch_one = connected_fraction*(voltage/resistance_one+nonlinear_current+polarization_current)
+  role: constitutive/component relations
+  description: First parallel-branch current.
+- formula: branch_two = (voltage-contact_voltage)/resistance_two
+  role: constitutive/component relations
+  description: Second parallel-branch current.
+- formula: contact_voltage = contact_resistance*branch_two
+  role: constitutive/component relations
+  description: Voltage drop across the second-branch contact.
+- formula: current = branch_one+branch_two+leak_current
+  role: conservation/balance relations
+  description: Total terminal current.
+- formula: polarization_current = path_capacitance*spectral_rate*voltage
+  role: constitutive/component relations
+  description: Displacement current of the calibrated dielectric attached to each connected path.
+phenomenal_model: current = 3*voltage*(33*spectral_rate + 1000*temp + 1275000000/temp)/(2200*(temp**2 + 450000))
+variables:
+- name: spectral_rate
+  role: input
+  unit: s^-1
+  description: Positive real transform rate; voltage is the transform amplitude. The dielectric attached to each
+    path is independently calibrated to 1e-7 F.
+  sampling:
+    min: 100.0
+    max: 100000.0
+    ood_boundary: 10000.0
+    distribution: log_uniform
+- name: voltage
+  description: Applied terminal voltage.
+  unit: V
+  role: input
+  sampling:
+    min: 0.1
+    max: 6
+    ood_boundary: 3
+    distribution: uniform
+- name: temp
+  description: Bath temperature.
+  unit: K
+  role: input
+  sampling:
+    min: 260
+    max: 450
+    ood_boundary: 360
+    distribution: uniform
+- name: core_temp
+  description: Local resistor temperature.
+  unit: K
+  role: internal
+- name: resistance_one
+  description: First branch linear resistance.
+  unit: ohm
+  role: internal
+- name: resistance_two
+  description: Second branch body resistance.
+  unit: ohm
+  role: internal
+- name: nonlinear_current
+  description: First-branch cubic channel current.
+  unit: A
+  role: internal
+- name: contact_resistance
+  description: Second-branch series contact resistance.
+  unit: ohm
+  role: internal
+- name: leak_current
+  description: Parallel leakage current.
+  unit: A
+  role: internal
+- name: connected_fraction
+  description: Electrically connected fraction of the first branch.
+  unit: '1'
+  role: internal
+- name: branch_one
+  description: First parallel-branch current.
+  unit: A
+  role: internal
+- name: branch_two
+  description: Second parallel-branch current.
+  unit: A
+  role: internal
+- name: contact_voltage
+  description: Voltage drop across the second-branch contact.
+  unit: V
+  role: internal
+- name: current
+  description: Total terminal current.
+  unit: A
+  role: target
+- name: polarization_current
+  role: internal
+  unit: A
+  description: Displacement current of the calibrated dielectric attached to each connected path.
+mechanism_probes:
+- probe: connected_fraction
+  description: Electrically connected fraction of the first branch.
+  answer: 450000/(temp**2 + 450000)

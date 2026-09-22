@@ -1,0 +1,171 @@
+task_name: Drude Transport - Variant 1-2-4-5
+task_description: Determine electrical current density from the applied electric field, carrier density, and bath
+  temperature.
+mutation: Combines variants 1, 2, 4, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: charge = 1.602176634e-19
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Homogeneous stationary transport; charge magnitude fixed.
+- formula: mass0 = 9.1093837e-31
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. All changes are synthetic constitutive closures, not asserted material laws.
+- formula: nu0 = 2e13
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Backflow stores momentum but carries no electric current; bath and field
+    are externally clamped.
+- formula: tref = 300
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: eref = 2000
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: nref = 1e24
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: nuc = 4e12
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: inertia = mass0*(1+0.17*(field/eref)**2)
+  role: constitutive/component relations
+  description: Effective carrier inertial mass.
+- formula: mobile = density/(1+0.27*(tref/temp)*(density/nref))
+  role: constitutive/component relations
+  description: Mobile carrier number density.
+- formula: phonon_temp = temp
+  role: constitutive/component relations
+  description: Local phonon reservoir temperature.
+- formula: collision_extra = nuc*(density/nref)/(1+temp/tref)
+  role: constitutive/component relations
+  description: Additional momentum relaxation frequency.
+- formula: collision = nu0*phonon_temp/tref+collision_extra
+  role: constitutive/component relations
+  description: Total momentum relaxation frequency.
+- formula: momentum = (charge*field+cyclotron_rate*transverse_momentum)/collision
+  role: governing/dynamical laws
+  description: Momentum delivered per carrier between relaxation events.
+- formula: backflow = 0.13*(density/nref)/(1+density/nref)*momentum
+  role: constitutive/component relations
+  description: Momentum per carrier stored in the backflow reservoir.
+- formula: drift = (momentum-backflow)/inertia
+  role: conservation/balance relations
+  description: Carrier drift speed.
+- formula: current_density = charge*mobile*drift
+  role: conservation/balance relations
+  description: Electrical current density.
+- formula: backflow_fraction = 13*density/(100*density + 100*nref)
+  role: constitutive/component relations
+  description: Fraction of momentum stored in the coupled reservoir.
+- formula: cyclotron_rate = charge*magnetic_field*(1-backflow_fraction)/inertia
+  role: constitutive/component relations
+  description: Coupling frequency in the steady transverse momentum balance.
+- formula: transverse_momentum = -cyclotron_rate*momentum/collision
+  role: constitutive/component relations
+  description: Signed transverse carrier momentum.
+phenomenal_model: current_density = 7015054311464599928218835160000000000000000000000*density*field*temp*(temp +
+  300)*(-13*density/(density + 1000000000000000000000000) + 100)/((81*density + 1000000000000000000000000*temp)*(17*field**2
+  + 400000000)*(231027296988201296040000000000000000000000000000000000000000000000000000*magnetic_field**2*(87*density
+  + 100000000000000000000000000)**2*(temp + 300)**2/((9*density + 500000000000000000000*temp**2 + 150000000000000000000000*temp)**2*(17*density*field**2
+  + 400000000*density + 17000000000000000000000000*field**2 + 400000000000000000000000000000000)**2) + 8298087139382569)*(9*density
+  + 500000000000000000000*temp**2 + 150000000000000000000000*temp))
+variables:
+- name: magnetic_field
+  role: input
+  unit: kg A^-1 s^-2
+  description: Transverse magnetic induction; lateral contacts are held at equal potential.
+  sampling:
+    min: 2
+    max: 80
+    ood_boundary: 20
+    distribution: log_uniform
+- name: field
+  description: Applied electric field magnitude.
+  unit: V m^-1
+  role: input
+  sampling:
+    min: 100
+    max: 5000
+    ood_boundary: 2000
+    distribution: log_uniform
+- name: density
+  description: Total carrier number density.
+  unit: m^-3
+  role: input
+  sampling:
+    min: 1.0e+23
+    max: 5.0e+24
+    ood_boundary: 2.0e+24
+    distribution: log_uniform
+- name: temp
+  description: Bath temperature.
+  unit: K
+  role: input
+  sampling:
+    min: 250
+    max: 600
+    ood_boundary: 450
+    distribution: uniform
+- name: inertia
+  description: Effective carrier inertial mass.
+  unit: kg
+  role: internal
+- name: mobile
+  description: Mobile carrier number density.
+  unit: m^-3
+  role: internal
+- name: phonon_temp
+  description: Local phonon reservoir temperature.
+  unit: K
+  role: internal
+- name: collision_extra
+  description: Additional momentum relaxation frequency.
+  unit: s^-1
+  role: internal
+- name: collision
+  description: Total momentum relaxation frequency.
+  unit: s^-1
+  role: internal
+- name: momentum
+  description: Momentum delivered per carrier between relaxation events.
+  unit: kg m s^-1
+  role: internal
+- name: backflow
+  description: Momentum per carrier stored in the backflow reservoir.
+  unit: kg m s^-1
+  role: internal
+- name: drift
+  description: Carrier drift speed.
+  unit: m s^-1
+  role: internal
+- name: current_density
+  description: Electrical current density.
+  unit: A m^-2
+  role: target
+- name: backflow_fraction
+  role: internal
+  unit: '1'
+  description: Fraction of momentum stored in the coupled reservoir.
+- name: cyclotron_rate
+  role: internal
+  unit: s^-1
+  description: Coupling frequency in the steady transverse momentum balance.
+- name: transverse_momentum
+  role: internal
+  unit: kg m s^-1
+  description: Signed transverse carrier momentum.
+mechanism_probes:
+- probe: inertia
+  description: Effective carrier inertial mass.
+  answer: 1548595229*field**2/40000000000000000000000000000000000000000000000 + 91093837/100000000000000000000000000000000000000
+- probe: backflow
+  description: Momentum per carrier stored in the backflow reservoir.
+  answer: 10414148121*density*field*(temp + 300)/(500000000000000000000000000000000000000000000000000000*(density/1000000000000000000000000
+    + 1)*(231027296988201296040000000000000000000000000000000000000000000000000000*magnetic_field**2*(87*density
+    + 100000000000000000000000000)**2*(temp + 300)**2/(8298087139382569*(9*density + 500000000000000000000*temp**2
+    + 150000000000000000000000*temp)**2*(17*density*field**2 + 400000000*density + 17000000000000000000000000*field**2
+    + 400000000000000000000000000000000)**2) + 1)*(3*density/2500000000 + 200000000000*temp**2/3 + 20000000000000*temp))
+- probe: mobile
+  description: Mobile carrier number density.
+  answer: 1000000000000000000000000*density*temp/(81*density + 1000000000000000000000000*temp)
+- probe: collision
+  description: Total momentum relaxation frequency.
+  answer: (9*density + temp*(500000000000000000000*temp + 150000000000000000000000))/(7500000000*temp + 2250000000000)

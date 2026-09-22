@@ -1,0 +1,58 @@
+task_name: Receptor Binding - Original
+task_description: Determine surface receptor occupancy from free ligand concentration.
+mutation: Textbook blueprint.
+mechanism_model:
+- formula: kd = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Steady state; extracellular ligand buffered, total receptor number conserved.
+- formula: local_ligand = ligand
+  role: constitutive/component relations
+  description: Pericellular free ligand concentration. Occupancy counts surface receptors bearing ligand, not ligand molecules.
+- formula: affinity = kd
+  role: constitutive/component relations
+  description: Effective receptor dissociation concentration. Inaccessible-state gating and receptor recycling are driven
+    steady-state processes; do not impose detailed balance on them.
+- formula: free = (1)-bound
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: bound = (local_ligand/affinity)*free
+  role: constitutive/component relations
+  description: Singly liganded surface receptor fraction.
+- formula: occupancy = bound
+  role: conservation/balance relations
+  description: Ligand-bearing surface receptor fraction.
+phenomenal_model: occupancy = ligand/(kd*(1 + ligand/kd))
+variables:
+- name: ligand
+  description: Free extracellular ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.01
+    ood_boundary: 0.003
+    distribution: log_uniform
+- name: local_ligand
+  description: Pericellular free ligand concentration.
+  unit: mol m^-3
+  role: internal
+- name: affinity
+  description: Effective receptor dissociation concentration.
+  unit: mol m^-3
+  role: internal
+- name: free
+  description: Unbound reference state abundance.
+  unit: '1'
+  role: internal
+- name: bound
+  description: Singly liganded surface receptor fraction.
+  unit: '1'
+  role: internal
+- name: occupancy
+  description: Ligand-bearing surface receptor fraction.
+  unit: '1'
+  role: target
+mechanism_probes:
+- probe: free
+  description: Unbound reference state abundance.
+  answer: 1/(1 + ligand/kd)

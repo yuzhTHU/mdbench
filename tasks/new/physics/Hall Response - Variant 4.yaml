@@ -1,0 +1,201 @@
+task_name: Hall Response - Variant 4
+task_description: Determine the recorded sample voltage from the supplied electrical and geometric conditions.
+mutation: Change transverse electric-force response.
+mechanism_model:
+- formula: charge = 1.602176634e-19
+  role: auxiliary/regime constraints
+  description: Fixed coefficient. Homogeneous slab; steady classical carrier transport, open transverse circuit,
+    fixed transverse contact separation.
+- formula: nref = 1e22
+  role: auxiliary/regime constraints
+  description: Fixed coefficient. Homogeneous slab; steady classical carrier transport, open transverse circuit,
+    fixed transverse contact separation.
+- formula: bref = 0.05
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Electric-response modification is common to both species; hole magnetic
+    response remains standard.
+- formula: width = 0.002
+  role: auxiliary/regime constraints
+  description: Fixed coefficient. Homogeneous slab; steady classical carrier transport, open transverse circuit,
+    fixed transverse contact separation.
+- formula: mu0 = 0.08
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: mu_h = 0.03
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: mobile = density
+  role: constitutive/component relations
+  description: Mobile electron number density.
+- formula: deflection = 1
+  role: constitutive/component relations
+  description: Electron magnetic deflection multiplier.
+- formula: holes = 0
+  role: constitutive/component relations
+  description: Minority hole number density.
+- formula: electric_factor = 1+0.18*(density/nref)/(1+magnetic/bref)
+  role: constitutive/component relations
+  description: Transverse electric-force multiplier.
+- formula: mu_e = mu0
+  role: constitutive/component relations
+  description: Electron longitudinal mobility.
+- formula: conductivity = charge*(mobile*mu_e+holes*mu_h)
+  role: constitutive/component relations
+  description: Longitudinal electrical conductivity.
+- formula: bypass_conductivity = 0
+  role: constitutive/component relations
+  description: Longitudinal bypass conductivity per reference cross section.
+- formula: long_field = (current/(width*thickness)-electric_factor*cross_coefficient*transverse_field)/(longitudinal_coefficient+bypass_conductivity)
+  role: conservation/balance relations
+  description: Longitudinal electric field.
+- formula: electron_current = electron_longitudinal*(long_field-mu_e*magnetic*electric_factor*transverse_field)
+  role: constitutive/component relations
+  description: Electron longitudinal current density.
+- formula: hole_current = hole_longitudinal*(long_field+mu_h*magnetic*electric_factor*transverse_field)
+  role: constitutive/component relations
+  description: Hole longitudinal current density.
+- formula: bypass_current = bypass_conductivity*long_field
+  role: constitutive/component relations
+  description: Longitudinal bypass current density.
+- formula: hall_voltage = width*transverse_field+contact_offset*long_field
+  role: conservation/balance relations
+  description: Voltage across the offset measurement contacts.
+- formula: electron_longitudinal = charge*mobile*mu_e/(1+(mu_e*magnetic)**2)
+  role: constitutive/component relations
+  description: Electron longitudinal coefficient with transverse electric field clamped.
+- formula: hole_longitudinal = charge*holes*mu_h/(1+(mu_h*magnetic)**2)
+  role: constitutive/component relations
+  description: Hole longitudinal coefficient with transverse electric field clamped.
+- formula: longitudinal_coefficient = electron_longitudinal+hole_longitudinal
+  role: constitutive/component relations
+  description: Sum of the two longitudinal tensor coefficients.
+- formula: cross_coefficient = magnetic*(mu_h*hole_longitudinal-mu_e*electron_longitudinal)
+  role: constitutive/component relations
+  description: Signed transverse tensor coefficient.
+- formula: transverse_field = cross_coefficient*long_field/(electric_factor*longitudinal_coefficient)
+  role: constitutive/component relations
+  description: Signed field imposed by zero net transverse conduction current.
+phenomenal_model: hall_voltage = 31250000000000000000000000000000*current*(contact_offset - 80000000000000000000*magnetic*(20*magnetic
+  + 1)/(9*density + 10000000000000000000000000*magnetic + 500000000000000000000000))/(801088317*density*thickness)
+variables:
+- name: contact_offset
+  role: input
+  unit: m
+  description: Longitudinal separation of the voltage contacts; their transverse separation is fixed.
+  sampling:
+    min: 0.0001
+    max: 0.001
+    ood_boundary: 0.0005
+    distribution: uniform
+- name: density
+  description: Nominal electron number density.
+  unit: m^-3
+  role: input
+  sampling:
+    min: 1.0e+21
+    max: 2.0e+22
+    ood_boundary: 7.0e+21
+    distribution: log_uniform
+- name: current
+  description: Applied longitudinal electric current.
+  unit: A
+  role: input
+  sampling:
+    min: 0.001
+    max: 0.015
+    ood_boundary: 0.008
+    distribution: uniform
+- name: magnetic
+  description: Transverse magnetic flux density.
+  unit: kg s^-2 A^-1
+  role: input
+  sampling:
+    min: 0.02
+    ood_boundary: 3
+    max: 25
+    distribution: log_uniform
+- name: thickness
+  description: Sample thickness.
+  unit: m
+  role: input
+  sampling:
+    min: 5.0e-05
+    max: 0.0004
+    ood_boundary: 0.0002
+    distribution: log_uniform
+- name: mobile
+  description: Mobile electron number density.
+  unit: m^-3
+  role: internal
+- name: deflection
+  description: Electron magnetic deflection multiplier.
+  unit: '1'
+  role: internal
+- name: holes
+  description: Minority hole number density.
+  unit: m^-3
+  role: internal
+- name: electric_factor
+  description: Transverse electric-force multiplier.
+  unit: '1'
+  role: internal
+- name: mu_e
+  description: Electron longitudinal mobility.
+  unit: m^2 V^-1 s^-1
+  role: internal
+- name: conductivity
+  description: Longitudinal electrical conductivity.
+  unit: A V^-1 m^-1
+  role: internal
+- name: bypass_conductivity
+  description: Longitudinal bypass conductivity per reference cross section.
+  unit: A V^-1 m^-1
+  role: internal
+- name: long_field
+  description: Longitudinal electric field.
+  unit: V m^-1
+  role: internal
+- name: electron_current
+  description: Electron longitudinal current density.
+  unit: A m^-2
+  role: internal
+- name: hole_current
+  description: Hole longitudinal current density.
+  unit: A m^-2
+  role: internal
+- name: bypass_current
+  description: Longitudinal bypass current density.
+  unit: A m^-2
+  role: internal
+- name: hall_voltage
+  description: Voltage across the measurement contacts.
+  unit: V
+  role: target
+- name: electron_longitudinal
+  role: internal
+  unit: A V^-1 m^-1
+  description: Electron longitudinal coefficient with transverse electric field clamped.
+- name: hole_longitudinal
+  role: internal
+  unit: A V^-1 m^-1
+  description: Hole longitudinal coefficient with transverse electric field clamped.
+- name: longitudinal_coefficient
+  role: internal
+  unit: A V^-1 m^-1
+  description: Sum of the two longitudinal tensor coefficients.
+- name: cross_coefficient
+  role: internal
+  unit: A V^-1 m^-1
+  description: Signed transverse tensor coefficient.
+- name: transverse_field
+  role: internal
+  unit: V m^-1
+  description: Signed field imposed by zero net transverse conduction current.
+mechanism_probes:
+- probe: electric_factor
+  description: Transverse electric-force multiplier.
+  answer: (9*density + 10000000000000000000000000*magnetic + 500000000000000000000000)/(10000000000000000000000000*magnetic
+    + 500000000000000000000000)
+- probe: mobile
+  description: Mobile electron number density.
+  answer: density

@@ -1,0 +1,151 @@
+task_name: Multilayer Electrical Response - Variant 1-2-3-5
+task_description: Determine the real-Laplace electrical admittance per area of a layered specimen from independently
+  varied layer thicknesses.
+mutation: Combines variants 1, 2, 3, 5 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 10000000.0
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: sigma_one = 0.42
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: sigma_two = 0.19
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: epsilon_one = 2.6e-09
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: epsilon_two = 4.1e-09
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: first_polarization = 0.33*epsilon_one*laplace_rate*0.7*rate_scale/(laplace_rate+0.7*rate_scale)
+  description: Delayed first-layer polarization contribution to admittivity.
+  role: constitutive/component relations
+- formula: second_polarization = 0.27*epsilon_two*laplace_rate*0.21*rate_scale/(laplace_rate+0.21*rate_scale)
+  description: Delayed second-layer polarization contribution to admittivity.
+  role: constitutive/component relations
+- formula: first_admittivity = sigma_one+laplace_rate*epsilon_one+first_polarization
+  description: First-layer local conduction plus polarization admittivity.
+  role: constitutive/component relations
+- formula: second_admittivity = sigma_two+laplace_rate*epsilon_two+second_polarization
+  description: Second-layer local conduction plus polarization admittivity.
+  role: constitutive/component relations
+- formula: first_impedance = first_thickness/first_admittivity
+  description: First-layer impedance times reference area.
+  role: constitutive/component relations
+- formula: second_impedance = second_thickness/second_admittivity
+  description: Second-layer impedance times reference area.
+  role: constitutive/component relations
+- formula: contact_conductance = 180
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: contact_capacitance = 2.5e-06
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: contact_impedance = 1/(contact_conductance+laplace_rate*contact_capacitance)
+  description: Leaky interlayer-contact impedance times area.
+  role: constitutive/component relations
+- formula: insert_thickness = 8e-05
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: insert_impedance = insert_thickness/(0.61*sigma_one+0.48*laplace_rate*epsilon_one)
+  description: Thin inserted-layer impedance times area.
+  role: constitutive/component relations
+- formula: series_impedance = first_impedance+second_impedance+contact_impedance+insert_impedance
+  description: Series impedance of the layered route per route area.
+  role: constitutive/component relations
+- formula: layered_admittance = (1-0)/series_impedance
+  description: Layered-route admittance per total specimen area.
+  role: constitutive/component relations
+- formula: admittance = layered_admittance
+  description: Measured total terminal admittance per area.
+  role: conservation/balance relations
+phenomenal_model: admittance = 1/(100000*(50000*first_thickness/(13*laplace_rate + 30030000*laplace_rate/(laplace_rate
+  + 7000000) + 2100000000) + 100000*second_thickness/(41*laplace_rate + 23247000*laplace_rate/(laplace_rate + 2100000)
+  + 1900000000) + 25/(3*(13*laplace_rate + 2668750000)) + 4/(laplace_rate + 72000000)))
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 300000.0
+    ood_boundary: 50000000.0
+    max: 350000000.0
+    distribution: log_uniform
+- name: first_thickness
+  description: Independently varied first-layer thickness.
+  unit: m
+  role: input
+  sampling:
+    min: 0.0002
+    ood_boundary: 0.0015
+    max: 0.004
+    distribution: log_uniform
+- name: second_thickness
+  description: Independently varied second-layer thickness.
+  unit: m
+  role: input
+  sampling:
+    min: 0.0003
+    ood_boundary: 0.002
+    max: 0.005
+    distribution: log_uniform
+- name: first_polarization
+  description: Delayed first-layer polarization contribution to admittivity.
+  unit: ohm^-1 m^-1
+  role: internal
+- name: second_polarization
+  description: Delayed second-layer polarization contribution to admittivity.
+  unit: ohm^-1 m^-1
+  role: internal
+- name: first_admittivity
+  description: First-layer local conduction plus polarization admittivity.
+  unit: ohm^-1 m^-1
+  role: internal
+- name: second_admittivity
+  description: Second-layer local conduction plus polarization admittivity.
+  unit: ohm^-1 m^-1
+  role: internal
+- name: first_impedance
+  description: First-layer impedance times reference area.
+  unit: ohm m^2
+  role: internal
+- name: second_impedance
+  description: Second-layer impedance times reference area.
+  unit: ohm m^2
+  role: internal
+- name: contact_impedance
+  description: Leaky interlayer-contact impedance times area.
+  unit: ohm m^2
+  role: internal
+- name: insert_impedance
+  description: Thin inserted-layer impedance times area.
+  unit: ohm m^2
+  role: internal
+- name: series_impedance
+  description: Series impedance of the layered route per route area.
+  unit: ohm m^2
+  role: internal
+- name: layered_admittance
+  description: Layered-route admittance per total specimen area.
+  unit: ohm^-1 m^-2
+  role: internal
+- name: admittance
+  description: Measured total terminal admittance per area.
+  unit: ohm^-1 m^-2
+  role: target
+mechanism_probes:
+- probe: contact_impedance
+  description: Leaky interlayer-contact impedance times area.
+  answer: 400000/(laplace_rate + 72000000)
+- probe: first_polarization
+  description: Delayed first-layer polarization contribution to admittivity.
+  answer: 3003*laplace_rate/(500000*(laplace_rate + 7000000))
+- probe: insert_impedance
+  description: Thin inserted-layer impedance times area.
+  answer: 2500000/(39*laplace_rate + 8006250000)
+- probe: second_polarization
+  description: Delayed second-layer polarization contribution to admittivity.
+  answer: 23247*laplace_rate/(10000000*(laplace_rate + 2100000))

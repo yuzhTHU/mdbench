@@ -1,0 +1,124 @@
+task_name: Composite Heat Transport - Variant 1-2-3-5
+task_description: Determine transmitted heat flux from slab thickness, component fraction, and imposed temperature difference.
+mutation: Combines variants 1, 2, 3, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: ka0 = 4
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Stationary one-dimensional two-layer transport; fluxes per reference cross-sectional
+    area.
+- formula: kb0 = 1
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Layer order is first component, interface, second component.
+- formula: tref = 100
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Positive temperature drop; distributed source is uniform in layer two.
+- formula: rc0 = 0.0002
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Bypass connects both boundary baths and does not exchange heat with layers.
+- formula: bypass_k = 0.3
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: source_k = 20
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: ka = ka0/(1+0.2*delta_temp/tref)
+  role: constitutive/component relations
+  description: First component effective thermal conductivity.
+- formula: interface_resistance = rc0*(1+0.15*fraction)
+  role: constitutive/component relations
+  description: Interface thermal resistance per reference area.
+- formula: bypass_flux = bypass_k*fraction*(1-fraction)*delta_temp/length
+  role: constitutive/component relations
+  description: Heat flux through the parallel bypass.
+- formula: area_ratio = 1
+  role: kinematic/geometric constraints
+  description: Second component conducting area relative to reference area.
+- formula: source_flux = source_k*delta_temp*length*(1-fraction)
+  role: conservation/balance relations
+  description: Integrated distributed heat source per reference area.
+- formula: resistance_a = fraction*length/ka
+  role: kinematic/geometric constraints
+  description: First layer thermal resistance per reference area.
+- formula: resistance_b = (1-fraction)*length/(kb0*area_ratio)
+  role: kinematic/geometric constraints
+  description: Second layer thermal resistance per reference area.
+- formula: inlet_flux = (delta_temp-resistance_b*source_flux/2)/(resistance_a+interface_resistance+resistance_b)
+  role: conservation/balance relations
+  description: Heat flux entering the layered branch.
+- formula: heat_flux = inlet_flux+source_flux+bypass_flux
+  role: conservation/balance relations
+  description: Heat flux delivered at the cold boundary.
+phenomenal_model: heat_flux = bypass_k*delta_temp*fraction*(1 - fraction)/length + delta_temp*length*source_k*(1 - fraction)
+  + (delta_temp - delta_temp*length**2*source_k*(1 - fraction)**2/(2*kb0))/(fraction*length*(delta_temp/(5*tref) + 1)/ka0
+  + rc0*(3*fraction/20 + 1) + length*(1 - fraction)/kb0)
+variables:
+- name: length
+  description: Slab thickness.
+  unit: m
+  role: input
+  sampling:
+    min: 0.002
+    max: 0.02
+    ood_boundary: 0.012
+    distribution: uniform
+- name: fraction
+  description: First component thickness fraction.
+  unit: '1'
+  role: input
+  sampling:
+    min: 0.2
+    max: 0.8
+    ood_boundary: 0.6
+    distribution: uniform
+- name: delta_temp
+  description: Boundary temperature difference.
+  unit: K
+  role: input
+  sampling:
+    min: 5
+    max: 80
+    ood_boundary: 40
+    distribution: uniform
+- name: ka
+  description: First component effective thermal conductivity.
+  unit: W m^-1 K^-1
+  role: internal
+- name: interface_resistance
+  description: Interface thermal resistance per reference area.
+  unit: m^2 K W^-1
+  role: internal
+- name: bypass_flux
+  description: Heat flux through the parallel bypass.
+  unit: W m^-2
+  role: internal
+- name: area_ratio
+  description: Second component conducting area relative to reference area.
+  unit: '1'
+  role: internal
+- name: source_flux
+  description: Integrated distributed heat source per reference area.
+  unit: W m^-2
+  role: internal
+- name: resistance_a
+  description: First layer thermal resistance per reference area.
+  unit: m^2 K W^-1
+  role: internal
+- name: resistance_b
+  description: Second layer thermal resistance per reference area.
+  unit: m^2 K W^-1
+  role: internal
+- name: inlet_flux
+  description: Heat flux entering the layered branch.
+  unit: W m^-2
+  role: internal
+- name: heat_flux
+  description: Heat flux delivered at the cold boundary.
+  unit: W m^-2
+  role: target
+mechanism_probes:
+- probe: ka
+  description: First component effective thermal conductivity.
+  answer: ka0/(delta_temp/(5*tref) + 1)
+- probe: source_flux
+  description: Integrated distributed heat source per reference area.
+  answer: delta_temp*length*source_k*(1 - fraction)

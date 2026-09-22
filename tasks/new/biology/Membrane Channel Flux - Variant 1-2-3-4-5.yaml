@@ -1,0 +1,148 @@
+task_name: Membrane Channel Flux - Variant 1-2-3-4-5
+task_description: Determine membrane ionic current density from membrane voltage and reservoir ion concentrations.
+mutation: Combines variants 1, 2, 3, 4, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: faraday = 96485.33212
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Stationary constant-field electrodiffusion; inside-minus-outside voltage; outward
+    conventional current positive.
+- formula: gas = 8.314462618
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Temperature fixed at 300 K; measured concentrations refer to the primary monovalent
+    species.
+- formula: temp0 = 300
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Secondary monovalent concentrations are 0.1 times measured inside and 0.25 times measured
+    outside concentrations; both permeation pathways share gating.
+- formula: vref = 0.04
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: cref = 100
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: perm0 = 1e-7
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: perm2 = 2e-8
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: local_inside = inside/(1+0.15*outside/cref)
+  role: constitutive/component relations
+  description: Intracellular channel-mouth monovalent ion concentration.
+- formula: permeability = perm0/(1+0.13*(voltage/vref)**2)
+  role: constitutive/component relations
+  description: Open-channel monovalent permeability.
+- formula: inactivated = (0.2*outside/(cref+outside))/(1+(0.5*(voltage/vref)**2)+(0.2*outside/(cref+outside)))
+  role: conservation/balance relations
+  description: Inactivated-channel probability.
+- formula: closed_state = (1-inactivated)/(1+(0.5*(voltage/vref)**2))
+  role: conservation/balance relations
+  description: Closed-channel probability.
+- formula: open_state = (0.5*(voltage/vref)**2)*closed_state
+  role: constitutive/component relations
+  description: Open-channel probability.
+- formula: drive = faraday*voltage/(gas*temp0)
+  role: constitutive/component relations
+  description: Dimensionless membrane electrochemical voltage.
+- formula: mono_drive = drive*(local_inside-outside*exp(-drive))/(1-exp(-drive))
+  role: governing/dynamical laws
+  description: Monovalent constant-field concentration driving factor.
+- formula: mono_current = faraday*permeability*open_state*mono_drive
+  role: governing/dynamical laws
+  description: Monovalent ionic current density.
+- formula: secondary_drive = drive*(0.1*inside-0.25*outside*exp(-drive))/(1-exp(-drive))
+  role: governing/dynamical laws
+  description: Secondary-species constant-field concentration driving factor.
+- formula: secondary_current = faraday*perm2*open_state*secondary_drive
+  role: governing/dynamical laws
+  description: Secondary-species ionic current density.
+- formula: current_density = mono_current+secondary_current
+  role: conservation/balance relations
+  description: Outward membrane ionic current density.
+phenomenal_model: current_density = faraday**2*perm0*voltage**3*(inside/(1 + 3*outside/(20*cref)) - outside*exp(-faraday*voltage/(gas*temp0)))*(-outside/(5*(cref
+  + outside)*(outside/(5*(cref + outside)) + voltage**2/(2*vref**2) + 1)) + 1)/(2*gas*temp0*vref**2*(1 - exp(-faraday*voltage/(gas*temp0)))*(13*voltage**2/(100*vref**2)
+  + 1)*(voltage**2/(2*vref**2) + 1)) + faraday**2*perm2*voltage**3*(inside/10 - outside*exp(-faraday*voltage/(gas*temp0))/4)*(-outside/(5*(cref
+  + outside)*(outside/(5*(cref + outside)) + voltage**2/(2*vref**2) + 1)) + 1)/(2*gas*temp0*vref**2*(1 - exp(-faraday*voltage/(gas*temp0)))*(voltage**2/(2*vref**2)
+  + 1))
+variables:
+- name: voltage
+  description: Inside-minus-outside membrane voltage.
+  unit: V
+  role: input
+  sampling:
+    min: 0.01
+    max: 0.08
+    ood_boundary: 0.05
+    distribution: uniform
+- name: inside
+  description: Intracellular monovalent ion concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 5
+    max: 20
+    ood_boundary: 14
+    distribution: uniform
+- name: outside
+  description: Extracellular monovalent ion concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 100
+    max: 200
+    ood_boundary: 160
+    distribution: uniform
+- name: local_inside
+  description: Intracellular channel-mouth monovalent ion concentration.
+  unit: mol m^-3
+  role: internal
+- name: permeability
+  description: Open-channel monovalent permeability.
+  unit: m s^-1
+  role: internal
+- name: inactivated
+  description: Inactivated-channel probability.
+  unit: '1'
+  role: internal
+- name: closed_state
+  description: Closed-channel probability.
+  unit: '1'
+  role: internal
+- name: open_state
+  description: Open-channel probability.
+  unit: '1'
+  role: internal
+- name: drive
+  description: Dimensionless membrane electrochemical voltage.
+  unit: '1'
+  role: internal
+- name: mono_drive
+  description: Monovalent constant-field concentration driving factor.
+  unit: mol m^-3
+  role: internal
+- name: mono_current
+  description: Monovalent ionic current density.
+  unit: A m^-2
+  role: internal
+- name: secondary_drive
+  description: Secondary-species constant-field concentration driving factor.
+  unit: mol m^-3
+  role: internal
+- name: secondary_current
+  description: Secondary-species ionic current density.
+  unit: A m^-2
+  role: internal
+- name: current_density
+  description: Outward membrane ionic current density.
+  unit: A m^-2
+  role: target
+mechanism_probes:
+- probe: open_state
+  description: Open-channel probability.
+  answer: voltage**2*(-outside/(5*(cref + outside)*(outside/(5*(cref + outside)) + voltage**2/(2*vref**2) + 1)) + 1)/(2*vref**2*(voltage**2/(2*vref**2)
+    + 1))
+- probe: secondary_current
+  description: Secondary-species ionic current density.
+  answer: faraday**2*perm2*voltage**3*(inside/10 - outside*exp(-faraday*voltage/(gas*temp0))/4)*(-outside/(5*(cref + outside)*(outside/(5*(cref
+    + outside)) + voltage**2/(2*vref**2) + 1)) + 1)/(2*gas*temp0*vref**2*(1 - exp(-faraday*voltage/(gas*temp0)))*(voltage**2/(2*vref**2)
+    + 1))

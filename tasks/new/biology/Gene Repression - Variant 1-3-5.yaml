@@ -1,0 +1,100 @@
+task_name: Gene Repression - Variant 1-3-5
+task_description: Determine transcription initiation rate from repressor and polymerase concentrations.
+mutation: Combines variants 1, 3, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: kr = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. One promoter; buffered concentrations; steady occupancy with mutually exclusive enumerated
+    states.
+- formula: kp = 0.0008
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Only unpaused polymerase and the optional leaky complex initiate.
+- formula: kinit = 0.1
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Driven pausing and local partition closures are synthetic.
+- formula: affinity = kr*(1+0.2*(polymerase/kp)**2)
+  role: constitutive/component relations
+  description: Effective repressor dissociation concentration.
+- formula: local_polymerase = polymerase
+  role: constitutive/component relations
+  description: Promoter-local free polymerase concentration.
+- formula: free = (1)-p_bound-r_bound-looped-paused
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: p_bound = (local_polymerase/kp)*free
+  role: constitutive/component relations
+  description: Productive polymerase-only promoter fraction.
+- formula: r_bound = (repressor/affinity)*free
+  role: constitutive/component relations
+  description: Repressor-only promoter fraction.
+- formula: looped = (0.12*(repressor/affinity)**2)*free
+  role: constitutive/component relations
+  description: Looped two-repressor promoter fraction.
+- formula: paused = (0.24*repressor/(kr+repressor)*local_polymerase/kp)*free
+  role: constitutive/component relations
+  description: Paused polymerase promoter fraction.
+- formula: initiation = kinit*(p_bound)
+  role: conservation/balance relations
+  description: Transcription initiation rate per promoter.
+phenomenal_model: initiation = kinit*polymerase/(kp*(1 + repressor/(kr*(1 + polymerase**2/(5*kp**2))) + 3*repressor**2/(25*kr**2*(1
+  + polymerase**2/(5*kp**2))**2) + 6*polymerase*repressor/(25*kp*(kr + repressor)) + polymerase/kp))
+variables:
+- name: repressor
+  description: Free repressor concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.006
+    ood_boundary: 0.002
+    distribution: log_uniform
+- name: polymerase
+  description: Free polymerase concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.004
+    ood_boundary: 0.001
+    distribution: log_uniform
+- name: affinity
+  description: Effective repressor dissociation concentration.
+  unit: mol m^-3
+  role: internal
+- name: local_polymerase
+  description: Promoter-local free polymerase concentration.
+  unit: mol m^-3
+  role: internal
+- name: free
+  description: Unbound reference state abundance.
+  unit: '1'
+  role: internal
+- name: p_bound
+  description: Productive polymerase-only promoter fraction.
+  unit: '1'
+  role: internal
+- name: r_bound
+  description: Repressor-only promoter fraction.
+  unit: '1'
+  role: internal
+- name: looped
+  description: Looped two-repressor promoter fraction.
+  unit: '1'
+  role: internal
+- name: paused
+  description: Paused polymerase promoter fraction.
+  unit: '1'
+  role: internal
+- name: initiation
+  description: Transcription initiation rate per promoter.
+  unit: s^-1
+  role: target
+mechanism_probes:
+- probe: looped
+  description: Looped two-repressor promoter fraction.
+  answer: 3*repressor**2/(25*kr**2*(1 + polymerase**2/(5*kp**2))**2*(1 + repressor/(kr*(1 + polymerase**2/(5*kp**2))) + 3*repressor**2/(25*kr**2*(1
+    + polymerase**2/(5*kp**2))**2) + 6*polymerase*repressor/(25*kp*(kr + repressor)) + polymerase/kp))
+- probe: paused
+  description: Paused polymerase promoter fraction.
+  answer: 6*polymerase*repressor/(25*kp*(kr + repressor)*(1 + repressor/(kr*(1 + polymerase**2/(5*kp**2))) + 3*repressor**2/(25*kr**2*(1
+    + polymerase**2/(5*kp**2))**2) + 6*polymerase*repressor/(25*kp*(kr + repressor)) + polymerase/kp))

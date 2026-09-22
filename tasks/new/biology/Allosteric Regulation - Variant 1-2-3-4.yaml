@@ -1,0 +1,133 @@
+task_name: Allosteric Regulation - Variant 1-2-3-4
+task_description: Determine protein catalytic activity from substrate and regulator concentrations.
+mutation: Combines variants 1, 2, 3, 4 using their shared state and balance equations.
+mechanism_model:
+- formula: ks = 0.01
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Conserved protein population; substrate and regulator buffered; steady conformational
+    occupancy.
+- formula: kt = 0.03
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Activity is per protein; reference conformation has one catalytic substrate site.
+- formula: kr = 0.003
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Added states and closures are synthetic.
+- formula: rate_r = 12
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: rate_t = 0.7
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: local_regulator = regulator/(1+0.1*substrate/ks)
+  role: constitutive/component relations
+  description: Protein-local free regulator concentration.
+- formula: substrate_coupling = 1+0.2*substrate/(ks+substrate)
+  role: constitutive/component relations
+  description: Inactive-state substrate coupling factor.
+- formula: inactive_rate = rate_t
+  role: constitutive/component relations
+  description: Inactive-conformation catalytic turnover frequency.
+- formula: r_empty = (1)-rs-t_empty-ts-t3-rs_extra
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: rs = (substrate/ks)*r_empty
+  role: constitutive/component relations
+  description: Active-conformation substrate complex fraction.
+- formula: t_empty = (2*(1+local_regulator/kr)**2)*r_empty
+  role: constitutive/component relations
+  description: Inactive-conformation fraction without substrate.
+- formula: ts = (2*(1+local_regulator/kr)**2*substrate/kt*substrate_coupling)*r_empty
+  role: constitutive/component relations
+  description: Inactive-conformation substrate complex fraction.
+- formula: t3 = (0.16*(local_regulator/kr)**3)*r_empty
+  role: constitutive/component relations
+  description: Inactive triple-regulator complex fraction.
+- formula: rs_extra = (0.14*(substrate/ks)**2)*r_empty
+  role: constitutive/component relations
+  description: Additional productive active complex fraction.
+- formula: inactive_flux = inactive_rate*ts
+  role: governing/dynamical laws
+  description: Catalytic flux through the inactive conformation.
+- formula: activity = rate_r*(rs+rs_extra)+inactive_flux
+  role: conservation/balance relations
+  description: Catalytic activity per protein.
+phenomenal_model: activity = rate_r*(substrate/(ks*(2*(1 + regulator/(kr*(1 + substrate/(10*ks))))**2 + 1 + 2*substrate*(1
+  + regulator/(kr*(1 + substrate/(10*ks))))**2*(substrate/(5*(ks + substrate)) + 1)/kt + substrate/ks + 7*substrate**2/(50*ks**2)
+  + 4*regulator**3/(25*kr**3*(1 + substrate/(10*ks))**3))) + 7*substrate**2/(50*ks**2*(2*(1 + regulator/(kr*(1 + substrate/(10*ks))))**2
+  + 1 + 2*substrate*(1 + regulator/(kr*(1 + substrate/(10*ks))))**2*(substrate/(5*(ks + substrate)) + 1)/kt + substrate/ks
+  + 7*substrate**2/(50*ks**2) + 4*regulator**3/(25*kr**3*(1 + substrate/(10*ks))**3)))) + 2*rate_t*substrate*(1 + regulator/(kr*(1
+  + substrate/(10*ks))))**2*(substrate/(5*(ks + substrate)) + 1)/(kt*(2*(1 + regulator/(kr*(1 + substrate/(10*ks))))**2 +
+  1 + 2*substrate*(1 + regulator/(kr*(1 + substrate/(10*ks))))**2*(substrate/(5*(ks + substrate)) + 1)/kt + substrate/ks +
+  7*substrate**2/(50*ks**2) + 4*regulator**3/(25*kr**3*(1 + substrate/(10*ks))**3)))
+variables:
+- name: substrate
+  description: Free substrate concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.0001
+    max: 0.06
+    ood_boundary: 0.02
+    distribution: log_uniform
+- name: regulator
+  description: Free regulator concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.02
+    ood_boundary: 0.006
+    distribution: log_uniform
+- name: local_regulator
+  description: Protein-local free regulator concentration.
+  unit: mol m^-3
+  role: internal
+- name: substrate_coupling
+  description: Inactive-state substrate coupling factor.
+  unit: '1'
+  role: internal
+- name: inactive_rate
+  description: Inactive-conformation catalytic turnover frequency.
+  unit: s^-1
+  role: internal
+- name: r_empty
+  description: Unbound reference state abundance.
+  unit: '1'
+  role: internal
+- name: rs
+  description: Active-conformation substrate complex fraction.
+  unit: '1'
+  role: internal
+- name: t_empty
+  description: Inactive-conformation fraction without substrate.
+  unit: '1'
+  role: internal
+- name: ts
+  description: Inactive-conformation substrate complex fraction.
+  unit: '1'
+  role: internal
+- name: t3
+  description: Inactive triple-regulator complex fraction.
+  unit: '1'
+  role: internal
+- name: rs_extra
+  description: Additional productive active complex fraction.
+  unit: '1'
+  role: internal
+- name: inactive_flux
+  description: Catalytic flux through the inactive conformation.
+  unit: s^-1
+  role: internal
+- name: activity
+  description: Catalytic activity per protein.
+  unit: s^-1
+  role: target
+mechanism_probes:
+- probe: t3
+  description: Inactive triple-regulator complex fraction.
+  answer: 4*regulator**3/(25*kr**3*(1 + substrate/(10*ks))**3*(2*(1 + regulator/(kr*(1 + substrate/(10*ks))))**2 + 1 + 2*substrate*(1
+    + regulator/(kr*(1 + substrate/(10*ks))))**2*(substrate/(5*(ks + substrate)) + 1)/kt + substrate/ks + 7*substrate**2/(50*ks**2)
+    + 4*regulator**3/(25*kr**3*(1 + substrate/(10*ks))**3)))
+- probe: local_regulator
+  description: Protein-local free regulator concentration.
+  answer: regulator/(1 + substrate/(10*ks))

@@ -1,0 +1,148 @@
+task_name: Grain Boundary Electrical Response - Variant 1-5
+task_description: Determine real-Laplace electrical conductivity of representative grain-boundary segments as grain
+  size and temperature vary at fixed composition.
+mutation: Combines variants 1, 5 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 10000000.0
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: temperature_scale = 300
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: boundary_width = 2e-06
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: bulk_sigma_scale = 0.8
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: boundary_sigma_scale = 0.15
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: bulk_permittivity = 2.2e-09
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: boundary_permittivity = 3.4e-09
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: bulk_conduction = bulk_sigma_scale*temperature_scale/temperature
+  description: Grain-interior conduction coefficient.
+  role: constitutive/component relations
+- formula: boundary_conduction = boundary_sigma_scale*(temperature_scale/temperature)**2
+  description: Grain-boundary conduction coefficient.
+  role: constitutive/component relations
+- formula: bulk_admittivity = bulk_conduction+laplace_rate*bulk_permittivity
+  description: Local grain-interior admittivity.
+  role: constitutive/component relations
+- formula: boundary_admittivity = boundary_conduction+laplace_rate*boundary_permittivity
+  description: Local boundary admittivity.
+  role: constitutive/component relations
+- formula: bulk_impedance = grain_size/bulk_admittivity
+  description: Grain-interior impedance times area.
+  role: constitutive/component relations
+- formula: boundary_impedance = boundary_width/boundary_admittivity
+  description: Grain-boundary impedance times area.
+  role: constitutive/component relations
+- formula: space_charge_impedance = 0.4*boundary_width/(0.37*boundary_conduction+0.6*laplace_rate*boundary_permittivity)
+  description: Adjacent space-charge-region impedance times area.
+  role: constitutive/component relations
+- formula: contact_g = 40000
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: contact_c = 0.0005
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: contact_impedance = 1/(contact_g+laplace_rate*contact_c)
+  description: Additional boundary-local interface impedance times area.
+  role: constitutive/component relations
+- formula: repeat_length = grain_size+boundary_width+0.4*boundary_width
+  description: Physical length of the representative grain-boundary path.
+  role: constitutive/component relations
+- formula: series_impedance = bulk_impedance+boundary_impedance+space_charge_impedance+contact_impedance
+  description: Series impedance of the primary path times area.
+  role: constitutive/component relations
+- formula: conductivity = repeat_length/series_impedance
+  description: Effective terminal conductivity including the stated specimen geometry.
+  role: conservation/balance relations
+phenomenal_model: conductivity = (grain_size + 7/2500000)/(2000*(2500000*grain_size/(11*laplace_rate + 1200000000000/temperature)
+  + 5/(17*laplace_rate + 67500000000000/temperature**2) + 10/(3*(17*laplace_rate + 41625000000000/temperature**2))
+  + 1/(laplace_rate + 80000000)))
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 300000.0
+    ood_boundary: 50000000.0
+    max: 350000000.0
+    distribution: log_uniform
+- name: grain_size
+  description: Mean grain-interior path length at fixed composition.
+  unit: m
+  role: input
+  sampling:
+    min: 2.0e-05
+    ood_boundary: 0.0002
+    max: 0.0007
+    distribution: log_uniform
+- name: temperature
+  description: Uniform specimen temperature.
+  unit: K
+  role: input
+  sampling:
+    min: 240
+    ood_boundary: 360
+    max: 520
+    distribution: uniform
+- name: bulk_conduction
+  description: Grain-interior conduction coefficient.
+  unit: ohm^-1 m^-1
+  role: internal
+- name: boundary_conduction
+  description: Grain-boundary conduction coefficient.
+  unit: ohm^-1 m^-1
+  role: internal
+- name: bulk_admittivity
+  description: Local grain-interior admittivity.
+  unit: ohm^-1 m^-1
+  role: internal
+- name: boundary_admittivity
+  description: Local boundary admittivity.
+  unit: ohm^-1 m^-1
+  role: internal
+- name: bulk_impedance
+  description: Grain-interior impedance times area.
+  unit: ohm m^2
+  role: internal
+- name: boundary_impedance
+  description: Grain-boundary impedance times area.
+  unit: ohm m^2
+  role: internal
+- name: space_charge_impedance
+  description: Adjacent space-charge-region impedance times area.
+  unit: ohm m^2
+  role: internal
+- name: contact_impedance
+  description: Additional boundary-local interface impedance times area.
+  unit: ohm m^2
+  role: internal
+- name: repeat_length
+  description: Physical length of the representative grain-boundary path.
+  unit: m
+  role: internal
+- name: series_impedance
+  description: Series impedance of the primary path times area.
+  unit: ohm m^2
+  role: internal
+- name: conductivity
+  description: Effective terminal conductivity including the stated specimen geometry.
+  unit: ohm^-1 m^-1
+  role: target
+mechanism_probes:
+- probe: space_charge_impedance
+  description: Adjacent space-charge-region impedance times area.
+  answer: 1/(1250000*(51*laplace_rate/25000000000 + 4995/temperature**2))
+- probe: contact_impedance
+  description: Additional boundary-local interface impedance times area.
+  answer: 2000/(laplace_rate + 80000000)

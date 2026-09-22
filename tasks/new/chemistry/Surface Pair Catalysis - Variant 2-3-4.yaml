@@ -1,0 +1,245 @@
+task_name: Surface Pair Catalysis - Variant 2-3-4
+task_description: Determine the Laplace-weighted B-containing product rate after exposing initially empty surface
+  cells to buffered A and B.
+mutation: Combines variants 2, 3, 4 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: a_ratio = a_concentration/concentration_scale
+  description: Dimensionless gas A concentration.
+  role: constitutive/component relations
+- formula: b_ratio = b_concentration/concentration_scale
+  description: Dimensionless gas B concentration.
+  role: constitutive/component relations
+- formula: a_adsorption = rate_scale*(1.2*a_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: b_adsorption = rate_scale*(0.83*b_ratio*(1+(0.17/0.51)*a_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: a_desorption = rate_scale*(0.64)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: b_desorption = rate_scale*(0.51*(1+(0.17/0.51)*a_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: second_b_adsorption = rate_scale*(0.83*b_ratio*(1+(0.17/0.51)*a_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: second_a_adsorption = rate_scale*(1.2*a_ratio*(1+(0.22/1.2)*a_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: paired_a_desorption = rate_scale*(0.64*(1+(0.22/1.2)*a_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: paired_b_desorption = rate_scale*(0.51*(1+(0.17/0.51)*a_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: surface_reaction = rate_scale*(1.6)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: immobilization = rate_scale*(0.26)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: remobilization = rate_scale*(0.47)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: laplace_rate*empty_cells+a_adsorption*empty_cells+b_adsorption*empty_cells = laplace_rate*(1)+a_desorption*a_cells+b_desorption*b_cells+surface_reaction*ab_cells
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*a_cells+a_desorption*a_cells+second_b_adsorption*a_cells+immobilization*a_cells = 0+a_adsorption*empty_cells+paired_b_desorption*ab_cells+remobilization*immobile_a_cells
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*b_cells+b_desorption*b_cells+second_a_adsorption*b_cells = 0+b_adsorption*empty_cells+paired_a_desorption*ab_cells
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*ab_cells+paired_a_desorption*ab_cells+paired_b_desorption*ab_cells+surface_reaction*ab_cells
+    = 0+second_b_adsorption*a_cells+second_a_adsorption*b_cells
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*immobile_a_cells+remobilization*immobile_a_cells = 0+immobilization*a_cells
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: response = surface_reaction*ab_cells
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  role: conservation/balance relations
+phenomenal_model: response = a_concentration*(a_concentration*(a_concentration*(a_concentration*b_concentration*(b_concentration*(181869600*laplace_rate
+  + 85478712) + 788832000*laplace_rate + 370751040) + b_concentration*(b_concentration*(2083233600*laplace_rate
+  + 979119792) + laplace_rate*(657360000*laplace_rate + 8179351200) + 3618754848)) + b_concentration*(b_concentration*(7588922400*laplace_rate
+  + 3566793528) + laplace_rate*(9143280000*laplace_rate + 25864725600) + 9457521984)) + b_concentration*(b_concentration*(8928144000*laplace_rate
+  + 4196227680) + laplace_rate*(21513600000*laplace_rate + 25278480000) + 5814050400))/(a_concentration*(a_concentration*(a_concentration*(a_concentration*(b_concentration*(b_concentration*(113668500*laplace_rate
+  + 53424195) + 562864500*laplace_rate + 282705885) + 302940000*laplace_rate + 221146200) + b_concentration*(b_concentration*(1362644200*laplace_rate
+  + 640442774) + laplace_rate*(821700000*laplace_rate + 7062785400) + 3295799358) + laplace_rate*(2034450000*laplace_rate
+  + 7454794500) + 4315833900) + b_concentration*(b_concentration*(laplace_rate*(516675000*laplace_rate + 6507004950)
+  + 2944158819) + laplace_rate*(10261290000*laplace_rate + 30415175700) + 12296123229) + laplace_rate*(laplace_rate*(1485000000*laplace_rate
+  + 20298915000) + 42360313050) + 20058426072) + b_concentration*(b_concentration*(laplace_rate*(3100050000*laplace_rate
+  + 14526834300) + 6142811076) + laplace_rate*(laplace_rate*(3735000000*laplace_rate + 37096020000) + 55022526000)
+  + 17406743400) + laplace_rate*(laplace_rate*(19287000000*laplace_rate + 68880960000) + 63094684500) + 14680702116)
+  + b_concentration*(b_concentration*(laplace_rate*(4650075000*laplace_rate + 12601703250) + 4895598960) + laplace_rate*(laplace_rate*(11205000000*laplace_rate
+  + 41122350000) + 36434178000) + 7642527120) + laplace_rate*(laplace_rate*(laplace_rate*(6750000000*laplace_rate
+  + 31252500000) + 41644125000) + 19588722750) + 2847636000)
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: a_concentration
+  description: Buffered gas-reactant concentration for the named species.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.05
+    ood_boundary: 1.5
+    max: 4.5
+    distribution: log_uniform
+- name: b_concentration
+  description: Buffered gas-reactant concentration for the named species.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.05
+    ood_boundary: 1.5
+    max: 4.5
+    distribution: log_uniform
+- name: a_ratio
+  description: Dimensionless gas A concentration.
+  unit: '1'
+  role: internal
+- name: b_ratio
+  description: Dimensionless gas B concentration.
+  unit: '1'
+  role: internal
+- name: a_adsorption
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: b_adsorption
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: a_desorption
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: b_desorption
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: second_b_adsorption
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: second_a_adsorption
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: paired_a_desorption
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: paired_b_desorption
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: surface_reaction
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: immobilization
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: remobilization
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: empty_cells
+  description: Laplace-weighted empty catalytic-cell fraction.
+  unit: '1'
+  role: internal
+- name: a_cells
+  description: Laplace-weighted cells carrying only adsorbed A.
+  unit: '1'
+  role: internal
+- name: b_cells
+  description: Laplace-weighted cells carrying only adsorbed B.
+  unit: '1'
+  role: internal
+- name: ab_cells
+  description: Laplace-weighted cells carrying both adsorbed reactants.
+  unit: '1'
+  role: internal
+- name: immobile_a_cells
+  description: Laplace-weighted cells containing immobilized adsorbed A.
+  unit: '1'
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: s^-1
+  role: target
+mechanism_probes:
+- probe: immobile_a_cells
+  description: Laplace-weighted cells containing immobilized adsorbed A.
+  answer: a_concentration*(a_concentration*(a_concentration*(a_concentration*(18159570*b_concentration + 78764400)
+    + 208009620*b_concentration + 463320000*laplace_rate + 1510100280) + 757749330*b_concentration + 3490344000*laplace_rate
+    + 6625560240) + 891469800*b_concentration + laplace_rate*(2106000000*laplace_rate + 6865560000) + 2953665000)/(a_concentration*(a_concentration*(a_concentration*(a_concentration*(b_concentration*(b_concentration*(113668500*laplace_rate
+    + 53424195) + 562864500*laplace_rate + 282705885) + 302940000*laplace_rate + 221146200) + b_concentration*(b_concentration*(1362644200*laplace_rate
+    + 640442774) + laplace_rate*(821700000*laplace_rate + 7062785400) + 3295799358) + laplace_rate*(2034450000*laplace_rate
+    + 7454794500) + 4315833900) + b_concentration*(b_concentration*(laplace_rate*(516675000*laplace_rate + 6507004950)
+    + 2944158819) + laplace_rate*(10261290000*laplace_rate + 30415175700) + 12296123229) + laplace_rate*(laplace_rate*(1485000000*laplace_rate
+    + 20298915000) + 42360313050) + 20058426072) + b_concentration*(b_concentration*(laplace_rate*(3100050000*laplace_rate
+    + 14526834300) + 6142811076) + laplace_rate*(laplace_rate*(3735000000*laplace_rate + 37096020000) + 55022526000)
+    + 17406743400) + laplace_rate*(laplace_rate*(19287000000*laplace_rate + 68880960000) + 63094684500) + 14680702116)
+    + b_concentration*(b_concentration*(laplace_rate*(4650075000*laplace_rate + 12601703250) + 4895598960) + laplace_rate*(laplace_rate*(11205000000*laplace_rate
+    + 41122350000) + 36434178000) + 7642527120) + laplace_rate*(laplace_rate*(laplace_rate*(6750000000*laplace_rate
+    + 31252500000) + 41644125000) + 19588722750) + 2847636000)
+- probe: a_cells
+  description: Laplace-weighted cells carrying only adsorbed A.
+  answer: a_concentration*(a_concentration*(a_concentration*(a_concentration*(b_concentration*(69844500*laplace_rate
+    + 32826915) + 302940000*laplace_rate + 142381800) + b_concentration*(800037000*laplace_rate + 376017390) + laplace_rate*(1782000000*laplace_rate
+    + 6645618000) + 2729796660) + b_concentration*(2914420500*laplace_rate + 1369777635) + laplace_rate*(13424400000*laplace_rate
+    + 31792392000) + 11976974280) + b_concentration*(3428730000*laplace_rate + 1611503100) + laplace_rate*(laplace_rate*(8100000000*laplace_rate
+    + 30213000000) + 23771070000) + 5339317500)/(a_concentration*(a_concentration*(a_concentration*(a_concentration*(b_concentration*(b_concentration*(113668500*laplace_rate
+    + 53424195) + 562864500*laplace_rate + 282705885) + 302940000*laplace_rate + 221146200) + b_concentration*(b_concentration*(1362644200*laplace_rate
+    + 640442774) + laplace_rate*(821700000*laplace_rate + 7062785400) + 3295799358) + laplace_rate*(2034450000*laplace_rate
+    + 7454794500) + 4315833900) + b_concentration*(b_concentration*(laplace_rate*(516675000*laplace_rate + 6507004950)
+    + 2944158819) + laplace_rate*(10261290000*laplace_rate + 30415175700) + 12296123229) + laplace_rate*(laplace_rate*(1485000000*laplace_rate
+    + 20298915000) + 42360313050) + 20058426072) + b_concentration*(b_concentration*(laplace_rate*(3100050000*laplace_rate
+    + 14526834300) + 6142811076) + laplace_rate*(laplace_rate*(3735000000*laplace_rate + 37096020000) + 55022526000)
+    + 17406743400) + laplace_rate*(laplace_rate*(19287000000*laplace_rate + 68880960000) + 63094684500) + 14680702116)
+    + b_concentration*(b_concentration*(laplace_rate*(4650075000*laplace_rate + 12601703250) + 4895598960) + laplace_rate*(laplace_rate*(11205000000*laplace_rate
+    + 41122350000) + 36434178000) + 7642527120) + laplace_rate*(laplace_rate*(laplace_rate*(6750000000*laplace_rate
+    + 31252500000) + 41644125000) + 19588722750) + 2847636000)
+- probe: b_cells
+  description: Laplace-weighted cells carrying only adsorbed B.
+  answer: (a_concentration*(a_concentration*(a_concentration*b_concentration*(b_concentration*(60623200*laplace_rate
+    + 28492904) + 262944000*laplace_rate + 123583680) + b_concentration*(b_concentration*(laplace_rate*(516675000*laplace_rate
+    + 1763928450) + 714912864) + laplace_rate*(536595000*laplace_rate + 2958207150) + 1206251616)) + b_concentration*(b_concentration*(laplace_rate*(3100050000*laplace_rate
+    + 8946744300) + 3520168776) + laplace_rate*(laplace_rate*(1867500000*laplace_rate + 9303885000) + 14105675700)
+    + 4051297728)) + b_concentration*(b_concentration*(laplace_rate*(4650075000*laplace_rate + 12601703250) + 4895598960)
+    + laplace_rate*(laplace_rate*(5602500000*laplace_rate + 23082300000) + 22792650750) + 4634388000))/(a_concentration*(a_concentration*(a_concentration*(a_concentration*(b_concentration*(b_concentration*(113668500*laplace_rate
+    + 53424195) + 562864500*laplace_rate + 282705885) + 302940000*laplace_rate + 221146200) + b_concentration*(b_concentration*(1362644200*laplace_rate
+    + 640442774) + laplace_rate*(821700000*laplace_rate + 7062785400) + 3295799358) + laplace_rate*(2034450000*laplace_rate
+    + 7454794500) + 4315833900) + b_concentration*(b_concentration*(laplace_rate*(516675000*laplace_rate + 6507004950)
+    + 2944158819) + laplace_rate*(10261290000*laplace_rate + 30415175700) + 12296123229) + laplace_rate*(laplace_rate*(1485000000*laplace_rate
+    + 20298915000) + 42360313050) + 20058426072) + b_concentration*(b_concentration*(laplace_rate*(3100050000*laplace_rate
+    + 14526834300) + 6142811076) + laplace_rate*(laplace_rate*(3735000000*laplace_rate + 37096020000) + 55022526000)
+    + 17406743400) + laplace_rate*(laplace_rate*(19287000000*laplace_rate + 68880960000) + 63094684500) + 14680702116)
+    + b_concentration*(b_concentration*(laplace_rate*(4650075000*laplace_rate + 12601703250) + 4895598960) + laplace_rate*(laplace_rate*(11205000000*laplace_rate
+    + 41122350000) + 36434178000) + 7642527120) + laplace_rate*(laplace_rate*(laplace_rate*(6750000000*laplace_rate
+    + 31252500000) + 41644125000) + 19588722750) + 2847636000)

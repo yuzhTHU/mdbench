@@ -1,0 +1,159 @@
+task_name: Lindemann Pulse Reaction - Variant 2-3-4
+task_description: Determine the Laplace-weighted product rate after a reactant pulse in a homogeneous, buffered
+  collision bath.
+mutation: Combines variants 2, 3, 4 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: bath_ratio = collider/concentration_scale
+  description: Dimensionless buffered collision-partner concentration.
+  role: constitutive/component relations
+- formula: activation_rate = rate_scale*(1.3*bath_ratio+0.21*bath_ratio**2)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: deactivation_rate = rate_scale*(0.8*bath_ratio*(1+(0.21/1.3)*bath_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: conversion_rate = rate_scale*(1.7)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: product_rate = rate_scale*(2.3)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: caging_rate = rate_scale*(0.37*bath_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: escape_rate = rate_scale*(0.63)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: activation_flux = activation_rate*reactant_pool
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  role: constitutive/component relations
+- formula: laplace_rate*reactant_pool+activation_flux+caging_rate*reactant_pool = laplace_rate*(dose)+deactivation_rate*activated_pool+escape_rate*caged_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*activated_pool+deactivation_rate*activated_pool+conversion_rate*activated_pool = 0+activation_flux
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*secondary_pool+product_rate*secondary_pool = 0+conversion_rate*activated_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*caged_pool+escape_rate*caged_pool = 0+caging_rate*reactant_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: response = product_rate*secondary_pool
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  role: conservation/balance relations
+phenomenal_model: response = collider*(collider*dose*laplace_rate*(10674300*laplace_rate + 6724809) + dose*laplace_rate*(66079000*laplace_rate
+  + 41629770))/(collider*(collider*(collider*laplace_rate*(621600*laplace_rate + 1429680) + laplace_rate*(laplace_rate*(4410000*laplace_rate
+  + 21410300) + 28838620) + 6724809) + laplace_rate*(laplace_rate*(32110000*laplace_rate + 127959000) + 142543700)
+  + 41629770) + laplace_rate*(laplace_rate*(laplace_rate*(13000000*laplace_rate + 60190000) + 83590000) + 32022900))
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: collider
+  description: Buffered collision-partner molar concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.08
+    ood_boundary: 2
+    max: 6
+    distribution: log_uniform
+- name: dose
+  description: Initial unactivated reactant pulse concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.0002
+    ood_boundary: 0.002
+    max: 0.008
+    distribution: log_uniform
+- name: bath_ratio
+  description: Dimensionless buffered collision-partner concentration.
+  unit: '1'
+  role: internal
+- name: activation_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: deactivation_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: conversion_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: product_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: caging_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: escape_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: reactant_pool
+  description: Laplace-weighted unactivated reactant concentration.
+  unit: mol m^-3
+  role: internal
+- name: activated_pool
+  description: Laplace-weighted primary activated-intermediate concentration.
+  unit: mol m^-3
+  role: internal
+- name: secondary_pool
+  description: Laplace-weighted second reactive intermediate concentration.
+  unit: mol m^-3
+  role: internal
+- name: caged_pool
+  description: Laplace-weighted reversibly caged reactant concentration.
+  unit: mol m^-3
+  role: internal
+- name: activation_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  unit: mol m^-3 s^-1
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: mol m^-3 s^-1
+  role: target
+mechanism_probes:
+- probe: secondary_pool
+  description: Laplace-weighted second reactive intermediate concentration.
+  answer: collider*(collider*dose*laplace_rate*(4641000*laplace_rate + 2923830) + dose*laplace_rate*(28730000*laplace_rate
+    + 18099900))/(collider*(collider*(collider*laplace_rate*(621600*laplace_rate + 1429680) + laplace_rate*(laplace_rate*(4410000*laplace_rate
+    + 21410300) + 28838620) + 6724809) + laplace_rate*(laplace_rate*(32110000*laplace_rate + 127959000) + 142543700)
+    + 41629770) + laplace_rate*(laplace_rate*(laplace_rate*(13000000*laplace_rate + 60190000) + 83590000) + 32022900))
+- probe: caged_pool
+  description: Laplace-weighted reversibly caged reactant concentration.
+  answer: collider*(collider*(62160*collider*dose*laplace_rate + 384800*dose*laplace_rate) + dose*laplace_rate*(481000*laplace_rate
+    + 817700))/(collider*(collider*(62160*collider*laplace_rate + laplace_rate*(441000*laplace_rate + 1126730) +
+    292383) + laplace_rate*(3211000*laplace_rate + 5410600) + 1809990) + laplace_rate*(laplace_rate*(1300000*laplace_rate
+    + 3029000) + 1392300))
+- probe: activation_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  answer: collider*(collider*(collider*(collider*dose*laplace_rate*(176400*laplace_rate + 111132) + dose*laplace_rate*(2184000*laplace_rate
+    + 1375920)) + dose*laplace_rate*(laplace_rate*(1365000*laplace_rate + 9940450) + 5720715)) + dose*laplace_rate*(laplace_rate*(8450000*laplace_rate
+    + 19688500) + 9049950))/(collider*(collider*(310800*collider*laplace_rate + laplace_rate*(2205000*laplace_rate
+    + 5633650) + 1461915) + laplace_rate*(16055000*laplace_rate + 27053000) + 9049950) + laplace_rate*(laplace_rate*(6500000*laplace_rate
+    + 15145000) + 6961500))

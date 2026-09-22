@@ -1,0 +1,115 @@
+task_name: Venturi Flow - Variant 5
+task_description: Determine pressure difference from volumetric flow rate, fluid density, and inlet and throat areas.
+mutation: Add a controlled pump between the pressure taps.
+mechanism_model:
+- formula: qref = 0.00005
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Stationary incompressible horizontal flow; inlet area exceeds throat area throughout
+    sampling.
+- formula: bypass = 0
+  role: conservation/balance relations
+  description: Side-branch volumetric flow rate. Pressure difference means upstream minus throat pressure.
+- formula: effective_area = throat_area
+  role: kinematic/geometric constraints
+  description: Effective throat flow area. Bypass exits between taps at local pressure; pump and loss are expressed per unit
+    through-flow volume.
+- formula: throat_flow = flow-bypass
+  role: conservation/balance relations
+  description: Throat volumetric flow rate.
+- formula: inlet_speed = flow/inlet_area
+  role: kinematic/geometric constraints
+  description: Mean inlet speed.
+- formula: throat_speed = throat_flow/effective_area
+  role: kinematic/geometric constraints
+  description: Mean throat speed.
+- formula: loss_pressure = 0
+  role: conservation/balance relations
+  description: Irreversible pressure loss.
+- formula: kinetic_factor = 1
+  role: constitutive/component relations
+  description: Throat kinetic-energy correction factor.
+- formula: pump_pressure = 0.12*density*flow**2/inlet_area**2/(1+flow/qref)
+  role: conservation/balance relations
+  description: Pressure-equivalent work supplied by the internal pump.
+- formula: pressure_drop = density*(kinetic_factor*throat_speed**2-inlet_speed**2)/2+loss_pressure-pump_pressure
+  role: conservation/balance relations
+  description: Upstream-minus-throat pressure difference.
+phenomenal_model: pressure_drop = -3*density*flow**2/(25*inlet_area**2*(flow/qref + 1)) + density*(flow**2/throat_area**2
+  - flow**2/inlet_area**2)/2
+variables:
+- name: flow
+  description: Upstream volumetric flow rate.
+  unit: m^3 s^-1
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.00012
+    ood_boundary: 7.0e-05
+    distribution: log_uniform
+- name: density
+  description: Fluid mass density.
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 800
+    max: 1300
+    ood_boundary: 1100
+    distribution: uniform
+- name: inlet_area
+  description: Nominal inlet cross-sectional area.
+  unit: m^2
+  role: input
+  sampling:
+    min: 0.0003
+    max: 0.0005
+    ood_boundary: 0.0004
+    distribution: uniform
+- name: throat_area
+  description: Nominal throat cross-sectional area.
+  unit: m^2
+  role: input
+  sampling:
+    min: 5.0e-05
+    max: 0.00015
+    ood_boundary: 0.0001
+    distribution: uniform
+- name: bypass
+  description: Side-branch volumetric flow rate.
+  unit: m^3 s^-1
+  role: internal
+- name: effective_area
+  description: Effective throat flow area.
+  unit: m^2
+  role: internal
+- name: throat_flow
+  description: Throat volumetric flow rate.
+  unit: m^3 s^-1
+  role: internal
+- name: inlet_speed
+  description: Mean inlet speed.
+  unit: m s^-1
+  role: internal
+- name: throat_speed
+  description: Mean throat speed.
+  unit: m s^-1
+  role: internal
+- name: loss_pressure
+  description: Irreversible pressure loss.
+  unit: Pa
+  role: internal
+- name: kinetic_factor
+  description: Throat kinetic-energy correction factor.
+  unit: '1'
+  role: internal
+- name: pump_pressure
+  description: Pressure-equivalent work supplied by the internal pump.
+  unit: Pa
+  role: internal
+- name: pressure_drop
+  description: Upstream-minus-throat pressure difference.
+  unit: Pa
+  role: target
+mechanism_probes:
+- probe: pump_pressure
+  description: Pressure-equivalent work supplied by the internal pump.
+  answer: 3*density*flow**2/(25*inlet_area**2*(flow/qref + 1))

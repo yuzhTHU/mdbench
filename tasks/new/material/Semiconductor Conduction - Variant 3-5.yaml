@@ -1,0 +1,112 @@
+task_name: Semiconductor Conduction - Variant 3-5
+task_description: Determine electrical conductivity from temperature and total electron and hole concentrations.
+mutation: Combines variants 3, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: charge = 1.602176634e-19
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Homogeneous stationary low-field transport; total electron and hole pools independently
+    maintained by external injection.
+- formula: tref = 300
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Immobile background charge compensates net carrier charge; equilibrium mass action
+    is not assumed.
+- formula: nref = 1e22
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Trapping and band redistribution conserve the specified carrier pools; synthetic mobility
+    closures apply throughout the sampled temperature range.
+- formula: mue0 = 0.12
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: muh0 = 0.05
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: mu2 = 0.02
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: mobile_electrons = electron_total
+  role: conservation/balance relations
+  description: Mobile electron number density across conducting bands.
+- formula: mobile_holes = hole_total
+  role: conservation/balance relations
+  description: Mobile hole number density.
+- formula: mu_e = mue0*(tref/temp)/(1+0.19*electron_total/nref)
+  role: constitutive/component relations
+  description: Primary-band electron mobility.
+- formula: mu_h = muh0*(tref/temp)
+  role: constitutive/component relations
+  description: Hole mobility.
+- formula: secondary = 0.18*mobile_electrons*(temp/tref)**2/(1+(temp/tref)**2)
+  role: constitutive/component relations
+  description: Secondary-band electron number density.
+- formula: primary = mobile_electrons-secondary
+  role: conservation/balance relations
+  description: Primary-band electron number density.
+- formula: conductivity = charge*(primary*mu_e+mobile_holes*mu_h+secondary*mu2)
+  role: conservation/balance relations
+  description: Electrical conductivity.
+phenomenal_model: conductivity = charge*(9*electron_total*mu2*temp**2/(50*tref**2*(temp**2/tref**2 + 1)) + hole_total*muh0*tref/temp
+  + mue0*tref*(-9*electron_total*temp**2/(50*tref**2*(temp**2/tref**2 + 1)) + electron_total)/(temp*(19*electron_total/(100*nref)
+  + 1)))
+variables:
+- name: temp
+  description: Temperature.
+  unit: K
+  role: input
+  sampling:
+    min: 280
+    max: 600
+    ood_boundary: 440
+    distribution: uniform
+- name: electron_total
+  description: Total electron number density.
+  unit: m^-3
+  role: input
+  sampling:
+    min: 1.0e+20
+    max: 2.0e+22
+    ood_boundary: 5.0e+21
+    distribution: log_uniform
+- name: hole_total
+  description: Total hole number density.
+  unit: m^-3
+  role: input
+  sampling:
+    min: 1.0e+19
+    max: 4.0e+21
+    ood_boundary: 1.0e+21
+    distribution: log_uniform
+- name: mobile_electrons
+  description: Mobile electron number density across conducting bands.
+  unit: m^-3
+  role: internal
+- name: mobile_holes
+  description: Mobile hole number density.
+  unit: m^-3
+  role: internal
+- name: mu_e
+  description: Primary-band electron mobility.
+  unit: m^2 V^-1 s^-1
+  role: internal
+- name: mu_h
+  description: Hole mobility.
+  unit: m^2 V^-1 s^-1
+  role: internal
+- name: secondary
+  description: Secondary-band electron number density.
+  unit: m^-3
+  role: internal
+- name: primary
+  description: Primary-band electron number density.
+  unit: m^-3
+  role: internal
+- name: conductivity
+  description: Electrical conductivity.
+  unit: A V^-1 m^-1
+  role: target
+mechanism_probes:
+- probe: mu_e
+  description: Primary-band electron mobility.
+  answer: mue0*tref/(temp*(19*electron_total/(100*nref) + 1))
+- probe: secondary
+  description: Secondary-band electron number density.
+  answer: 9*electron_total*temp**2/(50*tref**2*(temp**2/tref**2 + 1))

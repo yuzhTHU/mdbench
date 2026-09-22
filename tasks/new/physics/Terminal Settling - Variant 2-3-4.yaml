@@ -1,0 +1,124 @@
+task_name: Terminal Settling - Variant 2-3-4
+task_description: Determine terminal settling speed from particle radius, particle density, fluid density, and fluid viscosity.
+mutation: Combines variants 2, 3, 4 using their shared state and balance equations.
+mechanism_model:
+- formula: grav = 9.81
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Steady downward motion; spherical envelope; positive net downward force; quiescent
+    unbounded Newtonian bath.
+- formula: pi0 = 3.141592653589793
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Bulk Reynolds number is small in the sampling range.
+- formula: scale = 1e-5
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Internal-flow drag is passive and linear in speed, with a synthetic density-dependent
+    hydraulic resistance.
+- formula: volume = 4*pi0*radius**3/3
+  role: kinematic/geometric constraints
+  description: Particle envelope volume.
+- formula: surface_friction = 0
+  role: constitutive/component relations
+  description: Additional linear surface drag coefficient.
+- formula: displacement = volume/(1+0.13*radius/scale)
+  role: kinematic/geometric constraints
+  description: Excluded fluid volume.
+- formula: local_viscosity = viscosity*(1+0.16*radius/scale)
+  role: constitutive/component relations
+  description: Particle-local dynamic viscosity.
+- formula: lift = 0.1*fluid_density*volume*grav*(radius/scale)/(1+radius/scale)
+  role: governing/dynamical laws
+  description: Externally applied upward force.
+- formula: internal_drag = 0
+  role: constitutive/component relations
+  description: Internal-flow drag coefficient.
+- formula: net_force = (particle_density*volume-fluid_density*displacement)*grav-lift
+  role: conservation/balance relations
+  description: Net downward non-drag force.
+- formula: linear_drag = 6*pi0*local_viscosity*radius+surface_friction
+  role: constitutive/component relations
+  description: Total linear drag coefficient.
+- formula: speed = net_force/(linear_drag+internal_drag)
+  role: conservation/balance relations
+  description: Downward terminal settling speed.
+phenomenal_model: speed = (-2*fluid_density*grav*pi0*radius**4/(15*scale*(radius/scale + 1)) + grav*(-4*fluid_density*pi0*radius**3/(3*(13*radius/(100*scale)
+  + 1)) + 4*particle_density*pi0*radius**3/3))/(6*pi0*radius*viscosity*(4*radius/(25*scale) + 1))
+variables:
+- name: radius
+  description: Particle envelope radius.
+  unit: m
+  role: input
+  sampling:
+    min: 2.0e-06
+    max: 2.0e-05
+    ood_boundary: 1.2e-05
+    distribution: log_uniform
+- name: particle_density
+  description: Particle dry mass per envelope volume.
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 1600
+    max: 3200
+    ood_boundary: 2500
+    distribution: uniform
+- name: fluid_density
+  description: Bulk fluid mass density.
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 800
+    max: 1200
+    ood_boundary: 1050
+    distribution: uniform
+- name: viscosity
+  description: Bulk dynamic viscosity.
+  unit: Pa s
+  role: input
+  sampling:
+    min: 0.01
+    max: 0.08
+    ood_boundary: 0.05
+    distribution: uniform
+- name: volume
+  description: Particle envelope volume.
+  unit: m^3
+  role: internal
+- name: surface_friction
+  description: Additional linear surface drag coefficient.
+  unit: kg s^-1
+  role: internal
+- name: displacement
+  description: Excluded fluid volume.
+  unit: m^3
+  role: internal
+- name: local_viscosity
+  description: Particle-local dynamic viscosity.
+  unit: Pa s
+  role: internal
+- name: lift
+  description: Externally applied upward force.
+  unit: N
+  role: internal
+- name: internal_drag
+  description: Internal-flow drag coefficient.
+  unit: kg s^-1
+  role: internal
+- name: net_force
+  description: Net downward non-drag force.
+  unit: N
+  role: internal
+- name: linear_drag
+  description: Total linear drag coefficient.
+  unit: kg s^-1
+  role: internal
+- name: speed
+  description: Downward terminal settling speed.
+  unit: m s^-1
+  role: target
+mechanism_probes:
+- probe: displacement
+  description: Excluded fluid volume.
+  answer: 4*pi0*radius**3/(3*(13*radius/(100*scale) + 1))
+- probe: lift
+  description: Externally applied upward force.
+  answer: 2*fluid_density*grav*pi0*radius**4/(15*scale*(radius/scale + 1))

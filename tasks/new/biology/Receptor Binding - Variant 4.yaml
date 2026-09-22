@@ -1,0 +1,90 @@
+task_name: Receptor Binding - Variant 4
+task_description: Determine surface receptor occupancy from free ligand concentration.
+mutation: Partition ligand into a pericellular compartment.
+mechanism_model:
+- formula: delivery_diffusivity = 1e-09
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: access_ref = 1e-05
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: kd = 0.001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Steady state; extracellular ligand buffered, total receptor number conserved.
+- formula: lref = 0.002
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Occupancy counts surface receptors bearing ligand, not ligand molecules.
+- formula: local_ligand = delivery_flux/removal_speed
+  role: constitutive/component relations
+  description: Pericellular free ligand concentration. Inaccessible-state gating and receptor recycling are driven
+    steady-state processes; do not impose detailed balance on them.
+- formula: affinity = kd
+  role: constitutive/component relations
+  description: Effective receptor dissociation concentration.
+- formula: free = (1)-bound
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: bound = (local_ligand/affinity)*free
+  role: constitutive/component relations
+  description: Singly liganded surface receptor fraction.
+- formula: occupancy = bound
+  role: conservation/balance relations
+  description: Ligand-bearing surface receptor fraction.
+- formula: removal_speed = delivery_diffusivity/access_ref*(0.2*(ligand/lref)**2)
+  role: constitutive/component relations
+  description: Positive uptake coefficient of a maintained local sink in the delivery layer.
+- formula: delivery_flux = delivery_diffusivity*(ligand-local_ligand)/access_length
+  role: constitutive/component relations
+  description: Steady diffusive supply flux from the buffered feed.
+phenomenal_model: occupancy = 1000*ligand/(5000000000*access_length*ligand**2 + 1000*ligand + 1)
+variables:
+- name: access_length
+  role: input
+  unit: m
+  description: Measured thickness of the solution layer between the well-mixed feed and the assay surface.
+  sampling:
+    min: 2.0e-06
+    max: 4.0e-05
+    ood_boundary: 1.2e-05
+    distribution: log_uniform
+- name: ligand
+  description: Free extracellular ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.01
+    ood_boundary: 0.003
+    distribution: log_uniform
+- name: local_ligand
+  description: Pericellular free ligand concentration.
+  unit: mol m^-3
+  role: internal
+- name: affinity
+  description: Effective receptor dissociation concentration.
+  unit: mol m^-3
+  role: internal
+- name: free
+  description: Unbound reference state abundance.
+  unit: '1'
+  role: internal
+- name: bound
+  description: Singly liganded surface receptor fraction.
+  unit: '1'
+  role: internal
+- name: occupancy
+  description: Ligand-bearing surface receptor fraction.
+  unit: '1'
+  role: target
+- name: removal_speed
+  role: internal
+  unit: m s^-1
+  description: Positive uptake coefficient of a maintained local sink in the delivery layer.
+- name: delivery_flux
+  role: internal
+  unit: mol m^-2 s^-1
+  description: Steady diffusive supply flux from the buffered feed.
+mechanism_probes:
+- probe: local_ligand
+  description: Pericellular free ligand concentration.
+  answer: ligand/(5000000000*access_length*ligand**2 + 1)

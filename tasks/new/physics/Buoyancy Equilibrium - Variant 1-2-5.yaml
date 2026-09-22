@@ -1,0 +1,124 @@
+task_name: Buoyancy Equilibrium - Variant 1-2-5
+task_description: Determine equilibrium immersion depth from dry mass, reference cross-sectional area, and bulk
+  fluid density.
+mutation: Combines variants 1, 2, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: calibration_load = 0.15
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: rho0 = 1000
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Attached cavity remains submerged and contributes no additional mass.
+- formula: mref = 0.5
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Absorbed material adds mass without changing the specified displaced volume;
+    local density and geometry closures are externally controlled.
+- formula: cavity0 = 0.00001
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: force0 = 0.2
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: absorbed_mass = 0.12*dry_mass*density/rho0
+  role: constitutive/component relations
+  description: Mass retained in the internal absorption compartment.
+- formula: cavity_volume = cavity0*dry_mass/(dry_mass+mref)
+  role: kinematic/geometric constraints
+  description: Submerged sealed-cavity volume.
+- formula: local_density = density
+  role: constitutive/component relations
+  description: Local supporting-fluid mass density.
+- formula: effective_area = area
+  role: kinematic/geometric constraints
+  description: Immersed body cross-sectional area.
+- formula: magnetic_force = force0*(dry_mass/mref)**2/(1+density/rho0)
+  role: governing/dynamical laws
+  description: Externally applied downward magnetic force.
+- formula: support_force = (dry_mass+absorbed_mass)*grav+magnetic_force+calibration_load
+  role: conservation/balance relations
+  description: Required upward supporting force.
+- formula: displaced_volume = support_force/(local_density*grav)
+  role: conservation/balance relations
+  description: Total excluded supporting-fluid volume.
+- formula: depth = (displaced_volume-cavity_volume)/effective_area
+  role: kinematic/geometric constraints
+  description: Equilibrium main-body immersion depth.
+phenomenal_model: depth = (-dry_mass/(2*dry_mass + 1) + 2*(3*density**2*dry_mass*grav + 28000*density*dry_mass*grav
+  + 3750*density + 20000000*dry_mass**2 + 25000000*dry_mass*grav + 3750000)/(density*grav*(density + 1000)))/(50000*area)
+variables:
+- name: grav
+  role: input
+  unit: m s^-2
+  description: Controlled effective gravity; the float also carries a calibrated constant 0.15 N downward actuator
+    load.
+  sampling:
+    min: 4
+    max: 16
+    ood_boundary: 10
+    distribution: uniform
+- name: dry_mass
+  description: Dry body mass.
+  unit: kg
+  role: input
+  sampling:
+    min: 0.1
+    max: 1
+    ood_boundary: 0.65
+    distribution: uniform
+- name: area
+  description: Reference body cross-sectional area.
+  unit: m^2
+  role: input
+  sampling:
+    min: 0.001
+    max: 0.008
+    ood_boundary: 0.005
+    distribution: uniform
+- name: density
+  description: Bulk supporting-fluid density.
+  unit: kg m^-3
+  role: input
+  sampling:
+    min: 800
+    max: 1300
+    ood_boundary: 1100
+    distribution: uniform
+- name: absorbed_mass
+  description: Mass retained in the internal absorption compartment.
+  unit: kg
+  role: internal
+- name: cavity_volume
+  description: Submerged sealed-cavity volume.
+  unit: m^3
+  role: internal
+- name: local_density
+  description: Local supporting-fluid mass density.
+  unit: kg m^-3
+  role: internal
+- name: effective_area
+  description: Immersed body cross-sectional area.
+  unit: m^2
+  role: internal
+- name: magnetic_force
+  description: Externally applied downward magnetic force.
+  unit: N
+  role: internal
+- name: support_force
+  description: Required upward supporting force.
+  unit: N
+  role: internal
+- name: displaced_volume
+  description: Total excluded supporting-fluid volume.
+  unit: m^3
+  role: internal
+- name: depth
+  description: Equilibrium main-body immersion depth.
+  unit: m
+  role: target
+mechanism_probes:
+- probe: absorbed_mass
+  description: Mass retained in the internal absorption compartment.
+  answer: 3*density*dry_mass/25000
+- probe: magnetic_force
+  description: Externally applied downward magnetic force.
+  answer: 800*dry_mass**2/(density + 1000)

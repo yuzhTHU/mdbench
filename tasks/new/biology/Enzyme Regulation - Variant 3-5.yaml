@@ -1,0 +1,101 @@
+task_name: Enzyme Regulation - Variant 3-5
+task_description: Determine metabolic production flux from substrate, regulator, and total enzyme concentrations.
+mutation: Combines variants 3, 5 using their shared state and balance equations.
+mechanism_model:
+- formula: ks = 0.01
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Buffered substrate and regulator; conserved enzyme pool; rapid state equilibration
+    relative to turnover.
+- formula: ki = 0.003
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Only the singly substrate-bound state is catalytic.
+- formula: kcat = 20
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Dormant-state gating and partition closures are driven synthetic controls.
+- formula: local_substrate = substrate/(1+0.2*(regulator/ki)*(substrate/ks))
+  role: constitutive/component relations
+  description: Enzyme-local free substrate concentration.
+- formula: turnover = kcat
+  role: constitutive/component relations
+  description: Catalytic turnover frequency.
+- formula: free_enzyme = (enzyme_total)-es-ei-dormant
+  role: conservation/balance relations
+  description: Unbound reference state abundance.
+- formula: es = (local_substrate/ks)*free_enzyme
+  role: constitutive/component relations
+  description: Catalytic enzyme-substrate complex concentration.
+- formula: ei = (regulator/ki)*free_enzyme
+  role: constitutive/component relations
+  description: Enzyme-regulator complex concentration.
+- formula: dormant = (0.22*substrate/(ks+substrate)*(1+regulator/ki))*free_enzyme
+  role: constitutive/component relations
+  description: Dormant unbound enzyme concentration.
+- formula: flux = turnover*es
+  role: governing/dynamical laws
+  description: Metabolic production flux.
+phenomenal_model: flux = enzyme_total*kcat*substrate/(ks*(1 + regulator*substrate/(5*ki*ks))*(11*substrate*(1 + regulator/ki)/(50*(ks
+  + substrate)) + 1 + substrate/(ks*(1 + regulator*substrate/(5*ki*ks))) + regulator/ki))
+variables:
+- name: substrate
+  description: Free substrate concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.0001
+    max: 0.06
+    ood_boundary: 0.02
+    distribution: log_uniform
+- name: regulator
+  description: Free regulator concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-05
+    max: 0.02
+    ood_boundary: 0.006
+    distribution: log_uniform
+- name: enzyme_total
+  description: Total enzyme concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 1.0e-07
+    max: 5.0e-06
+    ood_boundary: 2.0e-06
+    distribution: log_uniform
+- name: local_substrate
+  description: Enzyme-local free substrate concentration.
+  unit: mol m^-3
+  role: internal
+- name: turnover
+  description: Catalytic turnover frequency.
+  unit: s^-1
+  role: internal
+- name: free_enzyme
+  description: Unbound reference state abundance.
+  unit: mol m^-3
+  role: internal
+- name: es
+  description: Catalytic enzyme-substrate complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: ei
+  description: Enzyme-regulator complex concentration.
+  unit: mol m^-3
+  role: internal
+- name: dormant
+  description: Dormant unbound enzyme concentration.
+  unit: mol m^-3
+  role: internal
+- name: flux
+  description: Metabolic production flux.
+  unit: mol m^-3 s^-1
+  role: target
+mechanism_probes:
+- probe: dormant
+  description: Dormant unbound enzyme concentration.
+  answer: 11*enzyme_total*substrate*(1 + regulator/ki)/(50*(ks + substrate)*(11*substrate*(1 + regulator/ki)/(50*(ks + substrate))
+    + 1 + substrate/(ks*(1 + regulator*substrate/(5*ki*ks))) + regulator/ki))
+- probe: local_substrate
+  description: Enzyme-local free substrate concentration.
+  answer: substrate/(1 + regulator*substrate/(5*ki*ks))

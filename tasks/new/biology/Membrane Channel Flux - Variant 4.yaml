@@ -1,0 +1,135 @@
+task_name: Membrane Channel Flux - Variant 4
+task_description: Determine membrane ionic current density from membrane voltage and reservoir ion concentrations.
+mutation: Make channel permeability voltage-dependent.
+mechanism_model:
+- formula: gate_rate = 20
+  role: auxiliary/regime constraints
+  description: Fixed calibrated apparatus or constitutive coefficient; units follow the surrounding relations.
+- formula: faraday = 96485.33212
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Stationary constant-field electrodiffusion; inside-minus-outside voltage;
+    outward conventional current positive.
+- formula: gas = 8.314462618
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Temperature fixed at 300 K; measured concentrations refer to the primary
+    monovalent species.
+- formula: temp0 = 300
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient. Secondary monovalent concentrations are 0.1 times measured inside and 0.25
+    times measured outside concentrations; both permeation pathways share gating.
+- formula: vref = 0.04
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: perm0 = 1e-7
+  role: auxiliary/regime constraints
+  description: Fixed model coefficient.
+- formula: local_inside = inside
+  role: constitutive/component relations
+  description: Intracellular channel-mouth monovalent ion concentration.
+- formula: permeability = perm0/(1+0.13*(voltage/vref)**2)
+  role: constitutive/component relations
+  description: Open-channel monovalent permeability.
+- formula: closed_state = 1-open_state
+  role: conservation/balance relations
+  description: Closed-channel probability.
+- formula: open_state = (gate_rate*(0.5)*closed_state+replacement_rate*preparation_fraction)/(gate_rate+replacement_rate)
+  role: constitutive/component relations
+  description: Open-channel probability.
+- formula: drive = faraday*voltage/(gas*temp0)
+  role: constitutive/component relations
+  description: Dimensionless membrane electrochemical voltage.
+- formula: mono_drive = drive*(local_inside-outside*exp(-drive))/(1-exp(-drive))
+  role: governing/dynamical laws
+  description: Monovalent constant-field concentration driving factor.
+- formula: mono_current = faraday*permeability*open_state*mono_drive
+  role: governing/dynamical laws
+  description: Monovalent ionic current density.
+- formula: current_density = mono_current
+  role: conservation/balance relations
+  description: Outward membrane ionic current density.
+phenomenal_model: current_density = 5818387071441689809*voltage*(inside*exp(482426660600*voltage/12471693927) -
+  outside)*(preparation_fraction*replacement_rate + 10)/(3897404352187500000*(replacement_rate + 30)*(325*voltage**2
+  + 4)*(exp(482426660600*voltage/12471693927) - 1))
+variables:
+- name: preparation_fraction
+  role: input
+  unit: '1'
+  description: Independently measured conducting fraction in the replacement batch immediately before introduction;
+    the remaining fraction is closed.
+  sampling:
+    min: 0.05
+    max: 0.85
+    ood_boundary: 0.4
+    distribution: uniform
+- name: replacement_rate
+  role: input
+  unit: s^-1
+  description: Steady replacement rate of assayed channels by a prepared batch, keeping total channel count fixed.
+  sampling:
+    min: 0.2
+    max: 80
+    ood_boundary: 15
+    distribution: log_uniform
+- name: voltage
+  description: Inside-minus-outside membrane voltage.
+  unit: V
+  role: input
+  sampling:
+    min: 0.01
+    max: 0.08
+    ood_boundary: 0.05
+    distribution: uniform
+- name: inside
+  description: Intracellular monovalent ion concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 5
+    max: 20
+    ood_boundary: 14
+    distribution: uniform
+- name: outside
+  description: Extracellular monovalent ion concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 100
+    max: 200
+    ood_boundary: 160
+    distribution: uniform
+- name: local_inside
+  description: Intracellular channel-mouth monovalent ion concentration.
+  unit: mol m^-3
+  role: internal
+- name: permeability
+  description: Open-channel monovalent permeability.
+  unit: m s^-1
+  role: internal
+- name: closed_state
+  description: Closed-channel probability.
+  unit: '1'
+  role: internal
+- name: open_state
+  description: Open-channel probability.
+  unit: '1'
+  role: internal
+- name: drive
+  description: Dimensionless membrane electrochemical voltage.
+  unit: '1'
+  role: internal
+- name: mono_drive
+  description: Monovalent constant-field concentration driving factor.
+  unit: mol m^-3
+  role: internal
+- name: mono_current
+  description: Monovalent ionic current density.
+  unit: A m^-2
+  role: internal
+- name: current_density
+  description: Outward membrane ionic current density.
+  unit: A m^-2
+  role: target
+mechanism_probes:
+- probe: permeability
+  description: Open-channel monovalent permeability.
+  answer: 4/(3250000000*voltage**2 + 40000000)

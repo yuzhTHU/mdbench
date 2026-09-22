@@ -1,0 +1,160 @@
+task_name: Reversible Association Relaxation - Variant 1-4-5
+task_description: Determine the Laplace-weighted stable bound-molecule concentration after mixing initially unassociated
+  molecules with buffered ligand.
+mutation: Combines variants 1, 4, 5 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: ligand_ratio = ligand/concentration_scale
+  description: Dimensionless buffered free ligand concentration.
+  role: constitutive/component relations
+- formula: binding_rate = rate_scale*(1.1*ligand_ratio*(1+(0.23/1.1)*ligand_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: desorption_rate = rate_scale*(0.67*(1+(0.23/1.1)*ligand_ratio))
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: precursor_binding = rate_scale*(1.43)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: precursor_return = rate_scale*(0.48)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: second_binding_rate = rate_scale*(0.38*ligand_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: second_unbinding_rate = rate_scale*(0.94)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: binding_flux = binding_rate*unoccupied_pool
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  role: constitutive/component relations
+- formula: laplace_rate*unoccupied_pool+binding_flux = laplace_rate*(molecule_total)+desorption_rate*precursor_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*bound_pool+precursor_return*bound_pool+second_binding_rate*bound_pool = 0+precursor_binding*precursor_pool+second_unbinding_rate*double_bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*precursor_pool+desorption_rate*precursor_pool+precursor_binding*precursor_pool = 0+binding_flux+precursor_return*bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*double_bound_pool+second_unbinding_rate*double_bound_pool = 0+second_binding_rate*bound_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: response = bound_pool+double_bound_pool
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  role: conservation/balance relations
+phenomenal_model: response = (laplace_rate*ligand*(9044750*ligand*molecule_total + 43257500*molecule_total) + ligand*(ligand*(3437005*ligand*molecule_total
+  + 24939915*molecule_total) + 40662050*molecule_total))/(laplace_rate*(laplace_rate*(27500000*laplace_rate + ligand*(6325000*ligand
+  + 44552500) + 96800000) + ligand*(ligand*(2403500*ligand + 30985200) + 113628050) + 75537000) + ligand*(ligand*(3437005*ligand
+  + 27793755) + 56049098) + 8313360)
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: ligand
+  description: Buffered free adsorbate or ligand concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.04
+    ood_boundary: 1.8
+    max: 5
+    distribution: log_uniform
+- name: ligand_ratio
+  description: Dimensionless buffered free ligand concentration.
+  unit: '1'
+  role: internal
+- name: molecule_total
+  description: Conserved concentration of initially unassociated binding molecules.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.0001
+    ood_boundary: 0.001
+    max: 0.004
+    distribution: log_uniform
+- name: binding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: desorption_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: precursor_binding
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: precursor_return
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: second_binding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: second_unbinding_rate
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: unoccupied_pool
+  description: Laplace-weighted free molecule concentration.
+  unit: mol m^-3
+  role: internal
+- name: bound_pool
+  description: Laplace-weighted primary bound-state population.
+  unit: mol m^-3
+  role: internal
+- name: precursor_pool
+  description: Laplace-weighted reversible encounter-complex population.
+  unit: mol m^-3
+  role: internal
+- name: double_bound_pool
+  description: Laplace-weighted population carrying a second ligand.
+  unit: mol m^-3
+  role: internal
+- name: binding_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  unit: mol m^-3 s^-1
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: mol m^-3
+  role: target
+mechanism_probes:
+- probe: double_bound_pool
+  description: Laplace-weighted population carrying a second ligand.
+  answer: ligand**2*(3437005*ligand*molecule_total + 16437850*molecule_total)/(laplace_rate*(laplace_rate*(27500000*laplace_rate
+    + ligand*(6325000*ligand + 44552500) + 96800000) + ligand*(ligand*(2403500*ligand + 30985200) + 113628050) +
+    75537000) + ligand*(ligand*(3437005*ligand + 27793755) + 56049098) + 8313360)
+- probe: binding_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  answer: (laplace_rate*(laplace_rate*(laplace_rate*ligand*(316250000*ligand*molecule_total + 1512500000*molecule_total)
+    + ligand*(ligand*(164478750*ligand*molecule_total + 1899837500*molecule_total) + 5324000000*molecule_total))
+    + ligand*(ligand*(ligand*(16835425*ligand*molecule_total + 395796075*molecule_total) + 2376530750*molecule_total)
+    + 4154535000*molecule_total)) + ligand*(ligand*(19989852*ligand*molecule_total + 191207280*molecule_total) +
+    457234800*molecule_total))/(laplace_rate*(laplace_rate*(1375000000*laplace_rate + ligand*(316250000*ligand +
+    2227625000) + 4840000000) + ligand*(ligand*(120175000*ligand + 1549260000) + 5681402500) + 3776850000) + ligand*(ligand*(171850250*ligand
+    + 1389687750) + 2802454900) + 415668000)
+- probe: precursor_pool
+  description: Laplace-weighted reversible encounter-complex population.
+  answer: (laplace_rate*(laplace_rate*ligand*(6325000*ligand*molecule_total + 30250000*molecule_total) + ligand*(ligand*(2403500*ligand*molecule_total
+    + 20476500*molecule_total) + 42955000*molecule_total)) + ligand*(2853840*ligand*molecule_total + 13648800*molecule_total))/(laplace_rate*(laplace_rate*(27500000*laplace_rate
+    + ligand*(6325000*ligand + 44552500) + 96800000) + ligand*(ligand*(2403500*ligand + 30985200) + 113628050) +
+    75537000) + ligand*(ligand*(3437005*ligand + 27793755) + 56049098) + 8313360)

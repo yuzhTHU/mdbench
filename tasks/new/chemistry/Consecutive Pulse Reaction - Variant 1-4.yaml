@@ -1,0 +1,132 @@
+task_name: Consecutive Pulse Reaction - Variant 1-4
+task_description: Determine the Laplace-weighted final-product rate following a reactant pulse into a homogeneous
+  solution containing buffered cosubstrate.
+mutation: Combines variants 1, 4 with shared balances and the same measurement protocol.
+mechanism_model:
+- formula: rate_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: concentration_scale = 1
+  role: auxiliary/regime constraints
+  description: Fixed synthetic coefficient; SI units are specified by the surrounding physical relations.
+- formula: cosubstrate_ratio = cosubstrate/concentration_scale
+  description: Dimensionless buffered cosubstrate concentration.
+  role: constitutive/component relations
+- formula: first_conversion = rate_scale*(0.86*cosubstrate_ratio)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: reverse_conversion = rate_scale*(0.32)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: final_conversion = rate_scale*(1.71)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: storage_conversion = rate_scale*(0.36)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: storage_release = rate_scale*(0.58)
+  description: Pseudo-first-order transition frequency.
+  role: constitutive/component relations
+- formula: reverse_flux = reverse_conversion*intermediate_pool
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  role: constitutive/component relations
+- formula: laplace_rate*reactant_pool+first_conversion*reactant_pool = laplace_rate*(dose)+reverse_flux
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*intermediate_pool+reverse_flux+final_conversion*intermediate_pool+storage_conversion*intermediate_pool
+    = 0+first_conversion*reactant_pool+storage_release*stored_intermediate
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: laplace_rate*stored_intermediate+storage_release*stored_intermediate = 0+storage_conversion*intermediate_pool
+  role: conservation/balance relations
+  description: Exact Laplace transform of the local population balance with the stated initially unoccupied or unreacted
+    preparation.
+- formula: response = final_conversion*intermediate_pool
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  role: conservation/balance relations
+phenomenal_model: response = cosubstrate*dose*laplace_rate*(367650*laplace_rate + 213237)/(cosubstrate*(laplace_rate*(215000*laplace_rate
+  + 569750) + 213237) + laplace_rate*(laplace_rate*(250000*laplace_rate + 742500) + 294350))
+variables:
+- name: laplace_rate
+  description: Positive transform rate s; population and pulse-rate readouts use s times integral exp(-s*t) times
+    signal; electrical readouts use transform ratios.
+  unit: s^-1
+  role: input
+  sampling:
+    min: 0.03
+    ood_boundary: 5
+    max: 35
+    distribution: log_uniform
+- name: cosubstrate
+  description: Buffered cosubstrate concentration during the reaction pulse.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.07
+    ood_boundary: 1.7
+    max: 5
+    distribution: log_uniform
+- name: dose
+  description: Initial primary-reactant concentration.
+  unit: mol m^-3
+  role: input
+  sampling:
+    min: 0.0002
+    ood_boundary: 0.002
+    max: 0.008
+    distribution: log_uniform
+- name: cosubstrate_ratio
+  description: Dimensionless buffered cosubstrate concentration.
+  unit: '1'
+  role: internal
+- name: first_conversion
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: reverse_conversion
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: final_conversion
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: storage_conversion
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: storage_release
+  description: Pseudo-first-order transition frequency.
+  unit: s^-1
+  role: internal
+- name: reactant_pool
+  description: Laplace-weighted initial reactant concentration.
+  unit: mol m^-3
+  role: internal
+- name: intermediate_pool
+  description: Laplace-weighted primary intermediate concentration.
+  unit: mol m^-3
+  role: internal
+- name: stored_intermediate
+  description: Laplace-weighted off-pathway stored intermediate concentration.
+  unit: mol m^-3
+  role: internal
+- name: reverse_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  unit: mol m^-3 s^-1
+  role: internal
+- name: response
+  description: Laplace-weighted measured response; the same readout is used for every family member.
+  unit: mol m^-3 s^-1
+  role: target
+mechanism_probes:
+- probe: reverse_flux
+  description: Laplace-weighted molar transfer flux for this elementary channel.
+  answer: cosubstrate*dose*laplace_rate*(68800*laplace_rate + 39904)/(cosubstrate*(laplace_rate*(215000*laplace_rate
+    + 569750) + 213237) + laplace_rate*(laplace_rate*(250000*laplace_rate + 742500) + 294350))
+- probe: stored_intermediate
+  description: Laplace-weighted off-pathway stored intermediate concentration.
+  answer: 77400*cosubstrate*dose*laplace_rate/(cosubstrate*(laplace_rate*(215000*laplace_rate + 569750) + 213237)
+    + laplace_rate*(laplace_rate*(250000*laplace_rate + 742500) + 294350))
