@@ -33,7 +33,7 @@
   "benchmark": {
     "name": "MechanismDiscoveryBench",
     "split": "full_set_minus_core_set",
-    "task_count": 429,
+    "task_count": 432,
     "domains": [
       "biology",
       "chemistry",
@@ -63,6 +63,38 @@
         "reasoning_effort": "xhigh",
         "seed": 0,
         "parallel_tasks": 16,
+        "timeout": 900,
+        "probe_timeout": 120,
+        "probe_workers": 1,
+        "feedback_workers": 1,
+        "windows_sandbox": "elevated",
+        "filesystem": "minimal OS + Python + per-task workspace",
+        "network_enabled": true,
+        "network_proxy": false,
+        "web_search": "disabled",
+        "peer_workspace_enforcement": "prompt-only; native Windows sandbox shares identities",
+        "browser_use": false,
+        "computer_use": false,
+        "prompt_boundaries": "\n# Benchmark isolation requirements\nDo not search the web or use any search engine, browser, or external reference.\nDo not fetch scientific explanations, solutions, papers, or benchmark source code.\nOnly read task files within the current workspace. Do not inspect parent folders,\nother tasks, repository files, private answers, environment secrets or credentials.\nThe installed Python environment is available only to execute scientific libraries;\ndo not search installed packages or their editable-source links for benchmark code.\nNetwork capability is available for the specified local feedback API. It does not\nauthorize online research. Do not attempt to bypass sandbox restrictions.\n",
+        "transport": "openai_http",
+        "working_file": "submission.txt",
+        "evaluation_only": false,
+        "discovery_rerun": true
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\_retries\\fill_missing_20260924_01\\run_config.json",
+        "file_sha256": "2cafefffb1c13f933f28e8d079d51b89d121cc391d97456482093201fda63a54"
+      },
+      "configuration": {
+        "algorithm": "codex",
+        "model": "gpt-5.6-sol",
+        "selection": "fullset-remainder",
+        "worker_wall_limit": 3600,
+        "reasoning_effort": "xhigh",
+        "seed": 0,
+        "parallel_tasks": 3,
         "timeout": 900,
         "probe_timeout": 120,
         "probe_workers": 1,
@@ -515,13 +547,26 @@
       "Vacancy Diffusion - Variant 3-4",
       "Vacancy Diffusion - Variant 3-5",
       "Vacancy Diffusion - Variant 3",
-      "Vacancy Diffusion - Variant 4"
+      "Vacancy Diffusion - Variant 4",
+      "Allosteric Regulation - Variant 1-4",
+      "Allosteric Regulation - Variant 3-5",
+      "Composite Heat Transport - Variant 1-2-3-4-5"
+    ],
+    "supplemental_runs": [
+      {
+        "root": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\_retries\\fill_missing_20260924_01",
+        "selected_tasks": [
+          "Allosteric Regulation - Variant 1-4",
+          "Allosteric Regulation - Variant 3-5",
+          "Composite Heat Transport - Variant 1-2-3-4-5"
+        ]
+      }
     ]
   },
   "result_counts": {
-    "imported": 429,
+    "imported": 432,
     "with_runtime_errors": 10,
-    "with_complete_token_usage": 49
+    "with_complete_token_usage": 50
   },
   "notes": [
     "Selected latest results, not an independent rerun or a best-score selection.",
@@ -533,6 +578,10 @@
     {
       "updated_at": "2026-09-24T04:04:25.971060+00:00",
       "update_message": "Imported setup from recorded arguments and run configurations."
+    },
+    {
+      "updated_at": "2026-09-24T09:17:24.872772+00:00",
+      "update_message": "Added three completed gpt-5.6-sol xhigh Codex sandbox runs from supplemental three-worker batch."
     }
   ]
 }
