@@ -1,0 +1,244 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.0280337855219841,
+  "evaluation_seconds": 324.31136106699705,
+  "evaluation": {
+    "task_name": "Competitive Inhibition Pulse Reaction - Variant 1-2-3",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.639382936996508e-21,
+        "mse": 6.677461837006761e-41,
+        "rmse": 8.171573800074721e-21,
+        "mape": 1.329295765317132e-16,
+        "r2": 1.0,
+        "nrmse": 1.9163350629658924e-16,
+        "max_absolute_error": 8.131516293641283e-20,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.886822436713171e-21,
+        "mse": 7.184024505627553e-41,
+        "rmse": 8.475862496305348e-21,
+        "mape": 1.3611984146946121e-16,
+        "r2": 1.0,
+        "nrmse": 1.9791443245403062e-16,
+        "max_absolute_error": 8.131516293641283e-20,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 9.296186596115946e-21,
+        "mse": 2.4983057518486403e-40,
+        "rmse": 1.5806029709729892e-20,
+        "mape": 1.6792703867626546e-16,
+        "r2": 1.0,
+        "nrmse": 2.136964263685415e-16,
+        "max_absolute_error": 8.131516293641283e-20,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "response": "182*enzyme_total*substrate*(100*laplace_rate + 61)*(14*substrate + 95)/(10*inhibitor*(9*inhibitor*(5*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 364*substrate + 3419) + 230*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 16744*substrate + 157274) + 25*laplace_rate*(400*laplace_rate*(25*laplace_rate + 42*substrate + 146) + 112*substrate*(35*substrate + 719) + 100283) + 4270*substrate*(14*substrate + 251) + 1042795)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "free_enzyme",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "inhibitor_complex",
+        "ok": true,
+        "reply": "inhibitor_complex = enzyme_total*(2*inhibitor*(9*inhibitor*(5*laplace_rate*(100*laplace_rate+28*substrate+523)+364*substrate+3419)+230*laplace_rate*(100*laplace_rate+28*substrate+523)+16744*substrate+157274))/(5*(2*inhibitor*(9*inhibitor*(5*laplace_rate*(100*laplace_rate+28*substrate+523)+364*substrate+3419)+230*laplace_rate*(100*laplace_rate+28*substrate+523)+16744*substrate+157274)+5*laplace_rate*(400*laplace_rate*(25*laplace_rate+42*substrate+146)+112*substrate*(35*substrate+719)+100283)+854*substrate*(14*substrate+251)+208559))",
+        "expression": "2*enzyme_total*inhibitor*(9*inhibitor*(5*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 364*substrate + 3419) + 230*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 16744*substrate + 157274)/(10*inhibitor*(9*inhibitor*(5*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 364*substrate + 3419) + 230*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 16744*substrate + 157274) + 25*laplace_rate*(400*laplace_rate*(25*laplace_rate + 42*substrate + 146) + 112*substrate*(35*substrate + 719) + 100283) + 4270*substrate*(14*substrate + 251) + 1042795)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.2660930628110865e-05,
+            "mse": 1.3691597143882957e-09,
+            "rmse": 3.700215823959862e-05,
+            "mape": 0.8000000000000002,
+            "r2": -0.024099192488822085,
+            "nrmse": 0.8,
+            "max_absolute_error": 0.00020469473191503975,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.4086216449626634e-05,
+            "mse": 1.372311706546422e-09,
+            "rmse": 3.704472575882324e-05,
+            "mape": 0.8000000000000002,
+            "r2": -0.10870653517748807,
+            "nrmse": 0.7999999999999999,
+            "max_absolute_error": 0.00018356254348150848,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 8.160083171802046e-05,
+            "mse": 8.85063131640407e-09,
+            "rmse": 9.40777939601268e-05,
+            "mape": 0.8000000000000002,
+            "r2": -1.584201878882987,
+            "nrmse": 0.8,
+            "max_absolute_error": 0.00029340250355605477,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "product_complex",
+        "ok": true,
+        "reply": "product_complex = enzyme_total*substrate*(100*laplace_rate + 61)*(14*substrate + 95)/(5*(2*inhibitor*(9*inhibitor*(5*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 364*substrate + 3419) + 230*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 16744*substrate + 157274) + 5*laplace_rate*(400*laplace_rate*(25*laplace_rate + 42*substrate + 146) + 112*substrate*(35*substrate + 719) + 100283) + 854*substrate*(14*substrate + 251) + 208559))",
+        "expression": "enzyme_total*substrate*(100*laplace_rate + 61)*(14*substrate + 95)/(10*inhibitor*(9*inhibitor*(5*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 364*substrate + 3419) + 230*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 16744*substrate + 157274) + 25*laplace_rate*(400*laplace_rate*(25*laplace_rate + 42*substrate + 146) + 112*substrate*(35*substrate + 719) + 100283) + 4270*substrate*(14*substrate + 251) + 1042795)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.0229973922824842e-05,
+            "mse": 2.6135085686214157e-10,
+            "rmse": 1.6166349521835212e-05,
+            "mape": 0.9857142857142858,
+            "r2": -0.6205454550571277,
+            "nrmse": 0.9857142857142858,
+            "max_absolute_error": 9.195155909113557e-05,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.0350193972196184e-05,
+            "mse": 2.6361388406619624e-10,
+            "rmse": 1.6236190565098585e-05,
+            "mape": 0.9857142857142858,
+            "r2": -0.6367829526205517,
+            "nrmse": 0.9857142857142859,
+            "max_absolute_error": 8.01867756108011e-05,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.1807462465191935e-05,
+            "mse": 7.863329496543707e-10,
+            "rmse": 2.8041628869492774e-05,
+            "mape": 0.9857142857142858,
+            "r2": -1.4585154339424,
+            "nrmse": 0.9857142857142855,
+            "max_absolute_error": 9.708347649451338e-05,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 324.38061760924757,
+  "ok": false,
+  "submission": "response = 182*enzyme_total*substrate*(100*laplace_rate + 61)*(14*substrate + 95)/(5*(2*inhibitor*(9*inhibitor*(5*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 364*substrate + 3419) + 230*laplace_rate*(100*laplace_rate + 28*substrate + 523) + 16744*substrate + 157274) + 5*laplace_rate*(400*laplace_rate*(25*laplace_rate + 42*substrate + 146) + 112*substrate*(35*substrate + 719) + 100283) + 854*substrate*(14*substrate + 251) + 208559))\n",
+  "cost_in_USD": 0.009106748,
+  "used_token": {
+    "input": 3303,
+    "output": 25346,
+    "reason": 25190,
+    "cached": 256,
+    "total": 28649
+  },
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/performance.json",
+    "file_sha256": "56290a8bdceaeae824de8599977e36155a3566aa5979345690f11692a722a80a",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3",
+    "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/chemistry/Competitive Inhibition Pulse Reaction/Competitive Inhibition Pulse Reaction - Variant 1-2-3.yaml",
+    "task_definition_sha256": "524372912b2de874067943d81918d82db7ab785cfe6a1f8bd1e5d1c8fa52611d",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/manifest.json",
+    "manifest_job_id": "164-Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3",
+    "source_experiment": "reference_full_missing",
+    "transformation": null,
+    "supplemental": {
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/submission.txt",
+        "file_sha256": "20c90d3eca916cfc36e2900afd2bc230989c7f0255c2bf04984761418585a5d5"
+      },
+      "probe_responses": [
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/000-free_enzyme/response-attempt-1.json",
+          "file_sha256": "a631cd55fd1a34d1358348571c5253cde5498cb492e650dc7495501fb439b656"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/000-free_enzyme/response-attempt-2.json",
+          "file_sha256": "e0967f90479ee0c0a58dc643ea3655b01bd53e50160ed02a79eb64112f89767a"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/000-free_enzyme/response-attempt-3.json",
+          "file_sha256": "b2d619b3bd2285a40c552c760660b90a57f0c6cfb3809f1f0986a45d3a695599"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/000-free_enzyme/response-attempt-4.json",
+          "file_sha256": "02f2054ca9b62e4a9959049574b8be3e6be31373734e6ceaf97b016111a7d7a6"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/001-inhibitor_complex/response-attempt-1.json",
+          "file_sha256": "03e5c8c0d7187ff942bcd208ffa61fff6a5bf8d0cb905f7b9740d7200c99b803"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/001-inhibitor_complex/response-attempt-2.json",
+          "file_sha256": "003e20a04aec78f8ef96636c7f9bb5d6c67a26b6094d8a46aa7a8e220c7b6865"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/001-inhibitor_complex/response-attempt-3.json",
+          "file_sha256": "2c82b3f158c42ed912729ad5236d6b7ede801341e8d9b5e21f63a961972ee981"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/002-product_complex/response-attempt-1.json",
+          "file_sha256": "de7fd4607935702a2da16fd254e5f7e31cc078ff27b6bac2d299a62394d725ee"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2-3/probe/002-product_complex/response-attempt-2.json",
+          "file_sha256": "6276dc2eb007cccd9f97f20cea30ff7320fa242e543fc419d950ce5754ff65fe"
+        }
+      ]
+    }
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T16:24:08.157828+08:00",
+      "generator": "playground/sync_pysr_results.py@sha256:1112db15268a4b07",
+      "update_message": "Copied performance.json and added source provenance, submission, and measured OpenRouter probe cost/token usage; metrics were not recomputed."
+    }
+  ]
+}

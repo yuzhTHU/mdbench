@@ -1,0 +1,173 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.034538665786385536,
+  "evaluation_seconds": 38.67472227104008,
+  "evaluation": {
+    "task_name": "Composite Heat Transport - Variant 1-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.092229109024629e-13,
+        "mse": 1.8668690943497567e-24,
+        "rmse": 1.3663341810661683e-12,
+        "mape": 1.2924161244145808e-16,
+        "r2": 1.0,
+        "nrmse": 1.8028863353149743e-16,
+        "max_absolute_error": 7.275957614183426e-12,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.183178579201922e-13,
+        "mse": 1.752950814364719e-24,
+        "rmse": 1.3239904887742659e-12,
+        "mape": 1.3125633639192794e-16,
+        "r2": 1.0,
+        "nrmse": 1.703054326862514e-16,
+        "max_absolute_error": 7.275957614183426e-12,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.1427800927776843e-12,
+        "mse": 2.4800942715871153e-24,
+        "rmse": 1.5748315057767658e-12,
+        "mape": 1.4162166801880228e-16,
+        "r2": 1.0,
+        "nrmse": 1.9097822725172728e-16,
+        "max_absolute_error": 5.4569682106375694e-12,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "heat_flux": "delta_temp*(-3*fraction*(fraction - 1)*(fraction*(delta_temp + 500) - 2000*fraction + 2000) - 200000*length**2*(fraction - 1)**2 - 200*length**2*(fraction - 1)*(fraction*(delta_temp + 500) - 2000*fraction + 2000) + 20000)/(10*length*(fraction*(delta_temp + 500) - 2000*fraction + 2000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "ka",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one ka equation; received: 'ka = ( -3*fraction*(fraction-1)*(fraction*(delta_temp+500) - 2000*fraction + 2000) - 200000*length^2*(fraction-1)^2'",
+        "error_type": "ValueError"
+      },
+      {
+        "probe": "source_flux",
+        "ok": true,
+        "reply": "source_flux = delta_temp*(-3*fraction*(fraction - 1)*(fraction*(delta_temp + 500) - 2000*fraction + 2000) - 200000*length**2*(fraction - 1)**2 - 200*length**2*(fraction - 1)*(fraction*(delta_temp + 500) - 2000*fraction + 2000) + 20000)/(10*length*(fraction*(delta_temp + 500) - 2000*fraction + 2000))",
+        "expression": "delta_temp*(-3*fraction*(fraction - 1)*(fraction*(delta_temp + 500) - 2000*fraction + 2000) - 200000*length**2*(fraction - 1)**2 - 200*length**2*(fraction - 1)*(fraction*(delta_temp + 500) - 2000*fraction + 2000) + 20000)/(10*length*(fraction*(delta_temp + 500) - 2000*fraction + 2000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5983.160549278462,
+            "mse": 57413009.219179384,
+            "rmse": 7577.137270709789,
+            "mape": 5177.109757045108,
+            "r2": -34689464.19075714,
+            "nrmse": 3254.5330556960917,
+            "max_absolute_error": 31134.547061360852,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6185.419485396402,
+            "mse": 60417035.63307026,
+            "rmse": 7772.8396119481495,
+            "mape": 5790.068827257191,
+            "r2": -36652173.54615516,
+            "nrmse": 3435.0824414185568,
+            "max_absolute_error": 30216.87096878762,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 7997.730261395234,
+            "mse": 67906645.59969662,
+            "rmse": 8240.54886519682,
+            "mape": 1523.5270261096184,
+            "r2": -22250389.85046691,
+            "nrmse": 1370.184468284201,
+            "max_absolute_error": 14494.733621429266,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 39.05306178890169,
+  "ok": false,
+  "submission": "heat_flux = delta_temp*(-3*fraction*(fraction - 1)*(fraction*(delta_temp + 500) - 2000*fraction + 2000) - 200000*length**2*(fraction - 1)**2 - 200*length**2*(fraction - 1)*(fraction*(delta_temp + 500) - 2000*fraction + 2000) + 20000)/(10*length*(fraction*(delta_temp + 500) - 2000*fraction + 2000))\n",
+  "cost_in_USD": 0.0037412319999999997,
+  "used_token": {
+    "input": 864,
+    "output": 4658,
+    "reason": 4239,
+    "cached": 0,
+    "total": 5522
+  },
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/material/Composite_Heat_Transport/Composite_Heat_Transport_-_Variant_1-3-5/performance.json",
+    "file_sha256": "1935d397ad5f270a6d72b20874d61b3ef8f79ce65ee420b4be8d2ea0a6c14737",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/material/Composite_Heat_Transport/Composite_Heat_Transport_-_Variant_1-3-5",
+    "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/material/Composite Heat Transport/Composite Heat Transport - Variant 1-3-5.yaml",
+    "task_definition_sha256": "e0adf7be0e20e01871a35d7c62b0edeedd181b437c04fd57d49fa003d9b57635",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/manifest.json",
+    "manifest_job_id": "395-Composite_Heat_Transport_-_Variant_1-3-5",
+    "source_experiment": "reference_full_missing",
+    "transformation": null,
+    "supplemental": {
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/material/Composite_Heat_Transport/Composite_Heat_Transport_-_Variant_1-3-5/submission.txt",
+        "file_sha256": "bdd1bba98f08b670d1865fad5ff8d265000b520f4213788922fc76d86117724b"
+      },
+      "probe_responses": [
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/material/Composite_Heat_Transport/Composite_Heat_Transport_-_Variant_1-3-5/probe/000-ka/response-attempt-1.json",
+          "file_sha256": "ab04f6960afebc5a0e29290ca3952688e430eef9e4260e5668ad820972ba1e45"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/material/Composite_Heat_Transport/Composite_Heat_Transport_-_Variant_1-3-5/probe/000-ka/response-attempt-2.json",
+          "file_sha256": "344687cbb75d8cdfcf9ad12b1e6af845b90f365fb91fc1d3ad5b860cf46a79a5"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_missing_20260924/runs/material/Composite_Heat_Transport/Composite_Heat_Transport_-_Variant_1-3-5/probe/001-source_flux/response-attempt-1.json",
+          "file_sha256": "027abe1c5673c4ab447cc72747005ed04c43c3aaa59e3625daf054a94d90b9b0"
+        }
+      ]
+    }
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T16:24:08.157828+08:00",
+      "generator": "playground/sync_pysr_results.py@sha256:1112db15268a4b07",
+      "update_message": "Copied performance.json and added source provenance, submission, and measured OpenRouter probe cost/token usage; metrics were not recomputed."
+    }
+  ]
+}
