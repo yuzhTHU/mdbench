@@ -1,0 +1,345 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.2479762999574,
+  "evaluation_seconds": 59.095811799983494,
+  "evaluation": {
+    "task_name": "Inclined Rolling - Variant 2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.960290342426067e-07,
+        "mse": 4.804655880317139e-13,
+        "rmse": 6.931562508062045e-07,
+        "mape": 3.4427221181502037e-07,
+        "r2": 0.9999999999989355,
+        "nrmse": 3.471722604551445e-07,
+        "max_absolute_error": 1.713488500865168e-06,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.667192461131787e-07,
+        "mse": 4.456627125785385e-13,
+        "rmse": 6.675797424866474e-07,
+        "mape": 3.34204824431578e-07,
+        "r2": 0.9999999999990243,
+        "nrmse": 3.424729509026891e-07,
+        "max_absolute_error": 1.713892077148671e-06,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 4.5759742470617756e-05,
+        "mse": 4.976766428871367e-09,
+        "rmse": 7.05462006692874e-05,
+        "mape": 1.0925475523918073e-05,
+        "r2": 0.999999973296092,
+        "nrmse": 1.8671773525778442e-05,
+        "max_absolute_error": 0.00018699981773107055,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "base_scale": "1458116544075173/250000000000000",
+      "component_1_scale": "338000904757039/625000000000000",
+      "component_2_scale": "10173147507566029/100000000000000000",
+      "gravity_projection": "sin(angle)",
+      "component_1_response": "1/(angle + 1)",
+      "component_2_response": "log(angle + 1)",
+      "effective_drive_scale": "10173147507566029*log(angle + 1)/100000000000000000 + 1458116544075173/250000000000000 + 338000904757039/(625000000000000*(angle + 1))",
+      "acceleration": "(10173147507566029*log(angle + 1)/100000000000000000 + 1458116544075173/250000000000000 + 338000904757039/(625000000000000*(angle + 1)))*sin(angle)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "slip_ratio",
+        "ok": true,
+        "reply": "slip_ratio = effective_drive_scale/base_scale",
+        "expression": "10173147507566029*log(angle + 1)/583246617630069200 + 1 + 676001809514078/(7290582720375865*(angle + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.040101062970539135,
+            "mse": 0.0019245921187189543,
+            "rmse": 0.043870173452118404,
+            "mape": 0.03892930483192979,
+            "r2": -10.399071387055315,
+            "nrmse": 0.042342189140296416,
+            "max_absolute_error": 0.07396199909074341,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.04147305616870463,
+            "mse": 0.002040733311099907,
+            "rmse": 0.04517447632347172,
+            "mape": 0.04029541917407501,
+            "r2": -10.946920864586241,
+            "nrmse": 0.04364318481976989,
+            "max_absolute_error": 0.07395195422259793,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.010943490249579824,
+            "mse": 0.00016836996478613876,
+            "rmse": 0.01297574524973956,
+            "mape": 0.010162046642666546,
+            "r2": -1.3414391160265864,
+            "nrmse": 0.012097913368938775,
+            "max_absolute_error": 0.02424707779583346,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "upward_force",
+        "ok": true,
+        "reply": "upward_force = gravity_projection*(base_scale-effective_drive_scale)",
+        "expression": "(-10173147507566029*log(angle + 1)/100000000000000000 - 338000904757039/(625000000000000*(angle + 1)))*sin(angle)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.17085804547598538,
+            "mse": 0.033507734564236454,
+            "rmse": 0.18305118017712002,
+            "mape": 5.517738318705161,
+            "r2": -49.67079754168089,
+            "nrmse": 3.802211417550299,
+            "max_absolute_error": 0.28444353957896296,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.165822551146884,
+            "mse": 0.031853157991229626,
+            "rmse": 0.17847453037122588,
+            "mape": 5.687852761139078,
+            "r2": -47.164887201076276,
+            "nrmse": 3.8354804174072674,
+            "max_absolute_error": 0.28445709912684125,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.3764532582173996,
+            "mse": 0.14457416846199897,
+            "rmse": 0.3802290999673736,
+            "mape": 2.5971174604512273,
+            "r2": -124.19135296062571,
+            "nrmse": 2.50213356053084,
+            "max_absolute_error": 0.4638670374912512,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 964.8025963000255,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\performance.json",
+    "file_sha256": "8b374b33f639a1df0580fabb9e796662a491e461fc1b04e340ecc230b1af8a23",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\physics\\Inclined Rolling\\Inclined Rolling - Variant 2-3-4-5.yaml",
+      "file_sha256": "57a7a318d97d59858b738fc0f54eea0f8824b789eb049779092cc9063e46cbb0"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\args.json",
+      "file_sha256": "7cfdeab34e0ad5ef0d02186b34ad17a66a2e11eca2755bbdc0992743a9b2b74a"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\prompt.txt",
+        "file_sha256": "eb46771f2c6364b54b1b01422d453ddcc335f10fa5a3d5b7fd7ef9212df9c9f5"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\dataest\\problem.json",
+        "file_sha256": "8abe56b2ea4e151c043d33f5c373e019c6e5ee8104960351809c02446f751459"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\dataest\\answer.json",
+        "file_sha256": "62186f9b83c2dfcb2d0fa67687fe65e003cd43d17cfd36d3634cf1a14cff5b34"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\dataest\\train.npy",
+        "file_sha256": "df61a73c737cfff27f45ef1d27571e263ad1e61a13f79d1a411ee79cd8f1012e"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "3349993e32568d7be2703e73ba4f180fda62b5ac6119949c3a9a9a4140e170e4"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "a74b5c91752c516732fb0e0e4f3b127114b1a5bf46d3f7ef3822ae645b4cfefb"
+      },
+      {
+        "probe": "slip_ratio",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\probe\\000-slip_ratio\\prompt.txt",
+        "file_sha256": "8691a47743df216f2dc5831502207fc7b67a4af827c0c2350fe1a6f4cb0a042e"
+      },
+      {
+        "probe": "slip_ratio",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\probe\\000-slip_ratio\\reply.txt",
+        "file_sha256": "1f497db815b94f27c9fcb03611e4b914ed22bbd66cf53b1c1a98c47bf97208e1"
+      },
+      {
+        "probe": "upward_force",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\probe\\001-upward_force\\prompt.txt",
+        "file_sha256": "ea7d910fecca41352dc89a46c94f628358ce6da749c5e66fcf560d26c801ead8"
+      },
+      {
+        "probe": "upward_force",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\probe\\001-upward_force\\reply.txt",
+        "file_sha256": "c55ed067c06e18dde1b36dd1fcd28b50ea367c70fd69bcee94ad17bd7795609b"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\submission.txt",
+      "file_sha256": "ed38d331c0cdb4f2d690e5b762430e13c2aeb4c6e01f782d18e2ad2d3c85b872"
+    }
+  },
+  "submission": "base_scale = 5.8324661763006924\ncomponent_1_scale = 0.54080144761126236\ncomponent_2_scale = 0.10173147507566029\ngravity_projection = sin(angle)\ncomponent_1_response = 1/(1+angle)\ncomponent_2_response = log(1+angle)\neffective_drive_scale = base_scale + component_1_scale*component_1_response + component_2_scale*component_2_response\nacceleration = gravity_projection*effective_drive_scale\n",
+  "used_token": {
+    "input": 387221,
+    "output": 25515,
+    "reason": 15098,
+    "cached": 265856,
+    "total": 412736
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "ae679a963c361f27b92dc6f9bfc33be3f4b7828d729eb4f47cd5d537fe246222"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 296024,
+          "output": 24266,
+          "cached": 252800,
+          "reason": 13883
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "slip_ratio",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\probe\\000-slip_ratio\\audit\\codex_events.jsonl",
+          "file_sha256": "05332b3ce98edf7508f1d0a9865a28f890a1fd7390069546c256c5a166236d18"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45596,
+          "output": 848,
+          "cached": 6528,
+          "reason": 833
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "upward_force",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-3-4-5\\result\\probe\\001-upward_force\\audit\\codex_events.jsonl",
+          "file_sha256": "87620eac1f3223ada462db0ad74406a26a3fa8c005af884a894f7ffc5aef1188"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45601,
+          "output": 401,
+          "cached": 6528,
+          "reason": 382
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

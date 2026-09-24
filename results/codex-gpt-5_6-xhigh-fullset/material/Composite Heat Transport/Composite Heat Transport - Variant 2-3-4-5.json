@@ -1,0 +1,352 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.3463970000157,
+  "evaluation_seconds": 15.889744200045243,
+  "evaluation": {
+    "task_name": "Composite Heat Transport - Variant 2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.9173382441433766,
+        "mse": 17.300754694886443,
+        "rmse": 4.159417590827644,
+        "mape": 0.0005705719931154991,
+        "r2": 0.9999990925877257,
+        "nrmse": 0.0005690153939392064,
+        "max_absolute_error": 30.88078752394722,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.8682919878547257,
+        "mse": 15.70969608962585,
+        "rmse": 3.963545898513836,
+        "mape": 0.0005508209166034296,
+        "r2": 0.9999991892078638,
+        "nrmse": 0.000530227559196517,
+        "max_absolute_error": 35.57094968235833,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 76.98098264396532,
+        "mse": 10565.804824122008,
+        "rmse": 102.7901008080156,
+        "mape": 0.008556507937738374,
+        "r2": 0.9977067401047574,
+        "nrmse": 0.011706460814113735,
+        "max_absolute_error": 344.4129717591877,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "thermal_conductivity_1": "910762408482203/200000000000000",
+      "thermal_conductivity_2": "9925622420612523/10000000000000000",
+      "bridge_component_1_conductivity": "23475800021188617/50000000000000000",
+      "bridge_component_2_conductivity": "4886981345319557/10000000000000000",
+      "interface_thermal_resistance": "4536603625508189/20000000000000000000",
+      "component_1_thickness": "fraction*length",
+      "component_2_thickness": "length*(1 - fraction)",
+      "component_1_thermal_resistance": "200000000000000*fraction*length/910762408482203",
+      "component_2_thermal_resistance": "10000000000000000*length*(1 - fraction)/9925622420612523",
+      "primary_path_thermal_resistance": "200000000000000*fraction*length/910762408482203 + 10000000000000000*length*(1 - fraction)/9925622420612523 + 4536603625508189/20000000000000000000",
+      "primary_path_heat_flux": "delta_temp/(200000000000000*fraction*length/910762408482203 + 10000000000000000*length*(1 - fraction)/9925622420612523 + 4536603625508189/20000000000000000000)",
+      "bridge_effective_conductivity": "4886981345319557/10000000000000000 - 59944169088073*fraction/3125000000000000",
+      "bridge_path_thermal_conductance": "fraction*(4886981345319557/10000000000000000 - 59944169088073*fraction/3125000000000000)*(1 - fraction)/length",
+      "bridge_path_heat_flux": "delta_temp*fraction*(4886981345319557/10000000000000000 - 59944169088073*fraction/3125000000000000)*(1 - fraction)/length",
+      "heat_flux": "delta_temp*fraction*(4886981345319557/10000000000000000 - 59944169088073*fraction/3125000000000000)*(1 - fraction)/length + delta_temp/(200000000000000*fraction*length/910762408482203 + 10000000000000000*length*(1 - fraction)/9925622420612523 + 4536603625508189/20000000000000000000)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "interface_resistance",
+        "ok": true,
+        "reply": "interface_resistance = interface_thermal_resistance",
+        "expression": "4536603625508189/20000000000000000000",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.4889616946977512e-05,
+            "mse": 2.3348720844410885e-10,
+            "rmse": 1.528028823170914e-05,
+            "mape": 0.0705345644284841,
+            "r2": -18.80968897368182,
+            "nrmse": 0.0720875870603756,
+            "max_absolute_error": 2.0826228597481703e-05,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.4809887411901107e-05,
+            "mse": 2.3131835793067573e-10,
+            "rmse": 1.520915375458726e-05,
+            "mape": 0.07013677777138791,
+            "r2": -18.299701084883658,
+            "nrmse": 0.07172486319522976,
+            "max_absolute_error": 2.080852484104883e-05,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.753047928775736e-06,
+            "mse": 3.600491844403917e-11,
+            "rmse": 6.000409856338079e-06,
+            "mape": 0.02608387654625831,
+            "r2": -11.384067863446115,
+            "nrmse": 0.02714089560003197,
+            "max_absolute_error": 8.826881176156022e-06,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "source_flux",
+        "ok": true,
+        "reply": "source_flux = bridge_path_heat_flux",
+        "expression": "delta_temp*fraction*(4886981345319557/10000000000000000 - 59944169088073*fraction/3125000000000000)*(1 - fraction)/length",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 430.7898851537907,
+            "mse": 299046.47582007886,
+            "rmse": 546.851420241439,
+            "mape": 370.84039039604187,
+            "r2": -180685.6153588369,
+            "nrmse": 234.88369817581517,
+            "max_absolute_error": 2289.4253447795804,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 446.0924079858352,
+            "mse": 315732.014208371,
+            "rmse": 561.9003596798733,
+            "mape": 415.6232837401878,
+            "r2": -191538.76644693382,
+            "nrmse": 248.32289815887944,
+            "max_absolute_error": 2197.59889543897,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 368.1868425852254,
+            "mse": 146059.728358782,
+            "rmse": 382.17761362850916,
+            "mape": 67.53320229369923,
+            "r2": -47857.14429199909,
+            "nrmse": 63.54598933710667,
+            "max_absolute_error": 700.578754565558,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 921.7433316999814,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\performance.json",
+    "file_sha256": "45c784e6c5e6b8ed68219e1ea0c3b7beec8dd111f25779d7e4b17c6b59890ca9",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\material\\Composite Heat Transport\\Composite Heat Transport - Variant 2-3-4-5.yaml",
+      "file_sha256": "2633f49f0ee7f8f466796f9297ee9ebc46ccae32e96d96edc19a73a560d3982e"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\args.json",
+      "file_sha256": "f0a564bdcec59d77f221ad893c0b5dedb70239f2480fc5ec109836e80258380d"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\prompt.txt",
+        "file_sha256": "b0253d54ab8acbeb70fe91234bdd4ab5b599c6554f9816de1aee5fdd33981cae"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\dataest\\problem.json",
+        "file_sha256": "692153789819f0c10b20c134885b6d274bc3a07acfa879514ccd77e78202ea75"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\dataest\\answer.json",
+        "file_sha256": "a1a564f33eb985038af1f6955bf76df0116a4a55c2131613d4967b2842ea6387"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\dataest\\train.npy",
+        "file_sha256": "516ea58dff279d74ce3a6845b85fcecdbf59846a05533fb7fefa41ddb568d9b8"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "20176cbf1348f433db6f91808c0f26541ecf801bfe33636f46acf4e0e2c39be9"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "3f6d802ba5a716e788d1aff69a709b2eafe0b624ae295e359ef07b7720ef0996"
+      },
+      {
+        "probe": "interface_resistance",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\probe\\000-interface_resistance\\prompt.txt",
+        "file_sha256": "a989d14364689a44d449050b71e43d666d875dee7b1ef69a0ee5e956c34e00b6"
+      },
+      {
+        "probe": "interface_resistance",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\probe\\000-interface_resistance\\reply.txt",
+        "file_sha256": "712528e6f6340144c8cb7ccbbe09ac9347722bd43f064fc9e55ae11367e85660"
+      },
+      {
+        "probe": "source_flux",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\probe\\001-source_flux\\prompt.txt",
+        "file_sha256": "0343495a24546826e50f75a4811429b34a7c09fdcf7b01a805ed933df863c6bf"
+      },
+      {
+        "probe": "source_flux",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\probe\\001-source_flux\\reply.txt",
+        "file_sha256": "007b854497861b4c1689c4bd631bcb7640550f9cdeb239113707bffb408faf91"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\submission.txt",
+      "file_sha256": "04dc9506f845813c3ddceb6a23c53576fc99eb240729bf312d6ad18e8300bb2d"
+    }
+  },
+  "submission": "thermal_conductivity_1 = 4.5538120424110149\nthermal_conductivity_2 = 0.99256224206125232\nbridge_component_1_conductivity = 0.46951600042377234\nbridge_component_2_conductivity = 0.48869813453195571\ninterface_thermal_resistance = 0.00022683018127540945\ncomponent_1_thickness = fraction*length\ncomponent_2_thickness = (1-fraction)*length\ncomponent_1_thermal_resistance = component_1_thickness/thermal_conductivity_1\ncomponent_2_thermal_resistance = component_2_thickness/thermal_conductivity_2\nprimary_path_thermal_resistance = component_1_thermal_resistance + interface_thermal_resistance + component_2_thermal_resistance\nprimary_path_heat_flux = delta_temp/primary_path_thermal_resistance\nbridge_effective_conductivity = fraction*bridge_component_1_conductivity + (1-fraction)*bridge_component_2_conductivity\nbridge_path_thermal_conductance = bridge_effective_conductivity*fraction*(1-fraction)/length\nbridge_path_heat_flux = delta_temp*bridge_path_thermal_conductance\nheat_flux = primary_path_heat_flux + bridge_path_heat_flux\n",
+  "used_token": {
+    "input": 481150,
+    "output": 21017,
+    "reason": 7898,
+    "cached": 372096,
+    "total": 502167
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "d5b0c2cfb7f6ad69392845dcc4a58b3c996b3f50e97f5eb48da3e259d63643fd"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 398467,
+          "output": 20789,
+          "cached": 365568,
+          "reason": 7696
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "interface_resistance",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\probe\\000-interface_resistance\\audit\\codex_events.jsonl",
+          "file_sha256": "23f463f7a5c9d6789893a8582ce3ac3cd19adcc0e3b81517184aa4e65fdec2ba"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 41348,
+          "output": 13,
+          "cached": 0,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "source_flux",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Composite Heat Transport - Variant 2-3-4-5\\result\\probe\\001-source_flux\\audit\\codex_events.jsonl",
+          "file_sha256": "343cbcd14f1457933975b80144ea8b8291c1b5aa6605978b678baf94984a9c41"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 41335,
+          "output": 215,
+          "cached": 6528,
+          "reason": 202
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

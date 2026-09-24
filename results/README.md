@@ -7,7 +7,7 @@
 * `./logs` 中的原始日志不得随意修改。
 * 每个实验都应该创建一个 `./results/{exp_name}/` 目录
     - setup 不同的结果应当放在不同的实验目录中。
-    - 例如，`./results/codex_deepseek-v4-flash-0731/` 或者 `./results/codex_gpt-5.5-sol-run1/`
+    - 例如，`./results/codex_deepseek-v4-flash-0731/` 或者 `./results/codex_gpt-5.6-sol-run1/`
     - 对于多次独立运行的实验，将每次运行结果分散到不同的 `exp_name` 中。
 * 运行结果存储到 `./results/{exp_name}/{physics,chemistry,biology,material,...}/{task_name_wo_suffix}/{task_name}.json` 中
     - 例如，`./results/codex_deepseek-v4-flash-0731/biology/Allosteric Regulation/Allosteric Regulation - Original.json`

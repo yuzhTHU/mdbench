@@ -1,0 +1,346 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 596.0121107000159,
+  "evaluation_seconds": 38.85037250001915,
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 2-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.008370992600862858,
+        "mse": 0.00015192312802872387,
+        "rmse": 0.012325710041564497,
+        "mape": 0.022963708093610462,
+        "r2": 0.9998326293536014,
+        "nrmse": 0.009567288220221322,
+        "max_absolute_error": 0.06568061619438748,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.008532940962656912,
+        "mse": 0.0001705617079051106,
+        "rmse": 0.013059927561250507,
+        "mape": 0.02343526551521619,
+        "r2": 0.9998159045931354,
+        "nrmse": 0.010106355725977735,
+        "max_absolute_error": 0.07556732209214778,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.08625495706307192,
+        "mse": 0.00888653653924493,
+        "rmse": 0.09426842811485153,
+        "mape": 0.24041107641755025,
+        "r2": 0.8786321910509618,
+        "nrmse": 0.15319355678901317,
+        "max_absolute_error": 0.13577946665413076,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "catalytic_rate": "1790566953318979/250000000000000",
+      "substrate_half_saturation_concentration": "53920109192021/3125000000000000",
+      "substrate_cooperativity": "2014440713786231/2000000000000000",
+      "regulator_half_inhibition_concentration": "2166750431450019/1000000000000000000",
+      "regulator_cooperativity": "5952071383620059/5000000000000000",
+      "substrate_bound_fraction": "1/((53920109192021/(3125000000000000*substrate))**(2014440713786231/2000000000000000) + 1)",
+      "regulator_active_fraction": "1/((1000000000000000000*regulator/2166750431450019)**(5952071383620059/5000000000000000) + 1)",
+      "catalytically_active_fraction": "1/(((53920109192021/(3125000000000000*substrate))**(2014440713786231/2000000000000000) + 1)*((1000000000000000000*regulator/2166750431450019)**(5952071383620059/5000000000000000) + 1))",
+      "activity": "1790566953318979*(1/(((53920109192021/(3125000000000000*substrate))**(2014440713786231/2000000000000000) + 1)*((1000000000000000000*regulator/2166750431450019)**(5952071383620059/5000000000000000) + 1)))/250000000000000"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "ts",
+        "ok": true,
+        "reply": "ts = substrate_bound_fraction * (1 - regulator_active_fraction)",
+        "expression": "(1 - 1/((1000000000000000000*regulator/2166750431450019)**(5952071383620059/5000000000000000) + 1))/((53920109192021/(3125000000000000*substrate))**(2014440713786231/2000000000000000) + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.045179770986311284,
+            "mse": 0.005169668605704221,
+            "rmse": 0.07190040754894385,
+            "mape": 0.681110433074835,
+            "r2": 0.11819158232083604,
+            "nrmse": 0.6860883072480417,
+            "max_absolute_error": 0.2257362167844057,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.04464203390360119,
+            "mse": 0.0051639267168456975,
+            "rmse": 0.07186046699573902,
+            "mape": 0.6849656775100886,
+            "r2": 0.21484283584067487,
+            "nrmse": 0.6603024484025408,
+            "max_absolute_error": 0.22696853541647183,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.034770470855034416,
+            "mse": 0.0015878940542729887,
+            "rmse": 0.03984838835226575,
+            "mape": 0.06746710622497555,
+            "r2": 0.7168067632530082,
+            "nrmse": 0.07268267918466823,
+            "max_absolute_error": 0.07682558075116169,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "inactive_flux",
+        "ok": true,
+        "reply": "inactive_flux = catalytic_rate * substrate_bound_fraction * (1 - regulator_active_fraction)",
+        "expression": "1790566953318979*(1 - 1/((1000000000000000000*regulator/2166750431450019)**(5952071383620059/5000000000000000) + 1))/(250000000000000*((53920109192021/(3125000000000000*substrate))**(2014440713786231/2000000000000000) + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.18104731077454125,
+            "mse": 0.1586444248963119,
+            "rmse": 0.39830192680466897,
+            "mape": 3.855688680566549,
+            "r2": -60.974202696617894,
+            "nrmse": 5.732722468972529,
+            "max_absolute_error": 2.6092350711007892,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.19252194199194986,
+            "mse": 0.19379862364314557,
+            "rmse": 0.4402256508236947,
+            "mape": 3.879636682859417,
+            "r2": -68.9242758846334,
+            "nrmse": 6.175992252289442,
+            "max_absolute_error": 2.5961990378421365,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.010108018951096,
+            "mse": 16.330357205490248,
+            "rmse": 4.041083667222228,
+            "mape": 43.26302059419744,
+            "r2": -6026.383353543391,
+            "nrmse": 31.41544804032972,
+            "max_absolute_error": 5.105807895213112,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 635.0755268000066,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\performance.json",
+    "file_sha256": "fd295bacfd9a0757ea65f861c5f6370d95f8306784b56beaa0b966a5b3aa3d2c",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\biology\\Allosteric Regulation\\Allosteric Regulation - Variant 2-5.yaml",
+      "file_sha256": "3d02a7b2e5e247278b31ca621a6ec1d96677c3480c897f4ec29eed4988e58dfd"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\args.json",
+      "file_sha256": "dd6ef3838707419da1babc97b07854d33d0e18dd38ba2637bbb860dcb616ba35"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\prompt.txt",
+        "file_sha256": "10ace9e50a627cd827294c7aab2f068cd7ac408700a281f64441678420ab7af5"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\dataest\\problem.json",
+        "file_sha256": "00a6e469470c4078e9e5d409020abc2f8ddeacccddf924ea4a32e4d67a0d2485"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\dataest\\answer.json",
+        "file_sha256": "f0097a28f86ca14aedd1c9fe79b48c8f649a371820d92fe0e08b19e601b86cac"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\dataest\\train.npy",
+        "file_sha256": "716d7816cf0e27f77af0b84494a07a18b0ac8939359d88e02b1163d14b0e4df9"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "bca1926f2c0ee4c8001bd7a1125d3a41dc03743b2ec4f7791e0fa89df36d3bc3"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "7080fc6fdb0dc92bff662b0369c00b008cbe99381955fe0a455e1054708644d3"
+      },
+      {
+        "probe": "ts",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\probe\\000-ts\\prompt.txt",
+        "file_sha256": "08161ac3d8d7233c4c635a449e5bee9d8c1d031cb5b3bf64f471e0b8ff30c323"
+      },
+      {
+        "probe": "ts",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\probe\\000-ts\\reply.txt",
+        "file_sha256": "09ec06321163368acd031920d629007d493b81ea5b5d66dcd8a8ecb6a9a0fe45"
+      },
+      {
+        "probe": "inactive_flux",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\probe\\001-inactive_flux\\prompt.txt",
+        "file_sha256": "a4cfb9d465dadc876290047536e7555f980ac50b623e13825e61284aa8917fd4"
+      },
+      {
+        "probe": "inactive_flux",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\probe\\001-inactive_flux\\reply.txt",
+        "file_sha256": "08108dfc23c228262b78e3bb5aa5cc45847741834d94dc53b35241d9d8cdb5d5"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\submission.txt",
+      "file_sha256": "75a5274e58cd7e951b07e6a4fcbf8302a885ff1a937341b836902ec8a6f9b728"
+    }
+  },
+  "submission": "catalytic_rate = 7.1622678132759159\nsubstrate_half_saturation_concentration = 0.017254434941446722\nsubstrate_cooperativity = 1.0072203568931155\nregulator_half_inhibition_concentration = 0.0021667504314500192\nregulator_cooperativity = 1.1904142767240118\nsubstrate_bound_fraction = 1 / (1 + (substrate_half_saturation_concentration / substrate) ^ substrate_cooperativity)\nregulator_active_fraction = 1 / (1 + (regulator / regulator_half_inhibition_concentration) ^ regulator_cooperativity)\ncatalytically_active_fraction = substrate_bound_fraction * regulator_active_fraction\nactivity = catalytic_rate * catalytically_active_fraction\n",
+  "used_token": {
+    "input": 157343,
+    "output": 7996,
+    "reason": 3475,
+    "cached": 82048,
+    "total": 165339
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "04c607f5a058ad6726718545db2a2d536e60acba988b471279162a6df406b8d2"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 110947,
+          "output": 7685,
+          "cached": 75520,
+          "reason": 3206
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "ts",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\probe\\000-ts\\audit\\codex_events.jsonl",
+          "file_sha256": "9d5ce30123e2a2fcfe98ea101a18a80a996bc2c4ad35504a93186271253d0349"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 23196,
+          "output": 124,
+          "cached": 0,
+          "reason": 105
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "inactive_flux",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Allosteric Regulation - Variant 2-5\\result\\probe\\001-inactive_flux\\audit\\codex_events.jsonl",
+          "file_sha256": "c691c9b15cb483454bc0f0ce7558b03913d89d1addac2701cb920ef102da68ae"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 23200,
+          "output": 187,
+          "cached": 6528,
+          "reason": 164
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

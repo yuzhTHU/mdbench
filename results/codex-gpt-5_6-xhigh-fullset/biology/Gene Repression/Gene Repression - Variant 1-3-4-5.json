@@ -1,0 +1,349 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.2548618000001,
+  "evaluation_seconds": 23.23631690000184,
+  "evaluation": {
+    "task_name": "Gene Repression - Variant 1-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.5271177193346984e-05,
+        "mse": 2.3620211154489572e-08,
+        "rmse": 0.0001536886825842735,
+        "mape": 0.003121833202298974,
+        "r2": 0.9998765524212505,
+        "nrmse": 0.007934586030563996,
+        "max_absolute_error": 0.0019866919586713425,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 6.314311550713415e-05,
+        "mse": 4.155741246927572e-08,
+        "rmse": 0.00020385635253598481,
+        "mape": 0.003501985854831775,
+        "r2": 0.9997806154796518,
+        "nrmse": 0.010643380899070052,
+        "max_absolute_error": 0.0025138844042862964,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.011399089228792637,
+        "mse": 0.00017368655634896718,
+        "rmse": 0.013179019551885003,
+        "mape": 0.30849904526078,
+        "r2": 0.18708591541292674,
+        "nrmse": 0.34569561375620833,
+        "max_absolute_error": 0.027757863446048043,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "k_initiation": "502663587608277/5000000000000000",
+      "K_polymerase": "503837099231517/625000000000000000",
+      "K_repressor_site_1": "815477984187149/625000000000000000",
+      "K_repressor_site_2": "2636095007934419/1000000000000000000",
+      "weight_empty": "1",
+      "weight_polymerase": "625000000000000000*polymerase/503837099231517",
+      "weight_repressor_site_1": "625000000000000000*repressor/815477984187149",
+      "weight_repressor_site_2": "1000000000000000000*repressor/2636095007934419",
+      "weight_two_repressors": "625000000000000000000000000000000000*repressor**2/2149677443196166554971214581431",
+      "promoter_partition": "625000000000000000*polymerase/503837099231517 + 625000000000000000000000000000000000*repressor**2/2149677443196166554971214581431 + 2463037364146160875000000000000000*repressor/2149677443196166554971214581431 + 1",
+      "polymerase_bound_fraction": "625000000000000000*polymerase/(503837099231517*(625000000000000000*polymerase/503837099231517 + 625000000000000000000000000000000000*repressor**2/2149677443196166554971214581431 + 2463037364146160875000000000000000*repressor/2149677443196166554971214581431 + 1))",
+      "initiation": "6981438716781625*polymerase/(55981899914613*(625000000000000000*polymerase/503837099231517 + 625000000000000000000000000000000000*repressor**2/2149677443196166554971214581431 + 2463037364146160875000000000000000*repressor/2149677443196166554971214581431 + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "looped",
+        "ok": true,
+        "reply": "looped = weight_two_repressors / promoter_partition",
+        "expression": "625000000000000000000000000000000000*repressor**2/(2149677443196166554971214581431*(625000000000000000*polymerase/503837099231517 + 625000000000000000000000000000000000*repressor**2/2149677443196166554971214581431 + 2463037364146160875000000000000000*repressor/2149677443196166554971214581431 + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.01993656567891668,
+            "mse": 0.001346320808789891,
+            "rmse": 0.03669224453191561,
+            "mape": 1.465733378663751,
+            "r2": -0.5483344738670819,
+            "nrmse": 1.0747913408354934,
+            "max_absolute_error": 0.12502288612241844,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.020721193818282704,
+            "mse": 0.0014532219245607903,
+            "rmse": 0.03812114799636535,
+            "mape": 1.4633113144765462,
+            "r2": -0.6172305583410989,
+            "nrmse": 1.0938990022554778,
+            "max_absolute_error": 0.12401688023499627,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.24857046586852163,
+            "mse": 0.06672963391576878,
+            "rmse": 0.25832079652201595,
+            "mape": 8.082946547950128,
+            "r2": -17.19682977418208,
+            "nrmse": 2.705808928798552,
+            "max_absolute_error": 0.42487369328209074,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "paused",
+        "ok": true,
+        "reply": "paused = polymerase_bound_fraction",
+        "expression": "625000000000000000*polymerase/(503837099231517*(625000000000000000*polymerase/503837099231517 + 625000000000000000000000000000000000*repressor**2/2149677443196166554971214581431 + 2463037364146160875000000000000000*repressor/2149677443196166554971214581431 + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.12939615477639205,
+            "mse": 0.03470584817046151,
+            "rmse": 0.18629505675261893,
+            "mape": 75.1193828882224,
+            "r2": -583.3386226883127,
+            "nrmse": 19.715106786542087,
+            "max_absolute_error": 0.5449502529164905,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.12702459395479856,
+            "mse": 0.03397438031818569,
+            "rmse": 0.18432140493764063,
+            "mape": 82.10075554733648,
+            "r2": -550.7398657336147,
+            "nrmse": 19.390651713775352,
+            "max_absolute_error": 0.548833337131738,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1724653002379341,
+            "mse": 0.03590226375378664,
+            "rmse": 0.189478926938556,
+            "mape": 2.759922792582333,
+            "r2": -54.03380330874118,
+            "nrmse": 2.7357612273579264,
+            "max_absolute_error": 0.4159597041582123,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 928.6454136000248,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\performance.json",
+    "file_sha256": "c30df7b9a0193516182304f3aa428e51d4545e23d6aaa17181c8a56778336e12",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\biology\\Gene Repression\\Gene Repression - Variant 1-3-4-5.yaml",
+      "file_sha256": "384b8c9748c69cd5ebc8afaacf17e2127780b2311557106e1bfcb9e2b94d6039"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\args.json",
+      "file_sha256": "904d8179da2f1b2a5bd001ca2a47686a388b1c9b91454c4bdc74cc6b2c3451b9"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\prompt.txt",
+        "file_sha256": "e4861d026aac36a714f66a818cd3cfe84518e30daa627fc26cf5a313afa6329e"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\dataest\\problem.json",
+        "file_sha256": "0f4118afb89f4b0bbef5582480c039f86daa0ed514b5b499a72f41955b807895"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\dataest\\answer.json",
+        "file_sha256": "5c5a529c19496a065c05a5695c6b522c1403ffc5d2f442874f4e30ed4ecbd803"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\dataest\\train.npy",
+        "file_sha256": "e2147069490dff05dcf56d2f2a118b4061989a158c62e7748759f5d6aaafb9cd"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "fa24da239dffbaf567919aec0cf2158ea70c52cdbdc54b8cbd6194e6b23f749e"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "55ad576f41271a89ba416403b61fb4d0b2ce30409f9e09f971cf034f7cd389c0"
+      },
+      {
+        "probe": "looped",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\probe\\000-looped\\prompt.txt",
+        "file_sha256": "fc9021e1617e8c9c12e82d19a70cb70ac56dbc701386a737a398e8203cfba83b"
+      },
+      {
+        "probe": "looped",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\probe\\000-looped\\reply.txt",
+        "file_sha256": "8ddbf2fce7314197bbe521e2a9c6937f07a26ced4458aa381d98a2d19ffe977d"
+      },
+      {
+        "probe": "paused",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\probe\\001-paused\\prompt.txt",
+        "file_sha256": "6b05e02f3fbcdcf0e79fe8d85b4334e18f3df405a16040b1b2b785484de5098a"
+      },
+      {
+        "probe": "paused",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\probe\\001-paused\\reply.txt",
+        "file_sha256": "cfa8ce7a0d94e5a20471ca6bd0cbd84e9c6385c3861628d3d4910a30e862cfe0"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\submission.txt",
+      "file_sha256": "8676fecb07b3000103d05053c0e4a266c8c30f9a9575a979c24b2b9486366052"
+    }
+  },
+  "submission": "k_initiation = 0.10053271752165539\nK_polymerase = 0.0008061393587704272\nK_repressor_site_1 = 0.0013047647746994384\nK_repressor_site_2 = 0.0026360950079344189\nweight_empty = 1\nweight_polymerase = polymerase / K_polymerase\nweight_repressor_site_1 = repressor / K_repressor_site_1\nweight_repressor_site_2 = repressor / K_repressor_site_2\nweight_two_repressors = weight_repressor_site_1 * weight_repressor_site_2\npromoter_partition = weight_empty + weight_polymerase + weight_repressor_site_1 + weight_repressor_site_2 + weight_two_repressors\npolymerase_bound_fraction = weight_polymerase / promoter_partition\ninitiation = k_initiation * polymerase_bound_fraction\n",
+  "used_token": {
+    "input": 490577,
+    "output": 22034,
+    "reason": 10620,
+    "cached": 376192,
+    "total": 512611
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "d260175c4d9838e11c9ef99d17613c2017698184c4ac82d0b8c84a66d519a5a5"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 404671,
+          "output": 21640,
+          "cached": 369664,
+          "reason": 10253
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "looped",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\probe\\000-looped\\audit\\codex_events.jsonl",
+          "file_sha256": "6be954dbea1bd20eebf28767a4a558737e03113de4582983b5cd2e5e323e24f7"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 42949,
+          "output": 15,
+          "cached": 0,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "paused",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Gene Repression - Variant 1-3-4-5\\result\\probe\\001-paused\\audit\\codex_events.jsonl",
+          "file_sha256": "98ef74f4273c4e9cad3e1a3150c54e120ac3c06c801ef3f26de730f9b9c0acb5"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 42957,
+          "output": 379,
+          "cached": 6528,
+          "reason": 367
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

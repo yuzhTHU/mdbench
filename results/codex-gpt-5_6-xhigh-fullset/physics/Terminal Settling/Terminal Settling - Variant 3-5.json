@@ -1,0 +1,351 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 906.858731299988,
+  "evaluation_seconds": 23.98048679996282,
+  "evaluation": {
+    "task_name": "Terminal Settling - Variant 3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.0944354545687745e-08,
+        "mse": 2.871370151480202e-16,
+        "rmse": 1.6945117737803425e-08,
+        "mape": 0.006535156422626835,
+        "r2": 0.9999741016214474,
+        "nrmse": 0.0038732439316911046,
+        "max_absolute_error": 1.310929209972204e-07,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.0355143450803159e-08,
+        "mse": 2.5805619776264714e-16,
+        "rmse": 1.6064127668897777e-08,
+        "mape": 0.006689630486622395,
+        "r2": 0.9999743774374672,
+        "nrmse": 0.00390884975166448,
+        "max_absolute_error": 1.2034833143423527e-07,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 3.4636863242030274e-07,
+        "mse": 2.2268878147283817e-13,
+        "rmse": 4.718991221361173e-07,
+        "mape": 0.027848812651181422,
+        "r2": 0.9821355343756779,
+        "nrmse": 0.04247828236489437,
+        "max_absolute_error": 1.395247996303346e-06,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "pi": "6283185307/2000000000",
+      "g": "981/100",
+      "shielding_scale": "1232690822024189/5000000000000000",
+      "density_ratio_exponent": "11168986725977549/25000000000000000",
+      "shielding_decay_length": "633795536825169/12500000000000000000",
+      "particle_volume": "6283185307*radius**3/1500000000",
+      "particle_mass": "6283185307*particle_density*radius**3/1500000000",
+      "displaced_fluid_mass": "6283185307*fluid_density*radius**3/1500000000",
+      "net_downward_force": "-2054601595389*fluid_density*radius**3/50000000000 + 2054601595389*particle_density*radius**3/50000000000",
+      "shielding_activity": "1232690822024189*(particle_density/fluid_density)**(11168986725977549/25000000000000000)*exp(-12500000000000000000*radius/633795536825169)/5000000000000000",
+      "hydrodynamic_mobility_factor": "-1232690822024189*(particle_density/fluid_density)**(11168986725977549/25000000000000000)*exp(-12500000000000000000*radius/633795536825169)/5000000000000000 + 1",
+      "stokes_drag_coefficient": "18849555921*radius*viscosity/1000000000",
+      "effective_drag_coefficient": "(18849555921*radius*viscosity/1000000000)/(-1232690822024189*(particle_density/fluid_density)**(11168986725977549/25000000000000000)*exp(-12500000000000000000*radius/633795536825169)/5000000000000000 + 1)",
+      "speed": "(-2054601595389*fluid_density*radius**3/50000000000 + 2054601595389*particle_density*radius**3/50000000000)/(((18849555921*radius*viscosity/1000000000)/(-1232690822024189*(particle_density/fluid_density)**(11168986725977549/25000000000000000)*exp(-12500000000000000000*radius/633795536825169)/5000000000000000 + 1)))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "local_viscosity",
+        "ok": true,
+        "reply": "local_viscosity = viscosity/hydrodynamic_mobility_factor",
+        "expression": "viscosity/(-1232690822024189*(particle_density/fluid_density)**(11168986725977549/25000000000000000)*exp(-12500000000000000000*radius/633795536825169)/5000000000000000 + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.010874280444978332,
+            "mse": 0.00014486957913380498,
+            "rmse": 0.012036177928803021,
+            "mape": 0.34132299189982335,
+            "r2": 0.11842787773111652,
+            "nrmse": 0.34732343919097236,
+            "max_absolute_error": 0.028432339741110695,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.011332514300168156,
+            "mse": 0.00015465040908602283,
+            "rmse": 0.01243585176359154,
+            "mape": 0.34554515944688047,
+            "r2": 0.013479626610943374,
+            "nrmse": 0.34995814190424446,
+            "max_absolute_error": 0.029829314965133344,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.008264749988367045,
+            "mse": 8.585099161030496e-05,
+            "rmse": 0.009265581018495546,
+            "mape": 0.10381575431480519,
+            "r2": 0.2845905778294089,
+            "nrmse": 0.1137510997887399,
+            "max_absolute_error": 0.0191595628248154,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "internal_drag",
+        "ok": true,
+        "reply": "internal_drag = effective_drag_coefficient-stokes_drag_coefficient",
+        "expression": "-18849555921*radius*viscosity/1000000000 + (18849555921*radius*viscosity/1000000000)/(-1232690822024189*(particle_density/fluid_density)**(11168986725977549/25000000000000000)*exp(-12500000000000000000*radius/633795536825169)/5000000000000000 + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.614428081234935e-07,
+            "mse": 2.763287889623009e-13,
+            "rmse": 5.256698478725034e-07,
+            "mape": 0.30760250658433197,
+            "r2": 0.027222237102246694,
+            "nrmse": 0.4470450825921066,
+            "max_absolute_error": 2.042296383552516e-06,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.6486837038245017e-07,
+            "mse": 2.8728383022748415e-13,
+            "rmse": 5.359886474800415e-07,
+            "mape": 0.29930671040366086,
+            "r2": -0.005672104384350618,
+            "nrmse": 0.44934365642531765,
+            "max_absolute_error": 1.9632755525005683e-06,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.0932760197028965e-06,
+            "mse": 1.7664100350121745e-11,
+            "rmse": 4.202868110007944e-06,
+            "mape": 1.3569217522357195,
+            "r2": -65.87455175775409,
+            "nrmse": 1.3482378255824545,
+            "max_absolute_error": 6.932788816730984e-06,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 931.1827893999871,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\performance.json",
+    "file_sha256": "a99e996f4f19d4a518285a330661ae2bf05ee6e1a05c92223080cb6f6a94c101",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\physics\\Terminal Settling\\Terminal Settling - Variant 3-5.yaml",
+      "file_sha256": "97784b64245c2a736f61f2d69ebf107f41d2af144b6f11dc74065fbc7514b983"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\args.json",
+      "file_sha256": "1e6667c919e6cb25037c1f0707f054f70f2102dff397eea032924b6754c5455f"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\prompt.txt",
+        "file_sha256": "e418d4fe45cb63da1a2a112a514acec62b50c9816edba578bfa8ed6a287237c9"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\dataest\\problem.json",
+        "file_sha256": "e396af1b02e060e3be0110da9e0351e47db63fe62b3cfc901bf4f461d5fe232a"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\dataest\\answer.json",
+        "file_sha256": "d1826c988d601d6f85545ec8fd087ffa477ffefec6cc887ed665cfc8ce108392"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\dataest\\train.npy",
+        "file_sha256": "e6d6bce4cdebb686e817d0a29c24c7a1b6e6e8eee4aef25f282cb10d4d1609bc"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "5d5490eff72ff204451803e59e8efb891e95694b4eebd3d793cd7f02f23eeddd"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "acb539f54cf93dbab2f789cceec3e00ca257369b5e5c73fa2c8b2b47aa5f4cf2"
+      },
+      {
+        "probe": "local_viscosity",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\probe\\000-local_viscosity\\prompt.txt",
+        "file_sha256": "81632bb33c371d1b9966007e02fb89d7898f61a2acbd50bdfd01c73f16244c3d"
+      },
+      {
+        "probe": "local_viscosity",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\probe\\000-local_viscosity\\reply.txt",
+        "file_sha256": "10524a1ddf8a2f3a36a611c7465b8a3e42ec6401b57d33bc94be2f4aabf85e08"
+      },
+      {
+        "probe": "internal_drag",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\probe\\001-internal_drag\\prompt.txt",
+        "file_sha256": "457cc454ca4b1fcec7ed534bfd1eed3ec7f61092532770eb4fef7385dff20e00"
+      },
+      {
+        "probe": "internal_drag",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\probe\\001-internal_drag\\reply.txt",
+        "file_sha256": "5c0b04f87c11d7ee70d27ef7c15dd3b6fe12422b834f1f5fed438a580a1be12f"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\submission.txt",
+      "file_sha256": "f0d770354b206ab063815c1c627257bce608aaa9df700e1fd9ac7d87976cf667"
+    }
+  },
+  "submission": "pi = 3.1415926535\ng = 9.8100000000000005\nshielding_scale = 0.24653816440483781\ndensity_ratio_exponent = 0.44675946903910196\nshielding_decay_length = 5.0703642946013519e-05\nparticle_volume = (4/3)*pi*radius^3\nparticle_mass = particle_density*particle_volume\ndisplaced_fluid_mass = fluid_density*particle_volume\nnet_downward_force = (particle_mass-displaced_fluid_mass)*g\nshielding_activity = shielding_scale*(particle_density/fluid_density)^density_ratio_exponent*exp(-radius/shielding_decay_length)\nhydrodynamic_mobility_factor = 1-shielding_activity\nstokes_drag_coefficient = 6*pi*viscosity*radius\neffective_drag_coefficient = stokes_drag_coefficient/hydrodynamic_mobility_factor\nspeed = net_downward_force/effective_drag_coefficient\n",
+  "used_token": {
+    "input": 397997,
+    "output": 20732,
+    "reason": 10828,
+    "cached": 299008,
+    "total": 418729
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "ecfb8ae528cae135fa8675eb40ce92da08a0e0496b607df1fbeb59c7bb806fb0"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 322397,
+          "output": 20523,
+          "cached": 292480,
+          "reason": 10657
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "local_viscosity",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\probe\\000-local_viscosity\\audit\\codex_events.jsonl",
+          "file_sha256": "39979a0cadb571457ce866acf9f0c39b08822aad28acfffc90db12721d1c9a2c"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 37802,
+          "output": 104,
+          "cached": 0,
+          "reason": 84
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "internal_drag",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 3-5\\result\\probe\\001-internal_drag\\audit\\codex_events.jsonl",
+          "file_sha256": "d662fa814df9e45f997421de7cff0649710e9ee1677c553dca2acbb47c5f4786"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 37798,
+          "output": 105,
+          "cached": 6528,
+          "reason": 87
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

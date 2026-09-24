@@ -1,0 +1,347 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.4695272999816,
+  "evaluation_seconds": 54.19789449998643,
+  "evaluation": {
+    "task_name": "Inclined Rolling - Variant 2-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.229602846532292e-08,
+        "mse": 9.447107777690943e-15,
+        "rmse": 9.719623335135443e-08,
+        "mape": 4.810716773522304e-08,
+        "r2": 0.9999999999999805,
+        "nrmse": 4.75384755817988e-08,
+        "max_absolute_error": 3.8660032641857356e-07,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.013041523613484e-08,
+        "mse": 9.104410393321586e-15,
+        "rmse": 9.541703408365608e-08,
+        "mape": 4.816637081779848e-08,
+        "r2": 0.9999999999999815,
+        "nrmse": 4.781172071006063e-08,
+        "max_absolute_error": 3.8716999606336344e-07,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 4.582987580808551e-05,
+        "mse": 4.3537812371497535e-09,
+        "rmse": 6.598318904955832e-05,
+        "mape": 1.0674975927373157e-05,
+        "r2": 0.9999999789291156,
+        "nrmse": 1.6890885734148907e-05,
+        "max_absolute_error": 0.00016492432812675872,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "gravity": "981/100",
+      "base_rotational_inertia_ratio": "1033993535178839/2000000000000000",
+      "geometric_inertia_slope": "8066061836931307/1000000000000000000",
+      "relaxing_inertia_ratio": "11114309722160187/500000000000000000",
+      "inertia_relaxation_rate": "5110630369687177/2500000000000000",
+      "geometric_inertia_ratio": "8066061836931307*angle/1000000000000000000 + 1033993535178839/2000000000000000",
+      "configuration_inertia_ratio": "8066061836931307*angle/1000000000000000000 + 1033993535178839/2000000000000000 + 11114309722160187*exp(-5110630369687177*angle/2500000000000000)/500000000000000000",
+      "downslope_gravity": "981*sin(angle)/100",
+      "effective_inertial_factor": "8066061836931307*angle/1000000000000000000 + 3033993535178839/2000000000000000 + 11114309722160187*exp(-5110630369687177*angle/2500000000000000)/500000000000000000",
+      "acceleration": "981*sin(angle)/(100*(8066061836931307*angle/1000000000000000000 + 3033993535178839/2000000000000000 + 11114309722160187*exp(-5110630369687177*angle/2500000000000000)/500000000000000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "slip_ratio",
+        "ok": true,
+        "reply": "slip_ratio = 1",
+        "expression": "1",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.03600508683518176,
+            "mse": 0.0014652039011248852,
+            "rmse": 0.03827798193641986,
+            "mape": 0.03460163551270199,
+            "r2": -7.678183654119739,
+            "nrmse": 0.03694477189222226,
+            "max_absolute_error": 0.05751005846917723,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.03500409574572726,
+            "mse": 0.0013961033950242745,
+            "rmse": 0.03736446701110929,
+            "mape": 0.033666113278435404,
+            "r2": -7.173109483936209,
+            "nrmse": 0.03609791351606124,
+            "max_absolute_error": 0.05751241330331025,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.07252707979125562,
+            "mse": 0.005332086055076495,
+            "rmse": 0.07302113430423068,
+            "mape": 0.06756426551638514,
+            "r2": -73.15072441948874,
+            "nrmse": 0.06808112674159947,
+            "max_absolute_error": 0.0860250352629155,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "upward_force",
+        "ok": true,
+        "reply": "upward_force = downslope_gravity*configuration_inertia_ratio/effective_inertial_factor",
+        "expression": "981*(8066061836931307*angle/1000000000000000000 + 1033993535178839/2000000000000000 + 11114309722160187*exp(-5110630369687177*angle/2500000000000000)/500000000000000000)*sin(angle)/(100*(8066061836931307*angle/1000000000000000000 + 3033993535178839/2000000000000000 + 11114309722160187*exp(-5110630369687177*angle/2500000000000000)/500000000000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9801387424052355,
+            "mse": 1.0770923954887208,
+            "rmse": 1.0378306198454161,
+            "mape": 32.73570578140012,
+            "r2": -1627.7920211635087,
+            "nrmse": 21.557093641468754,
+            "max_absolute_error": 1.534784042783516,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.953821208719603,
+            "mse": 1.027680599946729,
+            "rmse": 1.0137458261057004,
+            "mape": 33.85047073015872,
+            "r2": -1552.947027443787,
+            "nrmse": 21.785754281965787,
+            "max_absolute_error": 1.5348427519693206,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.90112054865992,
+            "mse": 3.6561945381701393,
+            "rmse": 1.9121178149293363,
+            "mape": 13.225339858577172,
+            "r2": -3165.0146884474843,
+            "nrmse": 12.582872160058564,
+            "max_absolute_error": 2.2238736883487915,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 960.1791289000539,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\performance.json",
+    "file_sha256": "3b8e24d551952350c3d4744657fca6d4c2688de75cb805a267587cd917e8a8d4",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\physics\\Inclined Rolling\\Inclined Rolling - Variant 2-4-5.yaml",
+      "file_sha256": "67fefc1bff52c7900d23ffa5b4a27104a596f71b2d8e4d5ea5c57ffe818bce8b"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\args.json",
+      "file_sha256": "33809a87b0d894f668beb9eb44170e94d0c50245162a5c3b3f7155a53b4c16bb"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\prompt.txt",
+        "file_sha256": "d613c13baa57204bd021df4b1ed4150b3ee8777868ed059d5342859837502374"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\dataest\\problem.json",
+        "file_sha256": "8abe56b2ea4e151c043d33f5c373e019c6e5ee8104960351809c02446f751459"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\dataest\\answer.json",
+        "file_sha256": "05e8d72f4633de29789850a9f10e9ea8c829825ebfff751d48ca7826c60fd381"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\dataest\\train.npy",
+        "file_sha256": "c0615f38f68862dc5e4060c07b4a825a8ffaee0e6ff4f2c37570ff4322494174"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "ca008df041a250875dc15868fcd2406577c0acba02b46e7d5d4ae265dddb644d"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "b19d55577193753f98cbe43b4eaea64391c6b8d9bac749c5196fc4deaa81a74e"
+      },
+      {
+        "probe": "slip_ratio",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\probe\\000-slip_ratio\\prompt.txt",
+        "file_sha256": "fc68a81762b3858b1a6beb58a16235f0c3fd7288a4a2723083ec6abb192e3afb"
+      },
+      {
+        "probe": "slip_ratio",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\probe\\000-slip_ratio\\reply.txt",
+        "file_sha256": "1261875928a7cdb547d931f30e0f150d25c0511a90d093f0bcbf060ee727bc6e"
+      },
+      {
+        "probe": "upward_force",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\probe\\001-upward_force\\prompt.txt",
+        "file_sha256": "913f3a8861a18ba6fc1d9947e0e246c33f646f944e1ed5820ce022a6ef87a2b0"
+      },
+      {
+        "probe": "upward_force",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\probe\\001-upward_force\\reply.txt",
+        "file_sha256": "4635ea40b72976adf7fad85e3fb53b5cef4e423f18cffd636cd4e7cb064f291d"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\submission.txt",
+      "file_sha256": "fc66190a2630e08c15137054fab7b8f0e99e7d0632a5a41798da032d5dc36727"
+    }
+  },
+  "submission": "gravity = 9.8100000000000005\nbase_rotational_inertia_ratio = 0.51699676758941948\ngeometric_inertia_slope = 0.0080660618369313066\nrelaxing_inertia_ratio = 0.022228619444320374\ninertia_relaxation_rate = 2.0442521478748708\ngeometric_inertia_ratio = base_rotational_inertia_ratio + geometric_inertia_slope*angle\nconfiguration_inertia_ratio = geometric_inertia_ratio + relaxing_inertia_ratio*exp(-inertia_relaxation_rate*angle)\ndownslope_gravity = gravity*sin(angle)\neffective_inertial_factor = 1 + configuration_inertia_ratio\nacceleration = downslope_gravity/effective_inertial_factor\n",
+  "used_token": {
+    "input": 555372,
+    "output": 26275,
+    "reason": 16701,
+    "cached": 435968,
+    "total": 581647
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "40bd6aa7d3933efe50cef7853094338caa71d1659180def7b0e8973e615446c0"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 462741,
+          "output": 24984,
+          "cached": 422912,
+          "reason": 15447
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "slip_ratio",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\probe\\000-slip_ratio\\audit\\codex_events.jsonl",
+          "file_sha256": "9c33fd843ed122b2d2e46a491d18a10fca18bd5d68da5094ed2f8473fb71e822"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 46316,
+          "output": 1134,
+          "cached": 6528,
+          "reason": 1122
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "upward_force",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 2-4-5\\result\\probe\\001-upward_force\\audit\\codex_events.jsonl",
+          "file_sha256": "e6b761aaf5749661824bfe496847ee2efbaaffb840d0285939b53d46f68bf888"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 46315,
+          "output": 157,
+          "cached": 6528,
+          "reason": 132
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

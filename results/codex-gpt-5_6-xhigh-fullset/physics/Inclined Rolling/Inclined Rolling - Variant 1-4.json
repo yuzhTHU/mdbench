@@ -1,0 +1,347 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 614.4069576000329,
+  "evaluation_seconds": 31.397697299951687,
+  "evaluation": {
+    "task_name": "Inclined Rolling - Variant 1-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.1338486533295508e-16,
+        "mse": 9.454004911008063e-32,
+        "rmse": 3.074736559610931e-16,
+        "mape": 1.1269922544717412e-16,
+        "r2": 1.0,
+        "nrmse": 1.515513424053605e-16,
+        "max_absolute_error": 8.881784197001252e-16,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.9462209621678993e-16,
+        "mse": 8.496278468263178e-32,
+        "rmse": 2.9148376401204886e-16,
+        "mape": 1.0572868607707824e-16,
+        "r2": 1.0,
+        "nrmse": 1.471672440564711e-16,
+        "max_absolute_error": 1.3322676295501878e-15,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 4.2810199829546035e-16,
+        "mse": 3.6445373821210747e-31,
+        "rmse": 6.037000399305168e-16,
+        "mape": 1.1151187427954696e-16,
+        "r2": 1.0,
+        "nrmse": 1.5792428368789843e-16,
+        "max_absolute_error": 1.7763568394002505e-15,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "gravitational_acceleration": "981/100",
+      "slope_drive_activity": "sin(angle)",
+      "downslope_gravitational_acceleration": "981*sin(angle)/100",
+      "solid_cylinder_inertia_ratio": "1/2",
+      "baseline_transmission_loss": "12742099898063233/500000000000000000",
+      "transmission_loss_fraction": "12742099898063233/(500000000000000000*(sin(angle) + 1))",
+      "transmitted_drive_acceleration": "981*(1 - 12742099898063233/(500000000000000000*(sin(angle) + 1)))*sin(angle)/100",
+      "internal_inertia_coupling": "3166666666666667/50000000000000000",
+      "angle_activated_inertia_ratio": "3166666666666667*sin(angle)**2/50000000000000000",
+      "acceleration": "327*(1 - 12742099898063233/(500000000000000000*(sin(angle) + 1)))*sin(angle)/(50*(3166666666666667*sin(angle)**2/50000000000000000 + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "body_inertia",
+        "ok": true,
+        "reply": "body_inertia = solid_cylinder_inertia_ratio",
+        "expression": "1/2",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.4949033372426342,
+            "mse": 0.2449293169439456,
+            "rmse": 0.4949033410110964,
+            "mape": 97.11745062956899,
+            "r2": -65663829.99127594,
+            "nrmse": 97.09644041447854,
+            "max_absolute_error": 0.4949905172750497,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.49490789595657825,
+            "mse": 0.24493382921051382,
+            "rmse": 0.4949078997253063,
+            "mape": 97.20529553345195,
+            "r2": -65659805.128585786,
+            "nrmse": 97.18424828431243,
+            "max_absolute_error": 0.49499050674124245,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.4946482304338665,
+            "mse": 0.24467687838529315,
+            "rmse": 0.49464823701828065,
+            "mape": 92.44829420661853,
+            "r2": -37562053.02769662,
+            "nrmse": 92.41653465097642,
+            "max_absolute_error": 0.494781562498716,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "resist_torque",
+        "ok": true,
+        "reply": "resist_torque = downslope_gravitational_acceleration*transmission_loss_fraction",
+        "expression": "12500000000000031573*sin(angle)/(50000000000000000000*(sin(angle) + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.05069868898415591,
+            "mse": 0.002789734528704103,
+            "rmse": 0.05281793756579391,
+            "mape": 9.000000000000025,
+            "r2": -1029.0442566577606,
+            "nrmse": 9.000000000000025,
+            "max_absolute_error": 0.07289594328995033,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.04955492470771651,
+            "mse": 0.0026789523828181167,
+            "rmse": 0.05175859718750226,
+            "mape": 9.000000000000025,
+            "r2": -970.9312642818386,
+            "nrmse": 9.000000000000023,
+            "max_absolute_error": 0.0728979610633435,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08448562846436972,
+            "mse": 0.007176677241549588,
+            "rmse": 0.08471527159579663,
+            "mape": 9.000000000000025,
+            "r2": -14959.713447624012,
+            "nrmse": 9.000000000000023,
+            "max_absolute_error": 0.09394796564143604,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 646.2084076999454,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\performance.json",
+    "file_sha256": "bac9dc0035e138f62be885abd6003149f226451da2a22e180118645e34892fd5",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\physics\\Inclined Rolling\\Inclined Rolling - Variant 1-4.yaml",
+      "file_sha256": "b350976aecfa8526956f9b47f2dbc9f4600ac6563aca51096ff0a6fc976bfa23"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\args.json",
+      "file_sha256": "6336b286e279dd1f25e42d3b22fc1db4368b67a06d3da83922dbb475bf4ac151"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\prompt.txt",
+        "file_sha256": "3a0a01ac51160477e28b27d3dfeaa83418b0f1586bf216fa31e0835f7e8dc35f"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\dataest\\problem.json",
+        "file_sha256": "8abe56b2ea4e151c043d33f5c373e019c6e5ee8104960351809c02446f751459"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\dataest\\answer.json",
+        "file_sha256": "a5f54ad2261b68333c555af1416ae473c0bf3251e5c10ad9636b6a1be5c50b0d"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\dataest\\train.npy",
+        "file_sha256": "a71391bac94220a91797e3c529a28cee9d5713d4f73e2c8082461b5572c4f15b"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\dataest\\id_test.npy",
+        "file_sha256": "9365210ccb507b5a231df73d65c26c67de5200b9f769a3b66fc8c819551dda12"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\dataest\\ood_test.npy",
+        "file_sha256": "4896afa6bfb10b858fe2d7c934624846f7ad8e8c6a842b86ba4e743221f96265"
+      },
+      {
+        "probe": "body_inertia",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\probe\\000-body_inertia\\prompt.txt",
+        "file_sha256": "6670d93e10152ab9abf3d3542ccafaef28a6551d2a49b880c9d9a232cdaf1185"
+      },
+      {
+        "probe": "body_inertia",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\probe\\000-body_inertia\\reply.txt",
+        "file_sha256": "d6e0da58f0f7f19f99b3a7cc0228e02c31adc3eafbc7bf500a543aa12a50b151"
+      },
+      {
+        "probe": "resist_torque",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\probe\\001-resist_torque\\prompt.txt",
+        "file_sha256": "f795b43baf6012d318d5d874ae998c65d2906bc99e8cc3a9daa17cc1bdd07f53"
+      },
+      {
+        "probe": "resist_torque",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\probe\\001-resist_torque\\reply.txt",
+        "file_sha256": "25ba160e7db4b62650536a2b37f95d33599858146223e1eaa0e3c700a44a8cb3"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\submission.txt",
+      "file_sha256": "ee8d67cb76319ccdbe85c620a7c93d3889101df6ca3e91d31f8558a45c582e98"
+    }
+  },
+  "submission": "gravitational_acceleration = 9.8100000000000005\nslope_drive_activity = sin(angle)\ndownslope_gravitational_acceleration = gravitational_acceleration*slope_drive_activity\nsolid_cylinder_inertia_ratio = 0.5\nbaseline_transmission_loss = 0.025484199796126466\ntransmission_loss_fraction = baseline_transmission_loss/(1+slope_drive_activity)\ntransmitted_drive_acceleration = downslope_gravitational_acceleration*(1-transmission_loss_fraction)\ninternal_inertia_coupling = 0.063333333333333339\nangle_activated_inertia_ratio = internal_inertia_coupling*slope_drive_activity^2\nacceleration = transmitted_drive_acceleration/((1+solid_cylinder_inertia_ratio)*(1+angle_activated_inertia_ratio))\n",
+  "used_token": {
+    "input": 408919,
+    "output": 17275,
+    "reason": 10039,
+    "cached": 314368,
+    "total": 426194
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": true,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\audit\\codex.events.jsonl",
+          "file_sha256": "d244c3d9104a51ee55baa061b4a508132868ebf7c08908e003d2c7d95a09c05b"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 340127,
+          "output": 16625,
+          "cached": 307840,
+          "reason": 9428
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "body_inertia",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\probe\\000-body_inertia\\audit\\codex_events.jsonl",
+          "file_sha256": "570e899d8b3ee4b87f79d939c10b3831639cee9d200e3057ad13a442cae09cca"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 34388,
+          "output": 192,
+          "cached": 0,
+          "reason": 176
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "resist_torque",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Inclined Rolling - Variant 1-4\\result\\probe\\001-resist_torque\\audit\\codex_events.jsonl",
+          "file_sha256": "db8b12458ddbce995545246f85c23d9615a3e4109c411727bff4ab9352cec87f"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 34404,
+          "output": 458,
+          "cached": 6528,
+          "reason": 435
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

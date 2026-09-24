@@ -1,0 +1,354 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.4774683000287,
+  "evaluation_seconds": 18.370793399983086,
+  "evaluation": {
+    "task_name": "Competitive Inhibition Pulse Reaction - Variant 2-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.9632741409696986e-20,
+        "mse": 3.273708405260391e-39,
+        "rmse": 5.72163298828262e-20,
+        "mape": 4.051248227993234e-16,
+        "r2": 1.0,
+        "nrmse": 1.0668402424135424e-15,
+        "max_absolute_error": 5.55653613398821e-19,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.0876926930095146e-20,
+        "mse": 4.787145599826598e-39,
+        "rmse": 6.918920146834041e-20,
+        "mape": 4.18851995718912e-16,
+        "r2": 1.0,
+        "nrmse": 1.3089146544410502e-15,
+        "max_absolute_error": 1.0570971181733668e-18,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.9702128303703565e-20,
+        "mse": 3.3817043927737896e-39,
+        "rmse": 5.815242379104924e-20,
+        "mape": 1.7953784249683418e-16,
+        "r2": 1.0,
+        "nrmse": 2.3909666741243e-16,
+        "max_absolute_error": 3.2526065174565133e-19,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "k_substrate_on": "7/5",
+      "k_substrate_off": "73/100",
+      "k_catalysis": "19/10",
+      "k_inhibitor_on_linear": "23/25",
+      "k_inhibitor_on_cooperative": "9000000000000001/50000000000000000",
+      "k_inhibitor_off": "61/100",
+      "k_inhibitor_isomerization_forward": "27/100",
+      "k_inhibitor_isomerization_reverse": "11/25",
+      "substrate_binding_rate": "7*substrate/5",
+      "inhibitor_binding_rate": "9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25",
+      "substrate_complex_exit_rate": "263/100",
+      "inhibitor_complex_laplace_exit_rate": "laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25))",
+      "laplace_weighted_free_enzyme": "enzyme_total*laplace_rate/(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25 + laplace_rate + 7*substrate/5 - 1841*substrate/(500*(laplace_rate + 263/100)) - 61*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25)))))",
+      "laplace_weighted_substrate_complex": "7*enzyme_total*laplace_rate*substrate/(5*(laplace_rate + 263/100)*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25 + laplace_rate + 7*substrate/5 - 1841*substrate/(500*(laplace_rate + 263/100)) - 61*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25))))))",
+      "laplace_weighted_inhibitor_complex": "enzyme_total*laplace_rate*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/((laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25)))*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25 + laplace_rate + 7*substrate/5 - 1841*substrate/(500*(laplace_rate + 263/100)) - 61*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25))))))",
+      "laplace_weighted_isomerized_inhibitor_complex": "27*enzyme_total*laplace_rate*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 11/25)*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25)))*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25 + laplace_rate + 7*substrate/5 - 1841*substrate/(500*(laplace_rate + 263/100)) - 61*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25))))))",
+      "response": "133*enzyme_total*laplace_rate*substrate/(50*(laplace_rate + 263/100)*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25 + laplace_rate + 7*substrate/5 - 1841*substrate/(500*(laplace_rate + 263/100)) - 61*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25))))))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "inhibitor_complex",
+        "ok": true,
+        "reply": "inhibitor_complex = laplace_weighted_inhibitor_complex",
+        "expression": "enzyme_total*laplace_rate*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/((laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25)))*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25 + laplace_rate + 7*substrate/5 - 1841*substrate/(500*(laplace_rate + 263/100)) - 61*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25))))))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 1.0898667053202676e-20,
+            "mse": 7.133582581378577e-40,
+            "rmse": 2.6708767439510526e-20,
+            "mape": 4.019230030463905e-16,
+            "r2": 1.0,
+            "nrmse": 6.772090540463745e-16,
+            "max_absolute_error": 2.710505431213761e-19,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 1.2460648747498809e-20,
+            "mse": 1.1700818775427868e-39,
+            "rmse": 3.4206459587960676e-20,
+            "mape": 4.2020359392642874e-16,
+            "r2": 1.0,
+            "nrmse": 8.597681433731939e-16,
+            "max_absolute_error": 5.014435047745458e-19,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 1.799267386557585e-20,
+            "mse": 7.080775041114067e-40,
+            "rmse": 2.6609725742882182e-20,
+            "mape": 1.7941527158197306e-16,
+            "r2": 1.0,
+            "nrmse": 2.257760789779504e-16,
+            "max_absolute_error": 1.6263032587282567e-19,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "locked_complex",
+        "ok": true,
+        "reply": "locked_complex = laplace_weighted_isomerized_inhibitor_complex",
+        "expression": "27*enzyme_total*laplace_rate*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 11/25)*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25)))*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25 + laplace_rate + 7*substrate/5 - 1841*substrate/(500*(laplace_rate + 263/100)) - 61*(9000000000000001*inhibitor**2/50000000000000000 + 23*inhibitor/25)/(100*(laplace_rate + 22/25 - 297/(2500*(laplace_rate + 11/25))))))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 5.1944758711513e-21,
+            "mse": 2.0618028956458454e-40,
+            "rmse": 1.4358979405395934e-20,
+            "mape": 4.402305995245843e-16,
+            "r2": 1.0,
+            "nrmse": 8.43951095812904e-16,
+            "max_absolute_error": 1.4907779871675686e-19,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 6.026824708171559e-21,
+            "mse": 3.5881662691922565e-40,
+            "rmse": 1.8942455672885332e-20,
+            "mape": 4.408385515123591e-16,
+            "r2": 1.0,
+            "nrmse": 1.1194858888705357e-15,
+            "max_absolute_error": 2.913793338554793e-19,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 5.028993426526391e-22,
+            "mse": 7.804552816534034e-43,
+            "rmse": 8.83433801511694e-22,
+            "mape": 1.9756914453407176e-16,
+            "r2": 1.0,
+            "nrmse": 2.3878675804197793e-16,
+            "max_absolute_error": 6.776263578034403e-21,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 1.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 1.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 1.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 924.1702120999107,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\performance.json",
+    "file_sha256": "dfd7136ee3f4c7d1fcd7c712a61408627b2b31d0d00ee3ec69ff67d9ed412836",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\chemistry\\Competitive Inhibition Pulse Reaction\\Competitive Inhibition Pulse Reaction - Variant 2-4.yaml",
+      "file_sha256": "c2009746fa082715a6a6ea3b445be566a5dced3cb52f360cf7743a2172a69dd8"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\args.json",
+      "file_sha256": "bf111331c13979ab21cc16d9951fb640627e2f1057d200d90039d1eb45180b5c"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\prompt.txt",
+        "file_sha256": "81c1bda869fbf1fa66c33367e31f0ac6ddb84a8385fec5680954a24e3598ae4d"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\dataest\\problem.json",
+        "file_sha256": "0c4939da7882d3fdbe104ebadfe51ef0acfebe4a8b17e7cb0c7eec9e6cc81d4a"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\dataest\\answer.json",
+        "file_sha256": "21657ac2f9e47639b8c32c4359949e3fcde084831570c26c661d987a87573e6c"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\dataest\\train.npy",
+        "file_sha256": "9c30ee1e251ca4a8d48b51ac6610e068f02557039e2ea1a13fd3363fec7a038e"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\dataest\\id_test.npy",
+        "file_sha256": "0168692f827e2f759d699f5d7a2259e8581dddcaa2aa8bb70987952cbe50b2aa"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\dataest\\ood_test.npy",
+        "file_sha256": "d3153c927b27e0162cc2be7fb513d2806eb3f8c9fca88d937dcba4c2aa384d42"
+      },
+      {
+        "probe": "inhibitor_complex",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\probe\\000-inhibitor_complex\\prompt.txt",
+        "file_sha256": "78b51c85f5c871c800ca274c803acb45de23bef00fcab8ae8b1f05faf67bdf05"
+      },
+      {
+        "probe": "inhibitor_complex",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\probe\\000-inhibitor_complex\\reply.txt",
+        "file_sha256": "5c88d0a7e3193f5dcc57a8bf70ea8a917ddc0495023a207609b03a66190b4aaa"
+      },
+      {
+        "probe": "locked_complex",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\probe\\001-locked_complex\\prompt.txt",
+        "file_sha256": "178e86c2d3f6c50155df4c9253197cc1c9c290a250359968698eadd4d5a7902e"
+      },
+      {
+        "probe": "locked_complex",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\probe\\001-locked_complex\\reply.txt",
+        "file_sha256": "cbcc6e102c48b8bb4a168a7d9737b27d3fea6bb732abe89fc89fe7661beb72dc"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\submission.txt",
+      "file_sha256": "3f52cda29da85e991f2d81f740570980acb828306920e6dc9610ec6e4269111b"
+    }
+  },
+  "submission": "k_substrate_on = 1.3999999999999999\nk_substrate_off = 0.72999999999999998\nk_catalysis = 1.8999999999999999\nk_inhibitor_on_linear = 0.92000000000000004\nk_inhibitor_on_cooperative = 0.18000000000000002\nk_inhibitor_off = 0.60999999999999999\nk_inhibitor_isomerization_forward = 0.27000000000000002\nk_inhibitor_isomerization_reverse = 0.44\nsubstrate_binding_rate = k_substrate_on*substrate\ninhibitor_binding_rate = k_inhibitor_on_linear*inhibitor + k_inhibitor_on_cooperative*inhibitor^2\nsubstrate_complex_exit_rate = k_substrate_off + k_catalysis\ninhibitor_complex_laplace_exit_rate = laplace_rate + k_inhibitor_off + k_inhibitor_isomerization_forward - k_inhibitor_isomerization_reverse*k_inhibitor_isomerization_forward/(laplace_rate + k_inhibitor_isomerization_reverse)\nlaplace_weighted_free_enzyme = laplace_rate*enzyme_total/(laplace_rate + substrate_binding_rate + inhibitor_binding_rate - substrate_complex_exit_rate*substrate_binding_rate/(laplace_rate + substrate_complex_exit_rate) - k_inhibitor_off*inhibitor_binding_rate/inhibitor_complex_laplace_exit_rate)\nlaplace_weighted_substrate_complex = substrate_binding_rate*laplace_weighted_free_enzyme/(laplace_rate + substrate_complex_exit_rate)\nlaplace_weighted_inhibitor_complex = inhibitor_binding_rate*laplace_weighted_free_enzyme/inhibitor_complex_laplace_exit_rate\nlaplace_weighted_isomerized_inhibitor_complex = k_inhibitor_isomerization_forward*laplace_weighted_inhibitor_complex/(laplace_rate + k_inhibitor_isomerization_reverse)\nresponse = k_catalysis*laplace_weighted_substrate_complex\n",
+  "used_token": {
+    "input": 547601,
+    "output": 24807,
+    "reason": 9987,
+    "cached": 425984,
+    "total": 572408
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "1be6591a73f1eafabf1a2687437363f38c751744609ad2708e4e3fe4f78c4d18"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 452576,
+          "output": 24657,
+          "cached": 412928,
+          "reason": 9874
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "inhibitor_complex",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\probe\\000-inhibitor_complex\\audit\\codex_events.jsonl",
+          "file_sha256": "0cc37449a85b13ff133939b15e06730f15ecd7b17ed359f6151b649d6005de9c"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 47510,
+          "output": 17,
+          "cached": 6528,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "locked_complex",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Competitive Inhibition Pulse Reaction - Variant 2-4\\result\\probe\\001-locked_complex\\audit\\codex_events.jsonl",
+          "file_sha256": "30c4dd3d5c05afba603b6e5f1bd1ffcbe815943274337142a00bccd21093a725"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 47515,
+          "output": 133,
+          "cached": 6528,
+          "reason": 113
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

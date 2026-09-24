@@ -1,0 +1,345 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.5443576000398,
+  "evaluation_seconds": 40.724870200036094,
+  "evaluation": {
+    "task_name": "Terminal Settling - Variant 1-2-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.7700311884796696e-08,
+        "mse": 7.977153082861659e-16,
+        "rmse": 2.8243854345435327e-08,
+        "mape": 0.006594814756655576,
+        "r2": 0.9999654789063018,
+        "nrmse": 0.004445301069199633,
+        "max_absolute_error": 3.145482450811192e-07,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.69011657040705e-08,
+        "mse": 8.784867573715259e-16,
+        "rmse": 2.9639277274783977e-08,
+        "mape": 0.0068943732369218915,
+        "r2": 0.9999582426487962,
+        "nrmse": 0.004961217586490292,
+        "max_absolute_error": 3.682956133359142e-07,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 3.484566242225174e-07,
+        "mse": 1.5624017439947306e-13,
+        "rmse": 3.952722788148355e-07,
+        "mape": 0.021735566619978698,
+        "r2": 0.9947886835914003,
+        "nrmse": 0.023535336938995854,
+        "max_absolute_error": 8.940390276226646e-07,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "g": "1911449045033913/200000000000000",
+      "particle_volume": "6283185307*radius**3/1500000000",
+      "effective_weight": "4003329518278754492772097*radius**3*(-fluid_density + particle_density)/100000000000000000000000",
+      "stokes_drag_coefficient": "18849555921*radius*viscosity/1000000000",
+      "stokes_speed": "637149681677971*radius**2*(-fluid_density + particle_density)/(300000000000000*viscosity)",
+      "entrainment_coefficient": "1136990901817743/12500000000",
+      "entrainment_speed": "(1136990901817743*fluid_density*radius**3/12500000000)/(sqrt(viscosity))",
+      "speed": "637149681677971*radius**2*(-fluid_density + particle_density)/(300000000000000*viscosity) + (1136990901817743*fluid_density*radius**3/12500000000)/(sqrt(viscosity))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "surface_friction",
+        "ok": true,
+        "reply": "surface_friction = effective_weight/entrainment_speed",
+        "expression": "(4003329518278754492772097*radius**3*(-fluid_density + particle_density)/100000000000000000000000)/(((1136990901817743*fluid_density*radius**3/12500000000)/(sqrt(viscosity))))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.034820777267897e-05,
+            "mse": 9.127953756953365e-09,
+            "rmse": 9.554032529227314e-05,
+            "mape": 3875.5684695897235,
+            "r2": -7805683.018712852,
+            "nrmse": 1678.1310650304251,
+            "max_absolute_error": 0.00018437060385201955,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.189149664319143e-05,
+            "mse": 9.415493045790065e-09,
+            "rmse": 9.703346353598879e-05,
+            "mape": 4169.424987324262,
+            "r2": -8036633.448959104,
+            "nrmse": 1738.3923097814131,
+            "max_absolute_error": 0.00019878597307344036,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0001717217364810718,
+            "mse": 3.012507010254689e-08,
+            "rmse": 0.00017356575152531356,
+            "mape": 930.5930676057627,
+            "r2": -20691395.65198436,
+            "nrmse": 885.8646382198892,
+            "max_absolute_error": 0.00024378491269770318,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "lift",
+        "ok": true,
+        "reply": "lift = effective_weight-stokes_drag_coefficient*(stokes_speed+entrainment_speed)",
+        "expression": "4003329518278754492772097*radius**3*(-fluid_density + particle_density)/100000000000000000000000 - 18849555921*radius*viscosity/1000000000*(637149681677971*radius**2*(-fluid_density + particle_density)/(300000000000000*viscosity) + (1136990901817743*fluid_density*radius**3/12500000000)/(sqrt(viscosity)))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.3925701542024744e-12,
+            "mse": 6.5338650619945506e-24,
+            "rmse": 2.5561426137824453e-12,
+            "mape": 2.1026329607624006,
+            "r2": -8.048373254653479,
+            "nrmse": 2.4712876817924054,
+            "max_absolute_error": 1.1979437938894437e-11,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.354200282902646e-12,
+            "mse": 6.344371808282402e-24,
+            "rmse": 2.5188036462341405e-12,
+            "mape": 2.115356733801609,
+            "r2": -8.098879526077443,
+            "nrmse": 2.4977952418868195,
+            "max_absolute_error": 1.0346467371290139e-11,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.514980752512822e-11,
+            "mse": 2.6253964798016702e-21,
+            "rmse": 5.123862293038007e-11,
+            "mape": 3.716292183043989,
+            "r2": -82.92562750192295,
+            "nrmse": 3.9247856921043405,
+            "max_absolute_error": 1.109824182007129e-10,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 946.7543001999147,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\performance.json",
+    "file_sha256": "21df04d25bc6737c1fec2902ce65d56d03fcff0157e0890237f49f69447b66db",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\physics\\Terminal Settling\\Terminal Settling - Variant 1-2-4.yaml",
+      "file_sha256": "0e1da370b06a636cd4ce6a3e8f24930b7422288b9bf2071c25437c11f6c8e610"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\args.json",
+      "file_sha256": "cb53b2e67d1909d78c369f809046850819d25ecf53c971eb1cf861c8116cdaef"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\prompt.txt",
+        "file_sha256": "34381bc0ec17fff7fb32832b3d1bc9ea87035ca70b0fb16c8bba8ac63195a5e2"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\dataest\\problem.json",
+        "file_sha256": "e396af1b02e060e3be0110da9e0351e47db63fe62b3cfc901bf4f461d5fe232a"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\dataest\\answer.json",
+        "file_sha256": "82efaf19570ca863b278360f038a031c1a92a0d269288df3c06ba2d518641445"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\dataest\\train.npy",
+        "file_sha256": "f085ad3c1fe097d6265e376a8cda81c61e6c162cfa9c86ca485fe13f9dc4df40"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\dataest\\id_test.npy",
+        "file_sha256": "23935b7eaa713b2b6e0bda150f179f4f4e9d7c557e5cf4f3cf13192792914009"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\dataest\\ood_test.npy",
+        "file_sha256": "a4faa2d0d247e99365e097ec8860538c8f9f68ee3093de46907fc0d8c973cb44"
+      },
+      {
+        "probe": "surface_friction",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\probe\\000-surface_friction\\prompt.txt",
+        "file_sha256": "d8b0306d10e0aca6aaf819965f62d72ca8434a38373ac824b98cae57f63db798"
+      },
+      {
+        "probe": "surface_friction",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\probe\\000-surface_friction\\reply.txt",
+        "file_sha256": "7fdf9d777a73103b10b96dfd728b50ee629c9da21cf70cdca307b52a4fec817e"
+      },
+      {
+        "probe": "lift",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\probe\\001-lift\\prompt.txt",
+        "file_sha256": "13faa1bcf2dbb841d112c876cccdfefbeb0bb995c5253094018fbb93c1762208"
+      },
+      {
+        "probe": "lift",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\probe\\001-lift\\reply.txt",
+        "file_sha256": "b83ff5eac8c20252db6b15096ab2dc67abe8c362a1d8bcb14d7cf901c111a57c"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\submission.txt",
+      "file_sha256": "727ec84d01c81d646fd7c353ce2035aa9235d23c3e4f5fbc71ad027a8beff60e"
+    }
+  },
+  "submission": "g = 9.5572452251695648\nparticle_volume = 4*pi*radius^3/3\neffective_weight = (particle_density-fluid_density)*g*particle_volume\nstokes_drag_coefficient = 6*pi*viscosity*radius\nstokes_speed = effective_weight/stokes_drag_coefficient\nentrainment_coefficient = 90959.27214541944\nentrainment_speed = entrainment_coefficient*fluid_density*radius^3/sqrt(viscosity)\nspeed = stokes_speed+entrainment_speed\n",
+  "used_token": {
+    "input": 576632,
+    "output": 24781,
+    "reason": 16801,
+    "cached": 446720,
+    "total": 601413
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "89507a13a9eb6c78955ef1482713574e144cf29b1984e1539b059f8cf1051bfd"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 480064,
+          "output": 23821,
+          "cached": 440192,
+          "reason": 15881
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "surface_friction",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\probe\\000-surface_friction\\audit\\codex_events.jsonl",
+          "file_sha256": "9c38f5608930d562e74edf3ed190b06a3d34d80ef721975e8490ed79e89fa18c"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 48283,
+          "output": 331,
+          "cached": 0,
+          "reason": 315
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "lift",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Terminal Settling - Variant 1-2-4\\result\\probe\\001-lift\\audit\\codex_events.jsonl",
+          "file_sha256": "ecec72ec82fc333b45de86b62fbc06dc19de331f0def10b1998279acc218b756"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 48285,
+          "output": 629,
+          "cached": 6528,
+          "reason": 605
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

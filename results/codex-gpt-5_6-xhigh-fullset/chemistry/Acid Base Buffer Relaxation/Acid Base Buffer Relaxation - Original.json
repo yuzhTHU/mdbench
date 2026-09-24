@@ -1,0 +1,275 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 468.04928779997863,
+  "evaluation_seconds": 5.720188900013454,
+  "evaluation": {
+    "task_name": "Acid Base Buffer Relaxation - Original",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 9.792164091402741e-24,
+        "mse": 4.15824029530254e-46,
+        "rmse": 2.0391763767027462e-23,
+        "mape": 1.4891777622134102e-16,
+        "r2": 1.0,
+        "nrmse": 2.0960447130517316e-16,
+        "max_absolute_error": 1.5881867761018131e-22,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 9.051423852861506e-24,
+        "mse": 3.76131463666323e-46,
+        "rmse": 1.939410899387551e-23,
+        "mape": 1.512069688678117e-16,
+        "r2": 1.0,
+        "nrmse": 1.88099368097811e-16,
+        "max_absolute_error": 2.117582368135751e-22,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.265047313869311e-23,
+        "mse": 2.8300974110120087e-45,
+        "rmse": 5.319865986105297e-23,
+        "mape": 1.535568942284803e-16,
+        "r2": 1.0,
+        "nrmse": 2.174090997123401e-16,
+        "max_absolute_error": 3.1763735522036263e-22,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "association_rate": "5882352941176471/10000000000000",
+      "dissociation_rate": "1",
+      "acid_dissociation": "10000000000000/5882352941176471",
+      "sample_volume": "length_scale**3",
+      "unprotonated_buffer": "10000000000000*buffer_total/(5882352941176471*(hydrogen + 10000000000000/5882352941176471))",
+      "protonated_buffer": "buffer_total*hydrogen/(hydrogen + 10000000000000/5882352941176471)",
+      "chemical_relaxation_rate": "5882352941176471*hydrogen/10000000000000 + 1",
+      "buffer_capture_rate": "buffer_total/(hydrogen + 10000000000000/5882352941176471)",
+      "dynamic_buffer_gain": "buffer_total/((hydrogen + 10000000000000/5882352941176471)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1))",
+      "pulse_amount": "length_scale**3*pulse",
+      "free_proton_amount_change": "length_scale**3*pulse/(buffer_total/((hydrogen + 10000000000000/5882352941176471)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1)) + 1)",
+      "bound_proton_amount_change": "buffer_total*length_scale**3*pulse/((hydrogen + 10000000000000/5882352941176471)*(buffer_total/((hydrogen + 10000000000000/5882352941176471)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1)) + 1)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1))",
+      "free_proton_change": "pulse/(buffer_total/((hydrogen + 10000000000000/5882352941176471)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1)) + 1)",
+      "bound_proton_change": "buffer_total*pulse/((hydrogen + 10000000000000/5882352941176471)*(buffer_total/((hydrogen + 10000000000000/5882352941176471)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1)) + 1)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1))",
+      "ph_change": "-pulse/(hydrogen*(buffer_total/((hydrogen + 10000000000000/5882352941176471)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1)) + 1)*log(10))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "primary_protons",
+        "ok": true,
+        "reply": "primary_protons = bound_proton_amount_change",
+        "expression": "buffer_total*length_scale**3*pulse/((hydrogen + 10000000000000/5882352941176471)*(buffer_total/((hydrogen + 10000000000000/5882352941176471)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1)) + 1)*(5882352941176471*hydrogen/10000000000000 + laplace_rate + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.6866255484356418e-09,
+            "mse": 1.9436453517685075e-17,
+            "rmse": 4.408679339403703e-09,
+            "mape": 0.9999999999990116,
+            "r2": -2.325173124145909,
+            "nrmse": 0.9999999999989745,
+            "max_absolute_error": 9.937744591239198e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.76575995323184e-09,
+            "mse": 1.9628146811537868e-17,
+            "rmse": 4.430366442128447e-09,
+            "mape": 0.9999999999989935,
+            "r2": -2.6033468911251796,
+            "nrmse": 0.9999999999989967,
+            "max_absolute_error": 9.744639822058884e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.2390187586593948e-08,
+            "mse": 6.056867339403221e-16,
+            "rmse": 2.4610703645778236e-08,
+            "mape": 0.9999999999884656,
+            "r2": -4.803474093144982,
+            "nrmse": 0.9999999999885321,
+            "max_absolute_error": 4.7494358358419996e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 1
+  },
+  "total_seconds": 473.99217940005474,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\performance.json",
+    "file_sha256": "ea533ca4faa4e7bf054afa3c62eb8029ba5033850f05519114d7da37cdc0edfc",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\chemistry\\Acid Base Buffer Relaxation\\Acid Base Buffer Relaxation - Original.yaml",
+      "file_sha256": "7e77c5908d3c475d8da85204a6542e7a17a6c2a830c96d43e112e84bb323a714"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\args.json",
+      "file_sha256": "8acedb91bc40a8d2a1c60e13d51d2a91e4637fdfb10ab8826fa49634341c9393"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\prompt.txt",
+        "file_sha256": "94abbce3ad4ad0afa2701323affd5a7f779ce8a96d053e9110e25a892586086a"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\dataest\\problem.json",
+        "file_sha256": "70e4ed8f8352d35ff181eb80043b36611917eba18c807a71849a10cba98a6915"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\dataest\\answer.json",
+        "file_sha256": "b29f074fc29de64df564606982670325d9bfd0f6ead1262957b369a5a260000f"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\dataest\\train.npy",
+        "file_sha256": "f401d5e99500e056ae9aa4299525d10d66a7e49cbc709cfc5dd91d7a816ef0e2"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\dataest\\id_test.npy",
+        "file_sha256": "e9f94a307f56c7033c1a966c5d5cbc6a0d297e338fae7313ed4a4740d943b293"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\dataest\\ood_test.npy",
+        "file_sha256": "d7fcf6e6dcdd400f66c7af4edfdeab9bcdf470228c55c445219a8bdd4ddcb7fc"
+      },
+      {
+        "probe": "primary_protons",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\probe\\000-primary_protons\\prompt.txt",
+        "file_sha256": "cf8d2b513af7dce62ecf239008f6399f006af3678912a6b65d420fef272712a1"
+      },
+      {
+        "probe": "primary_protons",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\probe\\000-primary_protons\\reply.txt",
+        "file_sha256": "740c4e21c774b0c03d91b410b4881011d08946b7a14aeb94323dc21fe5b01904"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\submission.txt",
+      "file_sha256": "16c7fc4cc893263c9ade0206d62913abd1ef7497113b6c59e4b647b376d0e123"
+    }
+  },
+  "submission": "association_rate = 588.23529411764707\ndissociation_rate = 1\nacid_dissociation = dissociation_rate/association_rate\nsample_volume = length_scale^3\nunprotonated_buffer = buffer_total*acid_dissociation/(hydrogen + acid_dissociation)\nprotonated_buffer = buffer_total*hydrogen/(hydrogen + acid_dissociation)\nchemical_relaxation_rate = association_rate*hydrogen + dissociation_rate\nbuffer_capture_rate = association_rate*unprotonated_buffer\ndynamic_buffer_gain = buffer_capture_rate/(laplace_rate + chemical_relaxation_rate)\npulse_amount = pulse*sample_volume\nfree_proton_amount_change = pulse_amount/(1 + dynamic_buffer_gain)\nbound_proton_amount_change = pulse_amount*dynamic_buffer_gain/(1 + dynamic_buffer_gain)\nfree_proton_change = free_proton_amount_change/sample_volume\nbound_proton_change = bound_proton_amount_change/sample_volume\nph_change = -free_proton_change/(log(10)*hydrogen)\n",
+  "used_token": {
+    "input": 245174,
+    "output": 12610,
+    "reason": 7015,
+    "cached": 194688,
+    "total": 257784
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": true,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\audit\\codex.events.jsonl",
+          "file_sha256": "84bb2959e297966b324ec0d2e8903c7c5134ad1ef779ee4380a91fb585cec9aa"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 215261,
+          "output": 12597,
+          "cached": 188160,
+          "reason": 7015
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "primary_protons",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Original\\result\\probe\\000-primary_protons\\audit\\codex_events.jsonl",
+          "file_sha256": "38abdeb95008942205edeeea4393461f13d098ef30ca027ab3df879d764b8287"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 29913,
+          "output": 13,
+          "cached": 6528,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

@@ -1,0 +1,507 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.4884329000488,
+  "evaluation_seconds": 122.08770840009674,
+  "evaluation": {
+    "task_name": "Acid Base Buffer Relaxation - Variant 2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 6.766185337249452e-09,
+        "mse": 1.332075523650852e-16,
+        "rmse": 1.1541557623002417e-08,
+        "mape": 0.02695003902223703,
+        "r2": 0.9994686318969359,
+        "nrmse": 0.019138688262981884,
+        "max_absolute_error": 7.444497282204014e-08,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 6.843934898000614e-09,
+        "mse": 1.4662013849050478e-16,
+        "rmse": 1.210868029516449e-08,
+        "mape": 0.027279810063977103,
+        "r2": 0.9995166772433084,
+        "nrmse": 0.018710202713463495,
+        "max_absolute_error": 8.038954953021234e-08,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.468244511424384e-07,
+        "mse": 2.8686940913663955e-14,
+        "rmse": 1.693721964008968e-07,
+        "mape": 0.10281488200845551,
+        "r2": 0.9625011168215436,
+        "nrmse": 0.09567118841846416,
+        "max_absolute_error": 4.590488544361565e-07,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "pi": "6283185307/2000000000",
+      "K": "4522232862332461/10000000000000000000",
+      "k_capture": "5512832361899033/100000000000000",
+      "k_hydrogen": "1359114795152113/125000000000000",
+      "k_release": "3168522766615927/50000000000000000",
+      "D": "1506345474594337/200000000000000000000000000",
+      "geometry_exponent": "9861467681656657/10000000000000000",
+      "buffer_bound": "buffer_total*hydrogen/(hydrogen + 4522232862332461/10000000000000000000)",
+      "buffer_free": "4522232862332461*buffer_total/(10000000000000000000*(hydrogen + 4522232862332461/10000000000000000000))",
+      "proton_capture_rate": "24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000))",
+      "buffer_release_rate": "1359114795152113*hydrogen/125000000000000 + 3168522766615927/50000000000000000",
+      "transport_rate": "59468135699069782893163953400497913/(800000000000000000000000000000000000000000000*length_scale**2)",
+      "distributed_buffer_load": "(24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)) + 59468135699069782893163953400497913/(800000000000000000000000000000000000000000000*length_scale**2))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000)",
+      "laplace_hydrogen_fraction": "((24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)) + 59468135699069782893163953400497913/(800000000000000000000000000000000000000000000*length_scale**2))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000) + 1)**(-9861467681656657/10000000000000000)",
+      "laplace_hydrogen_change": "pulse/((24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)) + 59468135699069782893163953400497913/(800000000000000000000000000000000000000000000*length_scale**2))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000) + 1)**(9861467681656657/10000000000000000)",
+      "ph_change": "-pulse/((24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)) + 59468135699069782893163953400497913/(800000000000000000000000000000000000000000000*length_scale**2))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000) + 1)**(9861467681656657/10000000000000000)/(hydrogen*log(10))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "interior_protons",
+        "ok": true,
+        "reply": "interior_protons = laplace_hydrogen_change*proton_capture_rate/(laplace_rate + buffer_release_rate)",
+        "expression": "(24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)))*(pulse/((24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)) + 59468135699069782893163953400497913/(800000000000000000000000000000000000000000000*length_scale**2))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000) + 1)**(9861467681656657/10000000000000000))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.9531747504400753e-09,
+            "mse": 1.3061706246087616e-17,
+            "rmse": 3.6140982618196223e-09,
+            "mape": 31.66264910132275,
+            "r2": -136.40868202340553,
+            "nrmse": 8.728036123504335,
+            "max_absolute_error": 9.377454799264146e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.03304508609552e-09,
+            "mse": 1.3229923139576827e-17,
+            "rmse": 3.6372961303111996e-09,
+            "mape": 30.96196036365383,
+            "r2": -143.08548264113563,
+            "nrmse": 8.662976605309453,
+            "max_absolute_error": 9.240906074873778e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 7.33100824734918e-09,
+            "mse": 7.978730946434406e-17,
+            "rmse": 8.932374234454358e-09,
+            "mape": 3894.8793804431657,
+            "r2": -1685879.2219977244,
+            "nrmse": 1064.6821856540164,
+            "max_absolute_error": 3.1505497204303645e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "pocket_protons",
+        "ok": true,
+        "reply": "pocket_protons = laplace_hydrogen_change",
+        "expression": "pulse/((24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)) + 59468135699069782893163953400497913/(800000000000000000000000000000000000000000000*length_scale**2))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000) + 1)**(9861467681656657/10000000000000000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.775599876995084e-10,
+            "mse": 1.287019388232967e-18,
+            "rmse": 1.1344687691747918e-09,
+            "mape": 28.899208367892577,
+            "r2": -1361.5483555696499,
+            "nrmse": 27.360992594071778,
+            "max_absolute_error": 7.027763958735899e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.672597342259376e-10,
+            "mse": 1.241184754911471e-18,
+            "rmse": 1.1140847162184171e-09,
+            "mape": 28.04323680915468,
+            "r2": -1181.3047422052157,
+            "nrmse": 25.741593839912248,
+            "max_absolute_error": 7.935480832081804e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.8092387713274654e-08,
+            "mse": 4.0748813522276414e-16,
+            "rmse": 2.018633535891951e-08,
+            "mape": 1741.0062836237016,
+            "r2": -2322549.9361209436,
+            "nrmse": 975.5420607328641,
+            "max_absolute_error": 4.3009122651473174e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "primary_exchange",
+        "ok": true,
+        "reply": "primary_exchange = log(10)*hydrogen*proton_capture_rate",
+        "expression": "24930311671509685518491760410213*buffer_total*hydrogen*log(10)/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.22879072368700276,
+            "mse": 0.09491578658827095,
+            "rmse": 0.3080840576665254,
+            "mape": 0.9411674939245265,
+            "r2": -1.072375432715476,
+            "nrmse": 0.9560876818030827,
+            "max_absolute_error": 1.115242853341284,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.2382399363603332,
+            "mse": 0.09921459334317953,
+            "rmse": 0.31498348106397506,
+            "mape": 0.9422566311231005,
+            "r2": -1.1733192970985047,
+            "nrmse": 0.9565435184607698,
+            "max_absolute_error": 1.1797453763384875,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.4623767688760365,
+            "mse": 13.990858248979547,
+            "rmse": 3.7404355694196294,
+            "mape": 0.9789055519569545,
+            "r2": -5.8572729887014665,
+            "nrmse": 0.9819230743627277,
+            "max_absolute_error": 8.39989290592273,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "relay_protons",
+        "ok": true,
+        "reply": "relay_protons = proton_capture_rate*laplace_hydrogen_change/(laplace_rate + buffer_release_rate)",
+        "expression": "(24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)))*(pulse/((24930311671509685518491760410213*buffer_total/(1000000000000000000000000000000000*(hydrogen + 4522232862332461/10000000000000000000)) + 59468135699069782893163953400497913/(800000000000000000000000000000000000000000000*length_scale**2))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000) + 1)**(9861467681656657/10000000000000000))/(1359114795152113*hydrogen/125000000000000 + laplace_rate + 3168522766615927/50000000000000000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.7070590956402793e-09,
+            "mse": 1.1325924718371391e-17,
+            "rmse": 3.3654011229527143e-09,
+            "mape": 5.574316252567936,
+            "r2": -70.49411194386536,
+            "nrmse": 5.123533912696685,
+            "max_absolute_error": 9.439772810847098e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.7945876693946995e-09,
+            "mse": 1.152641754168335e-17,
+            "rmse": 3.3950578112431826e-09,
+            "mape": 5.70954794876068,
+            "r2": -75.58831180189257,
+            "nrmse": 5.174790703260038,
+            "max_absolute_error": 8.992371499812498e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.8167317529815475e-09,
+            "mse": 5.0178668150537174e-17,
+            "rmse": 7.083690291827923e-09,
+            "mape": 5.160746534233623,
+            "r2": -27.769783054532756,
+            "nrmse": 3.5191560860155295,
+            "max_absolute_error": 2.4276157584860357e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1027.7771736000432,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\performance.json",
+    "file_sha256": "c06b1ef035c6985015c367136929a4fd2092721655fbb08468e69891539e2138",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\chemistry\\Acid Base Buffer Relaxation\\Acid Base Buffer Relaxation - Variant 2-3-4-5.yaml",
+      "file_sha256": "4325748b1358947366e03cf91dac60ed0885cbba056df5802ac0012c153f14e7"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\args.json",
+      "file_sha256": "7803d767d1c292dba8058727c0c7206c261787594ee8af9da263e82d195af824"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\prompt.txt",
+        "file_sha256": "edd5557545f94c64e57ddaf92dab27f871e5409cdb6fd59c1d6bd3c390c70499"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\dataest\\problem.json",
+        "file_sha256": "70e4ed8f8352d35ff181eb80043b36611917eba18c807a71849a10cba98a6915"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\dataest\\answer.json",
+        "file_sha256": "9a0b2a2eccdffb0e6c6d8129c4eb3191c5a3419b3d3b7acdf527a4fb32573f2d"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\dataest\\train.npy",
+        "file_sha256": "39843663385c2912a948d82582dc230638db02edb5520552a6e83f20af5b3739"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "a68f6f3dc6c68688cbc7985b7e8c76f630c3c644a0b1c7a4914d2bf1fffc78a0"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "acdf1ad786195a5337c8471d7be851851788a27c78564ac139233b46292c95ce"
+      },
+      {
+        "probe": "interior_protons",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\000-interior_protons\\prompt.txt",
+        "file_sha256": "bae8fdbbf73d028b34c6cd63e8617e608c7d3b4cdb9b1c24c3f1a224303610aa"
+      },
+      {
+        "probe": "interior_protons",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\000-interior_protons\\reply.txt",
+        "file_sha256": "270183a10e2a4b25d4d41518250740780a6f7fdf9931b97372dc56019ddc78a1"
+      },
+      {
+        "probe": "pocket_protons",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\001-pocket_protons\\prompt.txt",
+        "file_sha256": "df1b7ccc3fbc3a60b4214d348f0115910df42c1f04fcef7b0734c1545212ae8b"
+      },
+      {
+        "probe": "pocket_protons",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\001-pocket_protons\\reply.txt",
+        "file_sha256": "ef3e8c9604bb35c478d3c70534a9f600a625f498c9ec456859694999211e4744"
+      },
+      {
+        "probe": "primary_exchange",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\002-primary_exchange\\prompt.txt",
+        "file_sha256": "0d8141af578798c76897a40e33a721af7a6155846fd8c93c3cf754c9bf5e5007"
+      },
+      {
+        "probe": "primary_exchange",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\002-primary_exchange\\reply.txt",
+        "file_sha256": "2c991c4949dc9bbf8c414ebf9231c056dae44099436cbe96e61c283ef2b90f12"
+      },
+      {
+        "probe": "relay_protons",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\003-relay_protons\\prompt.txt",
+        "file_sha256": "1f2c390bf810e3a1c7fc601c59202b12dcc02b8c28b5d1ada6a9291a78d565a7"
+      },
+      {
+        "probe": "relay_protons",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\003-relay_protons\\reply.txt",
+        "file_sha256": "fa5c75021f52214dabbe0411d2013e855ae2cb15f2d5112d9faec654a22e5cc7"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\submission.txt",
+      "file_sha256": "eec28d64fcd2636131dec0adcda94ec179f512bd86b4d03b6b5d1977b6255287"
+    }
+  },
+  "submission": "pi = 3.1415926535\nK = 0.00045222328623324611\nk_capture = 55.128323618990329\nk_hydrogen = 10.872918361216904\nk_release = 0.06337045533231854\nD = 7.5317273729716852e-12\ngeometry_exponent = 0.98614676816566571\nbuffer_bound = buffer_total*hydrogen/(hydrogen + K)\nbuffer_free = buffer_total*K/(hydrogen + K)\nproton_capture_rate = k_capture*buffer_free\nbuffer_release_rate = k_release + k_hydrogen*hydrogen\ntransport_rate = pi^2*D/length_scale^2\ndistributed_buffer_load = (proton_capture_rate + transport_rate)/(laplace_rate + buffer_release_rate)\nlaplace_hydrogen_fraction = (1 + distributed_buffer_load)^(-geometry_exponent)\nlaplace_hydrogen_change = pulse*laplace_hydrogen_fraction\nph_change = -laplace_hydrogen_change/(log(10)*hydrogen)\n",
+  "used_token": {
+    "input": 751234,
+    "output": 26339,
+    "reason": 14872,
+    "cached": 557824,
+    "total": 777573
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "8037a3c697b977b911152fc8b1cc6b8420d97c3f596b5b2ad255f4b13e496b59"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 569987,
+          "output": 23545,
+          "cached": 531712,
+          "reason": 12175
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "interior_protons",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\000-interior_protons\\audit\\codex_events.jsonl",
+          "file_sha256": "6e6b437cc1b857d3fc31bdec4095ac561c37f03ed8bd7f51fc7a8801a4fe0ea2"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45309,
+          "output": 404,
+          "cached": 6528,
+          "reason": 373
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "pocket_protons",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\001-pocket_protons\\audit\\codex_events.jsonl",
+          "file_sha256": "fa8ffca0362740c8eb669e2151164b6fe2a55b59dd49c2a7956f872303d3c4e7"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45309,
+          "output": 1729,
+          "cached": 6528,
+          "reason": 1712
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "primary_exchange",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\002-primary_exchange\\audit\\codex_events.jsonl",
+          "file_sha256": "2d6be685a36ef9427fdc966abe22ac5c68064202bcf14e0126135a2a1bbb5ec2"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45322,
+          "output": 405,
+          "cached": 6528,
+          "reason": 385
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "relay_protons",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Acid Base Buffer Relaxation - Variant 2-3-4-5\\result\\probe\\003-relay_protons\\audit\\codex_events.jsonl",
+          "file_sha256": "68572104ab192d69c0ad6b91014cfddf9ec780fb6b7a432829d065b7d5bf6738"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45307,
+          "output": 256,
+          "cached": 6528,
+          "reason": 227
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

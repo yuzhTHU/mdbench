@@ -1,0 +1,351 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.3369889000896,
+  "evaluation_seconds": 30.45907680003438,
+  "evaluation": {
+    "task_name": "Grain Boundary Electrical Response - Variant 3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.006709813840680133,
+        "mse": 8.756210122387784e-05,
+        "rmse": 0.009357462328210456,
+        "mape": 0.011957153060199226,
+        "r2": 0.9945889322070756,
+        "nrmse": 0.01573048623818986,
+        "max_absolute_error": 0.05684292206743691,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.007108167499049476,
+        "mse": 9.896831002307548e-05,
+        "rmse": 0.009948281762348484,
+        "mape": 0.012486295025529991,
+        "r2": 0.9937697335080892,
+        "nrmse": 0.016711922616376648,
+        "max_absolute_error": 0.062317356704816196,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.3054516257070325,
+        "mse": 0.1272434729008857,
+        "rmse": 0.3567120307767677,
+        "mape": 0.3218053693784433,
+        "r2": -2.2884157022590887,
+        "nrmse": 0.3972539021361012,
+        "max_absolute_error": 0.7316794047035257,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "bulk_resistivity_reference": "12248941293576339/10000000000000000",
+      "bulk_resistivity_temperature_coefficient": "31736831210437133/10000000000000000000",
+      "bulk_resistivity_temperature_quadratic_coefficient": "-6774500572756777/10000000000000000000000",
+      "bulk_resistivity": "388742582340785744547225095796087*temperature/100000000000000000000000000000000000 - 82980459808997045526494729099403*(temperature - 300)**2/100000000000000000000000000000000000000 + 58666382335276666358324712611739/1000000000000000000000000000000000",
+      "boundary_resistance_area_reference": "2208465771497571/62500000000000000000",
+      "boundary_resistance_area_temperature_coefficient": "2523966864612559/1000000000000000000",
+      "boundary_resistance_area": "2208465771497571*exp(2523966864612559*temperature/1000000000000000000 - 7571900593837677/10000000000000000)/62500000000000000000",
+      "boundary_relaxation_time_reference": "7423995582621043/250000000000000000000000",
+      "boundary_relaxation_time_temperature_coefficient": "4446385947412619/1250000000000000000",
+      "boundary_relaxation_time": "7423995582621043*exp(4446385947412619*temperature/1250000000000000000 - 13339157842237857/12500000000000000)/250000000000000000000000",
+      "boundary_relaxation_exponent": "6295303834117949/5000000000000000",
+      "boundary_impedance_area": "(2208465771497571*exp(2523966864612559*temperature/1000000000000000000 - 7571900593837677/10000000000000000)/62500000000000000000)/((7423995582621043*laplace_rate*exp(4446385947412619*temperature/1250000000000000000 - 13339157842237857/12500000000000000)/250000000000000000000000)**(6295303834117949/5000000000000000) + 1)",
+      "effective_resistivity": "388742582340785744547225095796087*temperature/100000000000000000000000000000000000 - 82980459808997045526494729099403*(temperature - 300)**2/100000000000000000000000000000000000000 + 58666382335276666358324712611739/1000000000000000000000000000000000 + ((2208465771497571*exp(2523966864612559*temperature/1000000000000000000 - 7571900593837677/10000000000000000)/62500000000000000000)/((7423995582621043*laplace_rate*exp(4446385947412619*temperature/1250000000000000000 - 13339157842237857/12500000000000000)/250000000000000000000000)**(6295303834117949/5000000000000000) + 1))/grain_size",
+      "conductivity": "1/(388742582340785744547225095796087*temperature/100000000000000000000000000000000000 - 82980459808997045526494729099403*(temperature - 300)**2/100000000000000000000000000000000000000 + 58666382335276666358324712611739/1000000000000000000000000000000000 + ((2208465771497571*exp(2523966864612559*temperature/1000000000000000000 - 7571900593837677/10000000000000000)/62500000000000000000)/((7423995582621043*laplace_rate*exp(4446385947412619*temperature/1250000000000000000 - 13339157842237857/12500000000000000)/250000000000000000000000)**(6295303834117949/5000000000000000) + 1))/grain_size)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "fast_path_conductivity",
+        "ok": true,
+        "reply": "fast_path_conductivity = grain_size*(laplace_rate*boundary_relaxation_time)^boundary_relaxation_exponent/boundary_resistance_area",
+        "expression": "grain_size*(7423995582621043*laplace_rate*exp(4446385947412619*temperature/1250000000000000000 - 13339157842237857/12500000000000000)/250000000000000000000000)**(6295303834117949/5000000000000000)*(62500000000000000000*exp(7571900593837677/10000000000000000 - 2523966864612559*temperature/1000000000000000000)/2208465771497571)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5752523316063731,
+            "mse": 1.3696028887837757,
+            "rmse": 1.1703003412730322,
+            "mape": 696.9513318456735,
+            "r2": -1228339.247166294,
+            "nrmse": 603.3945153718059,
+            "max_absolute_error": 8.24011166825725,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.565304856853523,
+            "mse": 1.5690821922907199,
+            "rmse": 1.252630109925001,
+            "mape": 729.0334646781557,
+            "r2": -1337470.9170682319,
+            "nrmse": 644.3053222158571,
+            "max_absolute_error": 9.661171380666392,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 111.57771771065187,
+            "mse": 20246.277104287707,
+            "rmse": 142.28941318414277,
+            "mape": 380990.12418776046,
+            "r2": -682212158470.4552,
+            "nrmse": 379221.37544909545,
+            "max_absolute_error": 502.8674086675644,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "contact_impedance",
+        "ok": true,
+        "reply": "contact_impedance = boundary_impedance_area",
+        "expression": "(2208465771497571*exp(2523966864612559*temperature/1000000000000000000 - 7571900593837677/10000000000000000)/62500000000000000000)/((7423995582621043*laplace_rate*exp(4446385947412619*temperature/1250000000000000000 - 13339157842237857/12500000000000000)/250000000000000000000000)**(6295303834117949/5000000000000000) + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 7.525133528582516e-06,
+            "mse": 7.470525845151116e-11,
+            "rmse": 8.643220375040263e-06,
+            "mape": 0.31866607096945554,
+            "r2": -10.100898992937564,
+            "nrmse": 0.3808293177633303,
+            "max_absolute_error": 1.599536365523953e-05,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 7.628735158609853e-06,
+            "mse": 7.500320509035711e-11,
+            "rmse": 8.66043908184551e-06,
+            "mape": 0.32176119030993744,
+            "r2": -10.188292862874114,
+            "nrmse": 0.3787321264336376,
+            "max_absolute_error": 1.601921314169734e-05,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.4239041262946566e-06,
+            "mse": 2.002890556479333e-11,
+            "rmse": 4.475366528541917e-06,
+            "mape": 0.5140121886953568,
+            "r2": -0.9850540032642447,
+            "nrmse": 0.44754439470453194,
+            "max_absolute_error": 5.737611922616723e-06,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 936.0387642999412,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\performance.json",
+    "file_sha256": "0d9a52fe3d5ab769de7b7c45123871c5eaeabfe7d5928e02ce64bdbee0916817",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\material\\Grain Boundary Electrical Response\\Grain Boundary Electrical Response - Variant 3-5.yaml",
+      "file_sha256": "8cd75591e7ad500d1c783c50dcac92a16c66b0aeb972e6adeb3f89922d3095aa"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\args.json",
+      "file_sha256": "56e543dcce4ea34f7fe76901bb27bc663f8e24024586f9f18711b631d02eea57"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\prompt.txt",
+        "file_sha256": "702f003bd729fe24e77ee367a5d9e09f257975d80ba0922bb4febaa7d9e02dea"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\dataest\\problem.json",
+        "file_sha256": "912dfb66ebf364e5f54f573b1dad138eb1ab9c380a7ea040500e9838e2e058c7"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\dataest\\answer.json",
+        "file_sha256": "1691f1801a9487b336ae709c33a4dd36c93332b6eab5aa18fcae40d961dd0e90"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\dataest\\train.npy",
+        "file_sha256": "303c681b659924eeab8901af87b421d845a171e9846fd986d5dea283c4ca3ee4"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "4b14620b6f995a72c46d48a5fb0b9670beb54f9d9672486e34d40e5ff8c2367e"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "eefe986a35815ac86f7700bdd1037891a4171e9bada9b525f53aa48cdac74149"
+      },
+      {
+        "probe": "fast_path_conductivity",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\probe\\000-fast_path_conductivity\\prompt.txt",
+        "file_sha256": "a92fc16ca44454c07c2da2d546fd5ee33e9ab268a876c04bee7ac75b36fba1bc"
+      },
+      {
+        "probe": "fast_path_conductivity",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\probe\\000-fast_path_conductivity\\reply.txt",
+        "file_sha256": "7300c7346e7c12f60bad248a476593ae6e867697ad2a883869682479c0261f95"
+      },
+      {
+        "probe": "contact_impedance",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\probe\\001-contact_impedance\\prompt.txt",
+        "file_sha256": "f714df72d26f9317a8b5bb08b5c101f247bd6ea4a34539ca5ccd3725f90d3add"
+      },
+      {
+        "probe": "contact_impedance",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\probe\\001-contact_impedance\\reply.txt",
+        "file_sha256": "ee9673bf30d5250d7f98c4d08750c6eacb16b73c3b37b9843d7a461ec1fc4ed4"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\submission.txt",
+      "file_sha256": "6822c6508277711c08b747509ca1addca63b79d90908803a8e1fe9908b746de1"
+    }
+  },
+  "submission": "bulk_resistivity_reference = 1.2248941293576339\nbulk_resistivity_temperature_coefficient = 0.0031736831210437133\nbulk_resistivity_temperature_quadratic_coefficient = -6.7745005727567774e-07\nbulk_resistivity = bulk_resistivity_reference*(1 + bulk_resistivity_temperature_coefficient*(temperature - 300) + bulk_resistivity_temperature_quadratic_coefficient*(temperature - 300)^2)\nboundary_resistance_area_reference = 3.5335452343961136e-05\nboundary_resistance_area_temperature_coefficient = 0.0025239668646125589\nboundary_resistance_area = boundary_resistance_area_reference*exp(boundary_resistance_area_temperature_coefficient*(temperature - 300))\nboundary_relaxation_time_reference = 2.9695982330484172e-08\nboundary_relaxation_time_temperature_coefficient = 0.0035571087579300952\nboundary_relaxation_time = boundary_relaxation_time_reference*exp(boundary_relaxation_time_temperature_coefficient*(temperature - 300))\nboundary_relaxation_exponent = 1.2590607668235898\nboundary_impedance_area = boundary_resistance_area/(1 + (laplace_rate*boundary_relaxation_time)^boundary_relaxation_exponent)\neffective_resistivity = bulk_resistivity + boundary_impedance_area/grain_size\nconductivity = 1/effective_resistivity\n",
+  "used_token": {
+    "input": 329450,
+    "output": 13315,
+    "reason": 6345,
+    "cached": 235776,
+    "total": 342765
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "7e195fbae0d3ba4018442c33597163a2d8f971d05efd856ae295f680b672091d"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 264427,
+          "output": 12750,
+          "cached": 222720,
+          "reason": 5829
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "fast_path_conductivity",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\probe\\000-fast_path_conductivity\\audit\\codex_events.jsonl",
+          "file_sha256": "5fbf935c72019368e31667af3138a95af1fe5567e7cf981d81186e3c5cb444a8"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 32517,
+          "output": 553,
+          "cached": 6528,
+          "reason": 516
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "contact_impedance",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Grain Boundary Electrical Response - Variant 3-5\\result\\probe\\001-contact_impedance\\audit\\codex_events.jsonl",
+          "file_sha256": "e697f05bce9a1efacc6473550ab6d48a571e86b0166f482aa87e352549be840d"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 32506,
+          "output": 12,
+          "cached": 6528,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

@@ -1,0 +1,426 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.345172500005,
+  "evaluation_seconds": 46.03092759998981,
+  "evaluation": {
+    "task_name": "Population Resource Balance - Variant 1-2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 85429582.20619681,
+        "mse": 2.9114610536237676e+16,
+        "rmse": 170630039.95849523,
+        "mape": 0.001992738462373549,
+        "r2": 0.9999792962420659,
+        "nrmse": 0.0030142001582764786,
+        "max_absolute_error": 2902006506.765381,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 86294073.67739123,
+        "mse": 2.9795515223798864e+16,
+        "rmse": 172613774.72206226,
+        "mape": 0.0020127655241166053,
+        "r2": 0.999979130139078,
+        "nrmse": 0.003024752434294729,
+        "max_absolute_error": 2449926483.009857,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1280164045.3883398,
+        "mse": 3.298143097254836e+18,
+        "rmse": 1816079044.880711,
+        "mape": 0.011220795146339207,
+        "r2": 0.9972862786061217,
+        "nrmse": 0.015968174168541228,
+        "max_absolute_error": 6291314414.704956,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "basal_substrate_use": "2014604072482431/20000000000000000000000000000000",
+      "maintenance_calibration": "4890880482146633/5000000000000000",
+      "load_relaxation_time": "2006525664261187/1000000000000",
+      "dilution_resource_cost": "3949185702905759/2500000000000000000000000000",
+      "mortality_resource_cost": "258784150362323/250000000000000000000000000",
+      "feed_saturation": "4502202768674913/100000000000000000",
+      "load_bearing_fraction": "1 - 2006525664261187*dilution/1000000000000",
+      "maintenance_resource_use": "4890880482146633*maintenance_load*(1 - 2006525664261187*dilution/1000000000000)/5000000000000000",
+      "replacement_resource_use": "3949185702905759*dilution/2500000000000000000000000000 + 258784150362323*mortality/250000000000000000000000000",
+      "substrate_use_per_individual": "3949185702905759*dilution/2500000000000000000000000000 + 4890880482146633*maintenance_load*(1 - 2006525664261187*dilution/1000000000000)/5000000000000000 + 258784150362323*mortality/250000000000000000000000000 + 2014604072482431/20000000000000000000000000000000",
+      "bioavailable_feed": "100000000000000000*log(4502202768674913*feed/100000000000000000 + 1)/4502202768674913",
+      "population": "100000000000000000*dilution*log(4502202768674913*feed/100000000000000000 + 1)/(4502202768674913*(3949185702905759*dilution/2500000000000000000000000000 + 4890880482146633*maintenance_load*(1 - 2006525664261187*dilution/1000000000000)/5000000000000000 + 258784150362323*mortality/250000000000000000000000000 + 2014604072482431/20000000000000000000000000000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "extra_death",
+        "ok": true,
+        "reply": "extra_death = maintenance_resource_use / mortality_resource_cost",
+        "expression": "244544024107331650000000000*maintenance_load*(1 - 2006525664261187*dilution/1000000000000)/258784150362323",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.000149994244995058,
+            "mse": 5.23902209400234e-08,
+            "rmse": 0.0002288891018376004,
+            "mape": 15.794285697128608,
+            "r2": -912.1358664473086,
+            "nrmse": 14.254709386724011,
+            "max_absolute_error": 0.0007085231600854264,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0001441375829020635,
+            "mse": 5.114948954927876e-08,
+            "rmse": 0.0002261625290566029,
+            "mape": 14.088337961704362,
+            "r2": -896.147175752142,
+            "nrmse": 13.70588625379565,
+            "max_absolute_error": 0.0007071203619192498,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0010657323914909588,
+            "mse": 1.3118154204365046e-06,
+            "rmse": 0.0011453451097536082,
+            "mape": 21.187063473582725,
+            "r2": -23072.35409799046,
+            "nrmse": 22.00598853760492,
+            "max_absolute_error": 0.002184876569017072,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "birth_max",
+        "ok": true,
+        "reply": "birth_max = 1 / load_relaxation_time",
+        "expression": "1000000000000/2006525664261187",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00890432072536616,
+            "mse": 7.936423416895244e-05,
+            "rmse": 0.008908660627106211,
+            "mape": 0.9469503335058232,
+            "r2": -1025.6166886248277,
+            "nrmse": 0.9470442955392806,
+            "max_absolute_error": 0.009402261032590722,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.008900165140683064,
+            "mse": 7.928958676728124e-05,
+            "rmse": 0.008904470044156544,
+            "mape": 0.9469272325377701,
+            "r2": -1033.4741840552656,
+            "nrmse": 0.9470205175784335,
+            "max_absolute_error": 0.009402205326082642,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00811880724896104,
+            "mse": 6.594374526570218e-05,
+            "rmse": 0.008120575427006524,
+            "mape": 0.9421427640851203,
+            "r2": -2295.5616027859137,
+            "nrmse": 0.942188132205904,
+            "max_absolute_error": 0.008429786218821796,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "active_fraction",
+        "ok": true,
+        "reply": "active_fraction = load_bearing_fraction",
+        "expression": "1 - 2006525664261187*dilution/1000000000000",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.007664003767106349,
+            "mse": 6.536690137348072e-05,
+            "rmse": 0.008084979985966615,
+            "mape": 0.008417023941771778,
+            "r2": 0.9752044113666272,
+            "nrmse": 0.008851179098873167,
+            "max_absolute_error": 0.010839894563925312,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.007806389403705749,
+            "mse": 6.740181799929281e-05,
+            "rmse": 0.008209861021923138,
+            "mape": 0.008576725229679333,
+            "r2": 0.9732371213252183,
+            "nrmse": 0.00899286574247168,
+            "max_absolute_error": 0.010839883148622054,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.026915281557288118,
+            "mse": 0.0010855975773711335,
+            "rmse": 0.03294840781238349,
+            "mape": 0.03801795806734542,
+            "r2": 0.24851982388912142,
+            "nrmse": 0.04471828227752544,
+            "max_absolute_error": 0.06796792674288699,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 951.4815370000433,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\performance.json",
+    "file_sha256": "da11f9dc3b38518be90b31386c6bd17f04d606930b19d1a67a8e7662e505f0d6",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\biology\\Population Resource Balance\\Population Resource Balance - Variant 1-2-3-4.yaml",
+      "file_sha256": "da7c5a5a1c30d43090cd0d8d4e1657369a64e64789399d9d2d6738d438357082"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\args.json",
+      "file_sha256": "7157335166d455696555cb8015e4359583f0ce4f042973e2cca49c763e081646"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\run_config.json",
+        "file_sha256": "051326b75cd0552f4aa0eb33139a8b92330794bfe5613a9d09cfa7a326901a66"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\prompt.txt",
+        "file_sha256": "4d5764e3a5074d9a392cfd6db8ce8acfd6ca146935c3756b1b1b62699a840a58"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\dataest\\problem.json",
+        "file_sha256": "c3e0ffb7547e57f273aac15bc84db228e72d39530eaa5ab838ce17294af6e206"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\dataest\\answer.json",
+        "file_sha256": "1e5e97aa0c8467d9f44e1d302ad07babff8cf28950048b300d92c1fa8b9a5740"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\dataest\\train.npy",
+        "file_sha256": "fb3eaadea8ac50bf87969ed6bec5bd404513465ea15a377ab0db96a4c0b3417a"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\dataest\\id_test.npy",
+        "file_sha256": "3dfd4d6668f5c4e439e40699e3fe90ae019b23a73a506393d39adff0eb478d35"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\dataest\\ood_test.npy",
+        "file_sha256": "bef23d2dc4eadc30ef9e4fc305efec5a107b95d00d53d38558f5a720eaca9f35"
+      },
+      {
+        "probe": "extra_death",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\000-extra_death\\prompt.txt",
+        "file_sha256": "4ec7dbddf04ac27d9da6546b4d01dae9c17108c822eccd95dd7509282abcfa10"
+      },
+      {
+        "probe": "extra_death",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\000-extra_death\\reply.txt",
+        "file_sha256": "41150847de78ceef6860be21f1303c5d2a3307b5ed2e6a0bd9bee813a7edab73"
+      },
+      {
+        "probe": "birth_max",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\001-birth_max\\prompt.txt",
+        "file_sha256": "d8ff7e32bb1a75268912d7acc5c05810d9f558c1a1ae25ced8bc8a163c9c5462"
+      },
+      {
+        "probe": "birth_max",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\001-birth_max\\reply.txt",
+        "file_sha256": "c5d4f54d00bc3c6f6f35918c3ffe6937c03e2f6d5dbbf84dad79017af453f92e"
+      },
+      {
+        "probe": "active_fraction",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\002-active_fraction\\prompt.txt",
+        "file_sha256": "607a3ac1c25145e382bc438f0ad03b223c5c47b3355c065bd5108ae943372cb5"
+      },
+      {
+        "probe": "active_fraction",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\002-active_fraction\\reply.txt",
+        "file_sha256": "f35cb9b57d6e5b8e5b2bb20793d9c5a966aa39e57b223c42a7ec3d3f01a7a972"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\submission.txt",
+      "file_sha256": "0eea0289f23c945a7da0310dbf08e1674270175d6641e862fa4cc914bceaaf5c"
+    }
+  },
+  "submission": "basal_substrate_use = 1.0073020362412155e-16\nmaintenance_calibration = 0.97817609642932657\nload_relaxation_time = 2006.5256642611871\ndilution_resource_cost = 1.5796742811623036e-12\nmortality_resource_cost = 1.0351366014492919e-12\nfeed_saturation = 0.045022027686749129\nload_bearing_fraction = 1 - load_relaxation_time * dilution\nmaintenance_resource_use = maintenance_calibration * maintenance_load * load_bearing_fraction\nreplacement_resource_use = dilution_resource_cost * dilution + mortality_resource_cost * mortality\nsubstrate_use_per_individual = basal_substrate_use + maintenance_resource_use + replacement_resource_use\nbioavailable_feed = log(1 + feed_saturation * feed) / feed_saturation\npopulation = dilution * bioavailable_feed / substrate_use_per_individual\n",
+  "used_token": {
+    "input": 533549,
+    "output": 21174,
+    "reason": 10578,
+    "cached": 378624,
+    "total": 554723
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "76806e9bdea95833c4c67e635486e801f793b58a22febcc2f9f2dae1a14de4d8"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 396212,
+          "output": 20459,
+          "cached": 359040,
+          "reason": 9910
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "extra_death",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\000-extra_death\\audit\\codex_events.jsonl",
+          "file_sha256": "65d28443dcc80badcda5e49669e3f6a29005d2809e8f4899f2b2b22701ecd040"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45774,
+          "output": 205,
+          "cached": 6528,
+          "reason": 188
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "birth_max",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\001-birth_max\\audit\\codex_events.jsonl",
+          "file_sha256": "94046694b66087454f1ca5eec0f2e10eb09f025829f55848220e7195dd4dd9ee"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45781,
+          "output": 418,
+          "cached": 6528,
+          "reason": 401
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "active_fraction",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\logs\\codex-gpt-5_6-xhigh-fullset\\Population Resource Balance - Variant 1-2-3-4\\result\\probe\\002-active_fraction\\audit\\codex_events.jsonl",
+          "file_sha256": "4806f21e6740a0789b59968511d43bebc52f5cf8a09cff6271c664596bdf6bc8"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 45782,
+          "output": 92,
+          "cached": 6528,
+          "reason": 79
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T04:04:25.971060+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "11989a860aab9b8bc6cc0636f20a7e4f16bb3457809ca40486fcb48205be59d7"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": false,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}
