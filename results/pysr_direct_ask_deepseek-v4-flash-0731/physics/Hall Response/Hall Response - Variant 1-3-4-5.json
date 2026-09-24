@@ -1,0 +1,181 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 931.8027144372463,
+  "evaluation_seconds": 97.09350912086666,
+  "evaluation": {
+    "task_name": "Hall Response - Variant 1-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.8211387922511807e-05,
+        "mse": 7.372193083547006e-10,
+        "rmse": 2.7151782784095425e-05,
+        "mape": 0.008153618333962755,
+        "r2": 0.9999144823558058,
+        "nrmse": 0.006665172055527147,
+        "max_absolute_error": 0.000144589768335434,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.782538924963053e-05,
+        "mse": 6.646248836180662e-10,
+        "rmse": 2.5780319695808008e-05,
+        "mape": 0.008354051663347234,
+        "r2": 0.9999272990230084,
+        "nrmse": 0.006184138708230809,
+        "max_absolute_error": 0.000136039068939664,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0003815705861458801,
+        "mse": 1.8115156307598538e-07,
+        "rmse": 0.00042561903514291437,
+        "mape": 0.3690534659639129,
+        "r2": 0.2710132743624786,
+        "nrmse": 0.3265838190194393,
+        "max_absolute_error": 0.0012517710534161884,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "hall_voltage": "(-magnetic - Abs(current + sin(2*current + log(density**(1/4))) - 2269668031474883/2500000000000000)**(6089814795479883/1000000000000000) - 280993304463401/500000000000000)*sin(magnetic)*sin(8594185943597781*current/(10000000000000000000*thickness))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "mobile",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one mobile equation; received: 'I need to derive \"mobile\" from the frozen model: transform. The model seems valid. However, but we must return the equation with variable. It\\' OK to just use density.\\n\\nSince the model\\'s inputs are density, the final equation: mobile = density. The probe calls \"mobile electron number density,\" we must call it mobile = density.\\n\\nTherefore, the required single plain-text equation is:\\n\\nmobile = densitymobile = density'",
+        "error_type": "ValueError"
+      },
+      {
+        "probe": "bypass_conductivity",
+        "ok": true,
+        "reply": "bypass_conductivity = -(magnetic + Abs(current + sin(2*current + log(Abs(density)**(1/4))) - 0.9078672125899532)**6.089814795479883 + 0.561986608926802)*sin(magnetic)*sin(0.0008594185943597781*current/thickness)",
+        "expression": "(-magnetic - Abs(current + sin(2*current + log(density**(1/4))) - 2269668031474883/2500000000000000)**(6089814795479883/1000000000000000) - 280993304463401/500000000000000)*sin(magnetic)*sin(8594185943597781*current/(10000000000000000000*thickness))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.3002543037930316,
+            "mse": 2.995111250537704,
+            "rmse": 1.7306389717493664,
+            "mape": 1.00533562235118,
+            "r2": -1.2956928287772063,
+            "nrmse": 1.0011911130597024,
+            "max_absolute_error": 5.9144581272854975,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.2767331699895417,
+            "mse": 2.9319874311863923,
+            "rmse": 1.7123047132991231,
+            "mape": 1.0051551697482397,
+            "r2": -1.2514343367797776,
+            "nrmse": 1.0011930895067191,
+            "max_absolute_error": 5.644882849935717,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 16.778478722384577,
+            "mse": 312.9802270336872,
+            "rmse": 17.691247187060814,
+            "mape": 1.0001048850838752,
+            "r2": -8.947764823404036,
+            "nrmse": 1.000085832699409,
+            "max_absolute_error": 34.077128210043774,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 1029.2917324900627,
+  "ok": false,
+  "submission": "hall_voltage = -(magnetic + Abs(current + sin(2*current + log(Abs(density)**(1/4))) - 0.9078672125899532)**6.089814795479883 + 0.561986608926802)*sin(magnetic)*sin(0.0008594185943597781*current/thickness)\n",
+  "cost_in_USD": 0.003948921199999999,
+  "used_token": {
+    "input": 1269,
+    "output": 11784,
+    "reason": 11915,
+    "cached": 0,
+    "total": 13053
+  },
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/physics/Hall_Response/Hall_Response_-_Variant_1-3-4-5/performance.json",
+    "file_sha256": "38535d391a8a20133606ffafe30eaf05874ef605ba0033119614eb75c9cb5438",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/physics/Hall_Response/Hall_Response_-_Variant_1-3-4-5",
+    "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/physics/Hall Response/Hall Response - Variant 1-3-4-5.yaml",
+    "task_definition_sha256": "b57d78a6eb2c8b0e934a68959723b146be7b9c8794d8d46b266effa6755da5b1",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/manifest.json",
+    "manifest_job_id": "041-Hall_Response_-_Variant_1-3-4-5",
+    "source_experiment": "direct_full_noncore",
+    "transformation": null,
+    "supplemental": {
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/physics/Hall_Response/Hall_Response_-_Variant_1-3-4-5/submission.txt",
+        "file_sha256": "40a1f69fcc6adc830c189ae89aa82ae21cbba72a3168b85e83aeba9f2343383a"
+      },
+      "probe_responses": [
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/physics/Hall_Response/Hall_Response_-_Variant_1-3-4-5/probe/000-mobile/response-attempt-1.json",
+          "file_sha256": "ee7178ed23f8362aae652ad7aba23277d861241d352c1c9e0fd3a9a7fec3e0b6"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/physics/Hall_Response/Hall_Response_-_Variant_1-3-4-5/probe/000-mobile/response-attempt-2.json",
+          "file_sha256": "f0b72c9a2df032fc547127359c56bdd385ac71ceae5c293f3b70d908c720b8a9"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/physics/Hall_Response/Hall_Response_-_Variant_1-3-4-5/probe/001-bypass_conductivity/response-attempt-1.json",
+          "file_sha256": "a2e43315dac7ceed6a2d14dd779ad1e2cb146cd70cb339cd818bc147f8836384"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/physics/Hall_Response/Hall_Response_-_Variant_1-3-4-5/probe/001-bypass_conductivity/response-attempt-2.json",
+          "file_sha256": "639e4cc7dab1f33f17463f3cb557c7c21db740071a0d459273f4c58a102b701a"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/physics/Hall_Response/Hall_Response_-_Variant_1-3-4-5/probe/001-bypass_conductivity/response-attempt-3.json",
+          "file_sha256": "7d5a39fcd39265e04f03bc83bac322f9623d92944ced77a8cf8f694503730efd"
+        }
+      ]
+    }
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:23:37.189030+08:00",
+      "generator": "playground/sync_pysr_results.py@sha256:6b7e695adfded122",
+      "update_message": "Copied performance.json and added source provenance, submission, and measured OpenRouter probe cost/token usage; metrics were not recomputed."
+    }
+  ]
+}

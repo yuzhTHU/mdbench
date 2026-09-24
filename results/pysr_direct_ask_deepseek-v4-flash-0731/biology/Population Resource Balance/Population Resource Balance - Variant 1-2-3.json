@@ -1,0 +1,232 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 931.997633446008,
+  "evaluation_seconds": 279.34315706789494,
+  "evaluation": {
+    "task_name": "Population Resource Balance - Variant 1-2-3",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 258591648.6295059,
+        "mse": 1.4257471463805301e+17,
+        "rmse": 377590670.7508185,
+        "mape": 0.008929414729621712,
+        "r2": 0.9998986221841241,
+        "nrmse": 0.006669894408961336,
+        "max_absolute_error": 2478260195.715805,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 243671967.4986381,
+        "mse": 1.2123830474338144e+17,
+        "rmse": 348192913.1148155,
+        "mape": 0.00842092651323377,
+        "r2": 0.9999150874836676,
+        "nrmse": 0.006101201937716777,
+        "max_absolute_error": 2412301306.8251953,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 4938823512.463345,
+        "mse": 2.986415674192735e+19,
+        "rmse": 5464810769.086826,
+        "mape": 0.04967580510591246,
+        "r2": 0.9754365270960307,
+        "nrmse": 0.04804273730915594,
+        "max_absolute_error": 14563684201.314453,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "population": "(4662239797943791*feed/5000 + 26231740041525224606816851884169/5000000000000000000000)*(dilution*(exp(1922120472628399*dilution/2500000000000) - 9967669080060181/250000000000000000)/(17245562098391707*dilution/10000000000000000 + 815142477236107*maintenance_load/1000 + mortality + 4308209259258403/50000000000000000000) - 815142477236107*maintenance_load/1000)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "extra_death",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "maintenance",
+        "ok": true,
+        "reply": "maintenance = maintenance_load",
+        "expression": "maintenance_load",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.5178938721281966e-16,
+            "mse": 4.310840833285494e-32,
+            "rmse": 2.0762564468979968e-16,
+            "mape": 0.6835986276904505,
+            "r2": -64.40688841096778,
+            "nrmse": 0.9350627760575408,
+            "max_absolute_error": 6.729670437374036e-16,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.5012508921218378e-16,
+            "mse": 4.27727345912536e-32,
+            "rmse": 2.068157019939579e-16,
+            "mape": 0.6761032958349533,
+            "r2": -66.91759210451879,
+            "nrmse": 0.9314151184343563,
+            "max_absolute_error": 6.701602933055315e-16,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.4225195965639007e-15,
+            "mse": 2.3955379531239735e-30,
+            "rmse": 1.5477525490607255e-15,
+            "mape": 5.7983403558344255,
+            "r2": -2979.6594928053687,
+            "nrmse": 6.273588955330765,
+            "max_absolute_error": 2.7660698344583634e-15,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "active_fraction",
+        "ok": true,
+        "reply": "active_fraction = 932447959588.7582*(feed + 0.005626424460855559)*(dilution*(exp(768.8481890513596*dilution) - 0.039870676320240724)/(1.7245562098391707*dilution + 815142477236.107*maintenance_load + mortality + 8.616418518516806e-5) - 815142477236.107*maintenance_load)",
+        "expression": "(4662239797943791*feed/5000 + 26231740041525224606816851884169/5000000000000000000000)*(dilution*(exp(1922120472628399*dilution/2500000000000) - 9967669080060181/250000000000000000)/(17245562098391707*dilution/10000000000000000 + 815142477236107*maintenance_load/1000 + mortality + 4308209259258403/50000000000000000000) - 815142477236107*maintenance_load/1000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 42394383705.77384,
+            "mse": 3.204571075191967e+21,
+            "rmse": 56608931055.01964,
+            "mape": 48181383876.13458,
+            "r2": -1.2155880798581332e+24,
+            "nrmse": 61973658343.427216,
+            "max_absolute_error": 283026393271.35504,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 42744981308.686005,
+            "mse": 3.2570945063148564e+21,
+            "rmse": 57070960271.53264,
+            "mape": 48552729126.58175,
+            "r2": -1.2932770612465813e+24,
+            "nrmse": 62514028208.9215,
+            "max_absolute_error": 253934371280.1728,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 103334107165.20523,
+            "mse": 1.1884149607477348e+22,
+            "rmse": 109014446783.33853,
+            "mape": 142281987722.25928,
+            "r2": -8.226531659716447e+24,
+            "nrmse": 147956733792.56238,
+            "max_absolute_error": 207777159707.15448,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 1211.386098265648,
+  "ok": false,
+  "submission": "population = 932447959588.7582*(feed + 0.005626424460855559)*(dilution*(exp(768.8481890513596*dilution) - 0.039870676320240724)/(1.7245562098391707*dilution + 815142477236.107*maintenance_load + mortality + 8.616418518516806e-5) - 815142477236.107*maintenance_load)\n",
+  "cost_in_USD": 0.0055176472,
+  "used_token": {
+    "input": 1661,
+    "output": 11503,
+    "reason": 12644,
+    "cached": 0,
+    "total": 13164
+  },
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3/performance.json",
+    "file_sha256": "a5588d2345efc3df0c580923501c70254211a282dbaaec2bf4adf1a78d191bc1",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3",
+    "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/biology/Population Resource Balance/Population Resource Balance - Variant 1-2-3.yaml",
+    "task_definition_sha256": "8fd35c1252e77eb77cd40c9e81e9ab731167442fbfd2c016823f30c6baed93ce",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/manifest.json",
+    "manifest_job_id": "356-Population_Resource_Balance_-_Variant_1-2-3",
+    "source_experiment": "direct_full_noncore",
+    "transformation": null,
+    "supplemental": {
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3/submission.txt",
+        "file_sha256": "c81fc4b073581bffe2b5bc1f587ed7d7fd1722326fb692b18473a3fae7443e75"
+      },
+      "probe_responses": [
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3/probe/000-extra_death/response-attempt-1.json",
+          "file_sha256": "02d1238ffeafd11aed2df2a060ddd4981c0c25a37c048176258fc961ab577226"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3/probe/000-extra_death/response-attempt-2.json",
+          "file_sha256": "910ad36cbc647ebd4faa9f1fdff33c4d7b1b6fedb34037095e00c8a518eb9049"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3/probe/000-extra_death/response-attempt-3.json",
+          "file_sha256": "d9a774e4992da10d9bb6a0aaab0080577072633a655b16f92fda89740374cad2"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3/probe/000-extra_death/response-attempt-4.json",
+          "file_sha256": "6ca83d58ef9ce460155bcc56a8d7c7a43a217635607003e682c95cb03e29eeb9"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3/probe/001-maintenance/response-attempt-1.json",
+          "file_sha256": "32c9b85c35decb33aa7c39cf93c80bd1d58ab6b091e09d6ee7ad4201718957fb"
+        },
+        {
+          "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/pysr_llm_direct_full_noncore_20260923/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-2-3/probe/002-active_fraction/response-attempt-1.json",
+          "file_sha256": "0ea2422b9cc10e0508331f651d56d8ef263c18adaf7629e454b8e25d107c5530"
+        }
+      ]
+    }
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:23:37.189030+08:00",
+      "generator": "playground/sync_pysr_results.py@sha256:6b7e695adfded122",
+      "update_message": "Copied performance.json and added source provenance, submission, and measured OpenRouter probe cost/token usage; metrics were not recomputed."
+    }
+  ]
+}

@@ -1,27 +1,120 @@
 {
   "algorithm": "dsh",
-  "agent_seconds": 900.7113903015852,
-  "error": "Empty submission.",
-  "error_type": "ValidationError",
-  "total_seconds": 901.0514885578305,
+  "agent_seconds": 900.4370153378695,
+  "evaluation_seconds": 132.09652759507298,
+  "evaluation": {
+    "task_name": "Membrane Channel Flux - Variant 1-2-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0019576133205180734,
+        "mse": 5.1061930462810674e-06,
+        "rmse": 0.0022596887056143523,
+        "mape": 0.029126351366290385,
+        "r2": 0.9931924621248233,
+        "nrmse": 0.027770349339460723,
+        "max_absolute_error": 0.007826268866637842,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0018767720118441553,
+        "mse": 4.784345042319453e-06,
+        "rmse": 0.002187314573242599,
+        "mape": 0.02806516802154804,
+        "r2": 0.9938208026427467,
+        "nrmse": 0.02658168765720754,
+        "max_absolute_error": 0.008322678221327526,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.03361968890509728,
+        "mse": 0.0019831321749668907,
+        "rmse": 0.0445323722135582,
+        "mape": 1.636952296599599,
+        "r2": 0.41575728958684066,
+        "nrmse": 0.7072148395159941,
+        "max_absolute_error": 0.12234543250083005,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "theta": "25049/1000000",
+      "electrodiffusion_driving": "inside - outside*exp(-1000000*voltage/25049)",
+      "conductance": "34609*voltage**2/10000",
+      "current_density": "34609*voltage**2*(inside - outside*exp(-1000000*voltage/25049))/10000"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "open_state",
+        "ok": false,
+        "error": "Expected one equality: 'open_state cannot be derived from the frozen submitted mechanism model — the submitted model defines only `theta`, `electrodiffusion_driving`, `conductance`, and `current_density`, and contains no equation relating an open-channel probability to the given variables.'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "permeability",
+        "ok": false,
+        "error": "DSH headless run failed: {'returncode': 130, 'timed_out': True, 'elapsed_seconds': 120.16982022859156}; see /mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4/probe/001-permeability/audit",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 1032.6012263502926,
   "ok": false,
+  "cost_in_USD": 0.11683257600000001,
+  "used_token": {
+    "input": 3228877,
+    "output": 83536,
+    "reason": 47214,
+    "cached": 3181316,
+    "total": 3312413
+  },
+  "submission": "theta = 0.025049\nelectrodiffusion_driving = inside - outside*exp(-voltage/theta)\nconductance = 3.4609*voltage^2\ncurrent_density = conductance*electrodiffusion_driving\n",
   "source": {
     "hostname": "SIM1",
-    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4/performance.json",
-    "file_sha256": "05a021c88224874491a613411f536fba7a16afa10e2e96654fefebc779a95691",
-    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4/performance.json",
+    "file_sha256": "f1fcf53a3f295901392b4eee146ac8a82fddb1a70d387984285530be9460b61b",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4",
     "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-4.yaml",
     "task_definition_sha256": "6e7a02309ed0868ccff88261c33db59051dcaa8afc15d983cebcbaf43ceef8b9",
-    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/manifest.json",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/manifest.json",
     "manifest_job_id": "055-Membrane_Channel_Flux_-_Variant_1-2-4--deepseek-v4-flash-0731",
+    "attempt": "retry",
     "supplemental": {
       "usage": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4/usage/usage.json",
-        "file_sha256": "0c1b46c88cc9941d9a37d277690a8cbab2199c598a2965644a1ec0cc003a5546"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4/usage/usage.json",
+        "file_sha256": "1feb761ab77f88dc6b2f20ed3be3172da16670669d9ace78f91eda1857c3ba63"
       },
       "usage_events": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4/usage/usage.jsonl",
-        "file_sha256": "41e88e360e4b21fd10409eda66d58e0abdafaeb9d23cc989047ace28670c7a0a"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4/usage/usage.jsonl",
+        "file_sha256": "413ef95c283ca77f0a9d9ec074cf259daf9c45965408235bbac86ec67d305b42"
+      },
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-2-4/submission.txt",
+        "file_sha256": "c5496ca82fc58071db7419b234e5c9b2f4e9d320aff6e1c98e2f2d2d28968189"
       }
     }
   },
@@ -35,14 +128,11 @@
       "updated_at": "2026-09-23T23:26:24.048724+08:00",
       "generator": "playground/import_dsh_core_results.py@sha256:dbfe5f6d67a70442",
       "update_message": "Added source-backed cost_in_USD, used_token, source.supplemental; existing performance metrics unchanged."
+    },
+    {
+      "updated_at": "2026-09-24T00:02:54.262395+08:00",
+      "generator": "playground/sync_dsh_core_results.py@sha256:1b17fe5f86ecde46",
+      "update_message": "Replaced the prior attempt with the retry result; copied performance.json and added source provenance, measured cost/token usage, and submission when available; no metric recomputation."
     }
-  ],
-  "cost_in_USD": 0.033965656000000004,
-  "used_token": {
-    "input": 314456,
-    "output": 21214,
-    "reason": 10813,
-    "cached": 278016,
-    "total": 335670
-  }
+  ]
 }

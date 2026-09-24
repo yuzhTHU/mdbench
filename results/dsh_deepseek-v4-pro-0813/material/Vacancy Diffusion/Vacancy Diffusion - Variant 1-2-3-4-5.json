@@ -1,0 +1,170 @@
+{
+  "postprocessed_at": "2026-09-23T02:14:47.112994+00:00",
+  "postprocess_seconds": 62.52841338887811,
+  "evaluation": {
+    "task_name": "Vacancy Diffusion - Variant 1-2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 9.149133681249458e-16,
+        "mse": 3.178522078955616e-30,
+        "rmse": 1.782841013370406e-15,
+        "mape": 0.02885909496835138,
+        "r2": 0.9978598100000972,
+        "nrmse": 0.03867412316947081,
+        "max_absolute_error": 8.43995575880157e-15,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 9.057625071036336e-16,
+        "mse": 2.9020481835383178e-30,
+        "rmse": 1.7035398978416437e-15,
+        "mape": 0.02879074024731593,
+        "r2": 0.9978384935650583,
+        "nrmse": 0.038336796102402225,
+        "max_absolute_error": 7.504688711647359e-15,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.6920090585180263e-13,
+        "mse": 1.252143139394496e-25,
+        "rmse": 3.538563464733247e-13,
+        "mape": 0.15763406644849126,
+        "r2": 0.9239232711726847,
+        "nrmse": 0.168486669495554,
+        "max_absolute_error": 1.2090834397762535e-12,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "kB": "1380649/100000000000000000000000000000",
+      "Va": "50516566261/100000000000000000000000000000000000000000",
+      "Q0": "4359551694693619/25000000000000000000000000000000000",
+      "C0": "363500680698033/500",
+      "Q": "50516566261*pressure/100000000000000000000000000000000000000000 + 4359551694693619/25000000000000000000000000000000000",
+      "D0": "363500680698033*spacing**2/500",
+      "diffusivity": "363500680698033*spacing**2*exp(-100000000000000000000000000000*(50516566261*pressure/100000000000000000000000000000000000000000 + 4359551694693619/25000000000000000000000000000000000)/(1380649*temp))/500"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "mobile_vacancies",
+        "ok": false,
+        "error": "Expected one equality: 'The frozen submitted mechanism model defines only `diffusivity` (and its components `Q`, `D0`, `Q0`, `Va`, `kB`, `C0`), and contains no equation relating any of these quantities to a mobile vacancy site fraction.'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "alternate_rate",
+        "ok": true,
+        "reply": "alternate_rate = C0 * exp(-Q / (kB * temp))",
+        "expression": "363500680698033*exp(-(50516566261*pressure + 17438206778774476000000)/(1380649000000000000*temp))/500",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1768573013.7090864,
+            "mse": 5.860591413345811e+18,
+            "rmse": 2420865839.6007433,
+            "mape": 0.9998734048804085,
+            "r2": -1.1430765790173223,
+            "nrmse": 0.999712296886497,
+            "max_absolute_error": 5867937315.445033,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1781959369.8008177,
+            "mse": 5.855705180773364e+18,
+            "rmse": 2419856438.050275,
+            "mape": 0.9998724751069655,
+            "r2": -1.1832020082390429,
+            "nrmse": 0.9997182701045677,
+            "max_absolute_error": 5888219478.508043,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 14603098123.276617,
+            "mse": 2.480788837035457e+20,
+            "rmse": 15750520108.985153,
+            "mape": 0.999080375622425,
+            "r2": -6.095815202167472,
+            "nrmse": 0.9988199113196681,
+            "max_absolute_error": 26520732413.884182,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "ok": false,
+  "cost_in_USD": 0.3727838012152,
+  "used_token": {
+    "input": 1274276,
+    "output": 57803,
+    "reason": 41198,
+    "cached": 1187584,
+    "total": 1332079
+  },
+  "submission": "kB = 1.380649e-23\nVa = 5.0516566261e-31\nQ0 = 1.7438206778774476e-19\nC0 = 727001361396.066\nQ = Q0 + pressure * Va\nD0 = C0 * spacing^2\ndiffusivity = D0 * exp(-Q / (kB * temp))\n",
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/material/Vacancy_Diffusion/Vacancy_Diffusion_-_Variant_1-2-3-4-5/performance.json",
+    "file_sha256": "f855cc9eafcd52a30112b892536397caa596c7a64ef9ef44a93acfb0075e1432",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/material/Vacancy_Diffusion/Vacancy_Diffusion_-_Variant_1-2-3-4-5",
+    "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4-5.yaml",
+    "task_definition_sha256": "01bf25234841aefc9e349f0c44c686b3cb1897a67db7edaa5dcc8c93f3f7b4ba",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/manifest.json",
+    "manifest_job_id": "079-Vacancy_Diffusion_-_Variant_1-2-3-4-5--deepseek-v4-pro-0813",
+    "attempt": "retry",
+    "supplemental": {
+      "usage": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/material/Vacancy_Diffusion/Vacancy_Diffusion_-_Variant_1-2-3-4-5/usage/usage.json",
+        "file_sha256": "522bb40dba6ccbceee55fcd478b945e2f75b0fa75c1f825aa79e6de3fba20e13"
+      },
+      "usage_events": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/material/Vacancy_Diffusion/Vacancy_Diffusion_-_Variant_1-2-3-4-5/usage/usage.jsonl",
+        "file_sha256": "0b88e0aa41040a9231cc0d3896680b86bfb7245254abc58ebc6d448a3e33484a"
+      },
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/material/Vacancy_Diffusion/Vacancy_Diffusion_-_Variant_1-2-3-4-5/submission.txt",
+        "file_sha256": "1a7c2114558c1db886bcdeda134cd648e310381d8877f74a9e1028fea8d9835a"
+      }
+    }
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T00:02:54.262395+08:00",
+      "generator": "playground/sync_dsh_core_results.py@sha256:1b17fe5f86ecde46",
+      "update_message": "Imported a newly available retry result; copied performance.json and added source provenance, measured cost/token usage, and submission when available; no metric recomputation."
+    }
+  ]
+}

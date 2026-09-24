@@ -1,31 +1,160 @@
 {
   "algorithm": "dsh",
-  "agent_seconds": 900.6300222519785,
-  "error": "Undeclared mechanism variables: ['concentration_scale', 'rate_scale']",
-  "error_type": "ValidationError",
-  "total_seconds": 900.8839158788323,
-  "ok": false,
+  "agent_seconds": 900.432435490191,
+  "evaluation_seconds": 41.221506575122476,
+  "evaluation": {
+    "task_name": "Lindemann Pulse Reaction - Variant 2",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.8632490963358104e-05,
+        "mse": 7.024180571330954e-10,
+        "rmse": 2.65031706996181e-05,
+        "mape": 2.3724861600231573,
+        "r2": 0.7829152240039072,
+        "nrmse": 0.3724156170996922,
+        "max_absolute_error": 0.00012456184352661266,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.8850572359103943e-05,
+        "mse": 7.269346746473978e-10,
+        "rmse": 2.6961726106601516e-05,
+        "mape": 2.4145817041044935,
+        "r2": 0.7657497385647558,
+        "nrmse": 0.3878059392871453,
+        "max_absolute_error": 0.0001188394135072939,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0006759699295646637,
+        "mse": 6.260188182359777e-07,
+        "rmse": 0.0007912135098922273,
+        "mape": 3.220782155095402,
+        "r2": -4.0419894341868,
+        "nrmse": 1.391739796759032,
+        "max_absolute_error": 0.002109853598862574,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "kact": "913/2500",
+      "Khalf": "3883/2500",
+      "f1": "913*collider/(2500*(collider + 3883/2500))",
+      "f2": "913*second_collider/(2500*(second_collider + 3883/2500))",
+      "A1": "dose*flow_rate/(913*collider/(2500*(collider + 3883/2500)) + flow_rate)",
+      "A2": "dose*flow_rate**2/((flow_rate + 913*second_collider/(2500*(second_collider + 3883/2500)))*(913*collider/(2500*(collider + 3883/2500)) + flow_rate))",
+      "r1": "913*collider*dose*flow_rate/(2500*(collider + 3883/2500)*(913*collider/(2500*(collider + 3883/2500)) + flow_rate))",
+      "r2": "913*dose*flow_rate**2*second_collider/(2500*(flow_rate + 913*second_collider/(2500*(second_collider + 3883/2500)))*(second_collider + 3883/2500)*(913*collider/(2500*(collider + 3883/2500)) + flow_rate))",
+      "response": "913*collider*dose*flow_rate/(2500*(collider + 3883/2500)*(913*collider/(2500*(collider + 3883/2500)) + flow_rate)) + 913*dose*flow_rate**2*second_collider/(2500*(flow_rate + 913*second_collider/(2500*(second_collider + 3883/2500)))*(second_collider + 3883/2500)*(913*collider/(2500*(collider + 3883/2500)) + flow_rate))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "secondary_pool",
+        "ok": true,
+        "reply": "secondary_pool = A2",
+        "expression": "dose*flow_rate**2*(2500*collider + 3883)*(2500*second_collider + 3883)/((913*collider + flow_rate*(2500*collider + 3883))*(flow_rate*(2500*second_collider + 3883) + 913*second_collider))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0005577081659226764,
+            "mse": 4.814410255448505e-07,
+            "rmse": 0.0006938595142713332,
+            "mape": 89.85033561370776,
+            "r2": -786.1046313488605,
+            "nrmse": 22.42484421460644,
+            "max_absolute_error": 0.0018419511725171961,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0005414238606101157,
+            "mse": 4.4865349484967247e-07,
+            "rmse": 0.0006698160156712233,
+            "mape": 90.09889483844633,
+            "r2": -763.8062463599209,
+            "nrmse": 22.158998447792502,
+            "max_absolute_error": 0.0019371594402602561,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.004025799558487373,
+            "mse": 1.8722022205187495e-05,
+            "rmse": 0.004326895215415725,
+            "mape": 36.30084989299391,
+            "r2": -796.6694713347994,
+            "nrmse": 17.505260012050726,
+            "max_absolute_error": 0.007861843301884743,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 1
+  },
+  "total_seconds": 941.8790498003364,
+  "ok": true,
+  "cost_in_USD": 0.29039680712000004,
+  "used_token": {
+    "input": 797220,
+    "output": 51429,
+    "reason": 41670,
+    "cached": 451840,
+    "total": 848649
+  },
+  "submission": "kact = 0.3652\nKhalf = 1.5532\nf1 = kact * collider / (Khalf + collider)\nf2 = kact * second_collider / (Khalf + second_collider)\nA1 = dose * flow_rate / (flow_rate + f1)\nA2 = A1 * flow_rate / (flow_rate + f2)\nr1 = f1 * A1\nr2 = f2 * A2\nresponse = r1 + r2\n",
   "source": {
     "hostname": "SIM1",
-    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2/performance.json",
-    "file_sha256": "9efc0cc95962601b8e8683aff2bace98f75a78eecacf459413f916f9cb8ac0b3",
-    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2/performance.json",
+    "file_sha256": "469001c749d52a1711625d9747154da740fd597f82f7a822836837854864c105",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2",
     "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2.yaml",
     "task_definition_sha256": "58ef7f698776eec172aef4ee511a6cd61e625e0628d74358b7fd1364af80a9b2",
-    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/manifest.json",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/manifest.json",
     "manifest_job_id": "021-Lindemann_Pulse_Reaction_-_Variant_2--deepseek-v4-pro-0813",
+    "attempt": "retry",
     "supplemental": {
       "usage": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2/usage/usage.json",
-        "file_sha256": "56fdcc052869227c7a29c0521982142aadd8b8bb4a355b445f3711a7811dd9aa"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2/usage/usage.json",
+        "file_sha256": "18691eb769cbb44c7fdf25b3c801e519c1fd5c9edaa497aba7a59034ce643d9a"
       },
       "usage_events": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2/usage/usage.jsonl",
-        "file_sha256": "0305013303a2ae9708f0bb51f633cd565fc9bb65f28774a2587e5e985b7360cc"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2/usage/usage.jsonl",
+        "file_sha256": "8e39e7fe351cafacbe2fa69c66a9bd19c12aed02ab839d5b6eb920f5bbd118f2"
       },
       "submission": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2/submission.txt",
-        "file_sha256": "8d91e1bc64aabdd14e0b9e1f3aba45b571562d63e9552e7714ff82f9fd4ee07e"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/chemistry/Lindemann_Pulse_Reaction/Lindemann_Pulse_Reaction_-_Variant_2/submission.txt",
+        "file_sha256": "b71204cf7d4abf42ca7f1cb9d6c2f730f52b093e7908e90715c4a9e012cb9ed1"
       }
     }
   },
@@ -39,15 +168,11 @@
       "updated_at": "2026-09-23T23:26:24.048724+08:00",
       "generator": "playground/import_dsh_core_results.py@sha256:dbfe5f6d67a70442",
       "update_message": "Added source-backed cost_in_USD, used_token, submission, source.supplemental; existing performance metrics unchanged."
+    },
+    {
+      "updated_at": "2026-09-24T00:02:54.262395+08:00",
+      "generator": "playground/sync_dsh_core_results.py@sha256:1b17fe5f86ecde46",
+      "update_message": "Replaced the prior attempt with the retry result; copied performance.json and added source provenance, measured cost/token usage, and submission when available; no metric recomputation."
     }
-  ],
-  "cost_in_USD": 0.361324646496,
-  "used_token": {
-    "input": 988010,
-    "output": 53218,
-    "reason": 40826,
-    "cached": 898560,
-    "total": 1041228
-  },
-  "submission": "k1 = 1.33640771\nk2 = 0.01642215\nk3 = 0.86854383\nA1 = flow_rate * dose / (flow_rate + k1 * collider * (k3 + flow_rate) / (k2 * collider + k3 + flow_rate))\nA1s = k1 * collider * A1 / (k2 * collider + k3 + flow_rate)\nD2 = flow_rate + k2 * second_collider + k3\nA2 = (flow_rate * A1 + k2 * second_collider * flow_rate * A1s / D2) / (flow_rate + k1 * second_collider * (k3 + flow_rate) / D2)\nA2s = (k1 * second_collider * A2 + flow_rate * A1s) / D2\nresponse = k3 * A2s\n"
+  ]
 }

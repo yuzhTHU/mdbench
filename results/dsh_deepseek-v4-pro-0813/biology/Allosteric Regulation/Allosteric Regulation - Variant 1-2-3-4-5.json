@@ -1,27 +1,165 @@
 {
   "algorithm": "dsh",
-  "agent_seconds": 900.5324304457754,
-  "error": "Expected one equality: \"The data is near-deterministic (noise ~1e-4), but my rmse is 0.01 — I'm missing structure. Let me analyze fixed-substrate slices to find exact regulator dependence.\"",
-  "error_type": "ValidationError",
-  "total_seconds": 900.9424239322543,
+  "agent_seconds": 900.4224045835435,
+  "total_seconds": 900.8359495606273,
   "ok": false,
+  "pre_postprocess_error": "Empty submission.",
+  "postprocessed_at": "2026-09-23T02:29:22.950047+00:00",
+  "postprocess_seconds": 198.9950158316642,
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 1-2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0008818069472936716,
+        "mse": 3.984473436678067e-06,
+        "rmse": 0.0019961145850571974,
+        "mape": 0.0009318664294249802,
+        "r2": 0.999996881606908,
+        "nrmse": 0.0013508530006316514,
+        "max_absolute_error": 0.022937395054715815,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0009976231064746349,
+        "mse": 5.482775093419917e-06,
+        "rmse": 0.002341532637701195,
+        "mape": 0.0009672019932213239,
+        "r2": 0.9999958424857419,
+        "nrmse": 0.0015545196623591364,
+        "max_absolute_error": 0.023014878814574313,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.14697684488638915,
+        "mse": 0.0319684306689729,
+        "rmse": 0.17879717746366383,
+        "mape": 0.13685454760773938,
+        "r2": 0.9064883889488305,
+        "nrmse": 0.14286690407571803,
+        "max_absolute_error": 0.44998779627589824,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "Vmax": "48547/5000",
+      "Km": "583/25000",
+      "K1": "7907/2000000",
+      "K2": "84059/10000000",
+      "Kn": "17099/1000000",
+      "activity": "48547*substrate/(5000*(1000000*regulator/17099 + 1)*(substrate + 583*(10000000*regulator/84059 + 1)*(2000000*regulator/7907 + 1)/25000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "t3",
+        "ok": true,
+        "reply": "t3 = (regulator/K1)*(regulator/K2)*(regulator/Kn) / ((1 + regulator/Kn)*((1 + regulator/K1)*(1 + regulator/K2) + substrate/Km))",
+        "expression": "20000000000000000000*regulator**3/(11364927517787*(1000000*regulator/17099 + 1)*(25000*substrate/583 + (10000000*regulator/84059 + 1)*(2000000*regulator/7907 + 1)))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0005862967244585241,
+            "mse": 4.869571219766082e-06,
+            "rmse": 0.0022067104974975945,
+            "mape": 0.1685685653041578,
+            "r2": 0.9577042121604704,
+            "nrmse": 0.18908271136762966,
+            "max_absolute_error": 0.02182790832050302,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0006699054654669194,
+            "mse": 6.565769540932668e-06,
+            "rmse": 0.002562375761072655,
+            "mape": 0.17817878376035784,
+            "r2": 0.9466559082841222,
+            "nrmse": 0.213979786430762,
+            "max_absolute_error": 0.022657322907207154,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.09955219598549252,
+            "mse": 0.01223953638225904,
+            "rmse": 0.11063243820082354,
+            "mape": 2.373939953193836,
+            "r2": -13.227484387334124,
+            "nrmse": 1.947274463163499,
+            "max_absolute_error": 0.22172221917842405,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "inactive_flux",
+        "ok": false,
+        "error": "DSH headless run failed: {'returncode': 130, 'timed_out': True, 'elapsed_seconds': 120.16965773701668}; see /mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5/probe/001-inactive_flux/audit",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "cost_in_USD": 0.379558430848,
+  "used_token": {
+    "input": 869259,
+    "output": 51487,
+    "reason": 36866,
+    "cached": 711936,
+    "total": 920746
+  },
+  "submission": "Vmax = 9.7094\nKm = 0.02332\nK1 = 0.0039535\nK2 = 0.0084059\nKn = 0.017099\nactivity = Vmax * substrate / (substrate + Km * (1 + regulator / K1) * (1 + regulator / K2)) / (1 + regulator / Kn)\n",
   "source": {
     "hostname": "SIM1",
-    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5/performance.json",
-    "file_sha256": "43fafd4fa94e4c558251db786f267eeb3c83806a0fcbd0ffe3991ad60bf4675f",
-    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5/performance.json",
+    "file_sha256": "5838fc531632afdec723a17a323f679b05d194ed818c14590814bd9564bace3c",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5",
     "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-4-5.yaml",
     "task_definition_sha256": "f3701a0f81c3ff00566c6dc75c58774b88a7b410b71e18d2e94cb9509e5a1e6e",
-    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/manifest.json",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/manifest.json",
     "manifest_job_id": "049-Allosteric_Regulation_-_Variant_1-2-3-4-5--deepseek-v4-pro-0813",
+    "attempt": "retry",
     "supplemental": {
       "usage": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5/usage/usage.json",
-        "file_sha256": "4eeb63f8c72739a4562fbbc439ab9843887662a5a8e896cd1df75440437a5cea"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5/usage/usage.json",
+        "file_sha256": "7c74fc8643c13512b4a05c7aa4fcb762e5496b3d5f05ce8dbfd8392ed19c63da"
       },
       "usage_events": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5/usage/usage.jsonl",
-        "file_sha256": "a890a76243c8e18300b6e81984b1201defb724c50525f85f3fa229e76f41c0e1"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5/usage/usage.jsonl",
+        "file_sha256": "2bfa655d59b2443fe9ef4aa5dd96a09edae3f73789654d17956a0aa68f6e4a6b"
+      },
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4-5/submission.txt",
+        "file_sha256": "51775b75efa21be80c988cb4f27eba039cb37e309d6d48868e83f5a110e5b306"
       }
     }
   },
@@ -35,14 +173,11 @@
       "updated_at": "2026-09-23T23:26:24.048724+08:00",
       "generator": "playground/import_dsh_core_results.py@sha256:dbfe5f6d67a70442",
       "update_message": "Added source-backed cost_in_USD, used_token, source.supplemental; existing performance metrics unchanged."
+    },
+    {
+      "updated_at": "2026-09-24T00:02:54.262395+08:00",
+      "generator": "playground/sync_dsh_core_results.py@sha256:1b17fe5f86ecde46",
+      "update_message": "Replaced the prior attempt with the retry result; copied performance.json and added source provenance, measured cost/token usage, and submission when available; no metric recomputation."
     }
-  ],
-  "cost_in_USD": 0.33047426423360005,
-  "used_token": {
-    "input": 942512,
-    "output": 28065,
-    "reason": 16609,
-    "cached": 810752,
-    "total": 970577
-  }
+  ]
 }

@@ -1,27 +1,160 @@
 {
   "algorithm": "dsh",
-  "agent_seconds": 900.6118191275746,
-  "error": "Expected one equality: \"Hmm, with fixed T=300 the residual mean is -0.005 (not zero) and std is worse (3.4e-4). Earlier with free T=302.2 I got much better. The -0.005 mean is the intercept b≈-0.0036 to -0.005. So T isn't exactly 300.\"",
-  "error_type": "ValidationError",
-  "total_seconds": 900.6748638693243,
-  "ok": false,
+  "agent_seconds": 900.4351769331843,
+  "total_seconds": 900.8288979791105,
+  "ok": true,
+  "pre_postprocess_error": "Empty submission.",
+  "postprocessed_at": "2026-09-23T02:26:41.749462+00:00",
+  "postprocess_seconds": 10.896257245913148,
+  "evaluation": {
+    "task_name": "Membrane Channel Flux - Variant 5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.447000935212884e-17,
+        "mse": 1.2364590613587579e-33,
+        "rmse": 3.5163319828462696e-17,
+        "mape": 1.4179241432413932e-16,
+        "r2": 1.0,
+        "nrmse": 1.7563976395171627e-16,
+        "max_absolute_error": 1.3877787807814457e-16,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.3640811530611927e-17,
+        "mse": 1.1382005230085516e-33,
+        "rmse": 3.3737227553676543e-17,
+        "mape": 1.4020343400084255e-16,
+        "r2": 1.0,
+        "nrmse": 1.6891607934059426e-16,
+        "max_absolute_error": 1.1102230246251565e-16,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.6728887155745276e-17,
+        "mse": 4.131468712942861e-34,
+        "rmse": 2.0326014643660132e-17,
+        "mape": 1.2745976161015284e-15,
+        "r2": 1.0,
+        "nrmse": 3.7567637713883077e-16,
+        "max_absolute_error": 5.551115123125783e-17,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "F": "2412133303/25000",
+      "R": "4157231309/500000000",
+      "T": "300",
+      "P": "17/500000000",
+      "k": "35/34",
+      "x": "482426660600*voltage/12471693927",
+      "current_density": "98912580214508726753*voltage*(inside - 35*outside*exp(-482426660600*voltage/12471693927)/34)/(779480870437500000000*(1 - exp(-482426660600*voltage/12471693927)))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "secondary_current",
+        "ok": true,
+        "reply": "secondary_current = P*F*x/(1-exp(-x))*(inside-k*outside*exp(-x))",
+        "expression": "98912580214508726753*voltage*(inside - 35*outside*exp(-482426660600*voltage/12471693927)/34)/(779480870437500000000*(1 - exp(-482426660600*voltage/12471693927)))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.17441350558418875,
+            "mse": 0.0358795215166366,
+            "rmse": 0.18941890485544624,
+            "mape": 16.375763939513547,
+            "r2": -3087.698741847049,
+            "nrmse": 17.499772384290132,
+            "max_absolute_error": 0.3706664857362091,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.17229806156645253,
+            "mse": 0.03571050129128479,
+            "rmse": 0.18897222359723873,
+            "mape": 16.214924920818557,
+            "r2": -2815.9611215729706,
+            "nrmse": 17.49227045649268,
+            "max_absolute_error": 0.3826124295161041,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.04469843583359075,
+            "mse": 0.002867543227324103,
+            "rmse": 0.053549446564125226,
+            "mape": 172.44199385105628,
+            "r2": -783.2743338504926,
+            "nrmse": 13.380352950168383,
+            "max_absolute_error": 0.12434290284424496,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 1
+  },
+  "cost_in_USD": 0.27142645036,
+  "used_token": {
+    "input": 578420,
+    "output": 42838,
+    "reason": 33699,
+    "cached": 450560,
+    "total": 621258
+  },
+  "submission": "F=96485.33212\nR=8.314462618\nT=300\nP=3.4e-8\nk=35/34\nx=F*voltage/(R*T)\ncurrent_density=P*F*x/(1-exp(-x))*(inside-k*outside*exp(-x))\n",
   "source": {
     "hostname": "SIM1",
-    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5/performance.json",
-    "file_sha256": "d90123956725b4a88af48a86beae623bc5216b607bb794428ac7af4fe76ab15d",
-    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5/performance.json",
+    "file_sha256": "80d562198974f9cdae99cf50add96f83e1fa74b269e7c8afb07e4517e38c0691",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5",
     "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 5.yaml",
     "task_definition_sha256": "805b9a4a2371059ecde462f4cbe43556a6c080ff61ddd7571d888a92e8bc9c43",
-    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/manifest.json",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/manifest.json",
     "manifest_job_id": "052-Membrane_Channel_Flux_-_Variant_5--deepseek-v4-pro-0813",
+    "attempt": "retry",
     "supplemental": {
       "usage": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5/usage/usage.json",
-        "file_sha256": "25d9f0422659d88e92cd23f6599573d457635e0aa4f9c2a3eab5d1425cc716eb"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5/usage/usage.json",
+        "file_sha256": "4665a1c58e30bfffbe9e78b97262abcbc24a1723d05c6a2d016dd80a45a4ecac"
       },
       "usage_events": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5/usage/usage.jsonl",
-        "file_sha256": "a7e7f7ec003d27edd8748eadd162f3a14abf78cf8ba7df6129e6018e7ddd7285"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5/usage/usage.jsonl",
+        "file_sha256": "ad7fa3de211bf1775a843e104eb6c2bf72965c3ae633091fdc2b55717b6f0f93"
+      },
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-pro-0813/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_5/submission.txt",
+        "file_sha256": "9c3528baad335e9f6c089a0740a98db2dd23df22cbf8129568e98502cb0f9f9f"
       }
     }
   },
@@ -35,14 +168,11 @@
       "updated_at": "2026-09-23T23:26:24.048724+08:00",
       "generator": "playground/import_dsh_core_results.py@sha256:dbfe5f6d67a70442",
       "update_message": "Added source-backed cost_in_USD, used_token, source.supplemental; existing performance metrics unchanged."
+    },
+    {
+      "updated_at": "2026-09-24T00:02:54.262395+08:00",
+      "generator": "playground/sync_dsh_core_results.py@sha256:1b17fe5f86ecde46",
+      "update_message": "Replaced the prior attempt with the retry result; copied performance.json and added source provenance, measured cost/token usage, and submission when available; no metric recomputation."
     }
-  ],
-  "cost_in_USD": 0.137770384,
-  "used_token": {
-    "input": 208478,
-    "output": 8808,
-    "reason": 0,
-    "cached": 182272,
-    "total": 217286
-  }
+  ]
 }

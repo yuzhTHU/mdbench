@@ -1,27 +1,217 @@
 {
   "algorithm": "dsh",
-  "agent_seconds": 900.4399674721062,
-  "error": "Empty submission.",
-  "error_type": "ValidationError",
-  "total_seconds": 900.807234108448,
+  "agent_seconds": 900.4089669212699,
+  "evaluation_seconds": 294.58806711249053,
+  "evaluation": {
+    "task_name": "Surface Pair Catalysis - Variant 2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.002546486322286568,
+        "mse": 2.294536894278762e-05,
+        "rmse": 0.004790132455662121,
+        "mape": 0.05282265244438082,
+        "r2": 0.9956262040934506,
+        "nrmse": 0.049496004009116676,
+        "max_absolute_error": 0.05223963932944381,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.002556006117976865,
+        "mse": 2.1206245771613215e-05,
+        "rmse": 0.00460502397079681,
+        "mape": 0.05346142522855676,
+        "r2": 0.9962709909107939,
+        "nrmse": 0.04617582278797575,
+        "max_absolute_error": 0.04078752655906387,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.07226594526583026,
+        "mse": 0.006744860074187768,
+        "rmse": 0.08212709707634727,
+        "mape": 0.3654224718093758,
+        "r2": 0.6168071256293333,
+        "nrmse": 0.31231443158954636,
+        "max_absolute_error": 0.2732916822578467,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "K": "70841/100000",
+      "A": "55099/50000",
+      "B": "68389/100000",
+      "C": "23103/100000",
+      "precursor": "a_concentration*b_concentration",
+      "decay_rate": "55099*a_concentration/50000 + 68389*b_concentration/100000 + 23103/100000",
+      "response": "70841*a_concentration*b_concentration/(100000*(55099*a_concentration/50000 + 68389*b_concentration/100000 + laplace_rate + 23103/100000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "immobile_a_cells",
+        "ok": false,
+        "error": "Expected one equality: '`immobile_a_cells` is not defined anywhere in the frozen submitted mechanism model. The model defines only `precursor`, `decay_rate`, and `response`'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "a_cells",
+        "ok": false,
+        "error": "DSH headless run failed: {'returncode': 130, 'timed_out': True, 'elapsed_seconds': 120.169259686023}; see /mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5/probe/001-a_cells/audit",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "b_cells",
+        "ok": true,
+        "reply": "b_cells = K * precursor * B * b_concentration / (decay_rate * (laplace_rate + decay_rate))",
+        "expression": "4844745149*a_concentration*b_concentration**2/((110198*a_concentration + 68389*b_concentration + 23103)*(110198*a_concentration + 68389*b_concentration + 100000*laplace_rate + 23103))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.12337650953851195,
+            "mse": 0.027518651202251422,
+            "rmse": 0.16588746547660382,
+            "mape": 0.8725992025183882,
+            "r2": -0.7122998058516883,
+            "nrmse": 0.8588107652093486,
+            "max_absolute_error": 0.5595779047175399,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.12388088508718507,
+            "mse": 0.029163233071048768,
+            "rmse": 0.1707724599314795,
+            "mape": 0.8710388116856056,
+            "r2": -0.6693382447606482,
+            "nrmse": 0.8657939048309281,
+            "max_absolute_error": 0.5865045801791724,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.04064683381742555,
+            "mse": 0.0020026449803061085,
+            "rmse": 0.04475092155817697,
+            "mape": 0.3283627149943291,
+            "r2": 0.1521141535380096,
+            "nrmse": 0.29862081417956343,
+            "max_absolute_error": 0.17357206340789627,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "gas_surface_flux",
+        "ok": true,
+        "reply": "gas_surface_flux = K * precursor / (laplace_rate + decay_rate)",
+        "expression": "70841*a_concentration*b_concentration/(110198*a_concentration + 68389*b_concentration + 100000*laplace_rate + 23103)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.05406652506103116,
+            "mse": 0.007057722199384675,
+            "rmse": 0.08401025056137301,
+            "mape": 4.703611649193975,
+            "r2": -54.323185358148834,
+            "nrmse": 5.393954680943857,
+            "max_absolute_error": 0.43929049048663427,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.054947871661503174,
+            "mse": 0.007436078967680961,
+            "rmse": 0.0862327024259414,
+            "mape": 4.7177922372881715,
+            "r2": -51.62448254014431,
+            "nrmse": 5.348627613551858,
+            "max_absolute_error": 0.3951180583453518,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.20799690710299365,
+            "mse": 0.060237689956230515,
+            "rmse": 0.24543367730658014,
+            "mape": 2.1411278071896573,
+            "r2": -40.92342117150001,
+            "nrmse": 2.4824965872564184,
+            "max_absolute_error": 0.7750996251772646,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1195.1441364176571,
   "ok": false,
+  "cost_in_USD": 0.056523254,
+  "used_token": {
+    "input": 1099164,
+    "output": 59413,
+    "reason": 41052,
+    "cached": 1073152,
+    "total": 1158577
+  },
+  "submission": "K = 0.70841\nA = 1.10198\nB = 0.68389\nC = 0.23103\nprecursor = a_concentration * b_concentration\ndecay_rate = A * a_concentration + B * b_concentration + C\nresponse = K * precursor / (laplace_rate + decay_rate)\n",
   "source": {
     "hostname": "SIM1",
-    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5/performance.json",
-    "file_sha256": "d7459247a21bf38abedd1d835575f391f30c0baf0207a4ed386e3951fef514db",
-    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5/performance.json",
+    "file_sha256": "7813dcd05a7e43c17fbab4b778c4b15820b35c5811eaa3ecbbc6bd7b0c2a35a3",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5",
     "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3-4-5.yaml",
     "task_definition_sha256": "1977c13dc183621d28b9fd274cb11e22b68a86c618002b85188b975523561584",
-    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/manifest.json",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/manifest.json",
     "manifest_job_id": "038-Surface_Pair_Catalysis_-_Variant_2-3-4-5--deepseek-v4-flash-0731",
+    "attempt": "retry",
     "supplemental": {
       "usage": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5/usage/usage.json",
-        "file_sha256": "a0802d35a32f97ddeb91503b9d19221fa80b0b885380fa02bfdf98a24f2680c5"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5/usage/usage.json",
+        "file_sha256": "b27b3920c6d6ba7964da880cec37bd6921aac9997d19491adab6059083a7938e"
       },
       "usage_events": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5/usage/usage.jsonl",
-        "file_sha256": "c9d9330153bb3f32b1d43a5ab12183f55dfde5d2d879cdde3ac2e11176637632"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5/usage/usage.jsonl",
+        "file_sha256": "a397f5114a99ae17b22ea3a289765234d963b08aa370095f2316c8f6d6851b61"
+      },
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_failed_low_20260922/runs/deepseek-v4-flash-0731/chemistry/Surface_Pair_Catalysis/Surface_Pair_Catalysis_-_Variant_2-3-4-5/submission.txt",
+        "file_sha256": "e8380f96a157feecff0b5a3ec72c915c3e09f95bf8da1d718f09b15c9c2da4c0"
       }
     }
   },
@@ -35,14 +225,11 @@
       "updated_at": "2026-09-23T23:26:24.048724+08:00",
       "generator": "playground/import_dsh_core_results.py@sha256:dbfe5f6d67a70442",
       "update_message": "Added source-backed cost_in_USD, used_token, source.supplemental; existing performance metrics unchanged."
+    },
+    {
+      "updated_at": "2026-09-24T00:02:54.262395+08:00",
+      "generator": "playground/sync_dsh_core_results.py@sha256:1b17fe5f86ecde46",
+      "update_message": "Replaced the prior attempt with the retry result; copied performance.json and added source provenance, measured cost/token usage, and submission when available; no metric recomputation."
     }
-  ],
-  "cost_in_USD": 0.034079544,
-  "used_token": {
-    "input": 232293,
-    "output": 21055,
-    "reason": 12044,
-    "cached": 145664,
-    "total": 253348
-  }
+  ]
 }

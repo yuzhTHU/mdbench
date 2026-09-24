@@ -1,27 +1,170 @@
 {
   "algorithm": "dsh",
-  "agent_seconds": 900.5462405197322,
-  "error": "Empty submission.",
-  "error_type": "ValidationError",
-  "total_seconds": 900.8544364627451,
+  "agent_seconds": 900.4339311961085,
+  "evaluation_seconds": 799.3354466930032,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Variant 1-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1207.3615073841274,
+        "mse": 5173646.358227116,
+        "rmse": 2274.565092105987,
+        "mape": 117.5068082682363,
+        "r2": 0.19573269365786716,
+        "nrmse": 0.823207568740016,
+        "max_absolute_error": 16350.685245581048,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1304.5650557908864,
+        "mse": 5012172.804351868,
+        "rmse": 2238.788244643041,
+        "mape": 130.66860760516713,
+        "r2": 0.09791768518811439,
+        "nrmse": 0.8558042568204416,
+        "max_absolute_error": 16797.16650100179,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 34641.77225151089,
+        "mse": 1486411855.486061,
+        "rmse": 38554.01218402646,
+        "mape": 90.33144043661773,
+        "r2": -2079.3966600704343,
+        "nrmse": 32.45127009575234,
+        "max_absolute_error": 90121.73375409238,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "stress": "frame_modulus*temperature_step/400000"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_slow_thermal_fraction",
+        "ok": false,
+        "error": "DSH headless run failed: {'returncode': 130, 'timed_out': True, 'elapsed_seconds': 120.16771858558059}; see /mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_errors_retry_20260924/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/probe/000-prepared_slow_thermal_fraction/audit",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "prepared_adhesive_fraction",
+        "ok": false,
+        "error": "Expected one equality: 'The frozen submitted mechanism model contains only a single relationship:'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "prepared_eigenstrain_fraction",
+        "ok": false,
+        "error": "Expected one equality: 'The frozen submitted mechanism model contains only:'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "prepared_slow_strain_fraction",
+        "ok": true,
+        "reply": "prepared_slow_strain_fraction = exp(-laplace_rate * conditioning_temperature / conditioning_cooling_rate)",
+        "expression": "exp(-conditioning_temperature*laplace_rate/conditioning_cooling_rate)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.09014677942001231,
+            "mse": 0.049929493001745255,
+            "rmse": 0.22344908368965233,
+            "mape": 20128539131124.39,
+            "r2": -0.18291723990472075,
+            "nrmse": 1.0039177827774601,
+            "max_absolute_error": 1.0000000000000002,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08158723868757156,
+            "mse": 0.03886582071887595,
+            "rmse": 0.1971441622744025,
+            "mape": 15499650955490.656,
+            "r2": -0.19533109688620098,
+            "nrmse": 1.003208075925958,
+            "max_absolute_error": 1.0000000000000002,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.13664023008795437,
+            "mse": 0.05331688272749153,
+            "rmse": 0.23090448832253463,
+            "mape": 0.978,
+            "r2": -0.538889756701626,
+            "nrmse": 1.0,
+            "max_absolute_error": 1.0,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1700.274487555027,
   "ok": false,
+  "cost_in_USD": 0.16557390681600004,
+  "used_token": {
+    "input": 581504,
+    "output": 61419,
+    "reason": 51440,
+    "cached": 372736,
+    "total": 642923
+  },
+  "submission": "stress = 2.5e-6 * temperature_step * frame_modulus\n",
   "source": {
     "hostname": "SIM1",
-    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/performance.json",
-    "file_sha256": "3d6c48243dd2720cb3a9c3526e887840d0f948ebf3b53a84ec53a6d4c0cfa272",
-    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_errors_retry_20260924/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/performance.json",
+    "file_sha256": "66c8b69f419f622e4b4425f3860d296702132dc78a328fd7be12f5ad9dd41cba",
+    "experiment_dir": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_errors_retry_20260924/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5",
     "task_definition": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-3-4-5.yaml",
     "task_definition_sha256": "cd2393e33f2640b0e52ecf0e64482ffeb9b673b8eff215c67d98c992fd037526",
-    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/manifest.json",
+    "manifest": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_errors_retry_20260924/manifest.json",
     "manifest_job_id": "067-Thermoelastic_Heating_Response_-_Variant_1-3-4-5--deepseek-v4-pro-0813",
+    "attempt": "retry_errors_20260924",
     "supplemental": {
       "usage": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/usage/usage.json",
-        "file_sha256": "3d52e0b485747fcceb4a3fbdcd9d347b223a184c1ff1942aa9906caab5babc26"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_errors_retry_20260924/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/usage/usage.json",
+        "file_sha256": "e859e9e206f3f5efed72f02957a2203aefda0edd342cf44b3db41a87663021ea"
       },
       "usage_events": {
-        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_core_20260922_live2/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/usage/usage.jsonl",
-        "file_sha256": "babe315708444fd6bf8e0e038b18428fe2b087d9b8ff700ee4717b6a30d4231d"
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_errors_retry_20260924/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/usage/usage.jsonl",
+        "file_sha256": "18ca62287e2cd668b52a3c6d323a2e009f57cc6eeadc286e19dabbee2cf6458f"
+      },
+      "submission": {
+        "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/dsh_errors_retry_20260924/runs/deepseek-v4-pro-0813/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/submission.txt",
+        "file_sha256": "63d63dcdfb365de345545f11776e07e01f2304ae42179982d8b5865219dc0808"
       }
     }
   },
@@ -35,14 +178,16 @@
       "updated_at": "2026-09-23T23:26:24.048724+08:00",
       "generator": "playground/import_dsh_core_results.py@sha256:dbfe5f6d67a70442",
       "update_message": "Added source-backed cost_in_USD, used_token, source.supplemental; existing performance metrics unchanged."
+    },
+    {
+      "updated_at": "2026-09-24T00:02:54.262395+08:00",
+      "generator": "playground/sync_dsh_core_results.py@sha256:1b17fe5f86ecde46",
+      "update_message": "Replaced the prior attempt with the retry result; copied performance.json and added source provenance, measured cost/token usage, and submission when available; no metric recomputation."
+    },
+    {
+      "updated_at": "2026-09-24T07:09:39.915709+08:00",
+      "generator": "playground/sync_dsh_core_results.py@sha256:678ef483075dc297",
+      "update_message": "Replaced the prior attempt with the latest retry result; copied performance.json and added source provenance, measured cost/token usage, and submission when available; no metric recomputation."
     }
-  ],
-  "cost_in_USD": 0.9207934566416001,
-  "used_token": {
-    "input": 1230268,
-    "output": 97243,
-    "reason": 79220,
-    "cached": 1116672,
-    "total": 1327511
-  }
+  ]
 }
