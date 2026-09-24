@@ -1,0 +1,312 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.9994556759484,
+  "evaluation_seconds": 204.4996675408911,
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 1-2-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0007320867340428494,
+        "mse": 2.7569928458441024e-06,
+        "rmse": 0.0016604194788799914,
+        "mape": 0.0005905212163933887,
+        "r2": 0.9999976342764373,
+        "nrmse": 0.0011585344128867364,
+        "max_absolute_error": 0.014341491821951546,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0007390945211287174,
+        "mse": 2.4120339777162365e-06,
+        "rmse": 0.0015530724315743411,
+        "mape": 0.0006107896295014375,
+        "r2": 0.9999979696542803,
+        "nrmse": 0.0010793766728754018,
+        "max_absolute_error": 0.012037667800444574,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.056925460490824066,
+        "mse": 0.004824918910944749,
+        "rmse": 0.06946163625300479,
+        "mape": 0.09078722544334346,
+        "r2": 0.9688208712722655,
+        "nrmse": 0.08458365475358824,
+        "max_absolute_error": 0.19033535644725608,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "kcat": "2440493070731677/250000000000000",
+      "K_substrate": "1466716498436273/62500000000000000",
+      "K_regulator_affinity": "119752963636809/20000000000000000",
+      "K_regulator_activity": "4107360658849919/100000000000000000",
+      "substrate_Hill_coefficient": "1586148544591931/625000000000000",
+      "activity_Hill_coefficient": "4086373877864631/500000000000000",
+      "regulator_substrate_effect": "(20000000000000000*regulator/119752963636809 + 1)**(1586148544591931/625000000000000)",
+      "regulator_activity_effect": "(100000000000000000*regulator/4107360658849919 + 1)**(4086373877864631/500000000000000)",
+      "inhibited_Michaelis_constant": "1466716498436273*(20000000000000000*regulator/119752963636809 + 1)**(1586148544591931/625000000000000)/62500000000000000",
+      "modified_substrate_term": "substrate*(100000000000000000*regulator/4107360658849919 + 1)**(4086373877864631/500000000000000)",
+      "activity": "2440493070731677*substrate/(250000000000000*(substrate*(100000000000000000*regulator/4107360658849919 + 1)**(4086373877864631/500000000000000) + 1466716498436273*(20000000000000000*regulator/119752963636809 + 1)**(1586148544591931/625000000000000)/62500000000000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "t3",
+        "ok": true,
+        "reply": "t3 = inhibited_Michaelis_constant / (inhibited_Michaelis_constant + modified_substrate_term)",
+        "expression": "(1466716498436273*(20000000000000000*regulator/119752963636809 + 1)**(1586148544591931/625000000000000)/62500000000000000)/(substrate*(100000000000000000*regulator/4107360658849919 + 1)**(4086373877864631/500000000000000) + 1466716498436273*(20000000000000000*regulator/119752963636809 + 1)**(1586148544591931/625000000000000)/62500000000000000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.8867981715096241,
+            "mse": 0.8000499139821766,
+            "rmse": 0.8944550933289924,
+            "mape": 27172934.91885939,
+            "r2": -7111.076816535385,
+            "nrmse": 78.02588893019218,
+            "max_absolute_error": 0.9958982593571987,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.886346329473847,
+            "mse": 0.7998966882868861,
+            "rmse": 0.8943694361318962,
+            "mape": 29209125.624023646,
+            "r2": -6606.89503107694,
+            "nrmse": 75.55014010250589,
+            "max_absolute_error": 0.995818015233325,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.4919606961520228,
+            "mse": 0.24822956779840027,
+            "rmse": 0.4982264222202595,
+            "mape": 8.862956114655526,
+            "r2": -183.11351830821678,
+            "nrmse": 6.066080453702082,
+            "max_absolute_error": 0.6512259591038194,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "inactive_flux",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 0, 'timed_out': True, 'elapsed_seconds': 120.52515058591962, 'cleanup': {'complete': True, 'killed_pids': [1423534, 1423523], 'survivor_pids': []}, 'stage': 'probe', 'submission_snapshot': None}; see /home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/probe/001-inactive_flux",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 1105.9990554209799,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/performance.json",
+    "file_sha256": "c4e5a3de9f0217d887d755827d396720e2b7b4fc6560222dd720094fb3c498fb",
+    "bytes": 5789,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r2-patch188-20260923",
+    "batch": "patch-infra-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923",
+    "setup_signature": "f603b7bd4d7ef0c3c7262fac9e8d7fc7b3ea38142d886a718b8eddc9efac88f0",
+    "job": {
+      "id": "g5-r2-t060",
+      "group": 5,
+      "replicate": 2,
+      "task_index": 60,
+      "task_name": "Allosteric Regulation - Variant 1-2-3-5",
+      "task_group": "Allosteric Regulation",
+      "domain": "biology",
+      "core": true,
+      "probe_count": 2,
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-5.yaml",
+      "task_sha256": "2a91194f8af3cca1df32ca660908c5efb7ea6ca6546d63737216e3876f300ff7",
+      "seed": 1,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 2,
+      "original_job_id": "g5-r2-t060",
+      "prior_batch": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923",
+      "provider": "openrouter",
+      "upstream_model": "z-ai/glm-5.3-flash",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/args.json",
+      "file_sha256": "e1d76e2b67f582ba781255b82cc6ccef4c30f6a02f3f9ec61709d62d86a0e295",
+      "bytes": 3400
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/jobs/g5-r2-t060/terminal.json",
+      "file_sha256": "2b8d55ed2c7e2f6457491d82be50bf71ea06261538a7681b39f97bd69ab1b79c",
+      "bytes": 2108
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "patch188",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 1,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "kcat = 9.761972282926708\nK_substrate = 0.023467463974980368\nK_regulator_affinity = 0.00598764818184045\nK_regulator_activity = 0.04107360658849919\nsubstrate_Hill_coefficient = 2.5378376713470896\nactivity_Hill_coefficient = 8.172747755729262\nregulator_substrate_effect = (1 + regulator / K_regulator_affinity) ** substrate_Hill_coefficient\nregulator_activity_effect = (1 + regulator / K_regulator_activity) ** activity_Hill_coefficient\ninhibited_Michaelis_constant = K_substrate * regulator_substrate_effect\nmodified_substrate_term = substrate * regulator_activity_effect\nactivity = kcat * substrate / (inhibited_Michaelis_constant + modified_substrate_term)\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/submission.txt",
+    "file_sha256": "b81c45cdfc3490a310e77bd24dba523c1e89998b3d21a924b5cb399b1568066e",
+    "bytes": 657,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/frozen_submission/submission.txt",
+      "file_sha256": "b81c45cdfc3490a310e77bd24dba523c1e89998b3d21a924b5cb399b1568066e",
+      "bytes": 657,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/frozen_submission/metadata.json",
+      "file_sha256": "996c9a50762c78a22a4549627e7a159d41c512c78936e633ffb69c69086737a7",
+      "bytes": 333,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/saved_checkpoint/model.json",
+      "file_sha256": "8509e1b656a71d598311ac6deee8df9afcc63ccea8453e50903292a4d5cc1804",
+      "bytes": 1193,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 657,
+      "sha256": "b81c45cdfc3490a310e77bd24dba523c1e89998b3d21a924b5cb399b1568066e",
+      "source_mtime_ns": 1790150387754273000,
+      "source_ctime_ns": 1790150387754273000,
+      "captured_monotonic": 1212102.39548271,
+      "captured_wall_ns": 1790150656633929246,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/openrouter/usage.jsonl",
+      "file_sha256": "6dc52171cefcfc01ed2598e52c6b4e4f54605dbf60350cddc3f60aa3edb9ae7e",
+      "bytes": 43185
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g5-r2-t060/openrouter/usage.json",
+      "file_sha256": "68ba52070056b38dc4f934d2c1b7e51abb9120d84360b3d3ca38a7e31fa8949e",
+      "bytes": 509
+    },
+    "event_counts": {
+      "request_started": 43,
+      "response_started": 43,
+      "request_finished": 42
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 42,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.0476623,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0.03943505,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 1,
+    "tokens": {
+      "input_tokens": 1451641,
+      "output_tokens": 27615,
+      "cached_tokens": 1343040
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 42
+    },
+    "complete_for_this_attempt": false,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "token_usage": {
+    "input_tokens": 1451641,
+    "output_tokens": 27615,
+    "cached_tokens": 1343040,
+    "total_tokens_observed": 1479256,
+    "partial": true,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "6dc52171cefcfc01ed2598e52c6b4e4f54605dbf60350cddc3f60aa3edb9ae7e",
+      "started_unique": 43,
+      "finished_unique": 42,
+      "unmatched_started": 1,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  }
+}

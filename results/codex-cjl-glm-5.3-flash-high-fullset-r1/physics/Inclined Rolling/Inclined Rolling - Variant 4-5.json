@@ -1,0 +1,345 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 608.9167032721452,
+  "evaluation_seconds": 133.5372022849042,
+  "evaluation": {
+    "task_name": "Inclined Rolling - Variant 4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.5701663020072373e-16,
+        "mse": 1.3130836286436624e-31,
+        "rmse": 3.623649581076601e-16,
+        "mape": 1.3558362229499392e-16,
+        "r2": 1.0,
+        "nrmse": 1.7975739904328198e-16,
+        "max_absolute_error": 1.3322676295501878e-15,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.4091839634365896e-16,
+        "mse": 1.226925226651555e-31,
+        "rmse": 3.502749244024692e-16,
+        "mape": 1.2678357877100461e-16,
+        "r2": 1.0,
+        "nrmse": 1.7798633637494857e-16,
+        "max_absolute_error": 1.3322676295501878e-15,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 5.124789481669722e-16,
+        "mse": 4.6345578181734445e-31,
+        "rmse": 6.807758675344952e-16,
+        "mape": 1.3441673856557755e-16,
+        "r2": 1.0,
+        "nrmse": 1.7838800750524675e-16,
+        "max_absolute_error": 1.7763568394002505e-15,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "local_gravity": "239/25",
+      "rotational_inertia_factor": "3/2",
+      "slope_sine": "sin(angle)",
+      "base_slope_drive": "478*sin(angle)/75",
+      "load_transfer_fraction": "sin(angle)/(sin(angle) + 1)",
+      "coupling_loss_acceleration": "sin(angle)**2/10 + sin(angle)**3/(6*(sin(angle) + 1))",
+      "acceleration": "-sin(angle)**2/10 + 478*sin(angle)/75 - sin(angle)**3/(6*(sin(angle) + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "resist_torque",
+        "ok": true,
+        "reply": "resist_torque = rotational_inertia_factor * coupling_loss_acceleration",
+        "expression": "(8*sin(angle) + 3)*sin(angle)**2/(20*(sin(angle) + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.016423926427204614,
+            "mse": 0.00044885916999286545,
+            "rmse": 0.0211862967503258,
+            "mape": 2.4430932069171023,
+            "r2": -164.73075514611438,
+            "nrmse": 3.6100741441373363,
+            "max_absolute_error": 0.04495573328828047,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.015445228983759423,
+            "mse": 0.0004170249794517935,
+            "rmse": 0.020421189472011506,
+            "mape": 2.3156092481856096,
+            "r2": -150.29780511041204,
+            "nrmse": 3.5509213007125804,
+            "max_absolute_error": 0.04496036901396861,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08150104709582291,
+            "mse": 0.007150942016001477,
+            "rmse": 0.0845632427003688,
+            "mape": 8.550894050758888,
+            "r2": -14906.065035973812,
+            "nrmse": 8.983848720153116,
+            "max_absolute_error": 0.12029321695441318,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "upward_force",
+        "ok": true,
+        "reply": "upward_force = (rotational_inertia_factor - 1) * (base_slope_drive - coupling_loss_acceleration)",
+        "expression": "(-40*sin(angle)**2 + 941*sin(angle) + 956)*sin(angle)/(300*(sin(angle) + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9080945128895758,
+            "mse": 0.923758524912963,
+            "rmse": 0.9611235742155964,
+            "mape": 30.364118496827025,
+            "r2": -1395.9187055464292,
+            "nrmse": 19.96378840072654,
+            "max_absolute_error": 1.4176540466914618,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.883800400104348,
+            "mse": 0.8815098543163097,
+            "rmse": 0.9388875621267488,
+            "mape": 31.40131222258103,
+            "r2": -1331.9234957322747,
+            "nrmse": 20.17702386550149,
+            "max_absolute_error": 1.4177074367891238,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.7475872820998573,
+            "mse": 3.087744412484617,
+            "rmse": 1.7571978865468216,
+            "mape": 12.165182375211879,
+            "r2": -2672.7757146233753,
+            "nrmse": 11.563406916514118,
+            "max_absolute_error": 2.0353012350477715,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 742.9395612650551,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t153/performance.json",
+    "file_sha256": "cd998f55d94beb2fc8409bdac00eed0f5432b562f47f16898e1e18facd7b5a01",
+    "bytes": 5947,
+    "hostname": "g28"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-main-20260923",
+    "batch": "parent",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+    "setup_signature": "f79e224b2c66d393a1165fd324685630ef79f45382b58d223bd6362fe76ef4c4",
+    "job": {
+      "id": "g3-r1-t153",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 153,
+      "task_name": "Inclined Rolling - Variant 4-5",
+      "task_group": "Inclined Rolling",
+      "domain": "physics",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/physics/Inclined Rolling/Inclined Rolling - Variant 4-5.yaml",
+      "task_sha256": "549829376c76e832996c9be33b3518242e6246851dd7f20b757b8dbfc8fbbcfd",
+      "seed": 0,
+      "host": "g28",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t153/args.json",
+      "file_sha256": "147e7d35f9ea0ca58a04ca7f2b048198efb30006dcf7e99c41d6febe1ecfc4be",
+      "bytes": 2422
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/jobs/g3-r1-t153/terminal.json",
+      "file_sha256": "e716d0114671e5b8b34db115bdb11434d66f8ee52d98557b0c5c1677fa22f4a9",
+      "bytes": 1952
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": null
+  },
+  "submission": "local_gravity = 9.56\nrotational_inertia_factor = 1.5\nslope_sine = sin(angle)\nbase_slope_drive = (local_gravity / rotational_inertia_factor) * slope_sine\nload_transfer_fraction = slope_sine / (1 + slope_sine)\ncoupling_loss_acceleration = 0.1 * slope_sine^2 + (1 / 6) * slope_sine^2 * load_transfer_fraction\nacceleration = base_slope_drive - coupling_loss_acceleration\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t153/submission.txt",
+    "file_sha256": "d9d439cca882499c4d8df8f5fc852104a0fda32879011bf30da367abf47c668b",
+    "bytes": 367,
+    "hostname": "g28",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t153/frozen_submission/submission.txt",
+      "file_sha256": "d9d439cca882499c4d8df8f5fc852104a0fda32879011bf30da367abf47c668b",
+      "bytes": 367,
+      "hostname": "g28"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t153/frozen_submission/metadata.json",
+      "file_sha256": "21570e22bd54412557cc6ac00161b0e84efef197b22af45dfaa11d0b5b59443d",
+      "bytes": 334,
+      "hostname": "g28"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t153/saved_checkpoint/model.json",
+      "file_sha256": "d2e3ad4fc27a9e1e419fd7338ef181afcea5d0ed5cf5a847ce72838cf315f840",
+      "bytes": 1120,
+      "hostname": "g28"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 367,
+      "sha256": "d9d439cca882499c4d8df8f5fc852104a0fda32879011bf30da367abf47c668b",
+      "source_mtime_ns": 1790100192746120000,
+      "source_ctime_ns": 1790100192746120000,
+      "captured_monotonic": 1259856.728330987,
+      "captured_wall_ns": 1790100198347254913,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t153/openrouter/usage.jsonl",
+      "file_sha256": "92972295cbb7ae5cef458398911caf4a2431c7aea2343788c7a15acaf472c095",
+      "bytes": 29694
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t153/openrouter/usage.json",
+      "file_sha256": "9a4385c388cf5776d3553f5b6231e9ba1ea816a255e089a23a5b0e72eec5b9c4",
+      "bytes": 496
+    },
+    "event_counts": {
+      "request_started": 29,
+      "response_started": 29,
+      "request_finished": 29
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 29,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.0372887388,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 544500,
+      "output_tokens": 19263,
+      "cached_tokens": 420288
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 29
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.0372887388,
+  "token_usage": {
+    "input_tokens": 544500,
+    "output_tokens": 19263,
+    "cached_tokens": 420288,
+    "total_tokens_observed": 563763,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "92972295cbb7ae5cef458398911caf4a2431c7aea2343788c7a15acaf472c095",
+      "started_unique": 29,
+      "finished_unique": 29,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 563763
+}

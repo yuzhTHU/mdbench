@@ -1,0 +1,396 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.6643021579366,
+  "evaluation_seconds": 60.179937118897215,
+  "evaluation": {
+    "task_name": "Lindemann Pulse Reaction - Variant 1-2-3",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 8.554005198856642e-07,
+        "mse": 1.6431978903747924e-12,
+        "rmse": 1.2818728058488457e-06,
+        "mape": 0.017637382580940542,
+        "r2": 0.9995881091708727,
+        "nrmse": 0.013697170042016272,
+        "max_absolute_error": 7.604483760671011e-06,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 8.214349701101929e-07,
+        "mse": 1.4844006872627282e-12,
+        "rmse": 1.2183598348857075e-06,
+        "mape": 0.018643709266825844,
+        "r2": 0.999587173337849,
+        "nrmse": 0.013766476264498898,
+        "max_absolute_error": 8.894825075952072e-06,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.8555016048905604e-05,
+        "mse": 4.721863087362847e-10,
+        "rmse": 2.1729848336706924e-05,
+        "mape": 0.1281662563349714,
+        "r2": 0.9817097779102578,
+        "nrmse": 0.0836603212218724,
+        "max_absolute_error": 6.188560405878923e-05,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "k_collision_activation_max": "340006151/100000000",
+      "k_activation_half_saturation": "133921807/50000000",
+      "k_product_formation": "652376717/100000000",
+      "k_spontaneous_loss": "47803657/50000000",
+      "k_collision_loss": "31290277/100000000",
+      "activation_rate": "340006151*collider/(100000000*(collider + 133921807/50000000))",
+      "loss_rate": "31290277*collider/100000000 + 47803657/50000000",
+      "activated_activity": "340006151*collider*dose/(100000000*(collider + 133921807/50000000)*(340006151*collider/(100000000*(collider + 133921807/50000000)) + laplace_rate))",
+      "committed_activity": "221812096549186267*collider*dose/(10000000000000000*(collider + 133921807/50000000)*(laplace_rate + 652376717/100000000)*(340006151*collider/(100000000*(collider + 133921807/50000000)) + laplace_rate))",
+      "product_activity": "221812096549186267*collider*dose/(10000000000000000*(collider + 133921807/50000000)*(laplace_rate + 652376717/100000000)*(340006151*collider/(100000000*(collider + 133921807/50000000)) + laplace_rate)*(31290277*collider/100000000 + laplace_rate + 47803657/50000000))",
+      "response": "221812096549186267*collider*dose*laplace_rate/(10000000000000000*(collider + 133921807/50000000)*(laplace_rate + 652376717/100000000)*(340006151*collider/(100000000*(collider + 133921807/50000000)) + laplace_rate)*(31290277*collider/100000000 + laplace_rate + 47803657/50000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "quench_flux",
+        "ok": true,
+        "reply": "quench_flux = loss_rate * product_activity",
+        "expression": "221812096549186267*collider*dose*(31290277*collider + 95607314)/((340006151*collider + 2*laplace_rate*(50000000*collider + 133921807))*(100000000*laplace_rate + 652376717)*(31290277*collider + 100000000*laplace_rate + 95607314))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00030212913072188595,
+            "mse": 2.2712211742948794e-07,
+            "rmse": 0.00047657330750839157,
+            "mape": 155.87588868030195,
+            "r2": -103.08084340735905,
+            "nrmse": 9.216864732159584,
+            "max_absolute_error": 0.0017562506694530898,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0003105848681494571,
+            "mse": 2.285600033095481e-07,
+            "rmse": 0.0004780794947595516,
+            "mape": 177.73651322799245,
+            "r2": -92.7719786725063,
+            "nrmse": 8.865878232475222,
+            "max_absolute_error": 0.0018383303051239038,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.006118760889783109,
+            "mse": 5.4835285799191583e-05,
+            "rmse": 0.007405085131123854,
+            "mape": 0.989127878090092,
+            "r2": -2.1529172725713908,
+            "nrmse": 0.9947956785562514,
+            "max_absolute_error": 0.027469288601134356,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "secondary_pool",
+        "ok": true,
+        "reply": "secondary_pool = committed_activity",
+        "expression": "221812096549186267*collider*dose/((340006151*collider + 2*laplace_rate*(50000000*collider + 133921807))*(100000000*laplace_rate + 652376717))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00035323557470705715,
+            "mse": 2.711462222511985e-07,
+            "rmse": 0.0005207170270417499,
+            "mape": 16.836555765101384,
+            "r2": -358.54353472331826,
+            "nrmse": 12.797216814670168,
+            "max_absolute_error": 0.001787581713220998,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0003570438714130904,
+            "mse": 2.689808291134979e-07,
+            "rmse": 0.0005186336174155103,
+            "mape": 19.013097313915647,
+            "r2": -394.7250944095967,
+            "nrmse": 13.478318566715284,
+            "max_absolute_error": 0.001888939186201855,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00014463862902417391,
+            "mse": 4.332811793539148e-08,
+            "rmse": 0.00020815407258901152,
+            "mape": 1.3852059301843616,
+            "r2": -7.878325953577317,
+            "nrmse": 1.8432132385456141,
+            "max_absolute_error": 0.0008259195048408224,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "caged_pool",
+        "ok": true,
+        "reply": "caged_pool = dose - activated_activity",
+        "expression": "2*dose*laplace_rate*(50000000*collider + 133921807)/(340006151*collider + 2*laplace_rate*(50000000*collider + 133921807))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0003583846050188806,
+            "mse": 2.539490733234963e-07,
+            "rmse": 0.0005039336001136422,
+            "mape": 16.482724452388272,
+            "r2": -204.40086154963998,
+            "nrmse": 9.964336515653432,
+            "max_absolute_error": 0.0018378632842361545,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0003365635756117217,
+            "mse": 2.3772654481877702e-07,
+            "rmse": 0.00048757209191952015,
+            "mape": 15.559598980073835,
+            "r2": -214.340038921039,
+            "nrmse": 10.199706230255284,
+            "max_absolute_error": 0.001873041562940071,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0034748042135264476,
+            "mse": 1.3987077451512348e-05,
+            "rmse": 0.003739930139924053,
+            "mape": 15.770279537393362,
+            "r2": -642.8150445897741,
+            "nrmse": 12.246966522338079,
+            "max_absolute_error": 0.007131625695177562,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 961.2310606380925,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t253/performance.json",
+    "file_sha256": "4ed0aeb35d5db793c02d38ea601aca05b9378a1528202f9857bf6506944c8742",
+    "bytes": 9012,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-main-20260923",
+    "batch": "parent",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+    "setup_signature": "f79e224b2c66d393a1165fd324685630ef79f45382b58d223bd6362fe76ef4c4",
+    "job": {
+      "id": "g3-r1-t253",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 253,
+      "task_name": "Lindemann Pulse Reaction - Variant 1-2-3",
+      "task_group": "Lindemann Pulse Reaction",
+      "domain": "chemistry",
+      "core": false,
+      "probe_count": 3,
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3.yaml",
+      "task_sha256": "cca8b49d8e059ba30a9e83a6685ef99366f6ae3c1ccbd11a5ab2814e07b8d51d",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t253/args.json",
+      "file_sha256": "2a7df93a4d8c13fc88c6fee2671fb2f288be13b00cd14093e3ef08dd256da2b7",
+      "bytes": 2422
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/jobs/g3-r1-t253/terminal.json",
+      "file_sha256": "c28fd6d06bd585eedc81e502dbff54631f4fe77330101f5f0169bbc68a7dd88f",
+      "bytes": 2336
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": null
+  },
+  "submission": "k_collision_activation_max = 3.40006151\nk_activation_half_saturation = 2.67843614\nk_product_formation = 6.52376717\nk_spontaneous_loss = 0.95607314\nk_collision_loss = 0.31290277\nactivation_rate = k_collision_activation_max * collider / (k_activation_half_saturation + collider)\nloss_rate = k_spontaneous_loss + k_collision_loss * collider\nactivated_activity = dose * activation_rate / (laplace_rate + activation_rate)\ncommitted_activity = activated_activity * k_product_formation / (laplace_rate + k_product_formation)\nproduct_activity = committed_activity / (laplace_rate + loss_rate)\nresponse = laplace_rate * product_activity\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t253/submission.txt",
+    "file_sha256": "9b817fef7ad01e14da9db3213854a488ed387363f0db68d5724164d8261c9a72",
+    "bytes": 628,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t253/frozen_submission/submission.txt",
+      "file_sha256": "9b817fef7ad01e14da9db3213854a488ed387363f0db68d5724164d8261c9a72",
+      "bytes": 628,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t253/frozen_submission/metadata.json",
+      "file_sha256": "cba74ddc277e22390ec95910f97457b1f6e30c3b7cca7f4034837642a9f50357",
+      "bytes": 334,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t253/saved_checkpoint/model.json",
+      "file_sha256": "2e3fbd238f50c85e86876e7d99163d694a1af8323b270b6a6efda591272fb5c5",
+      "bytes": 1138,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 628,
+      "sha256": "9b817fef7ad01e14da9db3213854a488ed387363f0db68d5724164d8261c9a72",
+      "source_mtime_ns": 1790101378026273000,
+      "source_ctime_ns": 1790101378026273000,
+      "captured_monotonic": 1162839.367463128,
+      "captured_wall_ns": 1790101393605909617,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t253/openrouter/usage.jsonl",
+      "file_sha256": "b95d341e0b0518e2b29e95cd370fe41141089778901d75962bdbab9c4a18f08f",
+      "bytes": 33879
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t253/openrouter/usage.json",
+      "file_sha256": "c060108a863cd61ae429e390d3af42010b9bb84500bc6c98576915afe376118c",
+      "bytes": 494
+    },
+    "event_counts": {
+      "request_started": 33,
+      "response_started": 33,
+      "request_finished": 33
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 33,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.058137234,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 919285,
+      "output_tokens": 26772,
+      "cached_tokens": 668928
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 33
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.058137234,
+  "token_usage": {
+    "input_tokens": 919285,
+    "output_tokens": 26772,
+    "cached_tokens": 668928,
+    "total_tokens_observed": 946057,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "b95d341e0b0518e2b29e95cd370fe41141089778901d75962bdbab9c4a18f08f",
+      "started_unique": 33,
+      "finished_unique": 33,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 946057
+}

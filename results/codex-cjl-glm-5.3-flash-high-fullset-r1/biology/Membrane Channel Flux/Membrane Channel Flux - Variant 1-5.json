@@ -1,0 +1,353 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 901.5042488928884,
+  "evaluation_seconds": 75.63948985585012,
+  "evaluation": {
+    "task_name": "Membrane Channel Flux - Variant 1-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.00035019886823230384,
+        "mse": 3.4520733426827203e-07,
+        "rmse": 0.0005875434743644695,
+        "mape": 0.004122982992206271,
+        "r2": 0.999719774941598,
+        "nrmse": 0.005537645432427834,
+        "max_absolute_error": 0.00305687730507314,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0003295984305645044,
+        "mse": 3.410557315737372e-07,
+        "rmse": 0.000583999770182949,
+        "mape": 0.004085463573495717,
+        "r2": 0.999737736696343,
+        "nrmse": 0.005657521543904509,
+        "max_absolute_error": 0.003814899599208544,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.01917515114568257,
+        "mse": 0.0005629404548644534,
+        "rmse": 0.02372636623810004,
+        "mape": 0.5127918749637295,
+        "r2": 0.9295759130012463,
+        "nrmse": 0.24218177287001721,
+        "max_absolute_error": 0.06064461785810113,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "T": "6203/20",
+      "F": "96485",
+      "R": "4157/500",
+      "u": "964850000*voltage/25785871",
+      "Pmax": "73092389/1250000000000000",
+      "activation_half": "334987629/100000000000",
+      "activation_slope": "345028831/50000000000",
+      "inactivation_half": "176161749/5000000000",
+      "inactivation_slope": "142003137/10000000000",
+      "activation": "1/(exp(334987629/690057662 - 50000000000*voltage/345028831) + 1)",
+      "inactivation": "1/(exp(117441166/47334379 - 10000000000*voltage/142003137) + 1)",
+      "channel_open_fraction": "1/((exp(334987629/690057662 - 50000000000*voltage/345028831) + 1)**3*(exp(117441166/47334379 - 10000000000*voltage/142003137) + 1))",
+      "permeability": "73092389/(1250000000000000*(exp(334987629/690057662 - 50000000000*voltage/345028831) + 1)**3*(exp(117441166/47334379 - 10000000000*voltage/142003137) + 1))",
+      "current_density": "27217720537795301*voltage*(inside - outside*exp(-964850000*voltage/25785871))/(128929355000000000*(1 - exp(-964850000*voltage/25785871))*(exp(334987629/690057662 - 50000000000*voltage/345028831) + 1)**3*(exp(117441166/47334379 - 10000000000*voltage/142003137) + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "open_state",
+        "ok": true,
+        "reply": "open_state = (activation * activation * activation) * inactivation",
+        "expression": "1/((exp(334987629/690057662 - 50000000000*voltage/345028831) + 1)**3*(exp(117441166/47334379 - 10000000000*voltage/142003137) + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.16835080914641998,
+            "mse": 0.03535820125623835,
+            "rmse": 0.18803776550533233,
+            "mape": 0.7442837907393327,
+            "r2": -1.3758056622389216,
+            "nrmse": 0.7198400983737896,
+            "max_absolute_error": 0.29760054686582704,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.15948109353889203,
+            "mse": 0.032802661037017136,
+            "rmse": 0.18111504917321788,
+            "mape": 0.746771251323401,
+            "r2": -1.1101765272511517,
+            "nrmse": 0.7200385332579038,
+            "max_absolute_error": 0.2976811163770471,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.3122000935251042,
+            "mse": 0.09754225445263098,
+            "rmse": 0.31231755386566246,
+            "mape": 0.559266088571345,
+            "r2": -21.58068287880014,
+            "nrmse": 0.5475626010776364,
+            "max_absolute_error": 0.32197488234363103,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "secondary_current",
+        "ok": true,
+        "reply": "secondary_current = -((permeability * F * F * voltage) / (R * T)) * (outside * exp(-u)) / (1 - exp(-u))",
+        "expression": "27217720537795301*outside*voltage/(128929355000000000*(1 - exp(964850000*voltage/25785871))*(exp(334987629/690057662 - 50000000000*voltage/345028831) + 1)**3*(exp(117441166/47334379 - 10000000000*voltage/142003137) + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1336790591907605,
+            "mse": 0.020266262490548213,
+            "rmse": 0.14235962380727274,
+            "mape": 22.472699860068,
+            "r2": -4729.547461234527,
+            "nrmse": 22.756685555537704,
+            "max_absolute_error": 0.2197406116346613,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.12840158403973073,
+            "mse": 0.019110314179566767,
+            "rmse": 0.13824005996659133,
+            "mape": 22.387448201048876,
+            "r2": -4095.656095007971,
+            "nrmse": 22.747590154502458,
+            "max_absolute_error": 0.21856106326121802,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.20267395482049333,
+            "mse": 0.04206178701081024,
+            "rmse": 0.20508970478990465,
+            "mape": 53.597082240347575,
+            "r2": -6616.797464305392,
+            "nrmse": 33.72359152530244,
+            "max_absolute_error": 0.2706971541785121,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 977.570991262095,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t360/performance.json",
+    "file_sha256": "53dbf2953d35cae093227a95d7f1ddb192322d68a2427cede53027462031e887",
+    "bytes": 6958,
+    "hostname": "g28"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "415a6be6d9fa3f1725c1133da8c4e8d5aa47ca50b498304aff09c7bb19f8d35f",
+    "job": {
+      "id": "g3-r1-t360",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 360,
+      "task_name": "Membrane Channel Flux - Variant 1-5",
+      "task_group": "Membrane Channel Flux",
+      "domain": "biology",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-5.yaml",
+      "task_sha256": "ef58db4953d06100681dee36a4d998230e294bbf3adb8c9fe9b3caf349e0e928",
+      "seed": 0,
+      "host": "g28",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t360/args.json",
+      "file_sha256": "78eec06a93280b36b5692e5897e22e4e91846e61da4368c8554f4a07b9758177",
+      "bytes": 3579
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g3-r1-t360/terminal.json",
+      "file_sha256": "ec3edf54669bebdf421e2ff4b75c69eb68667c3ab10189b92c8e09ec2a3a8ea6",
+      "bytes": 1959
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "T = 310.15\nF = 96485\nR = 8.314\nu = (F * voltage) / (R * T)\nPmax = 0.0000000584739112\nactivation_half = 0.00334987629\nactivation_slope = 0.00690057662\ninactivation_half = 0.0352323498\ninactivation_slope = 0.0142003137\nactivation = 1 / (1 + exp(-(voltage - activation_half) / activation_slope))\ninactivation = 1 / (1 + exp(-(voltage - inactivation_half) / inactivation_slope))\nchannel_open_fraction = (activation * activation * activation) * inactivation\npermeability = Pmax * channel_open_fraction\ncurrent_density = ((permeability * F * F * voltage) / (R * T)) * (inside - outside * exp(-u)) / (1 - exp(-u))\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t360/submission.txt",
+    "file_sha256": "b83114da4a4d219db3e64df0f00aca1a582c3a1525d5c3d3a7ade77205b3f7e8",
+    "bytes": 607,
+    "hostname": "g28",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t360/frozen_submission/submission.txt",
+      "file_sha256": "b83114da4a4d219db3e64df0f00aca1a582c3a1525d5c3d3a7ade77205b3f7e8",
+      "bytes": 607,
+      "hostname": "g28"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t360/frozen_submission/metadata.json",
+      "file_sha256": "53b5522b5787e44ccd9afa5430edde0dd0f153c0d542dac2d53db2ff126f4556",
+      "bytes": 334,
+      "hostname": "g28"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t360/saved_checkpoint/model.json",
+      "file_sha256": "3a2bb9a648446805b810eb71aae5485bb8eedaa0cd0a80e5d5f303e1ac7519a8",
+      "bytes": 1189,
+      "hostname": "g28"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 607,
+      "sha256": "b83114da4a4d219db3e64df0f00aca1a582c3a1525d5c3d3a7ade77205b3f7e8",
+      "source_mtime_ns": 1790106977802120000,
+      "source_ctime_ns": 1790106977802120000,
+      "captured_monotonic": 1266771.014586031,
+      "captured_wall_ns": 1790107112633510023,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t360/openrouter/usage.jsonl",
+      "file_sha256": "6168e420ad2cdbd9934fa7bc4a00f48d25d76cba10a2ad985b907727766fa448",
+      "bytes": 55133
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t360/openrouter/usage.json",
+      "file_sha256": "baf93d32e62b5e2bc750e873ca5aab9cbb054071ee1284d0341f110319c86916",
+      "bytes": 496
+    },
+    "event_counts": {
+      "request_started": 54,
+      "response_started": 54,
+      "request_finished": 54
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 54,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.06861987,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 2349045,
+      "output_tokens": 32463,
+      "cached_tokens": 2238464
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 54
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.06861987,
+  "token_usage": {
+    "input_tokens": 2349045,
+    "output_tokens": 32463,
+    "cached_tokens": 2238464,
+    "total_tokens_observed": 2381508,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "6168e420ad2cdbd9934fa7bc4a00f48d25d76cba10a2ad985b907727766fa448",
+      "started_unique": 54,
+      "finished_unique": 54,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 2381508
+}

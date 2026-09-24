@@ -1,0 +1,392 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.7610604036599,
+  "evaluation_seconds": 337.24198855645955,
+  "evaluation": {
+    "task_name": "Acid Base Buffer Relaxation - Variant 1-2-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.336738500654772e-09,
+        "mse": 1.1400017334581252e-16,
+        "rmse": 1.067708636968965e-08,
+        "mape": 0.07492247371126845,
+        "r2": 0.9901288804679957,
+        "nrmse": 0.07873032224904528,
+        "max_absolute_error": 9.126902916153879e-08,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.946449524501028e-09,
+        "mse": 1.6647469308375824e-16,
+        "rmse": 1.2902507240213362e-08,
+        "mape": 0.07359494004394924,
+        "r2": 0.9880058969973236,
+        "nrmse": 0.08894384831145676,
+        "max_absolute_error": 1.0533492460592907e-07,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 3.121479391366347e-08,
+        "mse": 1.4659687270892907e-15,
+        "rmse": 3.828797104952534e-08,
+        "mape": 0.16479713689191422,
+        "r2": 0.9125847762560538,
+        "nrmse": 0.1599714167367648,
+        "max_absolute_error": 1.248794179502446e-07,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "equilibrium_constant": "315272677/1000000000000",
+      "diffusion_offset": "352329939/100000000",
+      "diffusion_scale": "993667061/100000000",
+      "diffusion_intercept": "-154309807/10000000",
+      "buffer_capacity": "buffer_total*hydrogen/(hydrogen + 315272677/1000000000000)**2",
+      "diffusion_mobility": "993667061*sqrt(laplace_rate + 352329939/100000000)/100000000 - 154309807/10000000",
+      "ph_change": "-pulse/(hydrogen*(buffer_total*hydrogen/((hydrogen + 315272677/1000000000000)**2*(993667061*sqrt(laplace_rate + 352329939/100000000)/100000000 - 154309807/10000000)) + 1)*log(10))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "second_protons",
+        "ok": true,
+        "reply": "second_protons = pulse * buffer_capacity / (buffer_capacity + diffusion_mobility)",
+        "expression": "1000000000000000000000000000000000000*buffer_total*hydrogen*pulse/(1000000000000000000000000000000000000*buffer_total*hydrogen + (1000000000000*hydrogen + 315272677)**2*(993667061*sqrt(100000000*laplace_rate + 352329939) - 15430980700000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.244407488120862e-09,
+            "mse": 1.509843461377303e-17,
+            "rmse": 3.885670420117104e-09,
+            "mape": 9.119556130772576,
+            "r2": -158.73142046822912,
+            "nrmse": 7.696247540642212,
+            "max_absolute_error": 8.896596900747681e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.3031653758840973e-09,
+            "mse": 1.5145564060631008e-17,
+            "rmse": 3.891730214266015e-09,
+            "mape": 8.838519773115666,
+            "r2": -157.3428635783158,
+            "nrmse": 7.44613459473221,
+            "max_absolute_error": 8.986643521493858e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.0218664748949628e-08,
+            "mse": 4.942536477390952e-16,
+            "rmse": 2.2231816114278546e-08,
+            "mape": 11.631603526155711,
+            "r2": -549.3108755432884,
+            "nrmse": 10.807979860139044,
+            "max_absolute_error": 4.320552297600043e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "interior_protons",
+        "ok": true,
+        "reply": "interior_protons = pulse * (buffer_capacity / diffusion_mobility) / (1 + buffer_capacity / diffusion_mobility)",
+        "expression": "1000000000000000000000000000000000000*buffer_total*hydrogen*pulse/(1000000000000000000000000000000000000*buffer_total*hydrogen + (1000000000000*hydrogen + 315272677)**2*(993667061*sqrt(100000000*laplace_rate + 352329939) - 15430980700000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.2856701923658736e-09,
+            "mse": 1.5494665472843792e-17,
+            "rmse": 3.9363263930781695e-09,
+            "mape": 20.633589811544375,
+            "r2": -117.93814286803273,
+            "nrmse": 7.7300813937894155,
+            "max_absolute_error": 9.298249846710378e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.3499507717284207e-09,
+            "mse": 1.562301887004056e-17,
+            "rmse": 3.9525964719460755e-09,
+            "mape": 20.078630712066186,
+            "r2": -125.18476233438531,
+            "nrmse": 7.691424740308167,
+            "max_absolute_error": 9.475164114524717e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.201871724973465e-08,
+            "mse": 5.8595014328869905e-16,
+            "rmse": 2.4206407071035947e-08,
+            "mape": 1374.8448304907042,
+            "r2": -1071244.697033265,
+            "nrmse": 697.9719937400662,
+            "max_absolute_error": 4.686155724365593e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "primary_exchange",
+        "ok": true,
+        "reply": "primary_exchange = hydrogen*log(10)*buffer_capacity/diffusion_mobility",
+        "expression": "1000000000000000000000000000000000000*buffer_total*hydrogen**2*log(10)/((1000000000000*hydrogen + 315272677)**2*(993667061*sqrt(100000000*laplace_rate + 352329939) - 15430980700000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.11349674829893476,
+            "mse": 0.027880427586459287,
+            "rmse": 0.16697433211862023,
+            "mape": 0.5269901577058338,
+            "r2": 0.11331470319965642,
+            "nrmse": 0.6253861495236288,
+            "max_absolute_error": 0.7751860262439059,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.11671797961679117,
+            "mse": 0.027948155418136594,
+            "rmse": 0.16717701821164474,
+            "mape": 0.5234645856334639,
+            "r2": 0.10825389295031229,
+            "nrmse": 0.6127221440861756,
+            "max_absolute_error": 0.7224251545721112,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.8144655774840186,
+            "mse": 9.274881188329633,
+            "rmse": 3.0454689603293668,
+            "mape": 0.9587158899678458,
+            "r2": -5.62148699688687,
+            "nrmse": 0.9648937902036012,
+            "max_absolute_error": 6.894713308466583,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 1238.2645746320486,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t194/performance.json",
+    "file_sha256": "100183b6967142c59fc628f95fc3af8648ac209e869b978fb6744f66c7d150f4",
+    "bytes": 8491,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-main-20260923",
+    "batch": "parent",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+    "setup_signature": "f79e224b2c66d393a1165fd324685630ef79f45382b58d223bd6362fe76ef4c4",
+    "job": {
+      "id": "g3-r1-t194",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 194,
+      "task_name": "Acid Base Buffer Relaxation - Variant 1-2-4",
+      "task_group": "Acid Base Buffer Relaxation",
+      "domain": "chemistry",
+      "core": false,
+      "probe_count": 3,
+      "task_rel": "tasks/chemistry/Acid Base Buffer Relaxation/Acid Base Buffer Relaxation - Variant 1-2-4.yaml",
+      "task_sha256": "1127523d15f9ba89ac0be864c3feb44d333bd3d1940a85ae20ab3d70cdac1604",
+      "seed": 0,
+      "host": "g34",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t194/args.json",
+      "file_sha256": "b9f78d9724f87db632fde4c73136db75273fbbe53de5fc5b0a32306984af44dd",
+      "bytes": 2422
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/jobs/g3-r1-t194/terminal.json",
+      "file_sha256": "d39c85625153654e3644476bb421ee9747b226be735da75674146b9d1fb03486",
+      "bytes": 2341
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": null
+  },
+  "submission": "equilibrium_constant = 0.000315272677\ndiffusion_offset = 3.52329939\ndiffusion_scale = 9.93667061\ndiffusion_intercept = -15.4309807\nbuffer_capacity = buffer_total * hydrogen / (hydrogen + equilibrium_constant)^2\ndiffusion_mobility = diffusion_intercept + diffusion_scale * sqrt(laplace_rate + diffusion_offset)\nph_change = -pulse / (hydrogen * log(10) * (1 + buffer_capacity / diffusion_mobility))\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t194/submission.txt",
+    "file_sha256": "19f8d3e99381eca9b75d6ae06ee9adbe76f4283b0d0a5186a989ca0cdb2b2da3",
+    "bytes": 397,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t194/frozen_submission/submission.txt",
+      "file_sha256": "19f8d3e99381eca9b75d6ae06ee9adbe76f4283b0d0a5186a989ca0cdb2b2da3",
+      "bytes": 397,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t194/frozen_submission/metadata.json",
+      "file_sha256": "3e9f3edf8cabe303d41886ee83947656f4168439c4d29e22475c05ca58222d72",
+      "bytes": 334,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t194/saved_checkpoint/model.json",
+      "file_sha256": "3f3ce145cfee3115a294a8fd851f22d90d9e5aec30a556a02dc4be85ca75a59d",
+      "bytes": 1137,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 397,
+      "sha256": "19f8d3e99381eca9b75d6ae06ee9adbe76f4283b0d0a5186a989ca0cdb2b2da3",
+      "source_mtime_ns": 1790101109426791000,
+      "source_ctime_ns": 1790101109426791000,
+      "captured_monotonic": 9392202.841552127,
+      "captured_wall_ns": 1790101206596717364,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t194/openrouter/usage.jsonl",
+      "file_sha256": "e039dfac6520aae57dcaaaaa91dc30651d025fdbc81618012998a1c69efaa714",
+      "bytes": 46991
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t194/openrouter/usage.json",
+      "file_sha256": "4cd68b850d883e0e23afa189139dea81fdfe7f3300db1c061faf5cbcfc030c03",
+      "bytes": 474
+    },
+    "event_counts": {
+      "request_started": 46,
+      "response_started": 46,
+      "request_finished": 46
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 46,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.0498967716,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1222710,
+      "output_tokens": 24332,
+      "cached_tokens": 890432
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 46
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.0498967716,
+  "token_usage": {
+    "input_tokens": 1222710,
+    "output_tokens": 24332,
+    "cached_tokens": 890432,
+    "total_tokens_observed": 1247042,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "e039dfac6520aae57dcaaaaa91dc30651d025fdbc81618012998a1c69efaa714",
+      "started_unique": 46,
+      "finished_unique": 46,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1247042
+}

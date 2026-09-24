@@ -1,0 +1,393 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.7350085468497,
+  "evaluation_seconds": 168.43189499503933,
+  "evaluation": {
+    "task_name": "Acid Base Buffer Relaxation - Variant 1-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.3651292936142944e-07,
+        "mse": 2.0072359782292824e-13,
+        "rmse": 4.480218720363195e-07,
+        "mape": 0.8536074457011138,
+        "r2": -0.31712203354946067,
+        "nrmse": 0.9610287574895869,
+        "max_absolute_error": 3.6155220444554363e-06,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.401016278284751e-07,
+        "mse": 2.368098193450825e-13,
+        "rmse": 4.866310916341891e-07,
+        "mape": 0.8438338657213278,
+        "r2": -0.2670171601812281,
+        "nrmse": 0.9659475167438597,
+        "max_absolute_error": 4.385055651516162e-06,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 9.688751371461802e-07,
+        "mse": 1.3054495252446748e-12,
+        "rmse": 1.1425627007935603e-06,
+        "mape": 0.976565210229448,
+        "r2": -2.4688998317140265,
+        "nrmse": 0.9812408018090066,
+        "max_absolute_error": 3.923676108193993e-06,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "buffer_capacity": "buffer_total + hydrogen/1000",
+      "diffusion_distance": "sqrt(laplace_rate)*(length_scale/10000)",
+      "site_activity": "1/(sqrt(laplace_rate)*(length_scale/10000) + 1)",
+      "ph_change": "-pulse*exp(-sqrt(laplace_rate)*length_scale/10000)/(buffer_total + hydrogen/1000)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "second_protons",
+        "ok": true,
+        "reply": "second_protons = pulse*buffer_total*site_activity/buffer_capacity",
+        "expression": "buffer_total*pulse/((buffer_total + hydrogen/1000)*(sqrt(laplace_rate)*(length_scale/10000) + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.8337988612541813e-09,
+            "mse": 1.1568649248531863e-17,
+            "rmse": 3.4012717104829868e-09,
+            "mape": 3.2574652742223598,
+            "r2": -20.389937536744135,
+            "nrmse": 2.76190369151333,
+            "max_absolute_error": 8.628377658147962e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.8932236825533493e-09,
+            "mse": 1.165121299589514e-17,
+            "rmse": 3.4133873199353074e-09,
+            "mape": 3.238421076023471,
+            "r2": -21.47157570918222,
+            "nrmse": 2.751744859158261,
+            "max_absolute_error": 8.264236528717285e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.6105817962831857e-08,
+            "mse": 3.1969725857520735e-16,
+            "rmse": 1.788007993760675e-08,
+            "mape": 2.0270561865823864,
+            "r2": -11.667208513811069,
+            "nrmse": 1.7038117023647001,
+            "max_absolute_error": 3.8408630272738234e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "pocket_protons",
+        "ok": true,
+        "reply": "pocket_protons = pulse*exp(-diffusion_distance)",
+        "expression": "pulse*exp(-sqrt(laplace_rate)*length_scale/10000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.800573700272284e-09,
+            "mse": 2.0606316676660158e-17,
+            "rmse": 4.539418098904325e-09,
+            "mape": 321.244715493078,
+            "r2": -39904.873775580185,
+            "nrmse": 146.58387819911448,
+            "max_absolute_error": 9.975396655745069e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.88162223748546e-09,
+            "mse": 2.0826538290353145e-17,
+            "rmse": 4.56361022550712e-09,
+            "mape": 313.8896255277713,
+            "r2": -37040.037729239346,
+            "nrmse": 142.03769368374444,
+            "max_absolute_error": 9.827342208763567e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.5309921195224393e-08,
+            "mse": 7.696256647157672e-16,
+            "rmse": 2.7742127977423924e-08,
+            "mape": 3536.5325414165986,
+            "r2": -14745735.056919819,
+            "nrmse": 2313.9449429409196,
+            "max_absolute_error": 4.986967425963175e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "relay_protons",
+        "ok": true,
+        "reply": "relay_protons = pulse*site_activity",
+        "expression": "pulse/(sqrt(laplace_rate)*(length_scale/10000) + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.376212814365327e-09,
+            "mse": 1.6252072830225823e-17,
+            "rmse": 4.031385968897771e-09,
+            "mape": 8.304103206557544,
+            "r2": -150.0320608295219,
+            "nrmse": 7.287896222596594,
+            "max_absolute_error": 9.200528949003964e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.4514275621261886e-09,
+            "mse": 1.6471954312460887e-17,
+            "rmse": 4.0585655486219376e-09,
+            "mape": 8.345948440833116,
+            "r2": -161.29013416832996,
+            "nrmse": 7.3406266783827885,
+            "max_absolute_error": 9.155388193586557e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.4094037250110836e-08,
+            "mse": 6.977593847280043e-16,
+            "rmse": 2.64151355235593e-08,
+            "mape": 29.08908559399549,
+            "r2": -786.3597950983547,
+            "nrmse": 17.09392147074223,
+            "max_absolute_error": 4.8902403993924795e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 1069.3923266478814,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t199/performance.json",
+    "file_sha256": "0f84acb2601b333cf544b4e0602c56985b4a00cbb077de68b3ee5ca999e762f8",
+    "bytes": 7633,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-preflight25-20260923",
+    "batch": "preflight25-import-20260924",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924",
+    "setup_signature": "118ae2bb2899372984637a8cf4befca0b106d6fa32f669d1bff09340526df1c7",
+    "job": {
+      "id": "g3-r1-t199",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 199,
+      "task_name": "Acid Base Buffer Relaxation - Variant 1-3-5",
+      "task_group": "Acid Base Buffer Relaxation",
+      "domain": "chemistry",
+      "core": false,
+      "probe_count": 3,
+      "task_rel": "tasks/chemistry/Acid Base Buffer Relaxation/Acid Base Buffer Relaxation - Variant 1-3-5.yaml",
+      "task_sha256": "653f709d9f7a9f727fa0580c3e00e325d1acd9d61dd0ff787381603064fe0633",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1,
+      "provider": "openrouter",
+      "upstream_model": "z-ai/glm-5.3-flash",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t199/args.json",
+      "file_sha256": "331278760868a567b83ef0c6bf8bf291cf484104b859a43000b79c8bb481d040",
+      "bytes": 3547
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/jobs/g3-r1-t199/terminal.json",
+      "file_sha256": "4e1d298e81f0db0361fbf92bdccc946b23f9be045f0f746d8560c18eb451b2ff",
+      "bytes": 2481
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "preflight25_first_attempt",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "buffer_capacity = 0.001*hydrogen + 1*buffer_total\ndiffusion_distance = 0.0001*length_scale*sqrt(laplace_rate)\nsite_activity = 1/(1+diffusion_distance)\nph_change = -pulse*exp(-diffusion_distance)/buffer_capacity\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t199/submission.txt",
+    "file_sha256": "f2e7b45f8ca6292fffaf7d681f41dfe41b2f7b073aaa47f592ac4fa2af76c374",
+    "bytes": 211,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t199/frozen_submission/submission.txt",
+      "file_sha256": "f2e7b45f8ca6292fffaf7d681f41dfe41b2f7b073aaa47f592ac4fa2af76c374",
+      "bytes": 211,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t199/frozen_submission/metadata.json",
+      "file_sha256": "7ffb5cde6a01dbd035d5a49c599b0924feaa9ef187bec8f4972e9c9e60505004",
+      "bytes": 334,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t199/saved_checkpoint/model.json",
+      "file_sha256": "ae50ead7e4b4ae0ab76d563d024f7db1e0e23acaa916753d2009ebf207418da3",
+      "bytes": 1305,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 211,
+      "sha256": "f2e7b45f8ca6292fffaf7d681f41dfe41b2f7b073aaa47f592ac4fa2af76c374",
+      "source_mtime_ns": 1790184754622273000,
+      "source_ctime_ns": 1790184754622273000,
+      "captured_monotonic": 1246246.517073537,
+      "captured_wall_ns": 1790184800755520110,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t199/openrouter/usage.jsonl",
+      "file_sha256": "d8ba23cb85bd11c42f1009d32db5c62dbbf661864d60d6ba8e37611f32fd37c1",
+      "bytes": 50071
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t199/openrouter/usage.json",
+      "file_sha256": "9801f3999a2ba7b8fb79c40c61e65b765ea7f9242ed38815f15f4097a44df091",
+      "bytes": 473
+    },
+    "event_counts": {
+      "request_started": 49,
+      "response_started": 49,
+      "request_finished": 49
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 49,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.067969405,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1674796,
+      "output_tokens": 26566,
+      "cached_tokens": 1532416
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 49
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.067969405,
+  "token_usage": {
+    "input_tokens": 1674796,
+    "output_tokens": 26566,
+    "cached_tokens": 1532416,
+    "total_tokens_observed": 1701362,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "d8ba23cb85bd11c42f1009d32db5c62dbbf661864d60d6ba8e37611f32fd37c1",
+      "started_unique": 49,
+      "finished_unique": 49,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1701362
+}

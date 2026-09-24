@@ -1,0 +1,402 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 901.1827767156065,
+  "evaluation_seconds": 254.58381171897054,
+  "evaluation": {
+    "task_name": "Grain Boundary Electrical Response - Variant 1-2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.004659616599664132,
+        "mse": 3.467968886324857e-05,
+        "rmse": 0.005888946328779757,
+        "mape": 0.007612371874149751,
+        "r2": 0.9980365177512537,
+        "nrmse": 0.008721415038181062,
+        "max_absolute_error": 0.024350253908880015,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.004632528593633605,
+        "mse": 3.652599391140221e-05,
+        "rmse": 0.006043673875334622,
+        "mape": 0.00751201884682395,
+        "r2": 0.9977622504663304,
+        "nrmse": 0.008969220369777086,
+        "max_absolute_error": 0.03621306522358003,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.10706826442513553,
+        "mse": 0.015257142837229893,
+        "rmse": 0.12351980746920671,
+        "mape": 0.11264285221293033,
+        "r2": 0.61471331299642,
+        "nrmse": 0.13481876011753796,
+        "max_absolute_error": 0.32073433571409327,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "thermal_population": "exp(20000000/11732309 - 250000*temperature/35196927)",
+      "grain_boundary_geometry": "grain_size**(-472843673/1000000000)",
+      "thermal_boundary_deficit": "915455901*exp(20000000/11732309 - 250000*temperature/35196927)/(1000000000000*grain_size**(472843673/1000000000))",
+      "laplace_boundary_channel": "laplace_rate*(200272851/100000000000000000 + 111509691/(5000000000000000000*grain_size**(472843673/1000000000)))",
+      "conductivity": "laplace_rate*(200272851/100000000000000000 + 111509691/(5000000000000000000*grain_size**(472843673/1000000000))) + 125993349*exp(20000000/11732309 - 250000*temperature/35196927)/200000000 + 95664769/200000000 - 915455901*exp(20000000/11732309 - 250000*temperature/35196927)/(1000000000000*grain_size**(472843673/1000000000)) - 107453461/(50000000000*grain_size**(472843673/1000000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "space_charge_impedance",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 0, 'timed_out': True, 'elapsed_seconds': 120.53697448782623, 'cleanup': {'complete': True, 'killed_pids': [1110332, 1110319], 'survivor_pids': []}, 'stage': 'probe', 'submission_snapshot': None}; see /home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/probe/000-space_charge_impedance",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "boundary_polarization",
+        "ok": true,
+        "reply": "boundary_polarization = 0.000915455901000000 * thermal_population * grain_boundary_geometry",
+        "expression": "915455901*exp(20000000/11732309 - 250000*temperature/35196927)/(1000000000000*grain_size**(472843673/1000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.06095755070929277,
+            "mse": 0.004329138002163292,
+            "rmse": 0.06579618531619665,
+            "mape": 50.89304454166234,
+            "r2": -11660.616167292636,
+            "nrmse": 39.52305418301444,
+            "max_absolute_error": 0.14796676663636715,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0609674284856782,
+            "mse": 0.004349799389627052,
+            "rmse": 0.06595300895051757,
+            "mape": 55.45634974513778,
+            "r2": -10954.934015065075,
+            "nrmse": 41.013312810039835,
+            "max_absolute_error": 0.14269681287375274,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.007417304532403312,
+            "mse": 6.768133666288742e-05,
+            "rmse": 0.00822686675854711,
+            "mape": 3.2145340912550613,
+            "r2": -225425.01123609985,
+            "nrmse": 3.5650412331316663,
+            "max_absolute_error": 0.019252674858110823,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "fast_path_conductivity",
+        "ok": true,
+        "reply": "fast_path_conductivity = 0.478323845000000 + laplace_boundary_channel + 0.629966745000000 * thermal_population",
+        "expression": "laplace_rate*(200272851/100000000000000000 + 111509691/(5000000000000000000*grain_size**(472843673/1000000000))) + 125993349*exp(20000000/11732309 - 250000*temperature/35196927)/200000000 + 95664769/200000000",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9421084508036186,
+            "mse": 0.9016747214885344,
+            "rmse": 0.9495655435453281,
+            "mape": 873.0995389316369,
+            "r2": -808673.8059069557,
+            "nrmse": 489.5859812687401,
+            "max_absolute_error": 1.3268780751832245,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9405863720099256,
+            "mse": 0.8971051065686937,
+            "rmse": 0.9471563263625987,
+            "mape": 883.4843044526135,
+            "r2": -764683.5350672504,
+            "nrmse": 487.1812175123109,
+            "max_absolute_error": 1.2707757955288639,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.1010415021188824,
+            "mse": 1.2774419205182042,
+            "rmse": 1.1302397624036256,
+            "mape": 3887.732895478349,
+            "r2": -43044278.4707224,
+            "nrmse": 3012.2485411565963,
+            "max_absolute_error": 1.8193922690433388,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "bulk_polarization",
+        "ok": true,
+        "reply": "bulk_polarization = 0.629966745000000 * thermal_population - thermal_boundary_deficit",
+        "expression": "125993349*exp(20000000/11732309 - 250000*temperature/35196927)/200000000 - 915455901*exp(20000000/11732309 - 250000*temperature/35196927)/(1000000000000*grain_size**(472843673/1000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.358229905069964,
+            "mse": 0.13698371560797404,
+            "rmse": 0.37011311191036456,
+            "mape": 453.87133168912237,
+            "r2": -161558.13253890877,
+            "nrmse": 208.63920942299683,
+            "max_absolute_error": 0.5734687935073597,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.35999524403908206,
+            "mse": 0.13757154234110386,
+            "rmse": 0.3709063794828876,
+            "mape": 513.5320124621753,
+            "r2": -156774.62234367954,
+            "nrmse": 217.7508376850873,
+            "max_absolute_error": 0.5703833153477891,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.14659042202793215,
+            "mse": 0.023790194971680712,
+            "rmse": 0.15424070465243833,
+            "mape": 46.93338278613816,
+            "r2": -4289603.1737723695,
+            "nrmse": 49.35402872578158,
+            "max_absolute_error": 0.2509641218191372,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1156.200857417658,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/performance.json",
+    "file_sha256": "ce6754b4aab98f68c8f0a8ec3b6138373cee342a6038269d665b0836683e4d59",
+    "bytes": 9058,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-patch188-20260923",
+    "batch": "patch-infra-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923",
+    "setup_signature": "5291a897422d0c294523635bd8b7ffceb324db503f615e128d68c61b41e7bd13",
+    "job": {
+      "id": "g3-r1-t438",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 438,
+      "task_name": "Grain Boundary Electrical Response - Variant 1-2-3-4",
+      "task_group": "Grain Boundary Electrical Response",
+      "domain": "material",
+      "core": false,
+      "probe_count": 4,
+      "task_rel": "tasks/material/Grain Boundary Electrical Response/Grain Boundary Electrical Response - Variant 1-2-3-4.yaml",
+      "task_sha256": "1ef0c1ccb0555e6905bf102cce20ff4b696c85badfa5f283694330ff7514b5e3",
+      "seed": 0,
+      "host": "g34",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 2,
+      "original_job_id": "g3-r1-t438",
+      "prior_batch": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+      "provider": "openrouter",
+      "upstream_model": "z-ai/glm-5.3-flash",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/args.json",
+      "file_sha256": "ab28fe20069ae20e65b871242ae06c185d2cf6a68e63b3bc9df15b84259643bd",
+      "bytes": 3400
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/jobs/g3-r1-t438/terminal.json",
+      "file_sha256": "2394b04220618a134fcede2be937caeb1e8d4eb8a0d973ded8d3716de18bf92d",
+      "bytes": 2908
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "patch188",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "thermal_population = exp(-(temperature - 240) / 140.787708000000)\ngrain_boundary_geometry = grain_size ** (-0.472843673000000)\nthermal_boundary_deficit = 0.000915455901000000 * thermal_population * grain_boundary_geometry\nlaplace_boundary_channel = laplace_rate * (2.002728510000000e-09 + 2.230193820000000e-11 * grain_boundary_geometry)\nconductivity = 0.478323845000000 + laplace_boundary_channel + 0.629966745000000 * thermal_population - 0.002149069220000000 * grain_boundary_geometry - thermal_boundary_deficit\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/submission.txt",
+    "file_sha256": "cc6aa1eb2c1955f0e6b9be2d4cf5140862236b669e7b6d0b5d543914d82721f0",
+    "bytes": 515,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/frozen_submission/submission.txt",
+      "file_sha256": "cc6aa1eb2c1955f0e6b9be2d4cf5140862236b669e7b6d0b5d543914d82721f0",
+      "bytes": 515,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/frozen_submission/metadata.json",
+      "file_sha256": "76e0029899628319c3a0862a47211b17cfd5a23a948906e19983e09251c7c683",
+      "bytes": 334,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/saved_checkpoint/model.json",
+      "file_sha256": "9d1a76de5b03cb6534f927e06e1c5bdbcd8605ac9a0856499ed6b2d4c4dca0ff",
+      "bytes": 1193,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 515,
+      "sha256": "cc6aa1eb2c1955f0e6b9be2d4cf5140862236b669e7b6d0b5d543914d82721f0",
+      "source_mtime_ns": 1790150193090791000,
+      "source_ctime_ns": 1790150193090791000,
+      "captured_monotonic": 9441314.029239798,
+      "captured_wall_ns": 1790150317784405131,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/openrouter/usage.jsonl",
+      "file_sha256": "83b4dc4ac3a171b3f99abe544244d8ef658ddd01a789433ced0e817e98072957",
+      "bytes": 75360
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t438/openrouter/usage.json",
+      "file_sha256": "1f3a1ff346dda597e575956192e0228015cd7494e21af50af1a1fb00c68c6600",
+      "bytes": 497
+    },
+    "event_counts": {
+      "request_started": 74,
+      "response_started": 74,
+      "request_finished": 74
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 74,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.18257312,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 3514854,
+      "output_tokens": 43915,
+      "cached_tokens": 3055104
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 74
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.18257312,
+  "token_usage": {
+    "input_tokens": 3514854,
+    "output_tokens": 43915,
+    "cached_tokens": 3055104,
+    "total_tokens_observed": 3558769,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "83b4dc4ac3a171b3f99abe544244d8ef658ddd01a789433ced0e817e98072957",
+      "started_unique": 74,
+      "finished_unique": 74,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 3558769
+}

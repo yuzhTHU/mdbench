@@ -1,0 +1,350 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 901.3384668193758,
+  "evaluation_seconds": 46.478125965222716,
+  "evaluation": {
+    "task_name": "Population Resource Balance - Variant 1-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 172739973.97248966,
+        "mse": 7.587190283736138e+16,
+        "rmse": 275448548.4393798,
+        "mape": 0.0034699761854256068,
+        "r2": 0.9999477863236466,
+        "nrmse": 0.004420494320248079,
+        "max_absolute_error": 1479061561.3242493,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 164250339.926177,
+        "mse": 6.798541848285992e+16,
+        "rmse": 260740135.9262895,
+        "mape": 0.003405365080303045,
+        "r2": 0.9999535793340001,
+        "nrmse": 0.004272526784225591,
+        "max_absolute_error": 1330036611.8377686,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 4084780250.5603504,
+        "mse": 2.5318171909373477e+19,
+        "rmse": 5031716596.686809,
+        "mape": 0.02440078171406823,
+        "r2": 0.9758354916089012,
+        "nrmse": 0.02933878469593972,
+        "max_absolute_error": 14132826931.143494,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "max_population_capacity": "106857237333",
+      "feed_half_saturation": "29421717/7812500",
+      "dilution_half_saturation": "455864373/500000000000",
+      "effective_mortality_dilution_weight": "96149649/50000000",
+      "loss_exponent": "14560801/25000000",
+      "viability_decay_rate": "55341096163/100000000",
+      "resource_capacity": "106857237333*feed**(522939/500000)/(feed + 29421717/7812500)**(522939/500000)",
+      "dilution_activity": "dilution**(50093/50000)/(dilution + 455864373/500000000000)**(50093/50000)",
+      "effective_loss_rate": "96149649*dilution/50000000 + mortality",
+      "viability": "exp(-55341096163*mortality/100000000)",
+      "population": "106857237333*dilution**(50093/50000)*feed**(522939/500000)*exp(-55341096163*mortality/100000000)/((dilution + 455864373/500000000000)**(50093/50000)*(96149649*dilution/50000000 + mortality)**(14560801/25000000)*(feed + 29421717/7812500)**(522939/500000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "extra_death",
+        "ok": true,
+        "reply": "extra_death = effective_loss_rate - mortality",
+        "expression": "96149649*dilution/50000000",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.966106202993175e-05,
+            "mse": 5.807626415609277e-09,
+            "rmse": 7.620778448170027e-05,
+            "mape": 6.258804418590623,
+            "r2": -97.12691616813788,
+            "nrmse": 4.578479398993215,
+            "max_absolute_error": 0.00018809247139711657,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.1396524202422e-05,
+            "mse": 6.057628297689459e-09,
+            "rmse": 7.783076703778178e-05,
+            "mape": 6.66860432900696,
+            "r2": -100.86865559988736,
+            "nrmse": 4.806536550818471,
+            "max_absolute_error": 0.00018425562175124893,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00022776136508359824,
+            "mse": 5.4907358228434004e-08,
+            "rmse": 0.00023432319182794094,
+            "mape": 4.491303622137667,
+            "r2": -1032.7664591335827,
+            "nrmse": 4.465983229288529,
+            "max_absolute_error": 0.00034139142674589743,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "usable_feed",
+        "ok": true,
+        "reply": "usable_feed = feed / (feed_half_saturation + feed)",
+        "expression": "7812500*feed/(7812500*feed + 29421717)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.47712393773998785,
+            "mse": 0.2723406188362509,
+            "rmse": 0.5218626436489308,
+            "mape": 0.7616586904055125,
+            "r2": -2.669701322589876,
+            "nrmse": 0.766878680739455,
+            "max_absolute_error": 0.8070318316199732,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.4545477033601322,
+            "mse": 0.2538404229191258,
+            "rmse": 0.5038257862784772,
+            "mape": 0.7607098389486754,
+            "r2": -2.2351837039425333,
+            "nrmse": 0.7666620553592379,
+            "max_absolute_error": 0.8073051081480028,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9689341309536352,
+            "mse": 0.9451317139344221,
+            "rmse": 0.9721788487384521,
+            "mape": 0.764922984825965,
+            "r2": -77.68912080354933,
+            "nrmse": 0.7643225753122251,
+            "max_absolute_error": 1.0815568362176173,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 948.2263949997723,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t383/performance.json",
+    "file_sha256": "ae4923dfe38e2617a3f2b84f3157777d579c0c4ac8f0ba8d40b97fcb4380327f",
+    "bytes": 6373,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "415a6be6d9fa3f1725c1133da8c4e8d5aa47ca50b498304aff09c7bb19f8d35f",
+    "job": {
+      "id": "g3-r1-t383",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 383,
+      "task_name": "Population Resource Balance - Variant 1-3-5",
+      "task_group": "Population Resource Balance",
+      "domain": "biology",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/biology/Population Resource Balance/Population Resource Balance - Variant 1-3-5.yaml",
+      "task_sha256": "a8c2da2bd10ac5904f782750d3114fcaa41283544f1ca207d545437705a683c5",
+      "seed": 0,
+      "host": "g34",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t383/args.json",
+      "file_sha256": "ffab7a37a966513ec0d90faccea84c671c34d06c369a14653161ab9106664cd0",
+      "bytes": 3579
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g3-r1-t383/terminal.json",
+      "file_sha256": "025015cd5099accc259f0fa2f225371ae3b66370b2a2388012f7dab9a2f788b8",
+      "bytes": 1954
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "max_population_capacity = 106857237333\nfeed_half_saturation = 3.765979776\ndilution_half_saturation = 0.000911728746\neffective_mortality_dilution_weight = 1.922992980\nloss_exponent = 0.582432040\nviability_decay_rate = 553.410961630\nresource_capacity = max_population_capacity * (feed / (feed_half_saturation + feed))^1.045878\ndilution_activity = (dilution / (dilution_half_saturation + dilution))^1.001860\neffective_loss_rate = mortality + effective_mortality_dilution_weight * dilution\nviability = exp(-viability_decay_rate * mortality)\npopulation = resource_capacity * dilution_activity * viability / effective_loss_rate^loss_exponent\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t383/submission.txt",
+    "file_sha256": "60a0cb03be13c889c363eb51fe31aa8e0bc2c0e585606a829b072d8cd0579fcf",
+    "bytes": 636,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t383/frozen_submission/submission.txt",
+      "file_sha256": "60a0cb03be13c889c363eb51fe31aa8e0bc2c0e585606a829b072d8cd0579fcf",
+      "bytes": 636,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t383/frozen_submission/metadata.json",
+      "file_sha256": "b67e03c3efac26f9dd0535ee98af4b3d4b7ddd44356f9e744b3677e2ec55717f",
+      "bytes": 334,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t383/saved_checkpoint/model.json",
+      "file_sha256": "2867c8673eed0cb95095c3f5bcab2e23e2ba2eae9ba23ba080b084db4431dff3",
+      "bytes": 1190,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 636,
+      "sha256": "60a0cb03be13c889c363eb51fe31aa8e0bc2c0e585606a829b072d8cd0579fcf",
+      "source_mtime_ns": 1790106972502791000,
+      "source_ctime_ns": 1790106972502791000,
+      "captured_monotonic": 9397969.634962527,
+      "captured_wall_ns": 1790106973390127736,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t383/openrouter/usage.jsonl",
+      "file_sha256": "fbfe8eba961ae5e41a4ca9e4d8dc5724ca4a892648a69541db89f45633c2de45",
+      "bytes": 56127
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t383/openrouter/usage.json",
+      "file_sha256": "2685e12179adbefd9ece6d0fbb7cddeb2ac47ed9dbc4fd7ed338d2c32e3ec28a",
+      "bytes": 496
+    },
+    "event_counts": {
+      "request_started": 55,
+      "response_started": 55,
+      "request_finished": 55
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 55,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.05684364,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 2122034,
+      "output_tokens": 25155,
+      "cached_tokens": 1809961
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 55
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.05684364,
+  "token_usage": {
+    "input_tokens": 2122034,
+    "output_tokens": 25155,
+    "cached_tokens": 1809961,
+    "total_tokens_observed": 2147189,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "fbfe8eba961ae5e41a4ca9e4d8dc5724ca4a892648a69541db89f45633c2de45",
+      "started_unique": 55,
+      "finished_unique": 55,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 2147189
+}

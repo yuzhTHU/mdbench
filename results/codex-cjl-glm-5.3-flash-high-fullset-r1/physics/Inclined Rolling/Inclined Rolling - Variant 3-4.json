@@ -1,0 +1,304 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 718.5450455499813,
+  "evaluation_seconds": 134.76108840596862,
+  "evaluation": {
+    "task_name": "Inclined Rolling - Variant 3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.0461410343841635e-16,
+        "mse": 9.43305079321313e-32,
+        "rmse": 3.071327203866942e-16,
+        "mape": 1.0725229646405268e-16,
+        "r2": 1.0,
+        "nrmse": 1.5374987543825486e-16,
+        "max_absolute_error": 1.3322676295501878e-15,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.0250467969162856e-16,
+        "mse": 9.276511207333335e-32,
+        "rmse": 3.045736562366045e-16,
+        "mape": 1.0776335454343553e-16,
+        "r2": 1.0,
+        "nrmse": 1.561683829808493e-16,
+        "max_absolute_error": 1.3322676295501878e-15,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 4.569677969357144e-16,
+        "mse": 3.9896640281552675e-31,
+        "rmse": 6.31637873164305e-16,
+        "mape": 1.206591164890418e-16,
+        "r2": 1.0,
+        "nrmse": 1.6700305286759858e-16,
+        "max_absolute_error": 2.6645352591003757e-15,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "g": "981/100",
+      "buoyancy_loss": "1/4",
+      "reduced_g": "239/25",
+      "rotational_inertia_factor": "1/2",
+      "slope_inertia": "41/25",
+      "slope_drive": "sin(angle)",
+      "driving_acceleration": "981*sin(angle)/100 + 239/25",
+      "effective_mass_factor": "41*sin(angle)/25 + 3/2",
+      "acceleration": "(981*sin(angle)/100 + 239/25)*sin(angle)/(41*sin(angle)/25 + 3/2)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "rotor_inertia",
+        "ok": true,
+        "reply": "rotor_inertia = rotational_inertia_factor + slope_inertia*slope_drive",
+        "expression": "41*sin(angle)/25 + 1/2",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9917540615715827,
+            "mse": 1.0150786074765832,
+            "rmse": 1.007511095460781,
+            "mape": 3292.8001829343516,
+            "r2": -119513406.34359533,
+            "nrmse": 3065.652191634635,
+            "max_absolute_error": 1.2855172243205069,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9780809667712023,
+            "mse": 0.9885140310486872,
+            "rmse": 0.9942404291964229,
+            "mape": 3329.4781557661045,
+            "r2": -114360840.4527515,
+            "nrmse": 3087.190323719811,
+            "max_absolute_error": 1.2855493944986245,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.4906777354589373,
+            "mse": 2.235542085815952,
+            "rmse": 1.4951729283985689,
+            "mape": 2834.874971387126,
+            "r2": -1486057745.1967893,
+            "nrmse": 2836.509222958525,
+            "max_absolute_error": 1.6750909168069643,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "resist_torque",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 0, 'timed_out': True, 'elapsed_seconds': 120.21760667813942, 'cleanup': {'complete': True, 'killed_pids': [461796], 'survivor_pids': []}, 'stage': 'probe', 'submission_snapshot': None}; see /home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/probe/001-resist_torque",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 853.3973394490313,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/performance.json",
+    "file_sha256": "4449d5215cf6aaf38c50030059e45377318d5547261f0ba6628efaa35372a662",
+    "bytes": 4558,
+    "hostname": "g28"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-main-20260923",
+    "batch": "parent",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+    "setup_signature": "f79e224b2c66d393a1165fd324685630ef79f45382b58d223bd6362fe76ef4c4",
+    "job": {
+      "id": "g3-r1-t150",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 150,
+      "task_name": "Inclined Rolling - Variant 3-4",
+      "task_group": "Inclined Rolling",
+      "domain": "physics",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/physics/Inclined Rolling/Inclined Rolling - Variant 3-4.yaml",
+      "task_sha256": "bdf71d9d5bc4e5c7614a5e4654ca09dd19f713826e58e20e79f11832306ca856",
+      "seed": 0,
+      "host": "g28",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/args.json",
+      "file_sha256": "45dbb489cac7b01586c1ba81afd5f2d76e3f0b1338c5940e36266ae81329d360",
+      "bytes": 2422
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/jobs/g3-r1-t150/terminal.json",
+      "file_sha256": "a5cbcba9964012d36246b25a12bd9cc15d60bdbc50090ca5f45f3a6ef76308ea",
+      "bytes": 1960
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": null
+  },
+  "submission": "g = 9.81\nbuoyancy_loss = 0.25\nreduced_g = g - buoyancy_loss\nrotational_inertia_factor = 0.5\nslope_inertia = 1.64\nslope_drive = sin(angle)\ndriving_acceleration = reduced_g + g*slope_drive\neffective_mass_factor = 1 + rotational_inertia_factor + slope_inertia*slope_drive\nacceleration = slope_drive*driving_acceleration/effective_mass_factor\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/submission.txt",
+    "file_sha256": "3800420362b47530a2ed1f9a7cc45f2ab4fa1b6a877eeb5bab9347ac334f144a",
+    "bytes": 339,
+    "hostname": "g28",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/frozen_submission/submission.txt",
+      "file_sha256": "3800420362b47530a2ed1f9a7cc45f2ab4fa1b6a877eeb5bab9347ac334f144a",
+      "bytes": 339,
+      "hostname": "g28"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/frozen_submission/metadata.json",
+      "file_sha256": "fa1d2f72797f8a849b36e6d3169bcd8f17099a2b215115b1278117e80d959d5d",
+      "bytes": 334,
+      "hostname": "g28"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/saved_checkpoint/model.json",
+      "file_sha256": "3e97c68e0182ce371a0dd50701ae9d654c4cac9dc814cd7bc6538b4c8ba97ec4",
+      "bytes": 1119,
+      "hostname": "g28"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 339,
+      "sha256": "3800420362b47530a2ed1f9a7cc45f2ab4fa1b6a877eeb5bab9347ac334f144a",
+      "source_mtime_ns": 1790100216230120000,
+      "source_ctime_ns": 1790100216230120000,
+      "captured_monotonic": 1259937.364149123,
+      "captured_wall_ns": 1790100278983073103,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/openrouter/usage.jsonl",
+      "file_sha256": "d1a5db97bd102e78666da6dcf938a2c77f73e3fb3b37d50d5bf81dfb80daad2f",
+      "bytes": 27878
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t150/openrouter/usage.json",
+      "file_sha256": "c37f6d8be136f0dcda1d671ac51280681e1bff2a516a9974a5b335a7ba289c23",
+      "bytes": 479
+    },
+    "event_counts": {
+      "request_started": 28,
+      "response_started": 28,
+      "request_finished": 27
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 27,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.038173485,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0.03114815,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 1,
+    "tokens": {
+      "input_tokens": 769773,
+      "output_tokens": 20763,
+      "cached_tokens": 412504
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 27
+    },
+    "complete_for_this_attempt": false,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "token_usage": {
+    "input_tokens": 769773,
+    "output_tokens": 20763,
+    "cached_tokens": 412504,
+    "total_tokens_observed": 790536,
+    "partial": true,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "d1a5db97bd102e78666da6dcf938a2c77f73e3fb3b37d50d5bf81dfb80daad2f",
+      "started_unique": 28,
+      "finished_unique": 27,
+      "unmatched_started": 1,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  }
+}

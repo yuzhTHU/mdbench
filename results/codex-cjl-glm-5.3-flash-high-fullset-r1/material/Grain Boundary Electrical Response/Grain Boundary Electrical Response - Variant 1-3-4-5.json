@@ -1,0 +1,358 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 1264.9435748928227,
+  "evaluation_seconds": 521.2158162810374,
+  "evaluation": {
+    "task_name": "Grain Boundary Electrical Response - Variant 1-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.016960811038943795,
+        "mse": 0.0004272136184715645,
+        "rmse": 0.02066914653466767,
+        "mape": 0.03485453486722998,
+        "r2": 0.9767409888535874,
+        "nrmse": 0.03722596637871434,
+        "max_absolute_error": 0.09916743874692246,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.018451446835911864,
+        "mse": 0.0005110318711119567,
+        "rmse": 0.022606014047415714,
+        "mape": 0.03738983617134425,
+        "r2": 0.9717235964116915,
+        "nrmse": 0.040697796467636216,
+        "max_absolute_error": 0.11126896414092535,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.4247172757113265,
+        "mse": 0.21016273930822144,
+        "rmse": 0.45843509825080087,
+        "mape": 0.48064493294269806,
+        "r2": -4.381925243853981,
+        "nrmse": 0.51067495352271,
+        "max_absolute_error": 0.9849141259310139,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "m0": "320906981/100000",
+      "p_d": "15228893/50000000",
+      "p_T": "-20513653/20000000",
+      "r0": "104627611/10000000000000000000",
+      "p_r": "12955093/10000000",
+      "bulk_mobility": "320906981/(100000*temperature**(20513653/20000000))",
+      "boundary_damping": "104627611*laplace_rate*temperature**(12955093/10000000)/10000000000000000000",
+      "relaxation_enhancement": "sqrt(104627611*laplace_rate*temperature**(12955093/10000000)/10000000000000000000 + 1)",
+      "conductivity": "320906981*grain_size**(15228893/50000000)*sqrt(104627611*laplace_rate*temperature**(12955093/10000000)/10000000000000000000 + 1)/(100000*temperature**(20513653/20000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "space_charge_impedance",
+        "ok": true,
+        "reply": "space_charge_impedance = grain_size^(1 - p_d) / (bulk_mobility * relaxation_enhancement)",
+        "expression": "100000000000000*sqrt(10)*grain_size**(34771107/50000000)*temperature**(20513653/20000000)/(320906981*sqrt(104627611*laplace_rate*temperature**(12955093/10000000) + 10000000000000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00012237445446530303,
+            "mse": 1.901086487864932e-08,
+            "rmse": 0.00013787989294545205,
+            "mape": 11.501356606105785,
+            "r2": -1288.2528605773093,
+            "nrmse": 11.346017531391484,
+            "max_absolute_error": 0.0003113072975141905,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00012379748329195667,
+            "mse": 1.9261069198955686e-08,
+            "rmse": 0.00013878425414633926,
+            "mape": 11.542655026341453,
+            "r2": -1403.4296770341205,
+            "nrmse": 11.38480780923517,
+            "max_absolute_error": 0.0003101051188126902,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0003157196088222841,
+            "mse": 1.1053915478236923e-07,
+            "rmse": 0.0003324742919119751,
+            "mape": 124.18408660588082,
+            "r2": -50714.935479041844,
+            "nrmse": 100.65118293966604,
+            "max_absolute_error": 0.0006798336233926548,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "fast_path_conductivity",
+        "ok": true,
+        "reply": "fast_path_conductivity = bulk_mobility * grain_size^p_d * (relaxation_enhancement - 1)",
+        "expression": "grain_size**(15228893/50000000)*(320906981*sqrt(1046276110*laplace_rate*temperature**(12955093/10000000) + 100000000000000000000)/1000000000000000 - 320906981/100000)/temperature**(20513653/20000000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.037167580286723734,
+            "mse": 0.003489028532887737,
+            "rmse": 0.05906799922875107,
+            "mape": 37.30421632497441,
+            "r2": -3128.1655453964045,
+            "nrmse": 30.454837541826645,
+            "max_absolute_error": 0.23394177231122576,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.03497006508668302,
+            "mse": 0.003399861101201923,
+            "rmse": 0.058308327888921006,
+            "mape": 36.72769510650066,
+            "r2": -2897.0118231739743,
+            "nrmse": 29.99158785236964,
+            "max_absolute_error": 0.24839975189947933,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.7243867550659494,
+            "mse": 0.6150974570107007,
+            "rmse": 0.7842814909270145,
+            "mape": 2511.205418754908,
+            "r2": -20726128.631442573,
+            "nrmse": 2090.2209031090106,
+            "max_absolute_error": 1.567765686972834,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "bulk_polarization",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 0, 'timed_out': True, 'elapsed_seconds': 131.13695506798103, 'cleanup': {'complete': True, 'killed_pids': [1383290], 'survivor_pids': []}, 'stage': 'probe', 'submission_snapshot': None}; see /home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/probe/002-bulk_polarization",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "contact_impedance",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 0, 'timed_out': True, 'elapsed_seconds': 190.33180572511628, 'cleanup': {'complete': True, 'killed_pids': [1413719], 'survivor_pids': []}, 'stage': 'probe', 'submission_snapshot': None}; see /home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/probe/003-contact_impedance",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1786.2734074569307,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/performance.json",
+    "file_sha256": "98693e81b1cd2033f1f06a8a48df8594613a2dad1e9896ec56e25df1a895adda",
+    "bytes": 7537,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "415a6be6d9fa3f1725c1133da8c4e8d5aa47ca50b498304aff09c7bb19f8d35f",
+    "job": {
+      "id": "g3-r1-t445",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 445,
+      "task_name": "Grain Boundary Electrical Response - Variant 1-3-4-5",
+      "task_group": "Grain Boundary Electrical Response",
+      "domain": "material",
+      "core": false,
+      "probe_count": 4,
+      "task_rel": "tasks/material/Grain Boundary Electrical Response/Grain Boundary Electrical Response - Variant 1-3-4-5.yaml",
+      "task_sha256": "7408b9eadd54e0b051819bdcf3f8d85db3fd65489472fe72076de457e5fc6461",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/args.json",
+      "file_sha256": "ad2c15ba08503ff795f65cdccc2c5006a0350efb2660cf8849ff38e54a16e7b3",
+      "bytes": 3579
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g3-r1-t445/terminal.json",
+      "file_sha256": "f93c72fea7153cdb1258575aac1826504dcaa1c92d4fa65eb4c7047b521f9981",
+      "bytes": 2765
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "m0 = 3209.06981\np_d = 0.30457786\np_T = -1.02568265\nr0 = 1.04627611e-11\np_r = 1.29550930\nbulk_mobility = m0 * temperature^p_T\nboundary_damping = r0 * laplace_rate * temperature^p_r\nrelaxation_enhancement = (1 + boundary_damping)^0.5\nconductivity = bulk_mobility * grain_size^p_d * relaxation_enhancement\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/submission.txt",
+    "file_sha256": "105ee984184857487a9ec8a91fe5f93239af81be3bb50f96507ebc13dd44eca9",
+    "bytes": 303,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/frozen_submission/submission.txt",
+      "file_sha256": "105ee984184857487a9ec8a91fe5f93239af81be3bb50f96507ebc13dd44eca9",
+      "bytes": 303,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/frozen_submission/metadata.json",
+      "file_sha256": "f7e6093b92821fb122c10ac38047028af3507e645bbf2d928e200c9ed500dc83",
+      "bytes": 334,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/saved_checkpoint/model.json",
+      "file_sha256": "26388b9f07e8be84340eb7e920e96723e436b765c1145f51494645b8a82f8799",
+      "bytes": 1190,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 303,
+      "sha256": "105ee984184857487a9ec8a91fe5f93239af81be3bb50f96507ebc13dd44eca9",
+      "source_mtime_ns": 1790107959814273000,
+      "source_ctime_ns": 1790107959814273000,
+      "captured_monotonic": 1169593.846295671,
+      "captured_wall_ns": 1790108148084743170,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/openrouter/usage.jsonl",
+      "file_sha256": "3769cf8242d85c5ce84798c90fb2e1f1a0ad5ca739dd466a5d194c4ce8be6e70",
+      "bytes": 75859
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t445/openrouter/usage.json",
+      "file_sha256": "662fe91691f068c18517a2d610b85d95d83bd307b98d13e341298615b4023f71",
+      "bytes": 475
+    },
+    "event_counts": {
+      "request_started": 75,
+      "response_started": 75,
+      "request_finished": 74
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 74,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.1079847,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0.0520772,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 1,
+    "tokens": {
+      "input_tokens": 3779298,
+      "output_tokens": 44948,
+      "cached_tokens": 3599104
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 74
+    },
+    "complete_for_this_attempt": false,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "token_usage": {
+    "input_tokens": 3779298,
+    "output_tokens": 44948,
+    "cached_tokens": 3599104,
+    "total_tokens_observed": 3824246,
+    "partial": true,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "3769cf8242d85c5ce84798c90fb2e1f1a0ad5ca739dd466a5d194c4ce8be6e70",
+      "started_unique": 75,
+      "finished_unique": 74,
+      "unmatched_started": 1,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  }
+}

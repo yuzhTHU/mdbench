@@ -1,0 +1,443 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.6724397519138,
+  "evaluation_seconds": 187.00960744707845,
+  "evaluation": {
+    "task_name": "Acid Base Buffer Relaxation - Variant 1-2-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.586918537655318e-07,
+        "mse": 2.217448565118216e-13,
+        "rmse": 4.708979257884044e-07,
+        "mape": 0.9996243596479281,
+        "r2": -0.43216554977323796,
+        "nrmse": 0.9999340757827541,
+        "max_absolute_error": 3.7066291608696904e-06,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.625467450169905e-07,
+        "mse": 2.5879030525809233e-13,
+        "rmse": 5.087143650990134e-07,
+        "mape": 0.9995816837449434,
+        "r2": -0.3630085426196503,
+        "nrmse": 0.9999426907053663,
+        "max_absolute_error": 4.473919339408901e-06,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 9.897295837611992e-07,
+        "mse": 1.356114604171976e-12,
+        "rmse": 1.1645233377532527e-06,
+        "mape": 0.9992954363165011,
+        "r2": -2.6010113164522384,
+        "nrmse": 0.9995887202192383,
+        "max_absolute_error": 3.97945540478133e-06,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "Ka": "1/1000",
+      "D": "162721081/200",
+      "buffer_capacity": "buffer_total*hydrogen*log(10)/(1000*(hydrogen + 1/1000)**2)",
+      "proton_reservoir_capacity": "buffer_total*log(10)/(1000*(hydrogen + 1/1000)**2)",
+      "proton_diffusion_capacity": "200*laplace_rate*length_scale**2/162721081",
+      "dynamic_capacity": "(200*laplace_rate*length_scale**2/162721081 + 1)*(buffer_total*log(10)/(1000*(hydrogen + 1/1000)**2) + hydrogen)",
+      "ph_change": "-pulse/((200*laplace_rate*length_scale**2/162721081 + 1)*(buffer_total*log(10)/(1000*(hydrogen + 1/1000)**2) + hydrogen))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "second_protons",
+        "ok": true,
+        "reply": "second_protons = 0",
+        "expression": "0",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.0093943840618928e-09,
+            "mse": 1.5792950327957904e-18,
+            "rmse": 1.256700056813793e-09,
+            "mape": 1.0,
+            "r2": -1.81806616488918,
+            "nrmse": 1.0,
+            "max_absolute_error": 3.990283573051058e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.032716660457653e-09,
+            "mse": 1.6036690174629425e-18,
+            "rmse": 1.2663605400765385e-09,
+            "mape": 1.0,
+            "r2": -1.9854291922384446,
+            "nrmse": 1.0,
+            "max_absolute_error": 4.577614116808343e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.220595638149777e-09,
+            "mse": 1.103221131031074e-16,
+            "rmse": 1.0503433395947603e-08,
+            "mape": 1.0,
+            "r2": -3.360087495488181,
+            "nrmse": 1.0,
+            "max_absolute_error": 2.681399083909983e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "interior_protons",
+        "ok": true,
+        "reply": "interior_protons = buffer_capacity * pulse / dynamic_capacity",
+        "expression": "buffer_total*hydrogen*pulse*log(10)/(1000*(hydrogen + 1/1000)**2*(200*laplace_rate*length_scale**2/162721081 + 1)*(buffer_total*log(10)/(1000*(hydrogen + 1/1000)**2) + hydrogen))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.71684782423736e-10,
+            "mse": 1.7742065250590438e-19,
+            "rmse": 4.212133099818955e-10,
+            "mape": 0.9328331585932607,
+            "r2": -0.6993543604422041,
+            "nrmse": 0.9911894513797626,
+            "max_absolute_error": 1.9635308862132033e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.844038466942775e-10,
+            "mse": 1.7982953850089402e-19,
+            "rmse": 4.2406313032483033e-10,
+            "mape": 0.9322023152570759,
+            "r2": -0.8020529975408686,
+            "nrmse": 0.9904699894674761,
+            "max_absolute_error": 1.680223105150933e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.5739590316541977e-10,
+            "mse": 3.4798873279863736e-20,
+            "rmse": 1.865445611103785e-10,
+            "mape": 242.12987660123335,
+            "r2": -2182.788440807693,
+            "nrmse": 37.62382543437021,
+            "max_absolute_error": 5.465084184593737e-10,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "pocket_protons",
+        "ok": true,
+        "reply": "pocket_protons = pulse / (1 + proton_diffusion_capacity)",
+        "expression": "pulse/(200*laplace_rate*length_scale**2/162721081 + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.800141502881489e-09,
+            "mse": 2.0601629168694684e-17,
+            "rmse": 4.5389017579910985e-09,
+            "mape": 312.6327915307321,
+            "r2": -38567.613859103745,
+            "nrmse": 143.88005329777843,
+            "max_absolute_error": 9.975319615719553e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.881170265631925e-09,
+            "mse": 2.0821715439831852e-17,
+            "rmse": 4.5630817919287675e-09,
+            "mape": 305.4730175444846,
+            "r2": -35892.374502349696,
+            "nrmse": 139.5003231873669,
+            "max_absolute_error": 9.826887053291286e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.530991647474767e-08,
+            "mse": 7.69625379704097e-16,
+            "rmse": 2.774212284062085e-08,
+            "mape": 3534.5910710996563,
+            "r2": -14720142.255125236,
+            "nrmse": 2312.1664482836245,
+            "max_absolute_error": 4.9869654621004295e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "relay_protons",
+        "ok": true,
+        "reply": "relay_protons = pulse * proton_reservoir_capacity / dynamic_capacity",
+        "expression": "buffer_total*pulse*log(10)/(1000*(hydrogen + 1/1000)**2*(200*laplace_rate*length_scale**2/162721081 + 1)*(buffer_total*log(10)/(1000*(hydrogen + 1/1000)**2) + hydrogen))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.303853943060696e-09,
+            "mse": 1.5568612594389318e-17,
+            "rmse": 3.94570812331441e-09,
+            "mape": 7.028307891357884,
+            "r2": -102.6725664325056,
+            "nrmse": 6.1016054183316255,
+            "max_absolute_error": 9.078177497375302e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.3792953664742915e-09,
+            "mse": 1.5793335694836574e-17,
+            "rmse": 3.974083000496665e-09,
+            "mape": 7.098896490052215,
+            "r2": -109.79953536056001,
+            "nrmse": 6.153796991873586,
+            "max_absolute_error": 9.0467543683686e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.385565405439667e-08,
+            "mse": 6.841903272418319e-16,
+            "rmse": 2.6157032080146857e-08,
+            "mape": 23.90135150417804,
+            "r2": -558.9764410478763,
+            "nrmse": 14.286893431458445,
+            "max_absolute_error": 4.869777709542705e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1088.0956491869874,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t191/performance.json",
+    "file_sha256": "75451c3bf7b985762c4b21b101cba8f0fd89d66f7c4a588c30173be4f6b66bdc",
+    "bytes": 9733,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-preflight25-20260923",
+    "batch": "preflight25-import-20260924",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924",
+    "setup_signature": "118ae2bb2899372984637a8cf4befca0b106d6fa32f669d1bff09340526df1c7",
+    "job": {
+      "id": "g3-r1-t191",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 191,
+      "task_name": "Acid Base Buffer Relaxation - Variant 1-2-3-5",
+      "task_group": "Acid Base Buffer Relaxation",
+      "domain": "chemistry",
+      "core": false,
+      "probe_count": 4,
+      "task_rel": "tasks/chemistry/Acid Base Buffer Relaxation/Acid Base Buffer Relaxation - Variant 1-2-3-5.yaml",
+      "task_sha256": "1a2ec4ee34c1bd0f413d3e3e1fdebe6d2b20cd8ac1da233b830d3390d7c5ffac",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1,
+      "provider": "openrouter",
+      "upstream_model": "z-ai/glm-5.3-flash",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t191/args.json",
+      "file_sha256": "bc3588b8d440c054dfb6f55b920105dc11242439c559fc10b4fa2b260de3c8ec",
+      "bytes": 3547
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/jobs/g3-r1-t191/terminal.json",
+      "file_sha256": "19216e325d8f6b46899941bc949719785c5267cdb5ee71cc99e2cead9aa3616f",
+      "bytes": 2868
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "preflight25_first_attempt",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "Ka = 0.001\nD = 813605.405\nbuffer_capacity = log(10) * buffer_total * Ka * hydrogen / (Ka + hydrogen)^2\nproton_reservoir_capacity = buffer_capacity / hydrogen\nproton_diffusion_capacity = laplace_rate * length_scale^2 / D\ndynamic_capacity = (hydrogen + proton_reservoir_capacity) * (1 + proton_diffusion_capacity)\nph_change = -pulse / dynamic_capacity\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t191/submission.txt",
+    "file_sha256": "88d5c8b83e08c6425cd65f77c9033d1092174fbee04917ea246b5f2ec3a98f9f",
+    "bytes": 350,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t191/frozen_submission/submission.txt",
+      "file_sha256": "88d5c8b83e08c6425cd65f77c9033d1092174fbee04917ea246b5f2ec3a98f9f",
+      "bytes": 350,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t191/frozen_submission/metadata.json",
+      "file_sha256": "2754d25ac2e908b9ccf65c624f843f0fa4da2542c561a8beb23051777a0f7ab9",
+      "bytes": 334,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t191/saved_checkpoint/model.json",
+      "file_sha256": "e8fc12cceab3e67bed0ca810d2e2841f41e68cc3fbd850e7d3c1d2038d7fa57b",
+      "bytes": 1290,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 350,
+      "sha256": "88d5c8b83e08c6425cd65f77c9033d1092174fbee04917ea246b5f2ec3a98f9f",
+      "source_mtime_ns": 1790184406038273000,
+      "source_ctime_ns": 1790184406038273000,
+      "captured_monotonic": 1246244.827585551,
+      "captured_wall_ns": 1790184799066032554,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t191/openrouter/usage.jsonl",
+      "file_sha256": "702233c829b95398193c8f9cebeb7291a44075a51b0aef6a700f1cbaefa1c9f8",
+      "bytes": 48059
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/preflight25-import-20260924/runs/g3-r1-t191/openrouter/usage.json",
+      "file_sha256": "4bc062361b93e9e0b8017020de9d9f0bad0d93891a4a5c1aa3cdee87dcfa8e2e",
+      "bytes": 473
+    },
+    "event_counts": {
+      "request_started": 47,
+      "response_started": 47,
+      "request_finished": 47
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 47,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.075803477,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1713649,
+      "output_tokens": 31753,
+      "cached_tokens": 1480640
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 47
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.075803477,
+  "token_usage": {
+    "input_tokens": 1713649,
+    "output_tokens": 31753,
+    "cached_tokens": 1480640,
+    "total_tokens_observed": 1745402,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "702233c829b95398193c8f9cebeb7291a44075a51b0aef6a700f1cbaefa1c9f8",
+      "started_unique": 47,
+      "finished_unique": 47,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1745402
+}

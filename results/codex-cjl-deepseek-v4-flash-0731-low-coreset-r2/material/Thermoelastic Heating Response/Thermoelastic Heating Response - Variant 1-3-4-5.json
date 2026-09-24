@@ -1,0 +1,404 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 901.1457842290401,
+  "evaluation_seconds": 210.65906920284033,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Variant 1-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 649.7956008332386,
+        "mse": 2129912.2755411346,
+        "rmse": 1459.421897718797,
+        "mape": 0.627788671540375,
+        "r2": 0.5642577964198439,
+        "nrmse": 0.5926634232534888,
+        "max_absolute_error": 12527.997745057528,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 663.5504047491198,
+        "mse": 2255666.3392409994,
+        "rmse": 1501.8875920790474,
+        "mape": 0.638603658325542,
+        "r2": 0.5697334761599926,
+        "nrmse": 0.5884004624259528,
+        "max_absolute_error": 15361.861873083337,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 7256.544800589171,
+        "mse": 118805580.24674396,
+        "rmse": 10899.797257139417,
+        "mape": 9.931269006725232,
+        "r2": -130.35369815876672,
+        "nrmse": 8.324833331023035,
+        "max_absolute_error": 75526.27479950711,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "thermal_activation_coefficient": "5824",
+      "thermal_factor": "exp(-5824/conditioning_temperature)",
+      "cooling_freeze_factor": "conditioning_cooling_rate**(-44/25)",
+      "stiffness_coupling": "frame_modulus**(199/250)/length_scale**(307/500)",
+      "heating_response": "temperature_step**(41/40)",
+      "relaxation_weight": "laplace_rate**(-49/200)",
+      "stress": "13*temperature_step**(41/40)*(frame_modulus**(199/250)/length_scale**(307/500))*exp(-5824/conditioning_temperature)/(20*conditioning_cooling_rate**(44/25)*laplace_rate**(49/200))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_slow_thermal_fraction",
+        "ok": true,
+        "reply": "prepared_slow_thermal_fraction = cooling_freeze_factor",
+        "expression": "conditioning_cooling_rate**(-44/25)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1891681013257234,
+            "mse": 0.0926812400906754,
+            "rmse": 0.3044359375807584,
+            "mape": 42352813989698.43,
+            "r2": -0.04599117677289333,
+            "nrmse": 0.8392499028670297,
+            "max_absolute_error": 0.9200257636800134,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.19614612922658722,
+            "mse": 0.09873646714865669,
+            "rmse": 0.3142235941947337,
+            "mape": 44108033750613.914,
+            "r2": -0.04687528782588557,
+            "nrmse": 0.8354410975734551,
+            "max_absolute_error": 0.9186417850790104,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.38518972763750664,
+            "mse": 0.23388129802509525,
+            "rmse": 0.483612756267962,
+            "mape": 0.9574017753336322,
+            "r2": -1.6688013012385543,
+            "nrmse": 0.9776593465190646,
+            "max_absolute_error": 0.9865809215829915,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "prepared_adhesive_fraction",
+        "ok": false,
+        "error": "Expected one equality: 'The frozen submitted mechanism model contains no variable or equation related to adhesion, adhesive regions, or any \"prepared_adhesive_fraction.\" Its only internal variables are `thermal_factor`, `cooling_freeze_factor`, `stiffness_coupling`, `heating_response`, and `relaxation_weight`, which are combined solely into `stress`. There is no equation in that model from which `prepared_adhesive_fraction` can be derived, and the instructions prohibit introducing new variables or equations.'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "prepared_eigenstrain_fraction",
+        "ok": true,
+        "reply": "prepared_eigenstrain_fraction = thermal_factor * cooling_freeze_factor",
+        "expression": "exp(-5824/conditioning_temperature)/conditioning_cooling_rate**(44/25)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.10993973976787276,
+            "mse": 0.06477224183960228,
+            "rmse": 0.254503913210784,
+            "mape": 64614957.99968932,
+            "r2": -0.22939449359324837,
+            "nrmse": 0.9999922057331585,
+            "max_absolute_error": 0.9999944072403937,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.116250135858531,
+            "mse": 0.0686480745776758,
+            "rmse": 0.2620077757962076,
+            "mape": 71718288.84655768,
+            "r2": -0.2450951358484068,
+            "nrmse": 0.9999923484825789,
+            "max_absolute_error": 0.9999944456542713,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.19008824481383182,
+            "mse": 0.08451153741792167,
+            "rmse": 0.29070868135974487,
+            "mape": 0.9999540524435699,
+            "r2": -0.7468569356778192,
+            "nrmse": 0.9999855701675309,
+            "max_absolute_error": 0.9999880101519564,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "prepared_slow_strain_fraction",
+        "ok": true,
+        "reply": "prepared_slow_strain_fraction = cooling_freeze_factor * thermal_factor",
+        "expression": "exp(-5824/conditioning_temperature)/conditioning_cooling_rate**(44/25)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08368942504145735,
+            "mse": 0.04787439036895425,
+            "rmse": 0.21880217176471137,
+            "mape": 122860379.3653998,
+            "r2": -0.17134824323157583,
+            "nrmse": 0.9999909212696471,
+            "max_absolute_error": 0.99999361436701,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0877536865816568,
+            "mse": 0.048825420585366444,
+            "rmse": 0.22096474964429608,
+            "mape": 131433672.25966458,
+            "r2": -0.18723176776038186,
+            "nrmse": 0.9999908890553819,
+            "max_absolute_error": 0.999993181627536,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1309329090621353,
+            "mse": 0.04685795258327463,
+            "rmse": 0.21646697804347578,
+            "mape": 66706612.534247965,
+            "r2": -0.5768873633495124,
+            "nrmse": 0.999980892188662,
+            "max_absolute_error": 0.9999842625092802,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1112.0570664405823,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t062/performance.json",
+    "file_sha256": "09574cfbb5e0e8849aa79c974f3576ea317badbe5d98b67eaf38fd77c6165440",
+    "bytes": 8486,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-deepseek-v4-flash-0731-low-r2-patch188-20260923",
+    "batch": "patch-infra-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923",
+    "setup_signature": "643d368fc039b3bb0aaac39487e00493bd74170b82e2c7f7a7cf01a58fadcdd5",
+    "job": {
+      "id": "g4-r2-t062",
+      "group": 4,
+      "replicate": 2,
+      "task_index": 62,
+      "task_name": "Thermoelastic Heating Response - Variant 1-3-4-5",
+      "task_group": "Thermoelastic Heating Response",
+      "domain": "material",
+      "core": true,
+      "probe_count": 4,
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-3-4-5.yaml",
+      "task_sha256": "cd2393e33f2640b0e52ecf0e64482ffeb9b673b8eff215c67d98c992fd037526",
+      "seed": 1,
+      "host": "g34",
+      "model_key": "deepseek",
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "reasoning_effort": "low",
+      "submission_filename": "working_model.txt",
+      "attempt": 2,
+      "original_job_id": "g4-r2-t062",
+      "prior_batch": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/thermoelastic6-import-20260923",
+      "provider": "openrouter",
+      "upstream_model": "deepseek/deepseek-v4-flash-0731",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "deepseek/deepseek-v4-flash-0731",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t062/args.json",
+      "file_sha256": "a527ee271a7306069100a5fc7549333627b7e53bf8f6a8c3858a945ff350cdd9",
+      "bytes": 3554
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/jobs/g4-r2-t062/terminal.json",
+      "file_sha256": "e323cd1aaf6a051ae36968f78ab849ad2108b78015856f392f3d87b3ff6f6ae1",
+      "bytes": 2962
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "patch188",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 1,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "thermal_activation_coefficient = 5824\nthermal_factor = exp(-thermal_activation_coefficient/conditioning_temperature)\ncooling_freeze_factor = conditioning_cooling_rate^(-44/25)\nstiffness_coupling = frame_modulus^(199/250) * length_scale^(-307/500)\nheating_response = temperature_step^(41/40)\nrelaxation_weight = laplace_rate^(-49/200)\nstress = (13/20) * thermal_factor * cooling_freeze_factor * stiffness_coupling * heating_response * relaxation_weight\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t062/working_model.txt",
+    "file_sha256": "ae27359b5249fc8e55d8b9ac62b125595308a3ee63676b97b59cf0b7172c33c1",
+    "bytes": 452,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/working_model.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t062/frozen_submission/working_model.txt",
+      "file_sha256": "ae27359b5249fc8e55d8b9ac62b125595308a3ee63676b97b59cf0b7172c33c1",
+      "bytes": 452,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t062/frozen_submission/metadata.json",
+      "file_sha256": "2d898e63c070042097608974548d80d7b689d11c26e464fc7332af0399e662df",
+      "bytes": 337,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t062/saved_checkpoint/model.json",
+      "file_sha256": "827b3a4d8e94fcb5947fddef3e7daf01e61f26abb65ffcce6a92cc39537cf438",
+      "bytes": 1212,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 452,
+      "sha256": "ae27359b5249fc8e55d8b9ac62b125595308a3ee63676b97b59cf0b7172c33c1",
+      "source_mtime_ns": 1790148911866791000,
+      "source_ctime_ns": 1790148911866791000,
+      "captured_monotonic": 9440593.623206824,
+      "captured_wall_ns": 1790149597378371846,
+      "submission_filename": "working_model.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t062/openrouter/usage.jsonl",
+      "file_sha256": "6fe3d576e18caa3d250452a87d79588f359bf80ddb332bfc7bd294eaf60014cb",
+      "bytes": 34921
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t062/openrouter/usage.json",
+      "file_sha256": "c054f5e4af47f0bef7a19c813b4d94ebe50cda0d637876faae31e04fdb816422",
+      "bytes": 497
+    },
+    "event_counts": {
+      "request_started": 34,
+      "response_started": 34,
+      "request_finished": 34
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 34,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.055653032,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1295201,
+      "output_tokens": 50715,
+      "cached_tokens": 1192192
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 34
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.055653032,
+  "token_usage": {
+    "input_tokens": 1295201,
+    "output_tokens": 50715,
+    "cached_tokens": 1192192,
+    "total_tokens_observed": 1345916,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "6fe3d576e18caa3d250452a87d79588f359bf80ddb332bfc7bd294eaf60014cb",
+      "started_unique": 34,
+      "finished_unique": 34,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1345916
+}

@@ -1,0 +1,413 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 629.2757101119496,
+  "evaluation_seconds": 119.86591406003572,
+  "evaluation": {
+    "task_name": "Population Resource Balance - Variant 1-2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 928379754.7958281,
+        "mse": 2.9389384847821573e+18,
+        "rmse": 1714333247.878649,
+        "mape": 0.02136959698825085,
+        "r2": 0.9979100846670726,
+        "nrmse": 0.03028390281307664,
+        "max_absolute_error": 21778324950.894226,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 906784998.5669888,
+        "mse": 2.660944249292348e+18,
+        "rmse": 1631240095.5384674,
+        "mape": 0.0213204687239552,
+        "r2": 0.998136178012467,
+        "nrmse": 0.028584610109151996,
+        "max_absolute_error": 14346744807.452667,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 4033600087.3192716,
+        "mse": 2.5915821098443678e+19,
+        "rmse": 5090758401.107214,
+        "mape": 0.035180187284470074,
+        "r2": 0.978676389689306,
+        "nrmse": 0.04476133185281256,
+        "max_absolute_error": 14235597987.33728,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "resource_state": "log(feed)",
+      "load_state": "log(maintenance_load)",
+      "dilution_state": "log(dilution)",
+      "mortality_state": "log(mortality)",
+      "baseline": "1",
+      "k00": "151097329073993*log(feed)**2/781250000000000000",
+      "k01": "30614583875161507*log(feed)*log(maintenance_load)/10000000000000000000",
+      "k02": "100065533079653*log(dilution)*log(feed)/31250000000000000",
+      "k03": "-2161645790512507*log(feed)*log(mortality)/200000000000000000",
+      "k04": "32637439083621*log(feed)/31250000000000",
+      "k05": "-6686425653678311*log(maintenance_load)**2/100000000000000000",
+      "k06": "176384294125173*log(dilution)*log(maintenance_load)/6250000000000000",
+      "k07": "8260827378242509*log(maintenance_load)*log(mortality)/100000000000000000",
+      "k08": "-1040342993256129*log(maintenance_load)/250000000000000",
+      "k09": "-17306407211575243*log(dilution)**2/500000000000000000",
+      "k10": "228078711045939*log(dilution)*log(mortality)/5000000000000000",
+      "k11": "16169603854263483*log(dilution)/10000000000000000",
+      "k12": "-2968855961439961*log(mortality)**2/25000000000000000",
+      "k13": "10684513590008669*log(mortality)/10000000000000000",
+      "k14": "-125480026900147/3125000000000",
+      "log_population": "-17306407211575243*log(dilution)**2/500000000000000000 + 100065533079653*log(dilution)*log(feed)/31250000000000000 + 176384294125173*log(dilution)*log(maintenance_load)/6250000000000000 + 228078711045939*log(dilution)*log(mortality)/5000000000000000 + 16169603854263483*log(dilution)/10000000000000000 + 151097329073993*log(feed)**2/781250000000000000 + 30614583875161507*log(feed)*log(maintenance_load)/10000000000000000000 - 2161645790512507*log(feed)*log(mortality)/200000000000000000 + 32637439083621*log(feed)/31250000000000 - 6686425653678311*log(maintenance_load)**2/100000000000000000 + 8260827378242509*log(maintenance_load)*log(mortality)/100000000000000000 - 1040342993256129*log(maintenance_load)/250000000000000 - 2968855961439961*log(mortality)**2/25000000000000000 + 10684513590008669*log(mortality)/10000000000000000 - 125480026900147/3125000000000",
+      "population": "dilution**(16169603854263483/10000000000000000)*feed**(32637439083621/31250000000000)*mortality**(10684513590008669/10000000000000000)*exp(-17306407211575243*log(dilution)**2/500000000000000000 + 100065533079653*log(dilution)*log(feed)/31250000000000000 + 176384294125173*log(dilution)*log(maintenance_load)/6250000000000000 + 228078711045939*log(dilution)*log(mortality)/5000000000000000 + 151097329073993*log(feed)**2/781250000000000000 + 30614583875161507*log(feed)*log(maintenance_load)/10000000000000000000 - 2161645790512507*log(feed)*log(mortality)/200000000000000000 - 6686425653678311*log(maintenance_load)**2/100000000000000000 + 8260827378242509*log(maintenance_load)*log(mortality)/100000000000000000 - 2968855961439961*log(mortality)**2/25000000000000000 - 125480026900147/3125000000000)/maintenance_load**(1040342993256129/250000000000000)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "extra_death",
+        "ok": true,
+        "reply": "extra_death = baseline*exp(log_population)*maintenance_load/feed",
+        "expression": "1*maintenance_load*(dilution**(16169603854263483/10000000000000000)*feed**(32637439083621/31250000000000)*mortality**(10684513590008669/10000000000000000)*exp(-17306407211575243*log(dilution)**2/500000000000000000 + 100065533079653*log(dilution)*log(feed)/31250000000000000 + 176384294125173*log(dilution)*log(maintenance_load)/6250000000000000 + 228078711045939*log(dilution)*log(mortality)/5000000000000000 + 151097329073993*log(feed)**2/781250000000000000 + 30614583875161507*log(feed)*log(maintenance_load)/10000000000000000000 - 2161645790512507*log(feed)*log(mortality)/200000000000000000 - 6686425653678311*log(maintenance_load)**2/100000000000000000 + 8260827378242509*log(maintenance_load)*log(mortality)/100000000000000000 - 2968855961439961*log(mortality)**2/25000000000000000 - 125480026900147/3125000000000)/maintenance_load**(1040342993256129/250000000000000))/feed",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.1658783749912986e-05,
+            "mse": 2.1753420801477044e-10,
+            "rmse": 1.4749040918472307e-05,
+            "mape": 1.004812829690358,
+            "r2": -2.791514598590806,
+            "nrmse": 0.9185377999119151,
+            "max_absolute_error": 5.6456049181017667e-05,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.1348000275409168e-05,
+            "mse": 1.9775953450172578e-10,
+            "rmse": 1.406270011419307e-05,
+            "mape": 0.8767013161456558,
+            "r2": -2.468644739559933,
+            "nrmse": 0.852226798976637,
+            "max_absolute_error": 5.8004005873090014e-05,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.1484314565602926e-05,
+            "mse": 3.5455480284603838e-09,
+            "rmse": 5.9544504603366915e-05,
+            "mape": 1.055004412232191,
+            "r2": -61.362192010882914,
+            "nrmse": 1.1440531544775538,
+            "max_absolute_error": 0.00014433225167242406,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "birth_max",
+        "ok": true,
+        "reply": "birth_max = dilution + mortality",
+        "expression": "dilution + mortality",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.009067702522914686,
+            "mse": 8.231593872900658e-05,
+            "rmse": 0.00907281316511073,
+            "mape": 0.9643365683617796,
+            "r2": -1063.7984866724303,
+            "nrmse": 0.9644946992781389,
+            "max_absolute_error": 0.009767677191457455,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.009053204012202968,
+            "mse": 8.204995918116119e-05,
+            "rmse": 0.009058143252408916,
+            "mape": 0.9632307076175851,
+            "r2": -1069.4881692071654,
+            "nrmse": 0.9633641832312371,
+            "max_absolute_error": 0.00976617770422487,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.007826891072140118,
+            "mse": 6.129862378558506e-05,
+            "rmse": 0.007829343764683286,
+            "mape": 0.9082445788577793,
+            "r2": -2133.7902689235425,
+            "nrmse": 0.9083980371036532,
+            "max_absolute_error": 0.008277426221233397,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "active_fraction",
+        "ok": true,
+        "reply": "active_fraction = exp(log_population)/(baseline + exp(log_population))",
+        "expression": "(dilution**(16169603854263483/10000000000000000)*feed**(32637439083621/31250000000000)*mortality**(10684513590008669/10000000000000000)*exp(-17306407211575243*log(dilution)**2/500000000000000000 + 100065533079653*log(dilution)*log(feed)/31250000000000000 + 176384294125173*log(dilution)*log(maintenance_load)/6250000000000000 + 228078711045939*log(dilution)*log(mortality)/5000000000000000 + 151097329073993*log(feed)**2/781250000000000000 + 30614583875161507*log(feed)*log(maintenance_load)/10000000000000000000 - 2161645790512507*log(feed)*log(mortality)/200000000000000000 - 6686425653678311*log(maintenance_load)**2/100000000000000000 + 8260827378242509*log(maintenance_load)*log(mortality)/100000000000000000 - 2968855961439961*log(mortality)**2/25000000000000000 - 125480026900147/3125000000000)/maintenance_load**(1040342993256129/250000000000000))/(dilution**(16169603854263483/10000000000000000)*feed**(32637439083621/31250000000000)*mortality**(10684513590008669/10000000000000000)*exp(-17306407211575243*log(dilution)**2/500000000000000000 + 100065533079653*log(dilution)*log(feed)/31250000000000000 + 176384294125173*log(dilution)*log(maintenance_load)/6250000000000000 + 228078711045939*log(dilution)*log(mortality)/5000000000000000 + 151097329073993*log(feed)**2/781250000000000000 + 30614583875161507*log(feed)*log(maintenance_load)/10000000000000000000 - 2161645790512507*log(feed)*log(mortality)/200000000000000000 - 6686425653678311*log(maintenance_load)**2/100000000000000000 + 8260827378242509*log(maintenance_load)*log(mortality)/100000000000000000 - 2968855961439961*log(mortality)**2/25000000000000000 - 125480026900147/3125000000000)/maintenance_load**(1040342993256129/250000000000000) + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08800881039700251,
+            "mse": 0.010381781789176007,
+            "rmse": 0.10189102899262528,
+            "mape": 0.10011061178598174,
+            "r2": -2.9381152405410798,
+            "nrmse": 0.11154705982545259,
+            "max_absolute_error": 0.19915417265944024,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08844992691201022,
+            "mse": 0.010341871191924987,
+            "rmse": 0.1016949909873883,
+            "mape": 0.10048198752123091,
+            "r2": -3.106391373339691,
+            "nrmse": 0.11139401729083405,
+            "max_absolute_error": 0.1996364135269456,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.2641814871304714,
+            "mse": 0.07123647053809717,
+            "rmse": 0.26690161209347757,
+            "mape": 0.3626875721946998,
+            "r2": -48.31182285347444,
+            "nrmse": 0.362244564225555,
+            "max_absolute_error": 0.33332852755777753,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 749.5858804550953,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t374/performance.json",
+    "file_sha256": "00b214364c6cb7c264520e1ff77ba77c6eb21bd6d725be142ebdb04d1c77496f",
+    "bytes": 12736,
+    "hostname": "g28"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-patch188-20260923",
+    "batch": "patch-infra-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923",
+    "setup_signature": "5291a897422d0c294523635bd8b7ffceb324db503f615e128d68c61b41e7bd13",
+    "job": {
+      "id": "g3-r1-t374",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 374,
+      "task_name": "Population Resource Balance - Variant 1-2-3-4",
+      "task_group": "Population Resource Balance",
+      "domain": "biology",
+      "core": false,
+      "probe_count": 3,
+      "task_rel": "tasks/biology/Population Resource Balance/Population Resource Balance - Variant 1-2-3-4.yaml",
+      "task_sha256": "2eef50d2e2bb809dc47e850b33d48a78558c95452273dd5234ec9d28e6273a5c",
+      "seed": 0,
+      "host": "g28",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 2,
+      "original_job_id": "g3-r1-t374",
+      "prior_batch": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+      "provider": "openrouter",
+      "upstream_model": "z-ai/glm-5.3-flash",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t374/args.json",
+      "file_sha256": "12fdf45b108c878228e19e362cffdee1714e0fec2515740951fb1e772ab8f7fb",
+      "bytes": 3400
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/jobs/g3-r1-t374/terminal.json",
+      "file_sha256": "9dea1083186d0c918380bbc72e3de457637390239a9c0b4fe9415c83a88cefe4",
+      "bytes": 2472
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "patch188",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "resource_state = log(feed)\nload_state = log(maintenance_load)\ndilution_state = log(dilution)\nmortality_state = log(mortality)\nbaseline = 1\nk00 = 0.00019340458121471104*(resource_state*resource_state)\nk01 = 0.0030614583875161507*(resource_state*load_state)\nk02 = 0.0032020970585488959*(resource_state*dilution_state)\nk03 = -0.010808228952562535*(resource_state*mortality_state)\nk04 = 1.0443980506758721*(resource_state*baseline)\nk05 = -0.066864256536783115*(load_state*load_state)\nk06 = 0.028221487060027681*(load_state*dilution_state)\nk07 = 0.082608273782425093*(load_state*mortality_state)\nk08 = -4.161371973024516*(load_state*baseline)\nk09 = -0.034612814423150486*(dilution_state*dilution_state)\nk10 = 0.0456157422091878*(dilution_state*mortality_state)\nk11 = 1.6169603854263483*(dilution_state*baseline)\nk12 = -0.11875423845759844*(mortality_state*mortality_state)\nk13 = 1.0684513590008669*(mortality_state*baseline)\nk14 = -40.153608608047037*(baseline)\nlog_population = k00 + k01 + k02 + k03 + k04 + k05 + k06 + k07 + k08 + k09 + k10 + k11 + k12 + k13 + k14\npopulation = exp(log_population)\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t374/submission.txt",
+    "file_sha256": "e95ad060c4e1f94aa58a149679d146999d91abf9e8a4f1f4c777083fd9470b52",
+    "bytes": 1095,
+    "hostname": "g28",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t374/frozen_submission/submission.txt",
+      "file_sha256": "e95ad060c4e1f94aa58a149679d146999d91abf9e8a4f1f4c777083fd9470b52",
+      "bytes": 1095,
+      "hostname": "g28"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t374/frozen_submission/metadata.json",
+      "file_sha256": "0dff4f6e8ac1447cfd85126101fa0e269a379e6dde0df89e277b13a60bc43576",
+      "bytes": 334,
+      "hostname": "g28"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t374/saved_checkpoint/model.json",
+      "file_sha256": "4de8412e44d4dccb633a09ab752e2662b9833362bd84088826e6c8bb25134231",
+      "bytes": 1162,
+      "hostname": "g28"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 1095,
+      "sha256": "e95ad060c4e1f94aa58a149679d146999d91abf9e8a4f1f4c777083fd9470b52",
+      "source_mtime_ns": 1790149998886120000,
+      "source_ctime_ns": 1790149998886120000,
+      "captured_monotonic": 1309669.23798644,
+      "captured_wall_ns": 1790150010856911004,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t374/openrouter/usage.jsonl",
+      "file_sha256": "b579a2f05a9ffa0121246e0571eb4e0649cad8fcdb7a47e60a80bb6d236deb20",
+      "bytes": 57130
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g3-r1-t374/openrouter/usage.json",
+      "file_sha256": "cd885c2244df4dbf98b91b46a856ec17c9589f638666699dfe86025fa1f3647f",
+      "bytes": 466
+    },
+    "event_counts": {
+      "request_started": 56,
+      "response_started": 56,
+      "request_finished": 56
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 56,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.1313331,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 2658536,
+      "output_tokens": 39348,
+      "cached_tokens": 2337408
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 56
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.1313331,
+  "token_usage": {
+    "input_tokens": 2658536,
+    "output_tokens": 39348,
+    "cached_tokens": 2337408,
+    "total_tokens_observed": 2697884,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "b579a2f05a9ffa0121246e0571eb4e0649cad8fcdb7a47e60a80bb6d236deb20",
+      "started_unique": 56,
+      "finished_unique": 56,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 2697884
+}

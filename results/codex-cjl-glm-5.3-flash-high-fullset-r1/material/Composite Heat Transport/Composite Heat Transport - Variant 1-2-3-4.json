@@ -1,0 +1,309 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 901.1016375459731,
+  "evaluation_seconds": 142.3351619578898,
+  "evaluation": {
+    "task_name": "Composite Heat Transport - Variant 1-2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.5479465499027905,
+        "mse": 64.88347478046622,
+        "rmse": 8.055027919285333,
+        "mape": 0.0013160640405650553,
+        "r2": 0.9999965252236608,
+        "nrmse": 0.001111812188585908,
+        "max_absolute_error": 37.505968599747575,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.832370202624307,
+        "mse": 76.59829247139629,
+        "rmse": 8.752045045096391,
+        "mape": 0.0013613446230442432,
+        "r2": 0.9999959583859844,
+        "nrmse": 0.0011814323881858065,
+        "max_absolute_error": 68.30640698450952,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 56.26671708681611,
+        "mse": 5556.489006247458,
+        "rmse": 74.54186076458957,
+        "mape": 0.007111374010319935,
+        "r2": 0.998589703691247,
+        "nrmse": 0.00890775332471576,
+        "max_absolute_error": 233.30528008841793,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "k_component_1": "39246559/40000000",
+      "k_component_2": "136262631/50000000",
+      "r_interface": "23907447/125000000000",
+      "interface_blend_coefficient": "-238960143/1000000000",
+      "temperature_conductivity_coefficient": "-282438423/1000000000000",
+      "thickness_component_1": "length*(1 - fraction)",
+      "thickness_component_2": "fraction*length",
+      "interface_blend_fraction": "sqrt(fraction)*sqrt(1 - fraction)",
+      "effective_conductivity_factor": "1 - 282438423*delta_temp/1000000000000",
+      "thermal_resistance": "(-238960143*sqrt(fraction)*length*sqrt(1 - fraction)/1000000000 + 50000000*fraction*length/136262631 + 40000000*length*(1 - fraction)/39246559 + 23907447/125000000000)/(1 - 282438423*delta_temp/1000000000000)",
+      "heat_flux": "delta_temp*(1 - 282438423*delta_temp/1000000000000)/(-238960143*sqrt(fraction)*length*sqrt(1 - fraction)/1000000000 + 50000000*fraction*length/136262631 + 40000000*length*(1 - fraction)/39246559 + 23907447/125000000000)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "ka",
+        "ok": true,
+        "reply": "ka = thickness_component_1 / (effective_conductivity_factor * thermal_resistance - thickness_component_2 / k_component_2 - r_interface - interface_blend_coefficient * length * interface_blend_fraction)",
+        "expression": "39246559/40000000",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.84637916261016,
+            "mse": 8.107662063849313,
+            "rmse": 2.847395663382473,
+            "mape": 0.74355580488179,
+            "r2": -1399.8371080853717,
+            "nrmse": 0.7437756480877369,
+            "max_absolute_error": 2.9791392544890165,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.8481733499198363,
+            "mse": 8.117439603691052,
+            "rmse": 2.8491120728555153,
+            "mape": 0.743683602016637,
+            "r2": -1516.7968937118917,
+            "nrmse": 0.7438865816337797,
+            "max_absolute_error": 2.9791274745575436,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.59067951279789,
+            "mse": 6.7168186082491035,
+            "rmse": 2.591682582464354,
+            "mape": 0.7251942159407501,
+            "r2": -1291.1257122201625,
+            "nrmse": 0.7254390519779527,
+            "max_absolute_error": 2.722517948689682,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "area_ratio",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 0, 'timed_out': True, 'elapsed_seconds': 120.26898024487309, 'cleanup': {'complete': True, 'killed_pids': [917325], 'survivor_pids': []}, 'stage': 'probe', 'submission_snapshot': None}; see /home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/probe/001-area_ratio",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 1043.5290415650234,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/performance.json",
+    "file_sha256": "7d604ea3a75655fb986282c79b84c5ba459808af8e0c25b393f96f6d09545bc0",
+    "bytes": 5306,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "415a6be6d9fa3f1725c1133da8c4e8d5aa47ca50b498304aff09c7bb19f8d35f",
+    "job": {
+      "id": "g3-r1-t406",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 406,
+      "task_name": "Composite Heat Transport - Variant 1-2-3-4",
+      "task_group": "Composite Heat Transport",
+      "domain": "material",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/material/Composite Heat Transport/Composite Heat Transport - Variant 1-2-3-4.yaml",
+      "task_sha256": "1f777afb6243a63d1a03f87bfd2231ef54313e6d780662867fb6ac953e978191",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/args.json",
+      "file_sha256": "58ce559fc3df8595528fdc005a80857be28d17e2b59b8fe751bfc4699eef00c9",
+      "bytes": 3579
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g3-r1-t406/terminal.json",
+      "file_sha256": "14d9aa321afdb8273e7d6d557b81613ac546dd8978ab09a773d23efebe34aac3",
+      "bytes": 1943
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "k_component_1 = 0.981163975\nk_component_2 = 2.72525262\nr_interface = 0.000191259576\ninterface_blend_coefficient = -0.238960143\ntemperature_conductivity_coefficient = -0.000282438423\nthickness_component_1 = (1 - fraction) * length\nthickness_component_2 = fraction * length\ninterface_blend_fraction = sqrt((1 - fraction) * fraction)\neffective_conductivity_factor = 1 + temperature_conductivity_coefficient * delta_temp\nthermal_resistance = (thickness_component_1 / k_component_1 + thickness_component_2 / k_component_2 + r_interface + interface_blend_coefficient * length * interface_blend_fraction) / effective_conductivity_factor\nheat_flux = delta_temp / thermal_resistance\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/submission.txt",
+    "file_sha256": "08ce8d036b0ed01de600adbcff99cc151bdc4d461e9d5da16c4cd513870a2dcd",
+    "bytes": 674,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/frozen_submission/submission.txt",
+      "file_sha256": "08ce8d036b0ed01de600adbcff99cc151bdc4d461e9d5da16c4cd513870a2dcd",
+      "bytes": 674,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/frozen_submission/metadata.json",
+      "file_sha256": "7fc2ede37a659a7ea7e1adfa4f756ce3ac0d50c638dca628763d938914c1f9bb",
+      "bytes": 334,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/saved_checkpoint/model.json",
+      "file_sha256": "8b704c83412c0f52d43ae15706d1981ed97a53671d77c60119690f60f50d1d08",
+      "bytes": 1189,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 674,
+      "sha256": "08ce8d036b0ed01de600adbcff99cc151bdc4d461e9d5da16c4cd513870a2dcd",
+      "source_mtime_ns": 1790107080618273000,
+      "source_ctime_ns": 1790107080618273000,
+      "captured_monotonic": 1168546.380551697,
+      "captured_wall_ns": 1790107100618998032,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/openrouter/usage.jsonl",
+      "file_sha256": "c7929e16884c721e379077fb9d5a7f8f07b0d962785799921d23e55ef58c28c0",
+      "bytes": 61185
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t406/openrouter/usage.json",
+      "file_sha256": "e4a9987a9c8dd326c2ec937ccc3011893cf420b4c72144bdf7feb84293e32cf5",
+      "bytes": 470
+    },
+    "event_counts": {
+      "request_started": 60,
+      "response_started": 60,
+      "request_finished": 60
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 60,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.08675768,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 2967918,
+      "output_tokens": 40868,
+      "cached_tokens": 2804224
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 60
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.08675768,
+  "token_usage": {
+    "input_tokens": 2967918,
+    "output_tokens": 40868,
+    "cached_tokens": 2804224,
+    "total_tokens_observed": 3008786,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "c7929e16884c721e379077fb9d5a7f8f07b0d962785799921d23e55ef58c28c0",
+      "started_unique": 60,
+      "finished_unique": 60,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 3008786
+}

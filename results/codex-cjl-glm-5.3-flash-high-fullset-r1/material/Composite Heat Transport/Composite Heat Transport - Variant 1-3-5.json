@@ -1,0 +1,349 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 901.0539217600599,
+  "evaluation_seconds": 35.30046054418199,
+  "evaluation": {
+    "task_name": "Composite Heat Transport - Variant 1-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 13.806636609761412,
+        "mse": 455.23527233803736,
+        "rmse": 21.33624316364147,
+        "mape": 0.002699186808447738,
+        "r2": 0.9999789375917657,
+        "nrmse": 0.0028153303766923683,
+        "max_absolute_error": 147.60769426872503,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 14.532874401627389,
+        "mse": 515.154112789685,
+        "rmse": 22.69700669228621,
+        "mape": 0.0026736433924383044,
+        "r2": 0.9999767486710637,
+        "nrmse": 0.0029195251613862486,
+        "max_absolute_error": 165.65868729553404,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 204.35513938947219,
+        "mse": 56178.38236649646,
+        "rmse": 237.01979319562417,
+        "mape": 0.02372502654470646,
+        "r2": 0.9857520303887394,
+        "nrmse": 0.028743151100310647,
+        "max_absolute_error": 682.67305198135,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "k1": "19/5",
+      "k2": "1",
+      "k3": "3/10",
+      "L1": "fraction*length",
+      "L2": "length*(1 - fraction)",
+      "R1": "5*fraction*length/19",
+      "R2": "length*(1 - fraction)",
+      "q_series": "delta_temp/(5*fraction*length/19 + length*(1 - fraction))",
+      "q_mixed": "3*delta_temp*fraction*(1 - fraction)/(10*length)",
+      "heat_flux": "3*delta_temp*fraction*(1 - fraction)/(10*length) + delta_temp/(5*fraction*length/19 + length*(1 - fraction))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "ka",
+        "ok": true,
+        "reply": "ka = k1",
+        "expression": "19/5",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.06835876623088544,
+            "mse": 0.006546350937407614,
+            "rmse": 0.0809095231564716,
+            "mape": 0.017733655742417413,
+            "r2": -0.13107468508821674,
+            "nrmse": 0.021134587579826274,
+            "max_absolute_error": 0.16030322948901654,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.06683783342713215,
+            "mse": 0.006208851130919246,
+            "rmse": 0.07879626343247023,
+            "mape": 0.017339249503853644,
+            "r2": -0.16092948270828478,
+            "nrmse": 0.020573245822354702,
+            "max_absolute_error": 0.1602914495575436,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.22815651220210964,
+            "mse": 0.05725366427862068,
+            "rmse": 0.2392773793709315,
+            "mape": 0.06430933669894477,
+            "r2": -10.013983858723137,
+            "nrmse": 0.066976240232924,
+            "max_absolute_error": 0.3506419324421941,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "source_flux",
+        "ok": true,
+        "reply": "source_flux = q_series + q_mixed",
+        "expression": "delta_temp*(-3*fraction*(19 - 14*fraction)*(fraction - 1) + 190)/(10*length*(19 - 14*fraction))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5984.257547993704,
+            "mse": 57549969.56769525,
+            "rmse": 7586.169624236941,
+            "mape": 5170.328373648916,
+            "r2": -34772216.88578167,
+            "nrmse": 3258.412633440906,
+            "max_absolute_error": 31282.15475562958,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6185.477997925101,
+            "mse": 60550748.33036052,
+            "rmse": 7781.436135467573,
+            "mape": 5782.418777832302,
+            "r2": -36733290.752068475,
+            "nrmse": 3438.8815378200084,
+            "max_absolute_error": 30382.529656083152,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 8202.085400784707,
+            "mse": 71666899.206392,
+            "rmse": 8465.63046715317,
+            "mape": 1561.4805124208945,
+            "r2": -23482480.048811562,
+            "nrmse": 1407.6095621877917,
+            "max_absolute_error": 15177.406673410616,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 936.7952782218345,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t415/performance.json",
+    "file_sha256": "3ef0587a38463eb267aa8ccc60b8386676c46cad15eca69303a59d7f4ed32d37",
+    "bytes": 5834,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "415a6be6d9fa3f1725c1133da8c4e8d5aa47ca50b498304aff09c7bb19f8d35f",
+    "job": {
+      "id": "g3-r1-t415",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 415,
+      "task_name": "Composite Heat Transport - Variant 1-3-5",
+      "task_group": "Composite Heat Transport",
+      "domain": "material",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/material/Composite Heat Transport/Composite Heat Transport - Variant 1-3-5.yaml",
+      "task_sha256": "e0adf7be0e20e01871a35d7c62b0edeedd181b437c04fd57d49fa003d9b57635",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t415/args.json",
+      "file_sha256": "df136de61892a91dc1b2aae7128097237491a8cc676eb304b84df77597e59ce2",
+      "bytes": 3579
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g3-r1-t415/terminal.json",
+      "file_sha256": "d7757c9adf91c7e54f51ac7197132dc19ca86883c6064dff2f7aaf2fd9b5f520",
+      "bytes": 1946
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "k1 = 3.8\nk2 = 1\nk3 = 0.3\nL1 = fraction*length\nL2 = (1-fraction)*length\nR1 = L1/k1\nR2 = L2/k2\nq_series = delta_temp/(R1+R2)\nq_mixed = k3*fraction*(1-fraction)*delta_temp/length\nheat_flux = q_series+q_mixed\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t415/submission.txt",
+    "file_sha256": "c2a92771c7ffc0707832a1cca8a941fafd507a017fb7e05706d7abfb05d0e02c",
+    "bytes": 205,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t415/frozen_submission/submission.txt",
+      "file_sha256": "c2a92771c7ffc0707832a1cca8a941fafd507a017fb7e05706d7abfb05d0e02c",
+      "bytes": 205,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t415/frozen_submission/metadata.json",
+      "file_sha256": "3f58ae6201c0fa3ff023edc08c7b2266203b139945db6e682ebada52f932375c",
+      "bytes": 334,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t415/saved_checkpoint/model.json",
+      "file_sha256": "0474a8aad7041bf18daf8e898cc0da2c7ea2c063dfd306f7806a0054b4e69aee",
+      "bytes": 1189,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 205,
+      "sha256": "c2a92771c7ffc0707832a1cca8a941fafd507a017fb7e05706d7abfb05d0e02c",
+      "source_mtime_ns": 1790106672586273000,
+      "source_ctime_ns": 1790106672586273000,
+      "captured_monotonic": 1168546.435259993,
+      "captured_wall_ns": 1790107100673706338,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t415/openrouter/usage.jsonl",
+      "file_sha256": "5a88548f5af8a8d269dd748f95d93a148105fbea8b576b32f74e7b617a8a5b36",
+      "bytes": 48999
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t415/openrouter/usage.json",
+      "file_sha256": "2dd905164325c41b39e2bf575c827209c3495c45e71df46d284b182f3137025a",
+      "bytes": 499
+    },
+    "event_counts": {
+      "request_started": 48,
+      "response_started": 48,
+      "request_finished": 48
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 48,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.05993497,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1700479,
+      "output_tokens": 30965,
+      "cached_tokens": 1518912
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 48
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.05993497,
+  "token_usage": {
+    "input_tokens": 1700479,
+    "output_tokens": 30965,
+    "cached_tokens": 1518912,
+    "total_tokens_observed": 1731444,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "5a88548f5af8a8d269dd748f95d93a148105fbea8b576b32f74e7b617a8a5b36",
+      "started_unique": 48,
+      "finished_unique": 48,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1731444
+}

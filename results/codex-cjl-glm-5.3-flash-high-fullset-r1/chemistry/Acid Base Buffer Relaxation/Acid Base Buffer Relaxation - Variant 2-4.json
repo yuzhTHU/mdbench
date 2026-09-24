@@ -1,0 +1,349 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.7730508449022,
+  "evaluation_seconds": 80.97241471614689,
+  "evaluation": {
+    "task_name": "Acid Base Buffer Relaxation - Variant 2-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.5559140052337088e-09,
+        "mse": 5.0010177254877266e-17,
+        "rmse": 7.0717874158431305e-09,
+        "mape": 0.02726593117210294,
+        "r2": 0.9931063077722088,
+        "nrmse": 0.06507761738446707,
+        "max_absolute_error": 8.889153639151124e-08,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 2.5641594714206747e-09,
+        "mse": 5.284812700160847e-17,
+        "rmse": 7.2696717258490065e-09,
+        "mape": 0.027355057214551406,
+        "r2": 0.9938870342408607,
+        "nrmse": 0.06274932011751334,
+        "max_absolute_error": 6.983745330839725e-08,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 4.626649492539115e-08,
+        "mse": 5.58377200046809e-15,
+        "rmse": 7.47246411866132e-08,
+        "mape": 0.252959800057625,
+        "r2": 0.4689347009826068,
+        "nrmse": 0.3923580121453003,
+        "max_absolute_error": 4.856911879759685e-07,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "K_buffer": "34677481/20000000000",
+      "k_association": "155954029/250000",
+      "k_dissociation": "19903559/25000000",
+      "k_compartment": "27293736/5",
+      "k_diffusion": "94289287/10",
+      "buffer_capacity": "34677481*buffer_total/(20000000000*(hydrogen + 34677481/20000000000)**2) + 1",
+      "buffer_relaxation": "(155954029*hydrogen/250000 + 19903559/25000000)/(155954029*hydrogen/250000 + laplace_rate + 19903559/25000000)",
+      "compartment_transfer": "1/(27293736*length_scale**2/5 + 1)",
+      "diffusive_delay": "94289287*laplace_rate*length_scale**2/10",
+      "buffer_attenuation": "94289287*laplace_rate*length_scale**2/10 + (155954029*hydrogen/250000 + 19903559/25000000)*(34677481*buffer_total/(20000000000*(hydrogen + 34677481/20000000000)**2) + 1)/((27293736*length_scale**2/5 + 1)*(155954029*hydrogen/250000 + laplace_rate + 19903559/25000000))",
+      "ph_change": "-1000*pulse/(2303*hydrogen*(94289287*laplace_rate*length_scale**2/10 + (155954029*hydrogen/250000 + 19903559/25000000)*(34677481*buffer_total/(20000000000*(hydrogen + 34677481/20000000000)**2) + 1)/((27293736*length_scale**2/5 + 1)*(155954029*hydrogen/250000 + laplace_rate + 19903559/25000000))))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "interior_protons",
+        "ok": true,
+        "reply": "interior_protons = pulse * (buffer_capacity - 1) * buffer_relaxation * compartment_transfer / buffer_attenuation",
+        "expression": "34677481000000000000*buffer_total*pulse*(15595402900*hydrogen + 19903559)/(94289287*laplace_rate*length_scale**2*(20000000000*hydrogen + 34677481)**2*(27293736*length_scale**2 + 5)*(15595402900*hydrogen + 25000000*laplace_rate + 19903559) + 50*(693549620000000000*buffer_total + (20000000000*hydrogen + 34677481)**2)*(15595402900*hydrogen + 19903559))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.4038838416481605e-09,
+            "mse": 1.6603673965227037e-17,
+            "rmse": 4.074760602198249e-09,
+            "mape": 26.457385603694636,
+            "r2": -165.60788913219622,
+            "nrmse": 9.231540482238618,
+            "max_absolute_error": 9.496690175935539e-09,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.4686750880835564e-09,
+            "mse": 1.6734354822983016e-17,
+            "rmse": 4.090764576822164e-09,
+            "mape": 25.71669816464363,
+            "r2": -173.13159073193225,
+            "nrmse": 9.133688554472938,
+            "max_absolute_error": 9.592074618435185e-09,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.3387335298203179e-08,
+            "mse": 2.5811010738443074e-16,
+            "rmse": 1.606580553176313e-08,
+            "mape": 778.890567495886,
+            "r2": -722850.8087541198,
+            "nrmse": 575.6255475066351,
+            "max_absolute_error": 4.536263369846337e-08,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "primary_exchange",
+        "ok": true,
+        "reply": "primary_exchange = 2.303 * hydrogen * buffer_attenuation",
+        "expression": "2303*hydrogen*(94289287*laplace_rate*length_scale**2*(20000000000*hydrogen + 34677481)**2*(27293736*length_scale**2 + 5)*(15595402900*hydrogen + 25000000*laplace_rate + 19903559) + 50*(693549620000000000*buffer_total + (20000000000*hydrogen + 34677481)**2)*(15595402900*hydrogen + 19903559))/(10000*(20000000000*hydrogen + 34677481)**2*(27293736*length_scale**2 + 5)*(15595402900*hydrogen + 25000000*laplace_rate + 19903559))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1714767157121263,
+            "mse": 0.06443294167968336,
+            "rmse": 0.25383644671260935,
+            "mape": 0.5555975620077286,
+            "r2": -0.050664324104283676,
+            "nrmse": 0.6807623018312786,
+            "max_absolute_error": 1.0924999837147749,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.17836026460339013,
+            "mse": 0.06589566069483697,
+            "rmse": 0.25670150115423357,
+            "mape": 0.5568974724104249,
+            "r2": -0.07802997945190548,
+            "nrmse": 0.6736873374100119,
+            "max_absolute_error": 1.0437701373670514,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.869650751056999,
+            "mse": 17.54120351874715,
+            "rmse": 4.188221999697145,
+            "mape": 0.9436973329329256,
+            "r2": -5.420849822744993,
+            "nrmse": 0.9501627541260559,
+            "max_absolute_error": 9.443396455333046,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 982.2239603358321,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t210/performance.json",
+    "file_sha256": "3c2c89753c8f752211092234558c9d78babc285b20eccd9081bfbc315c02c34d",
+    "bytes": 7460,
+    "hostname": "g28"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-main-20260923",
+    "batch": "parent",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+    "setup_signature": "f79e224b2c66d393a1165fd324685630ef79f45382b58d223bd6362fe76ef4c4",
+    "job": {
+      "id": "g3-r1-t210",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 210,
+      "task_name": "Acid Base Buffer Relaxation - Variant 2-4",
+      "task_group": "Acid Base Buffer Relaxation",
+      "domain": "chemistry",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/chemistry/Acid Base Buffer Relaxation/Acid Base Buffer Relaxation - Variant 2-4.yaml",
+      "task_sha256": "da55b13a28af33d8baadf6e2fe24e227b76dfaa1c75c7e5c5e236b06f19cf2b0",
+      "seed": 0,
+      "host": "g28",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t210/args.json",
+      "file_sha256": "ac8063cb2c554a05fcfd79b023943d65b0c59624ddc5edf2c043077a560d118a",
+      "bytes": 2422
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/jobs/g3-r1-t210/terminal.json",
+      "file_sha256": "71f96f4032782ae0400855ecffb016ea20950f9fb292e9b6fb9967fd17399c2c",
+      "bytes": 1963
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": null
+  },
+  "submission": "K_buffer = 0.00173387405\nk_association = 623.816116\nk_dissociation = 0.796142360\nk_compartment = 5458747.20\nk_diffusion = 9428928.70\nbuffer_capacity = 1 + buffer_total * K_buffer / (hydrogen + K_buffer)^2\nbuffer_relaxation = (k_association * hydrogen + k_dissociation) / (laplace_rate + k_association * hydrogen + k_dissociation)\ncompartment_transfer = 1 / (1 + k_compartment * length_scale^2)\ndiffusive_delay = k_diffusion * laplace_rate * length_scale^2\nbuffer_attenuation = buffer_capacity * buffer_relaxation * compartment_transfer + diffusive_delay\nph_change = -pulse / (2.303 * hydrogen * buffer_attenuation)\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t210/submission.txt",
+    "file_sha256": "a6b1c1e4ac6491a1ff34ab213df7e8b6cb6afffedf107d99ebbe2616888e153e",
+    "bytes": 615,
+    "hostname": "g28",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t210/frozen_submission/submission.txt",
+      "file_sha256": "a6b1c1e4ac6491a1ff34ab213df7e8b6cb6afffedf107d99ebbe2616888e153e",
+      "bytes": 615,
+      "hostname": "g28"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t210/frozen_submission/metadata.json",
+      "file_sha256": "c0f50c5cb69c4f2fca88235928cacebbf73205b75592110ba11e979cad725956",
+      "bytes": 334,
+      "hostname": "g28"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t210/saved_checkpoint/model.json",
+      "file_sha256": "544982415da02965811f7ddaa65b2ed96bce2b2026957564ad6ab5b025433f6b",
+      "bytes": 1137,
+      "hostname": "g28"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 615,
+      "sha256": "a6b1c1e4ac6491a1ff34ab213df7e8b6cb6afffedf107d99ebbe2616888e153e",
+      "source_mtime_ns": 1790101269134120000,
+      "source_ctime_ns": 1790101269134120000,
+      "captured_monotonic": 1261023.756518047,
+      "captured_wall_ns": 1790101365375442052,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t210/openrouter/usage.jsonl",
+      "file_sha256": "3510eab4e114210e8a333c3b7372de2ea7b45bd55d77004e172e368834888993",
+      "bytes": 35744
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t210/openrouter/usage.json",
+      "file_sha256": "bbc75b449b8c8c4453dd9d3ca919b59edd990584c40eea326402e49a5843953d",
+      "bytes": 496
+    },
+    "event_counts": {
+      "request_started": 35,
+      "response_started": 35,
+      "request_finished": 35
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 35,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.03518907,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 876221,
+      "output_tokens": 22846,
+      "cached_tokens": 657805
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 35
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.03518907,
+  "token_usage": {
+    "input_tokens": 876221,
+    "output_tokens": 22846,
+    "cached_tokens": 657805,
+    "total_tokens_observed": 899067,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "3510eab4e114210e8a333c3b7372de2ea7b45bd55d77004e172e368834888993",
+      "started_unique": 35,
+      "finished_unique": 35,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 899067
+}

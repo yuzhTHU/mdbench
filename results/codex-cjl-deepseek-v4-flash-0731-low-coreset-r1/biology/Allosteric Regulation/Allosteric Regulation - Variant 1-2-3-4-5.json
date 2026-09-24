@@ -1,0 +1,312 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 697.9368169996887,
+  "evaluation_seconds": 18.024150177836418,
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 1-2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.001307287876730077,
+        "mse": 5.199906416121575e-06,
+        "rmse": 0.00228033033048319,
+        "mape": 0.0030301450906110804,
+        "r2": 0.9999956337787793,
+        "nrmse": 0.0015728160520773252,
+        "max_absolute_error": 0.030814491288783774,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0013490755008882553,
+        "mse": 6.280550333357119e-06,
+        "rmse": 0.002506102618281446,
+        "mape": 0.0031565966828894084,
+        "r2": 0.999994835158099,
+        "nrmse": 0.001719698294201895,
+        "max_absolute_error": 0.026532056919670977,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.1757980636035502,
+        "mse": 0.04802275681446069,
+        "rmse": 0.21914095193381974,
+        "mape": 0.1535447776708964,
+        "r2": 0.8634503275582364,
+        "nrmse": 0.1740981719271145,
+        "max_absolute_error": 0.5834198168994851,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "kcat": "4853447188431699/500000000000000",
+      "Km": "4662704281871441/200000000000000000",
+      "Kic": "590010634553863/250000000000000000",
+      "Kiv": "8632193611896617/1000000000000000000",
+      "h": "7021819890634967/5000000000000000",
+      "Km_eff": "23313521409357205*regulator/2360042538215452 + 4662704281871441/200000000000000000",
+      "occupancy": "substrate/(23313521409357205*regulator/2360042538215452 + substrate + 4662704281871441/200000000000000000)",
+      "regulatory_activation": "1/((1000000000000000000*regulator/8632193611896617)**(7021819890634967/5000000000000000) + 1)",
+      "activity": "4853447188431699*(substrate/(23313521409357205*regulator/2360042538215452 + substrate + 4662704281871441/200000000000000000))/(500000000000000*((1000000000000000000*regulator/8632193611896617)**(7021819890634967/5000000000000000) + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "t3",
+        "ok": false,
+        "error": "Expected one equality: 'The frozen submitted mechanism model does not contain a \"triple-regulator complex\" and does not define any variable `t3` (or any corresponding inactive triple‑regulator complex fraction). All internal variables in the model are exactly `Km_eff`, `occupancy`, `regulatory_activation`, and `activity`, and every one of them is uniquely determined by the supplied inputs `substrate` and `regulator` via the submitted equations.'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "inactive_flux",
+        "ok": true,
+        "reply": "inactive_flux = kcat * occupancy * (1 - regulatory_activation)",
+        "expression": "4853447188431699*(substrate/(23313521409357205*regulator/2360042538215452 + substrate + 4662704281871441/200000000000000000))*(1 - 1/((1000000000000000000*regulator/8632193611896617)**(7021819890634967/5000000000000000) + 1))/500000000000000",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.03934907884623968,
+            "mse": 0.003952623272845842,
+            "rmse": 0.06286989162425717,
+            "mape": 0.8694931050549874,
+            "r2": -0.6852695225071463,
+            "nrmse": 0.9376602362255186,
+            "max_absolute_error": 0.47133301423087265,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.040673397597600004,
+            "mse": 0.004763575460555529,
+            "rmse": 0.06901866023442885,
+            "mape": 0.8739990573516718,
+            "r2": -0.8653707812534492,
+            "nrmse": 1.0019558012798377,
+            "max_absolute_error": 0.46829752421910487,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.0091455139954462,
+            "mse": 1.0854524133992427,
+            "rmse": 1.0418504755478315,
+            "mape": 7.607867057995682,
+            "r2": -316.23804450446977,
+            "nrmse": 6.417877859723503,
+            "max_absolute_error": 1.5743890658355864,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 716.455034667626,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g1-r1-t076/performance.json",
+    "file_sha256": "5c9878eef7a53de9d8a0abb24e4e3c94cea1617d78e8c1d53e05243478e82dea",
+    "bytes": 5413,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-deepseek-v4-flash-0731-low-r1-patch188-20260923",
+    "batch": "patch-infra-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923",
+    "setup_signature": "04882f8b90402b640ad0fc9891df57eec382dfc3f8b901d2263b05ad31ef6f80",
+    "job": {
+      "id": "g1-r1-t076",
+      "group": 1,
+      "replicate": 1,
+      "task_index": 76,
+      "task_name": "Allosteric Regulation - Variant 1-2-3-4-5",
+      "task_group": "Allosteric Regulation",
+      "domain": "biology",
+      "core": true,
+      "probe_count": 2,
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "f3701a0f81c3ff00566c6dc75c58774b88a7b410b71e18d2e94cb9509e5a1e6e",
+      "seed": 0,
+      "host": "g34",
+      "model_key": "deepseek",
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "reasoning_effort": "low",
+      "submission_filename": "working_model.txt",
+      "attempt": 2,
+      "original_job_id": "g1-r1-t076",
+      "prior_batch": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+      "provider": "openrouter",
+      "upstream_model": "deepseek/deepseek-v4-flash-0731",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "deepseek/deepseek-v4-flash-0731",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g1-r1-t076/args.json",
+      "file_sha256": "1f453957fd5dd8edf1aa983c4b337b05ac667f0644220e1c1115ad635a019662",
+      "bytes": 3430
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/jobs/g1-r1-t076/terminal.json",
+      "file_sha256": "c56e154d050e44a2cbe564f0b1203ded351b9fe1f1d8be7d1268121bb3eceed2",
+      "bytes": 2112
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "patch188",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "kcat = 9.706894376863398\nKm = 0.023313521409357205\nKic = 0.002360042538215452\nKiv = 0.008632193611896617\nh = 1.4043639781269934\nKm_eff = Km * (1 + regulator / Kic)\noccupancy = substrate / (Km_eff + substrate)\nregulatory_activation = 1 / (1 + (regulator / Kiv)^h)\nactivity = kcat * occupancy * regulatory_activation\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g1-r1-t076/working_model.txt",
+    "file_sha256": "990e4980c6f4a323f8a3ec39be1ed1ed946fb4742d79d6da07874bda36682e93",
+    "bytes": 315,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/working_model.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g1-r1-t076/frozen_submission/working_model.txt",
+      "file_sha256": "990e4980c6f4a323f8a3ec39be1ed1ed946fb4742d79d6da07874bda36682e93",
+      "bytes": 315,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g1-r1-t076/frozen_submission/metadata.json",
+      "file_sha256": "ee84c33225d8f1a373c857ef103b7de393922cb3a4ec6d9e6dae90c90bef04de",
+      "bytes": 337,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g1-r1-t076/saved_checkpoint/model.json",
+      "file_sha256": "1da08a5413304d2abe4771ac7b385eafeade969ddb867fe549101dc36ca44d05",
+      "bytes": 1181,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 315,
+      "sha256": "990e4980c6f4a323f8a3ec39be1ed1ed946fb4742d79d6da07874bda36682e93",
+      "source_mtime_ns": 1790149278030791000,
+      "source_ctime_ns": 1790149278030791000,
+      "captured_monotonic": 9440390.047257248,
+      "captured_wall_ns": 1790149393802422431,
+      "submission_filename": "working_model.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g1-r1-t076/openrouter/usage.jsonl",
+      "file_sha256": "f39548c09793c5554d134ff336dfff38125c6c80b71a5721c1c23d87b9fa7b2b",
+      "bytes": 41053
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g1-r1-t076/openrouter/usage.json",
+      "file_sha256": "36241f555901302cae915732ec5521a02c004c6ab7559e0c9644126e74107e05",
+      "bytes": 472
+    },
+    "event_counts": {
+      "request_started": 40,
+      "response_started": 40,
+      "request_finished": 40
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 40,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.050443288,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1388071,
+      "output_tokens": 40716,
+      "cached_tokens": 1297408
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 40
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.050443288,
+  "token_usage": {
+    "input_tokens": 1388071,
+    "output_tokens": 40716,
+    "cached_tokens": 1297408,
+    "total_tokens_observed": 1428787,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "f39548c09793c5554d134ff336dfff38125c6c80b71a5721c1c23d87b9fa7b2b",
+      "started_unique": 40,
+      "finished_unique": 40,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1428787
+}

@@ -1,0 +1,394 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 463.83633992099203,
+  "evaluation_seconds": 57.777729040011764,
+  "evaluation": {
+    "task_name": "Competitive Inhibition Pulse Reaction - Variant 2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.2413598858734544e-06,
+        "mse": 4.368072452927396e-12,
+        "rmse": 2.089993409780853e-06,
+        "mape": 0.08055803966036482,
+        "r2": 0.9951112523719853,
+        "nrmse": 0.05382139440966956,
+        "max_absolute_error": 1.330689814827755e-05,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.256188750437807e-06,
+        "mse": 4.667699456102034e-12,
+        "rmse": 2.1604859305494295e-06,
+        "mape": 0.07961947781565015,
+        "r2": 0.9947674531145254,
+        "nrmse": 0.055435945760081075,
+        "max_absolute_error": 2.0443730690253224e-05,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 3.237646030430872e-05,
+        "mse": 1.4750755252985343e-09,
+        "rmse": 3.840671198239358e-05,
+        "mape": 0.8668152294148872,
+        "r2": -0.3512532319808228,
+        "nrmse": 0.7206604180535703,
+        "max_absolute_error": 0.00010135620603695648,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "kcat": "29237601/25000000",
+      "Km": "6559997/5000000",
+      "Ki": "51128303/100000000",
+      "tau": "17176639/50000000",
+      "inhibitory_load": "100000000*inhibitor/51128303",
+      "effective_capacity": "100000000*inhibitor/51128303 + substrate + 6559997/5000000",
+      "active_enzyme_fraction": "substrate/(100000000*inhibitor/51128303 + substrate + 6559997/5000000)",
+      "attenuated_turnover_rate": "29237601*substrate*exp(-17176639*laplace_rate/50000000)/(25000000*(100000000*inhibitor/51128303 + substrate + 6559997/5000000))",
+      "response": "29237601*enzyme_total*substrate*exp(-17176639*laplace_rate/50000000)/(25000000*(100000000*inhibitor/51128303 + substrate + 6559997/5000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "inhibitor_complex",
+        "ok": true,
+        "reply": "inhibitor_complex = enzyme_total * inhibitory_load * exp(-laplace_rate * tau) / effective_capacity",
+        "expression": "500000000000000*enzyme_total*inhibitor*exp(-17176639*laplace_rate/50000000)/(500000000000000*inhibitor + 255641515000000*substrate + 335401514295091)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.970257337680599e-06,
+            "mse": 1.0390560527120107e-10,
+            "rmse": 1.0193409894201306e-05,
+            "mape": 0.4237092916569474,
+            "r2": 0.879058290179132,
+            "nrmse": 0.2696509282170359,
+            "max_absolute_error": 5.474898006725066e-05,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 7.4086341741019194e-06,
+            "mse": 1.0872631244259797e-10,
+            "rmse": 1.0427191014007463e-05,
+            "mape": 0.40200148018356324,
+            "r2": 0.8653123381602615,
+            "nrmse": 0.2733904802265087,
+            "max_absolute_error": 4.767365056033523e-05,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 8.744774613628285e-05,
+            "mse": 9.835234237140617e-09,
+            "rmse": 9.91727494684937e-05,
+            "mape": 0.9054406931870844,
+            "r2": -2.103699290621144,
+            "nrmse": 0.8684963742095713,
+            "max_absolute_error": 0.000278493183026185,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "product_complex",
+        "ok": true,
+        "reply": "product_complex = enzyme_total * active_enzyme_fraction * exp(-laplace_rate * tau)",
+        "expression": "255641515000000*enzyme_total*substrate*exp(-17176639*laplace_rate/50000000)/(500000000000000*inhibitor + 255641515000000*substrate + 335401514295091)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.1636004729348735e-05,
+            "mse": 3.33844642637759e-10,
+            "rmse": 1.8271415999800317e-05,
+            "mape": 1.241899014175673,
+            "r2": -1.525799611495548,
+            "nrmse": 1.2233636786127164,
+            "max_absolute_error": 0.00010259563051184898,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.1734607266953808e-05,
+            "mse": 3.378393827361126e-10,
+            "rmse": 1.8380407578073796e-05,
+            "mape": 1.230577935636708,
+            "r2": -1.5601606280543616,
+            "nrmse": 1.2262203072743973,
+            "max_absolute_error": 9.181212788410427e-05,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 8.079521471314364e-06,
+            "mse": 8.754855942436928e-11,
+            "rmse": 9.356738717329306e-06,
+            "mape": 0.7058529897952489,
+            "r2": 0.45785158949764804,
+            "nrmse": 0.45647961795644587,
+            "max_absolute_error": 2.6061791836241006e-05,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "locked_complex",
+        "ok": true,
+        "reply": "locked_complex = enzyme_total * (inhibitory_load / effective_capacity) * exp(-laplace_rate * tau)",
+        "expression": "500000000000000*enzyme_total*inhibitor*exp(-17176639*laplace_rate/50000000)/(500000000000000*inhibitor + 255641515000000*substrate + 335401514295091)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.1797329752315526e-05,
+            "mse": 1.0636958556107335e-09,
+            "rmse": 3.261435045514065e-05,
+            "mape": 6.86688248673561,
+            "r2": -4.674443161318958,
+            "nrmse": 2.0001281834043816,
+            "max_absolute_error": 0.00015019531203196027,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.3182834903687916e-05,
+            "mse": 1.1143202646476984e-09,
+            "rmse": 3.3381435928487235e-05,
+            "mape": 6.473778425737966,
+            "r2": -5.481822567377795,
+            "nrmse": 2.0666752168747644,
+            "max_absolute_error": 0.0001449396128398299,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.755751446509854e-06,
+            "mse": 3.1234759356945436e-10,
+            "rmse": 1.7673358299130767e-05,
+            "mape": 2.402406026707218,
+            "r2": -51.21606246583117,
+            "nrmse": 4.980356931120879,
+            "max_absolute_error": 7.804135130320955e-05,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 522.0968159940094,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t238/performance.json",
+    "file_sha256": "6bc62848b1b401222acc838cc35aa03d08de5e2c9543dab3dc1d6b0d020656f4",
+    "bytes": 8442,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-main-20260923",
+    "batch": "parent",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+    "setup_signature": "f79e224b2c66d393a1165fd324685630ef79f45382b58d223bd6362fe76ef4c4",
+    "job": {
+      "id": "g3-r1-t238",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 238,
+      "task_name": "Competitive Inhibition Pulse Reaction - Variant 2-3-4",
+      "task_group": "Competitive Inhibition Pulse Reaction",
+      "domain": "chemistry",
+      "core": false,
+      "probe_count": 3,
+      "task_rel": "tasks/chemistry/Competitive Inhibition Pulse Reaction/Competitive Inhibition Pulse Reaction - Variant 2-3-4.yaml",
+      "task_sha256": "c39df1855aef30003fff4de16f8db86118b9cff9442bd4e54fc0ff7d063b7968",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t238/args.json",
+      "file_sha256": "6f7d2d472e5e60158e9c3bede52c7be60dbb87c3c3d7fce3deb8bc01b389a66b",
+      "bytes": 2422
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/jobs/g3-r1-t238/terminal.json",
+      "file_sha256": "d69a971fcab0ea872b2766a3847fb76c239dc4e6b112000475ce395e281b3a17",
+      "bytes": 2348
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": null
+  },
+  "submission": "kcat = 1.16950404\nKm = 1.31199940\nKi = 0.51128303\ntau = 0.34353278\ninhibitory_load = inhibitor / Ki\neffective_capacity = Km + substrate + inhibitory_load\nactive_enzyme_fraction = substrate / effective_capacity\nattenuated_turnover_rate = kcat * active_enzyme_fraction * exp(-laplace_rate * tau)\nresponse = enzyme_total * attenuated_turnover_rate\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t238/submission.txt",
+    "file_sha256": "87400cdb36af3d1f4c07378dd6290ffa65fb3d75a45e2c122bf0eac196e71828",
+    "bytes": 345,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t238/frozen_submission/submission.txt",
+      "file_sha256": "87400cdb36af3d1f4c07378dd6290ffa65fb3d75a45e2c122bf0eac196e71828",
+      "bytes": 345,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t238/frozen_submission/metadata.json",
+      "file_sha256": "54900d79c546f03f2b502a6dea45e6f682a6df8cf41072c3c2064d6105fa4f4c",
+      "bytes": 334,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t238/saved_checkpoint/model.json",
+      "file_sha256": "60de13432de7cb12456025904a3ffd5d0832c4816de32f3f258045230dfeedf5",
+      "bytes": 1121,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 345,
+      "sha256": "87400cdb36af3d1f4c07378dd6290ffa65fb3d75a45e2c122bf0eac196e71828",
+      "source_mtime_ns": 1790100928854273000,
+      "source_ctime_ns": 1790100928854273000,
+      "captured_monotonic": 1162380.634907151,
+      "captured_wall_ns": 1790100934873353445,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t238/openrouter/usage.jsonl",
+      "file_sha256": "37998a3bedb67b07acd2defc2e08a9b6035d58a7a03cbb02bcb767ebbd14fc11",
+      "bytes": 31554
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t238/openrouter/usage.json",
+      "file_sha256": "d8d6fe579f56b2ab1dc7dad08d9df78e269e74cbf73c1f433493295cd31d56de",
+      "bytes": 497
+    },
+    "event_counts": {
+      "request_started": 31,
+      "response_started": 31,
+      "request_finished": 31
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 31,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.0342343,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 770310,
+      "output_tokens": 12809,
+      "cached_tokens": 497864
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 31
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.0342343,
+  "token_usage": {
+    "input_tokens": 770310,
+    "output_tokens": 12809,
+    "cached_tokens": 497864,
+    "total_tokens_observed": 783119,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "37998a3bedb67b07acd2defc2e08a9b6035d58a7a03cbb02bcb767ebbd14fc11",
+      "started_unique": 31,
+      "finished_unique": 31,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 783119
+}

@@ -1,0 +1,403 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 589.56092501292,
+  "evaluation_seconds": 55.23076826008037,
+  "evaluation": {
+    "task_name": "Grain Boundary Electrical Response - Variant 2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0004517850339686003,
+        "mse": 3.447456389752448e-07,
+        "rmse": 0.0005871504398152528,
+        "mape": 0.0006492326699667974,
+        "r2": 0.9999748528858056,
+        "nrmse": 0.0007843584766526397,
+        "max_absolute_error": 0.0025280822239500678,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0004616936936024962,
+        "mse": 3.576064035275644e-07,
+        "rmse": 0.000598002009635055,
+        "mape": 0.0006522953384278487,
+        "r2": 0.9999708669415861,
+        "nrmse": 0.0007999992597296455,
+        "max_absolute_error": 0.002481552969739842,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0010711354892860134,
+        "mse": 1.6712673757452163e-06,
+        "rmse": 0.001292775067730352,
+        "mape": 0.0011856867950467186,
+        "r2": 0.999957444376727,
+        "nrmse": 0.0014058687057736535,
+        "max_absolute_error": 0.004547792976097531,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "E_i": "-279826433/100000000",
+      "E_b": "171331321/500000",
+      "E_di": "680317969/100000000",
+      "E_db": "166545621/2500000",
+      "sigma_i": "exp(54966489/10000000 - 279826433/(100000000*temperature))/temperature",
+      "sigma_b": "exp(78684607/50000000 + 171331321/(500000*temperature))/temperature",
+      "epsilon_i": "exp(-7979091/400000 + 680317969/(100000000*temperature))",
+      "epsilon_b": "exp(-206013163/10000000 + 166545621/(2500000*temperature))",
+      "f_b": "128045737/(100000000000000*(grain_size**(460834861/500000000)))",
+      "Y_i": "laplace_rate*exp(-7979091/400000 + 680317969/(100000000*temperature)) + exp(54966489/10000000 - 279826433/(100000000*temperature))/temperature",
+      "Y_b": "laplace_rate*exp(-206013163/10000000 + 166545621/(2500000*temperature)) + exp(78684607/50000000 + 171331321/(500000*temperature))/temperature",
+      "conductivity": "1/((1 - 128045737/(100000000000000*(grain_size**(460834861/500000000))))/(laplace_rate*exp(-7979091/400000 + 680317969/(100000000*temperature)) + exp(54966489/10000000 - 279826433/(100000000*temperature))/temperature) + (128045737/(100000000000000*(grain_size**(460834861/500000000))))/(laplace_rate*exp(-206013163/10000000 + 166545621/(2500000*temperature)) + exp(78684607/50000000 + 171331321/(500000*temperature))/temperature))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "boundary_polarization",
+        "ok": true,
+        "reply": "boundary_polarization = laplace_rate * epsilon_b",
+        "expression": "laplace_rate*exp(-206013163/10000000 + 166545621/(2500000*temperature))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.012735767768411451,
+            "mse": 0.00044359250039073815,
+            "rmse": 0.02106163574822094,
+            "mape": 6.074500488358934,
+            "r2": -1193.9273669865504,
+            "nrmse": 12.651495931861238,
+            "max_absolute_error": 0.07043230798982333,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.011800834904465545,
+            "mse": 0.00041773229587097706,
+            "rmse": 0.020438500333218607,
+            "mape": 5.645379918215547,
+            "r2": -1051.1513889670355,
+            "nrmse": 12.709815986762798,
+            "max_absolute_error": 0.07129974291926694,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.20569364923205924,
+            "mse": 0.05473821208789379,
+            "rmse": 0.2339619885534695,
+            "mape": 88.82021313403547,
+            "r2": -182316386.6716961,
+            "nrmse": 101.3853950305012,
+            "max_absolute_error": 0.4650413256084221,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "fast_path_conductivity",
+        "ok": true,
+        "reply": "fast_path_conductivity = (1 - f_b) * Y_i",
+        "expression": "(1 - 128045737/(100000000000000*(grain_size**(460834861/500000000))))*(laplace_rate*exp(-7979091/400000 + 680317969/(100000000*temperature)) + exp(54966489/10000000 - 279826433/(100000000*temperature))/temperature)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.8258230340343611,
+            "mse": 0.6920030543967461,
+            "rmse": 0.8318672095934219,
+            "mape": 771.9009863010906,
+            "r2": -620627.9500691354,
+            "nrmse": 428.90196138908533,
+            "max_absolute_error": 1.094746265348116,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.8258892049844387,
+            "mse": 0.6909795177209186,
+            "rmse": 0.8312517775745918,
+            "mape": 781.9487212092401,
+            "r2": -588983.8885939365,
+            "nrmse": 427.5643225794472,
+            "max_absolute_error": 1.0831765040433148,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9021735941490915,
+            "mse": 0.8527072362218825,
+            "rmse": 0.9234214835176202,
+            "mape": 3222.6695330872963,
+            "r2": -28732552.70213049,
+            "nrmse": 2461.048628021343,
+            "max_absolute_error": 1.4291891049908532,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "bulk_polarization",
+        "ok": true,
+        "reply": "bulk_polarization = laplace_rate * epsilon_i",
+        "expression": "laplace_rate*exp(-7979091/400000 + 680317969/(100000000*temperature))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.020918258835701458,
+            "mse": 0.0011294521762156198,
+            "rmse": 0.03360732325276174,
+            "mape": 9.479049666415136,
+            "r2": -1331.0803354158413,
+            "nrmse": 18.945033636034633,
+            "max_absolute_error": 0.10780135839581788,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.019474000788181605,
+            "mse": 0.001068038257006593,
+            "rmse": 0.032680854594190054,
+            "mape": 9.008162420870828,
+            "r2": -1216.1293537867,
+            "nrmse": 19.186198614515174,
+            "max_absolute_error": 0.10803554641602045,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.34533118242734046,
+            "mse": 0.15399461407290288,
+            "rmse": 0.39242147504042496,
+            "mape": 109.3120749509641,
+            "r2": -27766729.791904964,
+            "nrmse": 125.56724760432776,
+            "max_absolute_error": 0.7667521582363965,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 645.0230314920191,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/runs/g3-r1-t454/performance.json",
+    "file_sha256": "2adca5aeb4839404125750b67174d9013d907d918ae220b5f4292b9872716bfa",
+    "bytes": 8740,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-deadline10-20260923",
+    "batch": "deadline10-rerun-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923",
+    "setup_signature": "b0abd6a3770ec08f7a5dfc1ffd22c8eb6ac57fa8d297d29236c998390e92264c",
+    "job": {
+      "id": "g3-r1-t454",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 454,
+      "task_name": "Grain Boundary Electrical Response - Variant 2-3-4",
+      "task_group": "Grain Boundary Electrical Response",
+      "domain": "material",
+      "core": false,
+      "probe_count": 3,
+      "task_rel": "tasks/material/Grain Boundary Electrical Response/Grain Boundary Electrical Response - Variant 2-3-4.yaml",
+      "task_sha256": "d70981333bec582e5a398eaf9dc2442261c151bf83c45c6bf6961858fac302f8",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 2,
+      "original_job_id": "g3-r1-t454",
+      "prior_batch": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+      "provider": "openrouter",
+      "upstream_model": "z-ai/glm-5.3-flash",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/runs/g3-r1-t454/args.json",
+      "file_sha256": "1a6cefa5a2c26400a22fd3bb36e55ac7bf5761acb50a59704470fe3e13640c84",
+      "bytes": 3425
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/jobs/g3-r1-t454/terminal.json",
+      "file_sha256": "b76e63eb0fd9340669186bea2226bc1b8804f72ac89fb027b85e47f22409ba64",
+      "bytes": 2507
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "deadline10",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "E_i = -2.79826433\nE_b = 342.662642\nE_di = 6.80317969\nE_db = 66.6182484\nsigma_i = exp(5.49664890 + E_i / temperature) / temperature\nsigma_b = exp(1.57369214 + E_b / temperature) / temperature\nepsilon_i = exp(-19.9477275 + E_di / temperature)\nepsilon_b = exp(-20.6013163 + E_db / temperature)\nf_b = 0.00000128045737 / grain_size ^ 0.921669722\nY_i = sigma_i + laplace_rate * epsilon_i\nY_b = sigma_b + laplace_rate * epsilon_b\nconductivity = 1 / ((1 - f_b) / Y_i + f_b / Y_b)\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/runs/g3-r1-t454/submission.txt",
+    "file_sha256": "66222b7f413d66476a4806ee605de10d9e31c9eb933ce2ca8c2578b31bd2326b",
+    "bytes": 472,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/runs/g3-r1-t454/frozen_submission/submission.txt",
+      "file_sha256": "66222b7f413d66476a4806ee605de10d9e31c9eb933ce2ca8c2578b31bd2326b",
+      "bytes": 472,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/runs/g3-r1-t454/frozen_submission/metadata.json",
+      "file_sha256": "37d7ce5aea25161af6bb4e47bb20b824b1985c9212e78caa816c2a9e82aba5c9",
+      "bytes": 333,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/runs/g3-r1-t454/saved_checkpoint/model.json",
+      "file_sha256": "5716af3e8edf834e4b3726a0ee99dc6f9b23e5313a564008f59826ddea9e7afb",
+      "bytes": 1171,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 472,
+      "sha256": "66222b7f413d66476a4806ee605de10d9e31c9eb933ce2ca8c2578b31bd2326b",
+      "source_mtime_ns": 1790166718134273000,
+      "source_ctime_ns": 1790166718134273000,
+      "captured_monotonic": 1228193.06335461,
+      "captured_wall_ns": 1790166747301801157,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/runs/g3-r1-t454/openrouter/usage.jsonl",
+      "file_sha256": "494d994c7ca4a1da61142386b1bde77de9413c84f1716e14af3009845bbc7751",
+      "bytes": 40728
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deadline10-rerun-20260923/runs/g3-r1-t454/openrouter/usage.json",
+      "file_sha256": "9e604f7602dacafb14c015f12548158a56402fa6599335c2368d4fbe6a248ccf",
+      "bytes": 498
+    },
+    "event_counts": {
+      "request_started": 40,
+      "response_started": 40,
+      "request_finished": 40
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 40,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.046638264,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1115790,
+      "output_tokens": 24359,
+      "cached_tokens": 921536
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 40
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.046638264,
+  "token_usage": {
+    "input_tokens": 1115790,
+    "output_tokens": 24359,
+    "cached_tokens": 921536,
+    "total_tokens_observed": 1140149,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "494d994c7ca4a1da61142386b1bde77de9413c84f1716e14af3009845bbc7751",
+      "started_unique": 40,
+      "finished_unique": 40,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1140149
+}

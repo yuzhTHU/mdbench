@@ -1,0 +1,389 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.7171857319772,
+  "evaluation_seconds": 78.92013663612306,
+  "evaluation": {
+    "task_name": "Lindemann Pulse Reaction - Variant 2-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.3903609827222726e-06,
+        "mse": 6.338793532771016e-12,
+        "rmse": 2.5176960763307026e-06,
+        "mape": 0.009330802688063713,
+        "r2": 0.9994015824583766,
+        "nrmse": 0.015650939098073628,
+        "max_absolute_error": 1.6961362799373892e-05,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.3400672924102981e-06,
+        "mse": 6.361256743758996e-12,
+        "rmse": 2.522153195933783e-06,
+        "mape": 0.009148624032788237,
+        "r2": 0.9993658298281508,
+        "nrmse": 0.016441315145071852,
+        "max_absolute_error": 1.8411599371467413e-05,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 7.06961897341764e-05,
+        "mse": 6.855564483539217e-09,
+        "rmse": 8.279833623654051e-05,
+        "mape": 0.08596122440187656,
+        "r2": 0.9355862498728571,
+        "nrmse": 0.09397685075786305,
+        "max_absolute_error": 0.00022807062225312503,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "K_collision": "196024301/100000000",
+      "k_activation_max": "20244533/10000000",
+      "k_fast": "29935749/50000000",
+      "k_slow": "109537611/100000000",
+      "alpha_fast": "26207857/100000000",
+      "collision_efficiency": "20244533*sqrt(collider)/(10000000*(sqrt(collider) + 196024301/100000000))",
+      "fast_product_term": "784551828979893/(5000000000000000*(laplace_rate + 29935749/50000000))",
+      "slow_product_term": "163636865016200514280809*sqrt(collider)/(100000000000000000000000*(sqrt(collider) + 196024301/100000000)*(laplace_rate + 109537611/100000000)*(20244533*sqrt(collider)/(10000000*(sqrt(collider) + 196024301/100000000)) + laplace_rate))",
+      "response": "dose*laplace_rate*(163636865016200514280809*sqrt(collider)/(100000000000000000000000*(sqrt(collider) + 196024301/100000000)*(laplace_rate + 109537611/100000000)*(20244533*sqrt(collider)/(10000000*(sqrt(collider) + 196024301/100000000)) + laplace_rate)) + 784551828979893/(5000000000000000*(laplace_rate + 29935749/50000000)))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "secondary_pool",
+        "ok": true,
+        "reply": "secondary_pool = dose * slow_product_term",
+        "expression": "163636865016200514280809*sqrt(collider)*dose/(10000000*(202445330*sqrt(collider) + laplace_rate*(100000000*sqrt(collider) + 196024301))*(100000000*laplace_rate + 109537611))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00022451143072763042,
+            "mse": 1.2839380256874602e-07,
+            "rmse": 0.00035832080956699403,
+            "mape": 15.748394691794587,
+            "r2": -166.4599270544415,
+            "nrmse": 9.183736094263946,
+            "max_absolute_error": 0.00127197297008887,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00022961354618715116,
+            "mse": 1.2643316363297572e-07,
+            "rmse": 0.0003555744136365491,
+            "mape": 18.02444172648925,
+            "r2": -184.1384641353412,
+            "nrmse": 9.676172944900433,
+            "max_absolute_error": 0.0013120173628406288,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 7.57874468480349e-05,
+            "mse": 9.032277840760438e-09,
+            "rmse": 9.503829670590924e-05,
+            "mape": 0.7855587644065094,
+            "r2": -0.25863052918312435,
+            "nrmse": 0.7171488305336692,
+            "max_absolute_error": 0.0002980282228964859,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "caged_pool",
+        "ok": true,
+        "reply": "caged_pool = (1 - alpha_fast) * dose * laplace_rate / (laplace_rate + collision_efficiency)",
+        "expression": "73792143*dose*laplace_rate*(100000000*sqrt(collider) + 196024301)/(100000000*(202445330*sqrt(collider) + laplace_rate*(100000000*sqrt(collider) + 196024301)))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0002435696029649098,
+            "mse": 1.2036022406527023e-07,
+            "rmse": 0.00034692971055427096,
+            "mape": 12.491174893603288,
+            "r2": -89.2265971557065,
+            "nrmse": 6.965163023436403,
+            "max_absolute_error": 0.0013123845763906722,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0002288457306905193,
+            "mse": 1.1243980485076438e-07,
+            "rmse": 0.00033532045098795326,
+            "mape": 11.815112915993058,
+            "r2": -93.83731561368002,
+            "nrmse": 7.140411330688729,
+            "max_absolute_error": 0.0013131780914857095,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0026479742725317255,
+            "mse": 8.101155508360113e-06,
+            "rmse": 0.0028462528890385187,
+            "mape": 11.038353173470405,
+            "r2": -236.5032995716669,
+            "nrmse": 7.978874006181999,
+            "max_absolute_error": 0.005320794335662698,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "direct_product_flux",
+        "ok": true,
+        "reply": "direct_product_flux = dose * laplace_rate * (fast_product_term + slow_product_term)",
+        "expression": "3*dose*laplace_rate*(sqrt(collider)*(27272810836033419046801500000000*laplace_rate + 16328640394239531763937379136470) + 261517276326631*(202445330*sqrt(collider) + laplace_rate*(100000000*sqrt(collider) + 196024301))*(100000000*laplace_rate + 109537611))/(100000000*(202445330*sqrt(collider) + laplace_rate*(100000000*sqrt(collider) + 196024301))*(50000000*laplace_rate + 29935749)*(100000000*laplace_rate + 109537611))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.330017723871171e-05,
+            "mse": 8.033615315803609e-09,
+            "rmse": 8.963043744065745e-05,
+            "mape": 1.7669042048362307,
+            "r2": -1.1644292449290714,
+            "nrmse": 1.0446875163290525,
+            "max_absolute_error": 0.0003746064812553437,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.953060556856345e-05,
+            "mse": 7.134762707662021e-09,
+            "rmse": 8.446752457401615e-05,
+            "mape": 1.8629801628885385,
+            "r2": -0.9457157944387151,
+            "nrmse": 1.0175765260435405,
+            "max_absolute_error": 0.00038954039177742665,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0003044861592624546,
+            "mse": 1.4483980612763995e-07,
+            "rmse": 0.0003805782523051468,
+            "mape": 0.582930310961515,
+            "r2": -1.47846878016971,
+            "nrmse": 0.6021015539108272,
+            "max_absolute_error": 0.0012031443847434918,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 980.0893243812025,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/runs/g5-r2-t050/performance.json",
+    "file_sha256": "36a856427b9a5af5800ab6eb0faa7b2e0ce2aa1a21f60e44aa5e83a6cb475491",
+    "bytes": 8973,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r2-direct-20260923",
+    "batch": "direct-glm-continue-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923",
+    "setup_signature": "f4805e02277e1e818749e4a422837e2dfa929327579a380b1b8dfebc239b0141",
+    "job": {
+      "id": "g5-r2-t050",
+      "group": 5,
+      "replicate": 2,
+      "task_index": 50,
+      "task_name": "Lindemann Pulse Reaction - Variant 2-3-5",
+      "task_group": "Lindemann Pulse Reaction",
+      "domain": "chemistry",
+      "core": true,
+      "probe_count": 3,
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2-3-5.yaml",
+      "task_sha256": "2e07181db1dffdc2527fa530669f361a1c46a36e303f0f419143548d0feb467b",
+      "seed": 1,
+      "host": "g34",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1,
+      "provider": "bigmodel",
+      "upstream_model": "glm-5.3-flash",
+      "currency": "CNY"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "bigmodel",
+    "actual_upstream_model": "glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/runs/g5-r2-t050/args.json",
+      "file_sha256": "fff342596ea8fa6d4739ce42f40e35e31278adb288d0ecc953688c49aa397e48",
+      "bytes": 3706
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/jobs/g5-r2-t050/terminal.json",
+      "file_sha256": "2ffee94f94412d8b643b1bd9f210e082c69cff8d800bf7aa6a7c35c7f8240d8a",
+      "bytes": 2966
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 1,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "K_collision = 1.96024301\nk_activation_max = 2.0244533\nk_fast = 0.59871498\nk_slow = 1.09537611\nalpha_fast = 0.26207857\ncollision_efficiency = k_activation_max * sqrt(collider) / (K_collision + sqrt(collider))\nfast_product_term = alpha_fast * k_fast / (laplace_rate + k_fast)\nslow_product_term = (1 - alpha_fast) * k_slow * collision_efficiency / ((laplace_rate + collision_efficiency) * (laplace_rate + k_slow))\nresponse = dose * laplace_rate * (fast_product_term + slow_product_term)\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/runs/g5-r2-t050/submission.txt",
+    "file_sha256": "002c17278778323dcf9f681c4c1987142eaa0d3214c84552be797b1795662daf",
+    "bytes": 484,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/runs/g5-r2-t050/frozen_submission/submission.txt",
+      "file_sha256": "002c17278778323dcf9f681c4c1987142eaa0d3214c84552be797b1795662daf",
+      "bytes": 484,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/runs/g5-r2-t050/frozen_submission/metadata.json",
+      "file_sha256": "0b5ae706b473fa5200f1f0afc98df5aac234d9a99001c73d25dc801972ab454a",
+      "bytes": 334,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/runs/g5-r2-t050/saved_checkpoint/model.json",
+      "file_sha256": "ff38cc1388bc4c8d7a0b86713f8e55ed62c64fca0eeda4b391b147a08a80a016",
+      "bytes": 1191,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 484,
+      "sha256": "002c17278778323dcf9f681c4c1987142eaa0d3214c84552be797b1795662daf",
+      "source_mtime_ns": 1790114815150791000,
+      "source_ctime_ns": 1790114815150791000,
+      "captured_monotonic": 9405915.619314283,
+      "captured_wall_ns": 1790114919374479334,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "bigmodel",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/runs/g5-r2-t050/bigmodel/usage.jsonl",
+      "file_sha256": "762b7c35e1c9b22755cc21819b6a7608d480832437ef3f3d6dac57ef92ad7a06",
+      "bytes": 65448
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/direct-glm-continue-20260923/runs/g5-r2-t050/bigmodel/usage.json",
+      "file_sha256": "1f29c22c38bead1b4028f2001584045fbbfd177a514b57893124e1a9f67cbbf0",
+      "bytes": 605
+    },
+    "event_counts": {
+      "request_started": 53,
+      "response_started": 53,
+      "request_finished": 53,
+      "client_disconnected": 1
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 53,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": null,
+    "pricing_estimate_usd": null,
+    "uncertain_upper_bound_usd": null,
+    "reserved_inflight_usd": null,
+    "currency": "CNY",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": 53,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 2292200,
+      "output_tokens": 34373,
+      "cached_tokens": 2132800
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "unknown": 53
+    },
+    "complete_for_this_attempt": false,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "token_usage": {
+    "input_tokens": 2292200,
+    "output_tokens": 34373,
+    "cached_tokens": 2132800,
+    "total_tokens_observed": 2326573,
+    "partial": true,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": null,
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  }
+}

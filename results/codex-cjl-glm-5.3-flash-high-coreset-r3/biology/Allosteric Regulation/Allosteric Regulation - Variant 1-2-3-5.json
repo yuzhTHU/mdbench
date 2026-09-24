@@ -1,0 +1,355 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.7457403670996,
+  "evaluation_seconds": 157.77875962294638,
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 1-2-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0007883875192851296,
+        "mse": 1.5882584926876515e-06,
+        "rmse": 0.001260261279532007,
+        "mape": 0.0012584342931652602,
+        "r2": 0.9999986371453428,
+        "nrmse": 0.000879329639370021,
+        "max_absolute_error": 0.0068029284348513075,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0008028864526418615,
+        "mse": 1.931964860974493e-06,
+        "rmse": 0.0013899513879896998,
+        "mape": 0.0012896533926300472,
+        "r2": 0.9999983737556675,
+        "nrmse": 0.0009660084578966109,
+        "max_absolute_error": 0.009134593482867603,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.02782530025795526,
+        "mse": 0.001389684684547532,
+        "rmse": 0.03727847481520042,
+        "mape": 0.05091621524507779,
+        "r2": 0.9910197127723366,
+        "nrmse": 0.04539411700617471,
+        "max_absolute_error": 0.15715363266181082,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "kcat": "487587177/50000000",
+      "Ks": "117323091/5000000000",
+      "Ki2": "42824441/2500000000",
+      "Ki1": "460207917/10000000000",
+      "alpha": "7241079/400000",
+      "beta": "96416491/5000000",
+      "gamma": "374037711/50000000",
+      "delta": "832475237/100000000",
+      "regulatory_binding_2": "6250000000000000000*regulator**2/1833932746962481",
+      "regulatory_binding_1": "10000000000*regulator/460207917",
+      "substrate_effect_on_binding": "113141859375000000000*regulator**2/1833932746962481 + 192832982000*regulator/460207917 + 1",
+      "substrate_effect_on_catalysis": "46754713875000000000*regulator**2/1833932746962481 + 83247523700*regulator/460207917 + 1",
+      "activity": "487587177*substrate/(50000000*(2654830532672465625*regulator**2/1833932746962481 + 1256875638610409*regulator/127835532500000 + substrate*(46754713875000000000*regulator**2/1833932746962481 + 83247523700*regulator/460207917 + 1) + 117323091/5000000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "t3",
+        "ok": true,
+        "reply": "t3 = Ks * alpha * regulatory_binding_2 / (Ks * substrate_effect_on_binding + substrate * substrate_effect_on_catalysis)",
+        "expression": "6108870147145979242676765625000000000*regulator**2/(6108870147145979242676765625000000000*regulator**2 + 41490457065126178615412983165122000*regulator + 5000000000*substrate*(21516889482344748375000000000*regulator**2 + 152670359816965240058299700*regulator + 843990369397691458162077) + 99019558911968970135872052620007)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.04248110450230196,
+            "mse": 0.00750018256615797,
+            "rmse": 0.086603594418234,
+            "mape": 514.5822471116671,
+            "r2": -65.67318328059132,
+            "nrmse": 7.5546804858397785,
+            "max_absolute_error": 0.32158205881841245,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.04195521510033087,
+            "mse": 0.007478089047972372,
+            "rmse": 0.08647594490939299,
+            "mape": 547.4009795528598,
+            "r2": -60.776012059603445,
+            "nrmse": 7.304889332597604,
+            "max_absolute_error": 0.32286517566161893,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.2599773959890349,
+            "mse": 0.06946463169901464,
+            "rmse": 0.2635614381866487,
+            "mape": 4.252596208327711,
+            "r2": -50.522378472160774,
+            "nrmse": 3.208952430521312,
+            "max_absolute_error": 0.3441583320766615,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "inactive_flux",
+        "ok": true,
+        "reply": "inactive_flux = (kcat * substrate * (gamma * regulatory_binding_2 + delta * regulatory_binding_1)) / (Ks * substrate_effect_on_binding + substrate * substrate_effect_on_catalysis)",
+        "expression": "4875871770000*regulator*substrate*(215168894823447483750000000*regulator + 1526703598169652400582997)/(6108870147145979242676765625000000000*regulator**2 + 41490457065126178615412983165122000*regulator + 5000000000*substrate*(21516889482344748375000000000*regulator**2 + 152670359816965240058299700*regulator + 843990369397691458162077) + 99019558911968970135872052620007)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.09786164391103477,
+            "mse": 0.046612704426920726,
+            "rmse": 0.21589975550454132,
+            "mape": 2.0014899857936013,
+            "r2": -18.76606498139913,
+            "nrmse": 3.2141720677601984,
+            "max_absolute_error": 1.687031839253691,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.10616515167232843,
+            "mse": 0.06051833976656017,
+            "rmse": 0.24600475557712329,
+            "mape": 2.038383152481138,
+            "r2": -22.682488642011943,
+            "nrmse": 3.570983121368087,
+            "max_absolute_error": 1.6537629329866028,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.186109635841534,
+            "mse": 10.569069788650213,
+            "rmse": 3.2510105795967834,
+            "mape": 38.19864252757077,
+            "r2": -4258.4768900781055,
+            "nrmse": 27.308341775035142,
+            "max_absolute_error": 4.690609840383609,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 1058.6078891959041,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/runs/g5-r3-t060/performance.json",
+    "file_sha256": "71ebfc1e25d0918f83813aa3cb2f861b17dff19e01788d6dde220067006c1c0b",
+    "bytes": 7220,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r3-remaining89-20260923",
+    "batch": "openrouter-remaining89-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923",
+    "setup_signature": "323d3ecb67d2c4213d4a5d1a1605855cc82fababa2f16c28ff3da967975ec3c8",
+    "job": {
+      "id": "g5-r3-t060",
+      "group": 5,
+      "replicate": 3,
+      "task_index": 60,
+      "task_name": "Allosteric Regulation - Variant 1-2-3-5",
+      "task_group": "Allosteric Regulation",
+      "domain": "biology",
+      "core": true,
+      "probe_count": 2,
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-5.yaml",
+      "task_sha256": "2a91194f8af3cca1df32ca660908c5efb7ea6ca6546d63737216e3876f300ff7",
+      "seed": 2,
+      "host": "g34",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1,
+      "provider": "openrouter",
+      "upstream_model": "z-ai/glm-5.3-flash",
+      "currency": "USD"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/runs/g5-r3-t060/args.json",
+      "file_sha256": "05533c8b3cd2fa944035eb7e8aa83281c8422d07606e02c5dd8055594a8bca27",
+      "bytes": 3625
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/jobs/g5-r3-t060/terminal.json",
+      "file_sha256": "5dd664ca07375dda62ffda2937089f9b2624eb97911d5d9bce431c7845ec7de4",
+      "bytes": 2090
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 2,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "kcat = 9.75174354\nKs = 0.0234646182\nKi2 = 0.0171297764\nKi1 = 0.0460207917\nalpha = 18.1026975\nbeta = 19.2832982\ngamma = 7.48075422\ndelta = 8.32475237\nregulatory_binding_2 = (regulator / Ki2) ** 2\nregulatory_binding_1 = regulator / Ki1\nsubstrate_effect_on_binding = 1 + alpha * regulatory_binding_2 + beta * regulatory_binding_1\nsubstrate_effect_on_catalysis = 1 + gamma * regulatory_binding_2 + delta * regulatory_binding_1\nactivity = kcat * substrate / (Ks * substrate_effect_on_binding + substrate * substrate_effect_on_catalysis)\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/runs/g5-r3-t060/submission.txt",
+    "file_sha256": "4dc9099ae2202813e5429f840cf39dfa9298eb422fb0ec482d4c9c2976cee3a4",
+    "bytes": 532,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/runs/g5-r3-t060/frozen_submission/submission.txt",
+      "file_sha256": "4dc9099ae2202813e5429f840cf39dfa9298eb422fb0ec482d4c9c2976cee3a4",
+      "bytes": 532,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/runs/g5-r3-t060/frozen_submission/metadata.json",
+      "file_sha256": "c354b23320f4ce5f543fed87d054cd5939cd9cfd1e232677879a4712ef2c900f",
+      "bytes": 334,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/runs/g5-r3-t060/saved_checkpoint/model.json",
+      "file_sha256": "5342ba0b49063d4bb2c69c191180e8ed8c0975c4d413fd26e5f807bebc00c390",
+      "bytes": 1202,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 532,
+      "sha256": "4dc9099ae2202813e5429f840cf39dfa9298eb422fb0ec482d4c9c2976cee3a4",
+      "source_mtime_ns": 1790137435406791000,
+      "source_ctime_ns": 1790137435406791000,
+      "captured_monotonic": 9428449.527919825,
+      "captured_wall_ns": 1790137453283085299,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/runs/g5-r3-t060/openrouter/usage.jsonl",
+      "file_sha256": "b7b044f693926ac5afe9927bf18498e5b6511ac1fda039f0158c3fbe400bd1e9",
+      "bytes": 71297
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/openrouter-remaining89-20260923/runs/g5-r3-t060/openrouter/usage.json",
+      "file_sha256": "3cc7dbce8c15bfa52b5cb146a57ff2c1782746acc214536a544eff928137d3f4",
+      "bytes": 496
+    },
+    "event_counts": {
+      "request_started": 70,
+      "response_started": 70,
+      "request_finished": 70
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 70,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.17206881,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 3250709,
+      "output_tokens": 45195,
+      "cached_tokens": 2817792
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 70
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.17206881,
+  "token_usage": {
+    "input_tokens": 3250709,
+    "output_tokens": 45195,
+    "cached_tokens": 2817792,
+    "total_tokens_observed": 3295904,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "b7b044f693926ac5afe9927bf18498e5b6511ac1fda039f0158c3fbe400bd1e9",
+      "started_unique": 70,
+      "finished_unique": 70,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 3295904
+}

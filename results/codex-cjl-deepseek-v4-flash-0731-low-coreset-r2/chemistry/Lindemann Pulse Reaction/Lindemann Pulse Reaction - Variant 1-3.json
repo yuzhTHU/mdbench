@@ -1,0 +1,345 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 726.5502153080888,
+  "evaluation_seconds": 95.21032580290921,
+  "evaluation": {
+    "task_name": "Lindemann Pulse Reaction - Variant 1-3",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 4.064281096268513e-07,
+        "mse": 6.259932618550477e-13,
+        "rmse": 7.91197359610766e-07,
+        "mape": 0.003445226586988549,
+        "r2": 0.999935147225764,
+        "nrmse": 0.0057003195531325655,
+        "max_absolute_error": 5.636632649252916e-06,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 4.0028090177289503e-07,
+        "mse": 6.835144371278126e-13,
+        "rmse": 8.26749319399667e-07,
+        "mape": 0.003489349551082387,
+        "r2": 0.9999219389392606,
+        "nrmse": 0.006286649885765468,
+        "max_absolute_error": 7.647360275165444e-06,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.00021389780227748013,
+        "mse": 6.907691182215048e-08,
+        "rmse": 0.00026282486910897624,
+        "mape": 0.20279810563259132,
+        "r2": 0.7670602768868343,
+        "nrmse": 0.2032713518940456,
+        "max_absolute_error": 0.0009926454423587706,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "k_ac": "collider**3/20 + 1177*collider**2/10000 + 3223*collider/2500",
+      "k_deact": "6849*collider**2/10000 + 13147*collider/10000",
+      "k_reac": "17161/10000",
+      "k_loss": "293*collider**3/10000 + 49*collider**2/2500 + 73*collider/250",
+      "astar": "dose*(collider**3/20 + 1177*collider**2/10000 + 3223*collider/2500)/(laplace_rate**2 + laplace_rate*(793*collider**3/10000 + 4111*collider**2/5000 + 28959*collider/10000 + 17161/10000) + (collider**3/20 + 1177*collider**2/10000 + 3223*collider/2500)*(293*collider**3/10000 + 49*collider**2/2500 + 73*collider/250 + 17161/10000))",
+      "response": "17161*dose*laplace_rate*(collider**3/20 + 1177*collider**2/10000 + 3223*collider/2500)/(10000*(laplace_rate**2 + laplace_rate*(793*collider**3/10000 + 4111*collider**2/5000 + 28959*collider/10000 + 17161/10000) + (collider**3/20 + 1177*collider**2/10000 + 3223*collider/2500)*(293*collider**3/10000 + 49*collider**2/2500 + 73*collider/250 + 17161/10000)))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "quench_flux",
+        "ok": true,
+        "reply": "quench_flux = laplace_rate*k_deact*astar",
+        "expression": "collider**2*dose*laplace_rate*(6849*collider + 13147)*(500*collider**2 + 1177*collider + 12892)/(collider*(500*collider**2 + 1177*collider + 12892)*(293*collider**3 + 196*collider**2 + 2920*collider + 17161) + 100000000*laplace_rate**2 + 10000*laplace_rate*(793*collider**3 + 8222*collider**2 + 28959*collider + 17161))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 7.107659554155438e-05,
+            "mse": 2.3450237714437646e-08,
+            "rmse": 0.00015313470447432106,
+            "mape": 3.80770904730861,
+            "r2": -9.746291673594817,
+            "nrmse": 2.961604929823305,
+            "max_absolute_error": 0.0010006118456301343,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.751445007360503e-05,
+            "mse": 2.2591857724125736e-08,
+            "rmse": 0.00015030588053740858,
+            "mape": 3.9222291193547973,
+            "r2": -8.268827310130318,
+            "nrmse": 2.7873892293578812,
+            "max_absolute_error": 0.00129677807008248,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.006783158097812633,
+            "mse": 8.813242602905141e-05,
+            "rmse": 0.009387887197290529,
+            "mape": 1.0684675937823518,
+            "r2": -4.067435032949408,
+            "nrmse": 1.2611643822143084,
+            "max_absolute_error": 0.03463439848444444,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "caged_pool",
+        "ok": true,
+        "reply": "caged_pool = astar*(laplace_rate + k_deact + k_reac + k_loss)/k_ac",
+        "expression": "10000*dose*(293*collider**3 + 7045*collider**2 + 16067*collider + 10000*laplace_rate + 17161)/(collider*(500*collider**2 + 1177*collider + 12892)*(293*collider**3 + 196*collider**2 + 2920*collider + 17161) + 100000000*laplace_rate**2 + 10000*laplace_rate*(793*collider**3 + 8222*collider**2 + 28959*collider + 17161))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0011272993773666672,
+            "mse": 3.987538294637055e-06,
+            "rmse": 0.001996882143401822,
+            "mape": 53.35981757357893,
+            "r2": -3224.228548628267,
+            "nrmse": 39.48457823504516,
+            "max_absolute_error": 0.012269400088790725,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0010895947056900846,
+            "mse": 3.250275503798453e-06,
+            "rmse": 0.0018028520471182468,
+            "mape": 58.916245665287995,
+            "r2": -2943.1998327347715,
+            "nrmse": 37.71454839596466,
+            "max_absolute_error": 0.013493139630792541,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.638483388781891e-05,
+            "mse": 7.755880158279816e-09,
+            "rmse": 8.80674750306821e-05,
+            "mape": 0.25033490314893614,
+            "r2": 0.6430024537115895,
+            "nrmse": 0.28839025812110775,
+            "max_absolute_error": 0.0003975883233563282,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 822.0973270549439,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r2-t026/performance.json",
+    "file_sha256": "bbab7a118d23a2de22778461017f73ed212440ba4469886fad41acb2d6fafc5b",
+    "bytes": 7041,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-deepseek-v4-flash-0731-low-r2-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "b9bda46eb74e4057b1b040b78e1b139f53475b2c455c0e91e0e55500b7976af7",
+    "job": {
+      "id": "g4-r2-t026",
+      "group": 4,
+      "replicate": 2,
+      "task_index": 26,
+      "task_name": "Lindemann Pulse Reaction - Variant 1-3",
+      "task_group": "Lindemann Pulse Reaction",
+      "domain": "chemistry",
+      "core": true,
+      "probe_count": 2,
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3.yaml",
+      "task_sha256": "5e9567e8559dd5ec0b5d64e1011c6f65d4239dc179097f97d273c7586eccfd9a",
+      "seed": 1,
+      "host": "g32",
+      "model_key": "deepseek",
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "reasoning_effort": "low",
+      "submission_filename": "working_model.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "deepseek/deepseek-v4-flash-0731",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r2-t026/args.json",
+      "file_sha256": "d634f5491984d6a037f43fefabc80404cbd929ebfee505bdeb0d5526363b7923",
+      "bytes": 3609
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g4-r2-t026/terminal.json",
+      "file_sha256": "888bae2cc6dcb260108152c808c51e43261a8889d4e2f0ea130409d92d475b60",
+      "bytes": 1959
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 1,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "k_ac = 1.2892*collider + 0.1177*collider^2 + 0.0500*collider^3\nk_deact = 1.3147*collider + 0.6849*collider^2\nk_reac = 1.7161\nk_loss = 0.2920*collider + 0.0196*collider^2 + 0.0293*collider^3\nastar = k_ac*dose/(laplace_rate^2 + laplace_rate*(k_ac+k_deact+k_reac+k_loss) + k_ac*(k_reac+k_loss))\nresponse = laplace_rate*k_reac*astar\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r2-t026/working_model.txt",
+    "file_sha256": "3320687995d26de5455d41ee341d47088ee1c91aeb1ec1340f43e122f78d8b7a",
+    "bytes": 329,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/working_model.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r2-t026/frozen_submission/working_model.txt",
+      "file_sha256": "3320687995d26de5455d41ee341d47088ee1c91aeb1ec1340f43e122f78d8b7a",
+      "bytes": 329,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r2-t026/frozen_submission/metadata.json",
+      "file_sha256": "5e334e3054a7304d89bc0441dcd1a7a6ff8aaef80db25f0b871e6749f0be68b1",
+      "bytes": 337,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r2-t026/saved_checkpoint/model.json",
+      "file_sha256": "8537770c2cf73398989eb503feee9bdf93f92ee81a5e4763646c7faac6593cb0",
+      "bytes": 1191,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 329,
+      "sha256": "3320687995d26de5455d41ee341d47088ee1c91aeb1ec1340f43e122f78d8b7a",
+      "source_mtime_ns": 1790107991758273000,
+      "source_ctime_ns": 1790107991758273000,
+      "captured_monotonic": 1169477.434984245,
+      "captured_wall_ns": 1790108031673430674,
+      "submission_filename": "working_model.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r2-t026/openrouter/usage.jsonl",
+      "file_sha256": "f5def48c7ae9ddeb53ca10defce328e7163d19a3b11a2fb332343c3ee863ab1e",
+      "bytes": 38951
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r2-t026/openrouter/usage.json",
+      "file_sha256": "00d6a447adb560b46024bb72e4410890ec3644009a501a28219f7e63f4fbf73e",
+      "bytes": 496
+    },
+    "event_counts": {
+      "request_started": 38,
+      "response_started": 38,
+      "request_finished": 38
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 38,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.066405304,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1626731,
+      "output_tokens": 59006,
+      "cached_tokens": 1517824
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 38
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.066405304,
+  "token_usage": {
+    "input_tokens": 1626731,
+    "output_tokens": 59006,
+    "cached_tokens": 1517824,
+    "total_tokens_observed": 1685737,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "f5def48c7ae9ddeb53ca10defce328e7163d19a3b11a2fb332343c3ee863ab1e",
+      "started_unique": 38,
+      "finished_unique": 38,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1685737
+}

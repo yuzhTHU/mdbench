@@ -1,0 +1,400 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 901.683301107958,
+  "evaluation_seconds": 159.03817047481425,
+  "evaluation": {
+    "task_name": "Lindemann Pulse Reaction - Variant 1-2-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.032489907182555e-06,
+        "mse": 2.8549233711388357e-12,
+        "rmse": 1.6896518490916511e-06,
+        "mape": 0.009775167507983589,
+        "r2": 0.9997403423249256,
+        "nrmse": 0.010387771414506962,
+        "max_absolute_error": 1.0412108779654075e-05,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.0265141244758104e-06,
+        "mse": 3.173342432342715e-12,
+        "rmse": 1.7813877826971631e-06,
+        "mape": 0.010135866222405364,
+        "r2": 0.9996954138934955,
+        "nrmse": 0.01148574525348359,
+        "max_absolute_error": 1.2250155854503294e-05,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.00011121694678763035,
+        "mse": 1.7418595353173728e-08,
+        "rmse": 0.00013197952626515117,
+        "mape": 0.14669632092229556,
+        "r2": 0.817197883045208,
+        "nrmse": 0.15810372958073354,
+        "max_absolute_error": 0.00042388454253669983,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "k_s2": "8346313/50000000",
+      "k_occupied": "60603727/100000000",
+      "c_zero_half": "36676601/50000000",
+      "k_background": "10134749/50000000",
+      "k_damping": "106321311/100000000",
+      "k_collision_linear": "2044319/6250000",
+      "c_linear_offset": "29333883/50000000",
+      "k_collision_occupied": "305663/2000000",
+      "c_decay_half": "13074693/100000000",
+      "collision_occupancy": "collider/(collider + 36676601/50000000)",
+      "activation_zero": "60603727*collider/(100000000*(collider + 36676601/50000000))",
+      "buffered_occupancy": "collider/(collider + 13074693/100000000)",
+      "second_order_mode": "2044319*collider/6250000 + 305663*collider/(2000000*(collider + 13074693/100000000)) + laplace_rate**2 + 106321311*laplace_rate/100000000 + 59967814360677/312500000000000",
+      "response": "dose*laplace_rate*(60603727*collider/(100000000*(collider + 36676601/50000000)) + 8346313*laplace_rate/50000000 + 10134749/50000000)/(2044319*collider/6250000 + 305663*collider/(2000000*(collider + 13074693/100000000)) + laplace_rate**2 + 106321311*laplace_rate/100000000 + 59967814360677/312500000000000)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "quench_flux",
+        "ok": true,
+        "reply": "quench_flux = dose * laplace_rate * k_collision_occupied * buffered_occupancy / second_order_mode",
+        "expression": "4775984375000000000000*collider*dose*laplace_rate/(4775984375000000000000*collider + (100000000*collider + 13074693)*(102215950000000*collider + 312500000000000*laplace_rate**2 + 332254096875000*laplace_rate + 59967814360677))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.2675176218173116e-05,
+            "mse": 1.889171976769785e-09,
+            "rmse": 4.3464606023404666e-05,
+            "mape": 8.187278111492262,
+            "r2": 0.21527167974410577,
+            "nrmse": 0.8061355609588985,
+            "max_absolute_error": 0.0004560800494201203,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.26186919106212e-05,
+            "mse": 2.2827620684695848e-09,
+            "rmse": 4.777825937044572e-05,
+            "mape": 8.422910110286637,
+            "r2": 0.15997036933570574,
+            "nrmse": 0.8449544165842797,
+            "max_absolute_error": 0.00048419868320175426,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.006469757190636633,
+            "mse": 6.13284554086797e-05,
+            "rmse": 0.007831248649396832,
+            "mape": 0.9893911820485607,
+            "r2": -2.1457573283868903,
+            "nrmse": 0.9947093262655422,
+            "max_absolute_error": 0.028675071255116397,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "secondary_pool",
+        "ok": true,
+        "reply": "secondary_pool = dose * laplace_rate * (activation_zero + k_background) / second_order_mode",
+        "expression": "6250000*dose*laplace_rate*(100000000*collider + 13074693)*(2021830625000000*collider + 371708145308149)/((50000000*collider + 36676601)*(4775984375000000000000*collider + (100000000*collider + 13074693)*(102215950000000*collider + 312500000000000*laplace_rate**2 + 332254096875000*laplace_rate + 59967814360677)))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.0804769628632264e-05,
+            "mse": 5.907138819642156e-09,
+            "rmse": 7.685791318818223e-05,
+            "mape": 2.845391034256159,
+            "r2": -6.722551538065148,
+            "nrmse": 1.9741070000368808,
+            "max_absolute_error": 0.0002338719673451287,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.722667380964679e-05,
+            "mse": 5.394756355274414e-09,
+            "rmse": 7.344900513468113e-05,
+            "mape": 2.8147194952754306,
+            "r2": -6.908535427982203,
+            "nrmse": 2.003488172752004,
+            "max_absolute_error": 0.0002379829786153634,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0001359769329053453,
+            "mse": 2.448507881657772e-08,
+            "rmse": 0.00015647708719354958,
+            "mape": 1.8399109882496039,
+            "r2": -3.2259112588362546,
+            "nrmse": 1.2873557001970288,
+            "max_absolute_error": 0.00043360501264045964,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "direct_product_flux",
+        "ok": true,
+        "reply": "direct_product_flux = laplace_rate * (k_s2 * laplace_rate + activation_zero + k_background) / second_order_mode",
+        "expression": "6250000*laplace_rate*(100000000*collider + 13074693)*(1515093175000000*collider + (50000000*collider + 36676601)*(8346313*laplace_rate + 10134749))/((50000000*collider + 36676601)*(4775984375000000000000*collider + (100000000*collider + 13074693)*(102215950000000*collider + 312500000000000*laplace_rate**2 + 332254096875000*laplace_rate + 59967814360677)))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.15833491207785444,
+            "mse": 0.030785943821664462,
+            "rmse": 0.17545923692317958,
+            "mape": 5300.584065413252,
+            "r2": -7912385.969875069,
+            "nrmse": 2005.8628168985558,
+            "max_absolute_error": 0.2779340400969125,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1500205565541026,
+            "mse": 0.028607588335537757,
+            "rmse": 0.169137779149242,
+            "mape": 5574.0536963340555,
+            "r2": -7451074.673084151,
+            "nrmse": 1999.2228780296293,
+            "max_absolute_error": 0.2780740747108449,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.20376564506100875,
+            "mse": 0.04182665743964575,
+            "rmse": 0.20451566551158312,
+            "mape": 447.5617227651227,
+            "r2": -723982.2796979799,
+            "nrmse": 336.79896003981224,
+            "max_absolute_error": 0.24210068473582957,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 1061.0579209190328,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/runs/g3-r1-t255/performance.json",
+    "file_sha256": "c2b9df8e056f6e00f9d38ba14635b128d98b19a5e350f510cf82b09f130da422",
+    "bytes": 9300,
+    "hostname": "g28"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-numpy235-20260923",
+    "batch": "numpy235",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235",
+    "setup_signature": "21cc7598c4135d8a532956854692b974bcadf95e6aa8314082d57c76b5f7c8af",
+    "job": {
+      "id": "g3-r1-t255",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 255,
+      "task_name": "Lindemann Pulse Reaction - Variant 1-2-5",
+      "task_group": "Lindemann Pulse Reaction",
+      "domain": "chemistry",
+      "core": false,
+      "probe_count": 3,
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-5.yaml",
+      "task_sha256": "7a1bc5ddbc9cefadcdeef98b3bc18b54d8ddb0e5bca1cf062e6f26af93e3a384",
+      "seed": 0,
+      "host": "g28",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/runs/g3-r1-t255/args.json",
+      "file_sha256": "b86a8dbf8f9b555fb82a4518dbeccd55f8abf2130653089a0bc6b9dce05fd3f7",
+      "bytes": 3511
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/jobs/g3-r1-t255/terminal.json",
+      "file_sha256": "37c82200423afa530531d12a8a195a4031e94b423daf7a8636591de508e85acf",
+      "bytes": 2339
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "k_s2 = 0.1669262600\nk_occupied = 0.6060372700\nc_zero_half = 0.7335320200\nk_background = 0.2026949800\nk_damping = 1.0632131100\nk_collision_linear = 0.3270910400\nc_linear_offset = 0.5866776600\nk_collision_occupied = 0.1528315000\nc_decay_half = 0.1307469300\ncollision_occupancy = collider / (collider + c_zero_half)\nactivation_zero = k_occupied * collision_occupancy\nbuffered_occupancy = collider / (collider + c_decay_half)\nsecond_order_mode = laplace_rate^2 + k_damping * laplace_rate + k_collision_linear * (collider + c_linear_offset) + k_collision_occupied * buffered_occupancy\nresponse = dose * laplace_rate * (k_s2 * laplace_rate + activation_zero + k_background) / second_order_mode\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/runs/g3-r1-t255/submission.txt",
+    "file_sha256": "97e862fab26378755282d7452e0ef1a307d2ccf2c5496ca9cd892c5f208bac4c",
+    "bytes": 688,
+    "hostname": "g28",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/runs/g3-r1-t255/frozen_submission/submission.txt",
+      "file_sha256": "97e862fab26378755282d7452e0ef1a307d2ccf2c5496ca9cd892c5f208bac4c",
+      "bytes": 688,
+      "hostname": "g28"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/runs/g3-r1-t255/frozen_submission/metadata.json",
+      "file_sha256": "3b4964e52f25b13b4f896f014914c6f8a6e7f5a5e2849924dbdbc4a5835b0b00",
+      "bytes": 334,
+      "hostname": "g28"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/runs/g3-r1-t255/saved_checkpoint/model.json",
+      "file_sha256": "1a6ba45bc332d6c4430ff8689cbc89514dff9eec222c5775e80b5606e88520bf",
+      "bytes": 1239,
+      "hostname": "g28"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 688,
+      "sha256": "97e862fab26378755282d7452e0ef1a307d2ccf2c5496ca9cd892c5f208bac4c",
+      "source_mtime_ns": 1790101465454120000,
+      "source_ctime_ns": 1790101465454120000,
+      "captured_monotonic": 1261149.568632722,
+      "captured_wall_ns": 1790101491187556760,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/runs/g3-r1-t255/openrouter/usage.jsonl",
+      "file_sha256": "f270b7a9bde3ed6d3b747fff8a94f9e5fc1e2d0ed500d7581ff5e671b9593bfa",
+      "bytes": 36748
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/numpy235/runs/g3-r1-t255/openrouter/usage.json",
+      "file_sha256": "a6b820941d20119fe58192b17c43fac70bba0278e96b9bff592e4eef6f8acf20",
+      "bytes": 472
+    },
+    "event_counts": {
+      "request_started": 36,
+      "response_started": 36,
+      "request_finished": 36
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 36,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.044032665,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1260783,
+      "output_tokens": 29754,
+      "cached_tokens": 966076
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 36
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.044032665,
+  "token_usage": {
+    "input_tokens": 1260783,
+    "output_tokens": 29754,
+    "cached_tokens": 966076,
+    "total_tokens_observed": 1290537,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "f270b7a9bde3ed6d3b747fff8a94f9e5fc1e2d0ed500d7581ff5e671b9593bfa",
+      "started_unique": 36,
+      "finished_unique": 36,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1290537
+}

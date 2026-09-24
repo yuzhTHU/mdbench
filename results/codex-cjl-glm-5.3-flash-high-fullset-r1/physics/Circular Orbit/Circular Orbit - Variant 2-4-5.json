@@ -1,0 +1,345 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.7029859861359,
+  "evaluation_seconds": 50.92803269508295,
+  "evaluation": {
+    "task_name": "Circular Orbit - Variant 2-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 220951271.5946639,
+        "mse": 2.400704229132102e+17,
+        "rmse": 489969818.36967283,
+        "mape": 0.04226812102801219,
+        "r2": 0.9648185910994402,
+        "nrmse": 0.11551336444288739,
+        "max_absolute_error": 2441002182.068822,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 228308079.7127395,
+        "mse": 2.5336192593881584e+17,
+        "rmse": 503350698.75665796,
+        "mape": 0.043719491863913516,
+        "r2": 0.9647903400528097,
+        "nrmse": 0.11784564802261416,
+        "max_absolute_error": 2552226259.1670094,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 600147704.2634482,
+        "mse": 5.615032513893433e+17,
+        "rmse": 749335206.2924465,
+        "mape": 0.06525793718294202,
+        "r2": 0.6420288023106656,
+        "nrmse": 0.08805868622166668,
+        "max_absolute_error": 1954508826.3089428,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "log_observed_mass": "log(central_mass)",
+      "log_proper_radius": "log(radius)",
+      "screening_logit": "7434919*log(central_mass)/6250000 - 11593503*log(radius)/4000000 - 1678475337/100000000",
+      "screening_fraction": "1/(1 + radius**(11593503/4000000)*exp(1678475337/100000000)/central_mass**(7434919/6250000))",
+      "kepler_squared": "9869604401089357120529513782849*radius**3/(16685750000000000000*central_mass)",
+      "period_squared": "9869604401089357120529513782849*radius**3/(16685750000000000000*central_mass*(1 + radius**(11593503/4000000)*exp(1678475337/100000000)/central_mass**(7434919/6250000)))",
+      "pi": "3141592653589793/1000000000000000"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "extra_accel",
+        "ok": true,
+        "reply": "extra_accel = 4*pi**2*radius*(1/screening_fraction - 1)/kepler_squared",
+        "expression": "66743*radius**(3593503/4000000)*exp(1678475337/100000000)/(1000000000000000*central_mass**(1184919/6250000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1586220282511672,
+            "mse": 0.03205518707710679,
+            "rmse": 0.17903962432128478,
+            "mape": 64.4934923765527,
+            "r2": -2304.707926833647,
+            "nrmse": 27.95557849032528,
+            "max_absolute_error": 0.3873940136270256,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1577879096490345,
+            "mse": 0.032219344847199724,
+            "rmse": 0.17949747866529972,
+            "mape": 65.81073066781654,
+            "r2": -2251.5354963603527,
+            "nrmse": 27.899313367821886,
+            "max_absolute_error": 0.3947076896146186,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.29166963178812727,
+            "mse": 0.08615412363028992,
+            "rmse": 0.2935202269525729,
+            "mape": 47.42213815109971,
+            "r2": -21264.36740861786,
+            "nrmse": 40.978514366400894,
+            "max_absolute_error": 0.371195582137746,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "reservoir_inertia",
+        "ok": true,
+        "reply": "reservoir_inertia = screening_fraction",
+        "expression": "central_mass**(7434919/6250000)/(central_mass**(7434919/6250000) + radius**(11593503/4000000)*exp(1678475337/100000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5201694930579039,
+            "mse": 0.3560200951950507,
+            "rmse": 0.5966741951811312,
+            "mape": 8.961403949416198,
+            "r2": -704.3159715887317,
+            "nrmse": 8.947662407304728,
+            "max_absolute_error": 0.9074474715985359,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5243447464004298,
+            "mse": 0.36479576832087784,
+            "rmse": 0.6039832516890496,
+            "mape": 9.194477170403701,
+            "r2": -697.4948158678685,
+            "nrmse": 9.10687488117617,
+            "max_absolute_error": 0.9066913773605483,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.17478300858428733,
+            "mse": 0.0371623868042999,
+            "rmse": 0.19277548289214555,
+            "mape": 1.4158223522041455,
+            "r2": -460.369309566709,
+            "nrmse": 1.5847561784777762,
+            "max_absolute_error": 0.4001280737661799,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 951.9387082520407,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t094/performance.json",
+    "file_sha256": "e2ac02167999b6fe941b2c0d00aa44817bb3c785f11b0c6bcb87fc52f871d737",
+    "bytes": 6236,
+    "hostname": "g32"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-main-20260923",
+    "batch": "parent",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+    "setup_signature": "f79e224b2c66d393a1165fd324685630ef79f45382b58d223bd6362fe76ef4c4",
+    "job": {
+      "id": "g3-r1-t094",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 94,
+      "task_name": "Circular Orbit - Variant 2-4-5",
+      "task_group": "Circular Orbit",
+      "domain": "physics",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 2-4-5.yaml",
+      "task_sha256": "81591cd7b0e52570e9a32c43dd8115d59f79ce3ecee27c5b5fb7b793e6c5bf65",
+      "seed": 0,
+      "host": "g32",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t094/args.json",
+      "file_sha256": "1b43c9b6d62047d735d0f449e30a625813bf6f6b85e0af69ba73f79219a90db1",
+      "bytes": 2422
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/jobs/g3-r1-t094/terminal.json",
+      "file_sha256": "a821a2852dbd9b093c72a086890e6a9fe7a2df9c8f6e1243092a41751a81e82a",
+      "bytes": 1951
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": null
+  },
+  "submission": "log_observed_mass = log(central_mass)\nlog_proper_radius = log(radius)\nscreening_logit = -16.78475337 - 2.89837575*log_proper_radius + 1.18958704*log_observed_mass\nscreening_fraction = 1/(1+exp(-screening_logit))\nkepler_squared = 9869604401089357120529513782849*radius**3/(16685750000000000000*central_mass)\nperiod_squared = kepler_squared*screening_fraction\npi = 3.141592653589793\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t094/submission.txt",
+    "file_sha256": "f1fe8893c83465c33ba040006c119f4991c5ebe160ac4abc6ad21e90e8f2c8ac",
+    "bytes": 381,
+    "hostname": "g32",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t094/frozen_submission/submission.txt",
+      "file_sha256": "f1fe8893c83465c33ba040006c119f4991c5ebe160ac4abc6ad21e90e8f2c8ac",
+      "bytes": 381,
+      "hostname": "g32"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t094/frozen_submission/metadata.json",
+      "file_sha256": "d1ea9b3769b9abe2d8c4d07375ce01a7ecd25aa8428c9ab374010dd27e209243",
+      "bytes": 334,
+      "hostname": "g32"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t094/saved_checkpoint/model.json",
+      "file_sha256": "a1dbb36f412ae53a322d5cebb725f37565ab049a6066ca8a459d55aa0a078098",
+      "bytes": 1138,
+      "hostname": "g32"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 381,
+      "sha256": "f1fe8893c83465c33ba040006c119f4991c5ebe160ac4abc6ad21e90e8f2c8ac",
+      "source_mtime_ns": 1790100080474273000,
+      "source_ctime_ns": 1790100080474273000,
+      "captured_monotonic": 1161820.319408046,
+      "captured_wall_ns": 1790100374557854433,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t094/openrouter/usage.jsonl",
+      "file_sha256": "5600038c6d42172e8b7904c89bb8a4d9a7a429d325019186cd660b750ddbad17",
+      "bytes": 37775
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g3-r1-t094/openrouter/usage.json",
+      "file_sha256": "58120e6411e39596c760e36cb9253c32c267139c4e6a093aa9eb03d3dee81eec",
+      "bytes": 475
+    },
+    "event_counts": {
+      "request_started": 37,
+      "response_started": 37,
+      "request_finished": 37
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 37,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.0449812518,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1132323,
+      "output_tokens": 19860,
+      "cached_tokens": 1001280
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 37
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.0449812518,
+  "token_usage": {
+    "input_tokens": 1132323,
+    "output_tokens": 19860,
+    "cached_tokens": 1001280,
+    "total_tokens_observed": 1152183,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "5600038c6d42172e8b7904c89bb8a4d9a7a429d325019186cd660b750ddbad17",
+      "started_unique": 37,
+      "finished_unique": 37,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 1152183
+}

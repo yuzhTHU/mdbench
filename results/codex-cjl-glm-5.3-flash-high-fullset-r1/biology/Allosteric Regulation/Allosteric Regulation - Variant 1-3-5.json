@@ -1,0 +1,350 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 901.7507313489914,
+  "evaluation_seconds": 57.55060356669128,
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 1-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0005464976578089502,
+        "mse": 5.183145401634974e-07,
+        "rmse": 0.0007199406504452276,
+        "mape": 0.0018303198296511052,
+        "r2": 0.999999569264223,
+        "nrmse": 0.0004957686627164487,
+        "max_absolute_error": 0.004310792636251337,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0005819151424443478,
+        "mse": 8.145794656435618e-07,
+        "rmse": 0.0009025405617719139,
+        "mape": 0.0019055497927653292,
+        "r2": 0.9999993358145565,
+        "nrmse": 0.0006189683960102686,
+        "max_absolute_error": 0.008060009200025142,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.023560349393964855,
+        "mse": 0.001157456318278867,
+        "rmse": 0.03402140970446209,
+        "mape": 0.03754179199985268,
+        "r2": 0.993430598540966,
+        "nrmse": 0.03922251828032631,
+        "max_absolute_error": 0.15177186960417743,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "V_max": "4683321/400000",
+      "K_s": "17519813/625000000",
+      "substrate_power": "482477461/500000000",
+      "q_1": "1023891447/1000000000",
+      "r_1": "110137343/50000000",
+      "q_2": "3993057737/5000000000",
+      "r_2": "776931437/500000000",
+      "substrate_state": "substrate**(482477461/500000000)",
+      "regulatory_term_1": "147809263*regulator**(1023891447/1000000000)/10000000 + 23029669*regulator**(110137343/50000000)/5000",
+      "regulatory_term_2": "48657079*regulator**(3993057737/5000000000)*substrate**(482477461/500000000)/2000000 + 386094237*regulator**(776931437/500000000)*substrate**(482477461/500000000)/100000",
+      "activity": "4683321*substrate/(400000*(48657079*regulator**(3993057737/5000000000)*substrate**(482477461/500000000)/2000000 + 147809263*regulator**(1023891447/1000000000)/10000000 + 386094237*regulator**(776931437/500000000)*substrate**(482477461/500000000)/100000 + 23029669*regulator**(110137343/50000000)/5000 + substrate**(482477461/500000000) + 17519813/625000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "t3",
+        "ok": true,
+        "reply": "t3 = 4605.93380 * regulator ** r_1 / (K_s + substrate_state + regulatory_term_1 + regulatory_term_2)",
+        "expression": "5757417250000*regulator**(110137343/50000000)/(30410674375*regulator**(3993057737/5000000000)*substrate**(482477461/500000000) + 18476157875*regulator**(1023891447/1000000000) + 4826177962500*regulator**(776931437/500000000)*substrate**(482477461/500000000) + 5757417250000*regulator**(110137343/50000000) + 1250000000*substrate**(482477461/500000000) + 35039626)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0337725821422062,
+            "mse": 0.005274799621822273,
+            "rmse": 0.07262781575830483,
+            "mape": 164.893872277865,
+            "r2": -45.53923666560844,
+            "nrmse": 6.310676754509525,
+            "max_absolute_error": 0.28981088577742947,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.03345812047960222,
+            "mse": 0.005329125188783252,
+            "rmse": 0.07300085745238374,
+            "mape": 173.87212385442766,
+            "r2": -42.66485776007514,
+            "nrmse": 6.139935340177176,
+            "max_absolute_error": 0.2911303090200889,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.29221977669192856,
+            "mse": 0.08918735431214458,
+            "rmse": 0.2986425192636584,
+            "mape": 4.3157547714504725,
+            "r2": -58.42943655386328,
+            "nrmse": 3.411143872904129,
+            "max_absolute_error": 0.41038368396722774,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "inactive_flux",
+        "ok": true,
+        "reply": "inactive_flux = V_max * regulatory_term_2 / (K_s + substrate_state + regulatory_term_1 + regulatory_term_2)",
+        "expression": "220116087*substrate**(482477461/500000000)*(1035257*regulator**(3993057737/5000000000) + 164295420*regulator**(776931437/500000000))/(640*(30410674375*regulator**(3993057737/5000000000)*substrate**(482477461/500000000) + 18476157875*regulator**(1023891447/1000000000) + 4826177962500*regulator**(776931437/500000000)*substrate**(482477461/500000000) + 5757417250000*regulator**(110137343/50000000) + 1250000000*substrate**(482477461/500000000) + 35039626))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1050169423913399,
+            "mse": 0.05536246569562899,
+            "rmse": 0.23529229841970814,
+            "mape": 2.3023889633944834,
+            "r2": -27.018958194230684,
+            "nrmse": 3.7856632806923036,
+            "max_absolute_error": 1.7909406984489082,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.11388780550399925,
+            "mse": 0.07128115215852703,
+            "rmse": 0.2669853032631703,
+            "mape": 2.34284137428175,
+            "r2": -32.26873288864734,
+            "nrmse": 4.191587308513447,
+            "max_absolute_error": 1.728627141484323,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.0263514334684727,
+            "mse": 9.536591604200641,
+            "rmse": 3.088137238563183,
+            "mape": 37.62760125611451,
+            "r2": -4434.039900713226,
+            "nrmse": 27.91748131238259,
+            "max_absolute_error": 4.260142396454366,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 959.7265208922327,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t302/performance.json",
+    "file_sha256": "78f5e86123ee340bdd4d0a1885f06c36dbd6a23dfc19c65ea1595e525deb017b",
+    "bytes": 7307,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "415a6be6d9fa3f1725c1133da8c4e8d5aa47ca50b498304aff09c7bb19f8d35f",
+    "job": {
+      "id": "g3-r1-t302",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 302,
+      "task_name": "Allosteric Regulation - Variant 1-3-5",
+      "task_group": "Allosteric Regulation",
+      "domain": "biology",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-3-5.yaml",
+      "task_sha256": "791be8137e376216ea3135bfecf633745080a93d7beacf66ea5774c3dd0c6dd2",
+      "seed": 0,
+      "host": "g34",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t302/args.json",
+      "file_sha256": "e78968afa53dea1d079442ba936b75400005b1c5142b87373f8c8ae5ac1f5b0f",
+      "bytes": 3579
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g3-r1-t302/terminal.json",
+      "file_sha256": "e244b3febb9e6eaa81a857306fc1d5023949bf5eef8dce21773408350935ca2e",
+      "bytes": 1947
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "V_max = 11.708302500000000\nK_s = 0.028031700800000000\nsubstrate_power = 0.96495492200000000\nq_1 = 1.0238914470000000\nr_1 = 2.2027468599999999\nq_2 = 0.79861154740000001\nr_2 = 1.5538628739999999\nsubstrate_state = substrate ** substrate_power\nregulatory_term_1 = 14.7809263 * regulator ** q_1 + 4605.93380 * regulator ** r_1\nregulatory_term_2 = 24.3285395 * substrate_state * regulator ** q_2 + 3860.94237 * substrate_state * regulator ** r_2\nactivity = V_max * substrate / (K_s + substrate_state + regulatory_term_1 + regulatory_term_2)\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t302/submission.txt",
+    "file_sha256": "906eb7c28f97e703e0957cb2a8261a4c64c85ec67d78161c69ac4d8769781a97",
+    "bytes": 535,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t302/frozen_submission/submission.txt",
+      "file_sha256": "906eb7c28f97e703e0957cb2a8261a4c64c85ec67d78161c69ac4d8769781a97",
+      "bytes": 535,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t302/frozen_submission/metadata.json",
+      "file_sha256": "2450fa347c8d17f9356f2c1b447ccd7c9089dab12fe091998b65c3c48a59d5eb",
+      "bytes": 334,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t302/saved_checkpoint/model.json",
+      "file_sha256": "c39fd4c6cbe9ff4f614074caa45e6e02f9a1ecd18222821f9ce6536e755e9749",
+      "bytes": 1190,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 535,
+      "sha256": "906eb7c28f97e703e0957cb2a8261a4c64c85ec67d78161c69ac4d8769781a97",
+      "source_mtime_ns": 1790106751010791000,
+      "source_ctime_ns": 1790106751010791000,
+      "captured_monotonic": 9397969.238180716,
+      "captured_wall_ns": 1790106972993345826,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t302/openrouter/usage.jsonl",
+      "file_sha256": "3bb9ea5b89b72e27dd1fedce49146c612e4d33414bca9856917e21fd93d894a6",
+      "bytes": 77628
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t302/openrouter/usage.json",
+      "file_sha256": "5bb314a0a521cd92f52bfae287c499d943faab62e7a5840044044fb232c5129f",
+      "bytes": 495
+    },
+    "event_counts": {
+      "request_started": 76,
+      "response_started": 76,
+      "request_finished": 76
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 76,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.11717289,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 3996387,
+      "output_tokens": 44138,
+      "cached_tokens": 3759104
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 76
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.11717289,
+  "token_usage": {
+    "input_tokens": 3996387,
+    "output_tokens": 44138,
+    "cached_tokens": 3759104,
+    "total_tokens_observed": 4040525,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "3bb9ea5b89b72e27dd1fedce49146c612e4d33414bca9856917e21fd93d894a6",
+      "started_unique": 76,
+      "finished_unique": 76,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 4040525
+}

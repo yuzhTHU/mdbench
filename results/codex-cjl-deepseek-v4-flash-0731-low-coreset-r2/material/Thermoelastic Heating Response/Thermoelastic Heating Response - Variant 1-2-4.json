@@ -1,0 +1,464 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 0.33855042420327663,
+  "evaluation_seconds": 294.5239689219743,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Variant 1-2-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 288866.3979286095,
+        "mse": 390058129977.7713,
+        "rmse": 624546.3393358184,
+        "mape": 444.71747990930965,
+        "r2": -81681.53432088508,
+        "nrmse": 256.3803751358308,
+        "max_absolute_error": 5190827.9417822,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 314659.35095631826,
+        "mse": 477050734008.2015,
+        "rmse": 690688.5940915786,
+        "mape": 446.68092163229244,
+        "r2": -93401.20175339081,
+        "nrmse": 273.7916971175189,
+        "max_absolute_error": 8407786.381518146,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 83365.37746336254,
+        "mse": 27242186505.772194,
+        "rmse": 165052.072103843,
+        "mape": 64.40523925468058,
+        "r2": -27796.641080126832,
+        "nrmse": 121.79729671867892,
+        "max_absolute_error": 1492877.0954412285,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "stress": "frame_modulus*temperature_step*exp(-500000*sqrt(5646)/87513*sqrt(laplace_rate)*length_scale)*exp(-100000001*conditioning_cooling_rate/(1000000*conditioning_temperature) + 199999149/10000000 - 1300/(conditioning_temperature - 214))/(conditioning_cooling_rate**(100013099/100000000)*(frame_modulus + exp(-100000001*conditioning_cooling_rate/(1000000*conditioning_temperature) + 199999149/10000000 - 1300/(conditioning_temperature - 214))/conditioning_cooling_rate**(100013099/100000000)))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_slow_thermal_fraction",
+        "ok": false,
+        "error": "Expected one equality: 'The frozen submitted mechanism model does not define any internal variable named `prepared_slow_thermal_fraction`. It contains only a single equation that computes `stress` directly from the supplied inputs (`temperature_step`, `frame_modulus`, `conditioning_temperature`, `conditioning_cooling_rate`, `length_scale`, `laplace_rate`), with no auxiliary/internal variables introduced.'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "prepared_anelastic_fraction",
+        "ok": true,
+        "reply": "prepared_anelastic_fraction = exp(1.99999149e+01 - 1.30000000e+03/(conditioning_temperature-214) - 1.00013099e+00*log(conditioning_cooling_rate) - 1.00000001e+02*conditioning_cooling_rate/conditioning_temperature)",
+        "expression": "exp(-100000001*conditioning_cooling_rate/(1000000*conditioning_temperature) + 199999149/10000000 - 1300/(conditioning_temperature - 214))/conditioning_cooling_rate**(100013099/100000000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 509839.49483100435,
+            "mse": 870146707943.4591,
+            "rmse": 932816.5457063137,
+            "mape": 7.8032171137906e+18,
+            "r2": -11551197639496.803,
+            "nrmse": 2892305.3228972727,
+            "max_absolute_error": 4610135.080426468,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 529125.6821369319,
+            "mse": 911191139015.2255,
+            "rmse": 954563.3237324937,
+            "mape": 7.350920075780026e+18,
+            "r2": -11253239430564.252,
+            "nrmse": 2841458.9769554595,
+            "max_absolute_error": 5487301.395123738,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 457383.6844911249,
+            "mse": 381783825392.2765,
+            "rmse": 617886.5797153038,
+            "mape": 1502542.3498988177,
+            "r2": -4930955610379.949,
+            "nrmse": 1459051.598129774,
+            "max_absolute_error": 2324545.080501375,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "prepared_eigenstrain_fraction",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 0, 'timed_out': True, 'elapsed_seconds': 120.40948385559022, 'cleanup': {'complete': True, 'killed_pids': [1356485, 1356471], 'survivor_pids': []}, 'stage': 'probe', 'submission_snapshot': None}; see /home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/probe/002-prepared_eigenstrain_fraction",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 295.03476658836007,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/performance.json",
+    "file_sha256": "884c473a1ce96411c8e79a404b9fc17cb34489517d69dfaa391308f98740a819",
+    "bytes": 5609,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-deepseek-v4-flash-0731-low-r2-posthoc22-20260923",
+    "batch": "deepseek-log-recovery-20260924",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924",
+    "setup_signature": "546793e755733b09eba4d402e334959d0235d60e279c6042c8220a0c1f01ff74",
+    "job": {
+      "id": "g4-r2-t054",
+      "group": 4,
+      "replicate": 2,
+      "task_index": 54,
+      "task_name": "Thermoelastic Heating Response - Variant 1-2-4",
+      "task_group": "Thermoelastic Heating Response",
+      "domain": "material",
+      "core": true,
+      "probe_count": 3,
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-2-4.yaml",
+      "task_sha256": "5e17a157607fcfa69cfcaccf0a1cd4271798547b6150bc71f6fbe13b5e11d5a0",
+      "seed": 1,
+      "host": "g34",
+      "model_key": "deepseek",
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "reasoning_effort": "low",
+      "submission_filename": "working_model.txt",
+      "attempt": 3,
+      "original_job_id": "g4-r2-t054",
+      "prior_batch": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923",
+      "provider": "openrouter",
+      "upstream_model": "deepseek/deepseek-v4-flash-0731",
+      "currency": "USD"
+    },
+    "protocol": "posthoc_log_recovery",
+    "discovery_model_calls": 0,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "deepseek/deepseek-v4-flash-0731",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/args.json",
+      "file_sha256": "0040f82bf3e08798fead9b82aa13545e34409e4dcce38c751417bf494cf0b9d5",
+      "bytes": 3739
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/jobs/g4-r2-t054/terminal.json",
+      "file_sha256": "855204bf6abee81c7b4ed05e38d3a4e05fc4510918886ed616dfc244e869a767",
+      "bytes": 2565
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "posthoc_recovery",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": true,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 1,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "stress = exp(log(temperature_step) + (1.99999149e+01 + 1.30000000e+03*(-1.0/(conditioning_temperature-214)) + (-1.00013099e+00)*log(conditioning_cooling_rate) + (-1.00000001e+02)*conditioning_cooling_rate/conditioning_temperature) + log(frame_modulus) - log(exp((1.99999149e+01 + 1.30000000e+03*(-1.0/(conditioning_temperature-214)) + (-1.00013099e+00)*log(conditioning_cooling_rate) + (-1.00000001e+02)*conditioning_cooling_rate/conditioning_temperature)) + frame_modulus) - length_scale*sqrt(laplace_rate)/sqrt(5.42580600e-06))\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/working_model.txt",
+    "file_sha256": "93615ea904446c3c97a3fbd9814998c0f90e83552b84a69ec81efe66ac9cf4e9",
+    "bytes": 530,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "historical_submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/historical_submission.txt",
+      "file_sha256": "93615ea904446c3c97a3fbd9814998c0f90e83552b84a69ec81efe66ac9cf4e9",
+      "bytes": 530,
+      "hostname": "g34"
+    },
+    "historical_model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/historical_model.json",
+      "file_sha256": "e0f2cd2ddbb530d3cde83a097eb647a1a88706b5d6ba7b42cad26279409f3b16",
+      "bytes": 447,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/saved_checkpoint/model.json",
+      "file_sha256": "3ab5babcf5122958be3d19d40f1a4d608b4236fce584c11a97715a9ef00cac43",
+      "bytes": 641,
+      "hostname": "g34"
+    },
+    "recovery_provenance.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/recovery_provenance.json",
+      "file_sha256": "ef04a3d43b2bc81578e67eb3b63a164b065b7e4e62d8033cafdfbca358c8e92d",
+      "bytes": 8119,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "recovery_provenance.json": {
+      "protocol": "posthoc_log_recovery",
+      "source_job_id": "g4-r2-t054",
+      "source_batch": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923",
+      "original_session": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t054/audit/raw_sessions/2026/09/23/rollout-2026-09-23T15-33-16-01a0cd2e-def8-75c3-9d0b-0d2587063d9e.jsonl",
+      "original_session_sha256": "deba0cf9666e27ef7d6e3032dc831533b1be383cb83ec096142cc3171d7e2933",
+      "source_terminal_sha256": "307085292d0f15abc7de30baca7bcc64c37b4ecee7228522ad288594fb5d8c1b",
+      "candidate_evidence": {
+        "id": "g4-r2-t054",
+        "status": "accepted",
+        "submission_text": "stress = exp(log(temperature_step) + (1.99999149e+01 + 1.30000000e+03*(-1.0/(conditioning_temperature-214)) + (-1.00013099e+00)*log(conditioning_cooling_rate) + (-1.00000001e+02)*conditioning_cooling_rate/conditioning_temperature) + log(frame_modulus) - log(exp((1.99999149e+01 + 1.30000000e+03*(-1.0/(conditioning_temperature-214)) + (-1.00013099e+00)*log(conditioning_cooling_rate) + (-1.00000001e+02)*conditioning_cooling_rate/conditioning_temperature)) + frame_modulus) - length_scale*sqrt(laplace_rate)/sqrt(5.42580600e-06))\n",
+        "candidate_kind": "exploratory_log_recovery_not_original_on_time_submission",
+        "formula_evidence_line": 159,
+        "parameters_evidence_line": 162,
+        "parameters": [
+          {
+            "name": "b0",
+            "printed_text": "1.99999149e+01",
+            "evidence_line": 162
+          },
+          {
+            "name": "b1",
+            "printed_text": "1.30000000e+03",
+            "evidence_line": 162
+          },
+          {
+            "name": "b2",
+            "printed_text": "-1.00013099e+00",
+            "evidence_line": 162
+          },
+          {
+            "name": "b3",
+            "printed_text": "-1.00000001e+02",
+            "evidence_line": 162
+          },
+          {
+            "name": "Dk",
+            "printed_text": "5.42580600e-06",
+            "evidence_line": 162
+          },
+          {
+            "name": "T0",
+            "printed_text": "214",
+            "evidence_line": 159
+          }
+        ],
+        "aliases": [
+          {
+            "alias": "r",
+            "public_name": "laplace_rate",
+            "mapping_evidence_line": 159,
+            "public_problem_evidence_line": 15
+          },
+          {
+            "alias": "dt",
+            "public_name": "temperature_step",
+            "mapping_evidence_line": 159,
+            "public_problem_evidence_line": 15
+          },
+          {
+            "alias": "Ef",
+            "public_name": "frame_modulus",
+            "mapping_evidence_line": 159,
+            "public_problem_evidence_line": 15
+          },
+          {
+            "alias": "L",
+            "public_name": "length_scale",
+            "mapping_evidence_line": 159,
+            "public_problem_evidence_line": 15
+          },
+          {
+            "alias": "Tc",
+            "public_name": "conditioning_temperature",
+            "mapping_evidence_line": 159,
+            "public_problem_evidence_line": 15
+          },
+          {
+            "alias": "cr",
+            "public_name": "conditioning_cooling_rate",
+            "mapping_evidence_line": 159,
+            "public_problem_evidence_line": 15
+          },
+          {
+            "alias": "s",
+            "public_name": "stress",
+            "mapping_evidence_line": 159,
+            "public_problem_evidence_line": 15
+          }
+        ],
+        "selection_rule_explanation": "取最后全局 series-springs 拟合 line159/162，不用早期 line88 的数值近似式。",
+        "mechanical_conversion": "参数个数5，因此 b-p[8] if len(p)>8 else p 实际选 else p。仅内联 logEm/logEeff，保持 Dk 在 sqrt 内，未按注释将其重解释为 sqrt(D)。未改变原始拟合参数或其精度。",
+        "task_name": "Thermoelastic Heating Response - Variant 1-2-4",
+        "public_columns": [
+          "stress",
+          "laplace_rate",
+          "temperature_step",
+          "frame_modulus",
+          "length_scale",
+          "conditioning_temperature",
+          "conditioning_cooling_rate"
+        ],
+        "session_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/patch-infra-20260923/runs/g4-r2-t054/audit/raw_sessions/2026/09/23/rollout-2026-09-23T15-33-16-01a0cd2e-def8-75c3-9d0b-0d2587063d9e.jsonl",
+        "session_sha256": "deba0cf9666e27ef7d6e3032dc831533b1be383cb83ec096142cc3171d7e2933",
+        "events": [
+          {
+            "line": 15,
+            "timestamp": "2026-09-23T07:33:27.380Z",
+            "payload_type": "function_call_output",
+            "raw_text": "\"data_columns\": [\r\n    \"stress\",\r\n    \"laplace_rate\",\r\n    \"temperature_step\",\r\n    \"frame_modulus\",\r\n    \"length_scale\",\r\n    \"conditioning_temperature\",\r\n    \"conditioning_cooling_rate\"\r\n  ],\r\n  \"data_layout\": \"variables_by_samples\"\r\n}\r\n"
+          },
+          {
+            "line": 159,
+            "timestamp": "2026-09-23T07:48:12.949Z",
+            "payload_type": "function_call",
+            "raw_text": "{\"cmd\": \"cd /ram/tmp/mdbench-codex-ksayhl85/workspace && /home/test/test06/mdbench-runtime-patch188-20260923-EZhFxx/bin/python -c \\\"\\nimport numpy as np\\nfrom scipy.optimize import least_squares\\nd=np.load('train.npy')\\ns=d[0]; r=d[1]; dt=d[2]; Ef=d[3]; L=d[4]; Tc=d[5]; cr=d[6]\\nT0=214; vogl=-1.0/(Tc-T0)\\nlcr=np.log(cr)\\ndef resid(p):\\n    b0,b1,b2,b3,Dk=b-p[8] if len(p)>8 else p\\n    logEm=b0+b1*vogl+b2*lcr+b3*cr/Tc\\n    logEeff=logEm+np.log(Ef)-np.log(np.exp(logEm)+Ef)\\n    pred=np.log(dt)+logEeff-np.sqrt(r)*L/np.sqrt(Dk)+logEm*0\\n    pred=np.log(dt)+logEeff-L*np.sqrt(r)/np.sqrt(Dk)\\n    return pred-np.log(s)\\n# p = [b0,b1,b2,b3, sqrt(D)]\\np0=np.array([20,1300,-1.0,-100, np.sqrt(1.7e-6)])\\nsol=least_squares(resid,p0,max_nfev=20000)\\nprint('params',sol.x)\\nprint('res',np.sqrt(np.mean(sol.fun**2)))\\n\\\"\"}"
+          },
+          {
+            "line": 162,
+            "timestamp": "2026-09-23T07:48:15.745Z",
+            "payload_type": "function_call_output",
+            "raw_text": "Chunk ID: 36e932\nWall time: 2.5247 seconds\nProcess exited with code 0\nOriginal token count: 117\nOutput:\n/home/test1267/test-6/miniconda3/lib/python3.12/site-packages/requests/__init__.py:113: RequestsDependencyWarning: urllib3 (2.2.2) or chardet (7.6.0)/charset_normalizer (2.0.4) doesn't match a supported version!\n  warnings.warn(\n<string>:12: RuntimeWarning: invalid value encountered in sqrt\n<string>:13: RuntimeWarning: invalid value encountered in sqrt\nparams [ 1.99999149e+01  1.30000000e+03 -1.00013099e+00 -1.00000001e+02\n  5.42580600e-06]\nres 5.8600526549680145\n"
+          }
+        ],
+        "candidate_lines": [
+          15,
+          159,
+          162
+        ],
+        "static_syntax_check": {
+          "python_ast_parse_only": true,
+          "unknown_free_names": [],
+          "no_expression_evaluation": true
+        }
+      },
+      "candidate_timestamp_ns": 1790149695745000000,
+      "deadline_wall_ns": 1790149695782319279,
+      "session_last_timestamp_ns": 1790149695747000000,
+      "session_prefix_audit": {
+        "lines": 163,
+        "deadline_prefix_lines": 163,
+        "trimmed_unfinished_tool_tail_lines": 0,
+        "last_timestamp_ns": 1790149695747000000,
+        "unmatched_tool_calls": [],
+        "unmatched_tool_outputs": []
+      },
+      "unmatched_tool_calls": [],
+      "unmatched_tool_outputs": [],
+      "session_id": "01a0cd2e-def8-75c3-9d0b-0d2587063d9e",
+      "codex_model": "deepseek/deepseek-v4-flash-0731",
+      "discovery_model_calls": 0,
+      "mechanism_revision_permitted": false,
+      "completed_probes": {},
+      "submission": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/recovery/g4-r2-t054/extracted_working_model.txt",
+      "submission_sha256": "93615ea904446c3c97a3fbd9814998c0f90e83552b84a69ec81efe66ac9cf4e9",
+      "session": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/recovery/g4-r2-t054/codex.cutoff.session.jsonl",
+      "session_sha256": "deba0cf9666e27ef7d6e3032dc831533b1be383cb83ec096142cc3171d7e2933",
+      "model": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/recovery/g4-r2-t054/derived_model.json",
+      "model_sha256": "e0f2cd2ddbb530d3cde83a097eb647a1a88706b5d6ba7b42cad26279409f3b16"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/openrouter/usage.jsonl",
+      "file_sha256": "f092ffdc7da7590858f1459ef494072398f46bced6febe8077f2a74cbc49a1e7",
+      "bytes": 2376
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/deepseek-log-recovery-20260924/runs/g4-r2-t054/openrouter/usage.json",
+      "file_sha256": "13e2d6a82978bdaec7618196259e3346bce14a241e036f89df70c73ced5af8c0",
+      "bytes": 476
+    },
+    "event_counts": {
+      "request_started": 3,
+      "response_started": 3,
+      "request_finished": 2
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 2,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.004012672,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0.01631096,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 1,
+    "tokens": {
+      "input_tokens": 81824,
+      "output_tokens": 2375,
+      "cached_tokens": 32512
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 2
+    },
+    "complete_for_this_attempt": false,
+    "scope": "new evaluation/probe calls only; historical discovery excluded",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "token_usage": {
+    "input_tokens": 81824,
+    "output_tokens": 2375,
+    "cached_tokens": 32512,
+    "total_tokens_observed": 84199,
+    "partial": true,
+    "scope": "new evaluation/probe calls only; historical discovery excluded",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "f092ffdc7da7590858f1459ef494072398f46bced6febe8077f2a74cbc49a1e7",
+      "started_unique": 3,
+      "finished_unique": 2,
+      "unmatched_started": 1,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  }
+}

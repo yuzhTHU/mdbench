@@ -1,0 +1,438 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 902.8697755411267,
+  "evaluation_seconds": 263.7672773692757,
+  "evaluation": {
+    "task_name": "Surface Pair Catalysis - Variant 1-2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.001129876722915673,
+        "mse": 3.3261152418319404e-06,
+        "rmse": 0.0018237640312913127,
+        "mape": 0.04395724769724025,
+        "r2": 0.9988307060532661,
+        "nrmse": 0.02669392447027375,
+        "max_absolute_error": 0.00977837426281708,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.001159275770688082,
+        "mse": 3.2489286902708142e-06,
+        "rmse": 0.001802478485383616,
+        "mape": 0.0462564330396845,
+        "r2": 0.9988455569901964,
+        "nrmse": 0.02637059671470519,
+        "max_absolute_error": 0.010028135931472199,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0024309892461253113,
+        "mse": 1.7944367489365835e-05,
+        "rmse": 0.004236079259098658,
+        "mape": 0.11486145891773093,
+        "r2": 0.9724345785539568,
+        "nrmse": 0.1204850527316259,
+        "max_absolute_error": 0.022698578819745463,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "turnover_rate": "13173991*a_concentration/6250000 + 18531467*b_concentration/25000000 + 230306701/100000000",
+      "coverage_denominator": "78540027*a_concentration/100000000 + 29020083*b_concentration/50000000 + 1",
+      "theta_A": "78540027*a_concentration/(100000000*(78540027*a_concentration/100000000 + 29020083*b_concentration/50000000 + 1))",
+      "theta_B": "29020083*b_concentration/(50000000*(78540027*a_concentration/100000000 + 29020083*b_concentration/50000000 + 1))",
+      "catalytic_rate": "727171768679375045863359*a_concentration*b_concentration/(500000000000000000000000*(78540027*a_concentration/100000000 + 29020083*b_concentration/50000000 + 1)**2)",
+      "response": "727171768679375045863359*a_concentration*b_concentration/(500000000000000000000000*(laplace_rate/(13173991*a_concentration/6250000 + 18531467*b_concentration/25000000 + 230306701/100000000) + 1)**4*(78540027*a_concentration/100000000 + 29020083*b_concentration/50000000 + 1)**2)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "product_cells",
+        "ok": true,
+        "reply": "product_cells = catalytic_rate/(laplace_rate*(1 + laplace_rate/turnover_rate)^4)",
+        "expression": "727171768679375045863359*a_concentration*b_concentration*(210783856*a_concentration + 74125868*b_concentration + 230306701)**4/(50000000*laplace_rate*(78540027*a_concentration + 58040166*b_concentration + 100000000)**2*(210783856*a_concentration + 74125868*b_concentration + 100000000*laplace_rate + 230306701)**4)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.3557920764112052,
+            "mse": 0.7398688763621716,
+            "rmse": 0.8601563092613874,
+            "mape": 11.341761612955066,
+            "r2": -1146.0431533560302,
+            "nrmse": 26.438721803922437,
+            "max_absolute_error": 7.3282634937890405,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.4101714558970032,
+            "mse": 0.9814273432801157,
+            "rmse": 0.9906701485762633,
+            "mape": 13.081657255767267,
+            "r2": -1536.903418155869,
+            "nrmse": 30.43674732997857,
+            "max_absolute_error": 8.316943176204605,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.008050338668597749,
+            "mse": 0.00011708563678190744,
+            "rmse": 0.010820611663945224,
+            "mape": 0.8139231242951139,
+            "r2": 0.20680732716704642,
+            "nrmse": 0.6463089954346622,
+            "max_absolute_error": 0.03488168795550113,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "immobile_a_cells",
+        "ok": true,
+        "reply": "immobile_a_cells = theta_A/(1 + laplace_rate/turnover_rate)^2",
+        "expression": "78540027*a_concentration*(210783856*a_concentration + 74125868*b_concentration + 230306701)**2/((78540027*a_concentration + 58040166*b_concentration + 100000000)*(210783856*a_concentration + 74125868*b_concentration + 100000000*laplace_rate + 230306701)**2)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08542620752425946,
+            "mse": 0.013321920937556679,
+            "rmse": 0.11542062613569846,
+            "mape": 3.1738163005946,
+            "r2": -4.320926262239176,
+            "nrmse": 1.6678701932597755,
+            "max_absolute_error": 0.3119637183881242,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08699878043373858,
+            "mse": 0.013442291321517598,
+            "rmse": 0.11594089581126064,
+            "mape": 2.996832074907224,
+            "r2": -3.7914621582450705,
+            "nrmse": 1.5440071919686347,
+            "max_absolute_error": 0.31253688940434754,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.09009531727281779,
+            "mse": 0.011706616230193279,
+            "rmse": 0.10819711747636016,
+            "mape": 36.764412716786744,
+            "r2": -2738.2456650323234,
+            "nrmse": 31.808541346818803,
+            "max_absolute_error": 0.2879241129239236,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "a_cells",
+        "ok": true,
+        "reply": "a_cells = theta_A/(1 + laplace_rate/turnover_rate)",
+        "expression": "78540027*a_concentration*(210783856*a_concentration + 74125868*b_concentration + 230306701)/((78540027*a_concentration + 58040166*b_concentration + 100000000)*(210783856*a_concentration + 74125868*b_concentration + 100000000*laplace_rate + 230306701))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.02619040580870904,
+            "mse": 0.0014572851362609164,
+            "rmse": 0.038174404203090276,
+            "mape": 0.18476831847599243,
+            "r2": 0.8845878711825882,
+            "nrmse": 0.2039941224783334,
+            "max_absolute_error": 0.16959788330811862,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.026451977487444222,
+            "mse": 0.0014513666546388606,
+            "rmse": 0.03809680635747386,
+            "mape": 0.18499306334581295,
+            "r2": 0.8918603104663928,
+            "nrmse": 0.19411887565953068,
+            "max_absolute_error": 0.17106640267429812,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08047272015217007,
+            "mse": 0.008306838826799832,
+            "rmse": 0.09114186100140721,
+            "mape": 0.6718666359417603,
+            "r2": -4.652511141676097,
+            "nrmse": 0.7548904794697116,
+            "max_absolute_error": 0.2284305293489651,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "b_cells",
+        "ok": true,
+        "reply": "b_cells = theta_B*(turnover_rate/(laplace_rate + turnover_rate))^4",
+        "expression": "58040166*b_concentration*(210783856*a_concentration + 74125868*b_concentration + 230306701)**4/((78540027*a_concentration + 58040166*b_concentration + 100000000)*(210783856*a_concentration + 74125868*b_concentration + 100000000*laplace_rate + 230306701)**4)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.06437009621108734,
+            "mse": 0.007376367384491767,
+            "rmse": 0.08588578103790968,
+            "mape": 0.4983568586462662,
+            "r2": 0.5811033475468959,
+            "nrmse": 0.43527578915389653,
+            "max_absolute_error": 0.2413483318973509,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.061748316742404316,
+            "mse": 0.006862764332927156,
+            "rmse": 0.08284180305212553,
+            "mape": 0.479187393168266,
+            "r2": 0.5606310816540421,
+            "nrmse": 0.43863189477608466,
+            "max_absolute_error": 0.25322230740279517,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.12339592169060154,
+            "mse": 0.01657056033320999,
+            "rmse": 0.12872668850401608,
+            "mape": 0.8891881047806052,
+            "r2": -6.210793218173677,
+            "nrmse": 0.8596731865861584,
+            "max_absolute_error": 0.2289474729284617,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1166.813501469791,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g2-r1-t059/performance.json",
+    "file_sha256": "19c9cf48315d0562abbae6602d06a7f5d9176ed29e6aacf3342c1a4b65a60e6c",
+    "bytes": 10813,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-main-20260923",
+    "batch": "parent",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc",
+    "setup_signature": "f79e224b2c66d393a1165fd324685630ef79f45382b58d223bd6362fe76ef4c4",
+    "job": {
+      "id": "g2-r1-t059",
+      "group": 2,
+      "replicate": 1,
+      "task_index": 59,
+      "task_name": "Surface Pair Catalysis - Variant 1-2-3-4",
+      "task_group": "Surface Pair Catalysis",
+      "domain": "chemistry",
+      "core": true,
+      "probe_count": 4,
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4.yaml",
+      "task_sha256": "09c9665bbe8cef03f92fff5777613cdaa8848254ab4f5e6399222ebd9848bb8c",
+      "seed": 0,
+      "host": "g34",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt"
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g2-r1-t059/args.json",
+      "file_sha256": "d7f8a8836afcbf61013b3fa8486566705310f56e5036e17c14fd403f1907fe35",
+      "bytes": 2422
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/jobs/g2-r1-t059/terminal.json",
+      "file_sha256": "f33681918881d4e6cf2f9fc926daac295ff70136133fbc9d5a5e74ee8b0d3e17",
+      "bytes": 2717
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": null
+  },
+  "submission": "turnover_rate = 2.10783856*a_concentration + 0.74125868*b_concentration + 2.30306701\ncoverage_denominator = 1 + 0.78540027*a_concentration + 0.58040166*b_concentration\ntheta_A = 0.78540027*a_concentration/coverage_denominator\ntheta_B = 0.58040166*b_concentration/coverage_denominator\ncatalytic_rate = 3.19041599*theta_A*theta_B\nresponse = catalytic_rate/(1 + laplace_rate/turnover_rate)^4\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g2-r1-t059/submission.txt",
+    "file_sha256": "e1ff4e4605182307bb39a3ab67b1e99dd643dbf752b5bcf7a1b4ff172462a97d",
+    "bytes": 389,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g2-r1-t059/frozen_submission/submission.txt",
+      "file_sha256": "e1ff4e4605182307bb39a3ab67b1e99dd643dbf752b5bcf7a1b4ff172462a97d",
+      "bytes": 389,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g2-r1-t059/frozen_submission/metadata.json",
+      "file_sha256": "befcbee18b32a07b68c9b7170af5b6a3b76ce7f66b800444563f8d9665cc9b64",
+      "bytes": 334,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g2-r1-t059/saved_checkpoint/model.json",
+      "file_sha256": "81f1f8a57472c62a607887fcf5db51f31f2c2fd54b4246d0e0cba92d56ec41ea",
+      "bytes": 1242,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 389,
+      "sha256": "e1ff4e4605182307bb39a3ab67b1e99dd643dbf752b5bcf7a1b4ff172462a97d",
+      "source_mtime_ns": 1790099946882791000,
+      "source_ctime_ns": 1790099946882791000,
+      "captured_monotonic": 9391021.493882108,
+      "captured_wall_ns": 1790100025249047126,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g2-r1-t059/openrouter/usage.jsonl",
+      "file_sha256": "c56dd12e73e4ad0a38245c47a50522d6a4c0d25ce1fffc766c6b5268b9e2a1a7",
+      "bytes": 56062
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/runs/g2-r1-t059/openrouter/usage.json",
+      "file_sha256": "26f748bf08e435079c16560eced0d44ebc7a57f4a919a5d291aa9a7189f1bb4f",
+      "bytes": 497
+    },
+    "event_counts": {
+      "request_started": 55,
+      "response_started": 55,
+      "request_finished": 55
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 55,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.0924863792,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 1971300,
+      "output_tokens": 31488,
+      "cached_tokens": 1664448
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 55
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.0924863792,
+  "token_usage": {
+    "input_tokens": 1971300,
+    "output_tokens": 31488,
+    "cached_tokens": 1664448,
+    "total_tokens_observed": 2002788,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "c56dd12e73e4ad0a38245c47a50522d6a4c0d25ce1fffc766c6b5268b9e2a1a7",
+      "started_unique": 55,
+      "finished_unique": 55,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 2002788
+}

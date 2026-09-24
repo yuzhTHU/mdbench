@@ -1,0 +1,306 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 700.3449655883014,
+  "evaluation_seconds": 140.8961755372584,
+  "evaluation": {
+    "task_name": "Surface Pair Catalysis - Variant 3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.00034446265119837346,
+        "mse": 3.1880519761675166e-07,
+        "rmse": 0.0005646283712467446,
+        "mape": 0.007962007254768963,
+        "r2": 0.9999415439330371,
+        "nrmse": 0.005819829944349926,
+        "max_absolute_error": 0.0039799047477029476,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0003499341899972963,
+        "mse": 3.197439715228803e-07,
+        "rmse": 0.000565459080325783,
+        "mape": 0.00786906961280784,
+        "r2": 0.9999400863839164,
+        "nrmse": 0.005866270535752852,
+        "max_absolute_error": 0.0028824035124938308,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.023467861833417345,
+        "mse": 0.0006435701454894062,
+        "rmse": 0.025368684346836087,
+        "mape": 0.2259181383735036,
+        "r2": 0.9058969233499965,
+        "nrmse": 0.15795600004371083,
+        "max_absolute_error": 0.05587808554765811,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "k_ads_A": "6648899130171161/5000000000000000",
+      "k_ads_B": "4180404938965673/5000000000000000",
+      "k_decay_A": "4824725243062449/10000000000000000",
+      "k_decay_B": "2283638475730541/400000000000000",
+      "k_inhibit_A_by_B": "7463190752945121/10000000000000000",
+      "k_inhibit_B_by_A": "9847479305690809/10000000000000000",
+      "k_product": "2937975587299237/500000000000000",
+      "phi_A": "6648899130171161*a_concentration/(5000000000000000*(6648899130171161*a_concentration/5000000000000000 + 7463190752945121*b_concentration/10000000000000000 + laplace_rate + 4824725243062449/10000000000000000))",
+      "phi_B": "4180404938965673*b_concentration/(5000000000000000*(9847479305690809*a_concentration/10000000000000000 + 4180404938965673*b_concentration/5000000000000000 + laplace_rate + 2283638475730541/400000000000000))",
+      "response": "81661298106850772136455267837401577529633402661*a_concentration*b_concentration/(12500000000000000000000000000000000000000000000*(9847479305690809*a_concentration/10000000000000000 + 4180404938965673*b_concentration/5000000000000000 + laplace_rate + 2283638475730541/400000000000000)*(6648899130171161*a_concentration/5000000000000000 + 7463190752945121*b_concentration/10000000000000000 + laplace_rate + 4824725243062449/10000000000000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "a_cells",
+        "ok": true,
+        "reply": "a_cells = phi_A * (1 - phi_B)",
+        "expression": "13297798260342322*a_concentration*(9847479305690809*a_concentration + 10000000000000000*laplace_rate + 57090961893263525)/((9847479305690809*a_concentration + 8360809877931346*b_concentration + 10000000000000000*laplace_rate + 57090961893263525)*(13297798260342322*a_concentration + 7463190752945121*b_concentration + 10000000000000000*laplace_rate + 4824725243062449))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.05090230209039517,
+            "mse": 0.0037685219948989817,
+            "rmse": 0.061388288743855546,
+            "mape": 0.33916177014343385,
+            "r2": 0.8285897005899823,
+            "nrmse": 0.2610096998955849,
+            "max_absolute_error": 0.14608208709431814,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.05371080366502132,
+            "mse": 0.004082605246610063,
+            "rmse": 0.06389526779511971,
+            "mape": 0.3374917396257482,
+            "r2": 0.8249807260205307,
+            "nrmse": 0.25903872209389045,
+            "max_absolute_error": 0.14842735369865573,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.023959661942994846,
+            "mse": 0.0007531733948222862,
+            "rmse": 0.02744400471546174,
+            "mape": 0.15730414624310055,
+            "r2": 0.7803753671940781,
+            "nrmse": 0.17461224667725547,
+            "max_absolute_error": 0.06944967817138162,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "gas_surface_flux",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 0, 'timed_out': True, 'elapsed_seconds': 120.22279923595488, 'cleanup': {'complete': True, 'killed_pids': [1682151], 'survivor_pids': []}, 'stage': 'probe', 'submission_snapshot': None}; see /home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/probe/001-gas_surface_flux",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 841.6052363999188,
+  "ok": false,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/performance.json",
+    "file_sha256": "e2fc49c5c381218248e28abceb019c33985069215a85c4e5bf8e86f421f882fb",
+    "bytes": 5873,
+    "hostname": "g34"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-glm-5.3-flash-high-r1-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "415a6be6d9fa3f1725c1133da8c4e8d5aa47ca50b498304aff09c7bb19f8d35f",
+    "job": {
+      "id": "g3-r1-t293",
+      "group": 3,
+      "replicate": 1,
+      "task_index": 293,
+      "task_name": "Surface Pair Catalysis - Variant 3-5",
+      "task_group": "Surface Pair Catalysis",
+      "domain": "chemistry",
+      "core": false,
+      "probe_count": 2,
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 3-5.yaml",
+      "task_sha256": "6b4b7f1efc9aaab0b9e7891ce1a2bfb0fcd4671e031014b1536171b016d63f31",
+      "seed": 0,
+      "host": "g34",
+      "model_key": "glm",
+      "model": "z-ai/glm-5.3-flash",
+      "model_id": "z-ai/glm-5.3-flash",
+      "reasoning_effort": "high",
+      "submission_filename": "submission.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "z-ai/glm-5.3-flash",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/args.json",
+      "file_sha256": "df010e4dce2b5a1fe848ce6f9326f3790ba88b1fa37349c4cc72e05d70fa7391",
+      "bytes": 3579
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g3-r1-t293/terminal.json",
+      "file_sha256": "8ef8b1fc0630a1262998b2b249af9b033b0be629339e23aa4b474949b25fceb6",
+      "bytes": 1982
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 0,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "k_ads_A = 1.3297798260342322\nk_ads_B = 0.8360809877931346\nk_decay_A = 0.4824725243062449\nk_decay_B = 5.7090961893263525\nk_inhibit_A_by_B = 0.7463190752945121\nk_inhibit_B_by_A = 0.9847479305690809\nk_product = 5.875951174598474\nphi_A = (k_ads_A * a_concentration) / (laplace_rate + k_ads_A * a_concentration + k_decay_A + k_inhibit_A_by_B * b_concentration)\nphi_B = (k_ads_B * b_concentration) / (laplace_rate + k_ads_B * b_concentration + k_decay_B + k_inhibit_B_by_A * a_concentration)\nresponse = k_product * phi_A * phi_B\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/submission.txt",
+    "file_sha256": "a65de1ac4677f13b2b55aff730c0e060945a77cfb7294456347c9f062abefcb3",
+    "bytes": 523,
+    "hostname": "g34",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/submission.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/frozen_submission/submission.txt",
+      "file_sha256": "a65de1ac4677f13b2b55aff730c0e060945a77cfb7294456347c9f062abefcb3",
+      "bytes": 523,
+      "hostname": "g34"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/frozen_submission/metadata.json",
+      "file_sha256": "52750d9ba7b8e1fc09dce8458dd0a73c26774b8fc73d4ea5df27172bc8bc7e03",
+      "bytes": 334,
+      "hostname": "g34"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/saved_checkpoint/model.json",
+      "file_sha256": "62997a671f3c06681bfc5e426f07e0e24fb3e9d043d26a896caf9d12de79ed49",
+      "bytes": 1172,
+      "hostname": "g34"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 523,
+      "sha256": "a65de1ac4677f13b2b55aff730c0e060945a77cfb7294456347c9f062abefcb3",
+      "source_mtime_ns": 1790106745382791000,
+      "source_ctime_ns": 1790106745382791000,
+      "captured_monotonic": 9397767.968994655,
+      "captured_wall_ns": 1790106771724159706,
+      "submission_filename": "submission.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/openrouter/usage.jsonl",
+      "file_sha256": "7671b97b25462b64c0853716bd3fb20c3f68cf473fa5848b23279f561b70e112",
+      "bytes": 51287
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g3-r1-t293/openrouter/usage.json",
+      "file_sha256": "dcdadefec4ee1db5f48dd7ee5b82e53318f12218bd91b704b614cf56cbc9b9e1",
+      "bytes": 518
+    },
+    "event_counts": {
+      "request_started": 51,
+      "response_started": 51,
+      "request_finished": 50
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 50,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.0520977,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0.035907049999999996,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 1,
+    "tokens": {
+      "input_tokens": 1538843,
+      "output_tokens": 23355,
+      "cached_tokens": 1304960
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 50
+    },
+    "complete_for_this_attempt": false,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "token_usage": {
+    "input_tokens": 1538843,
+    "output_tokens": 23355,
+    "cached_tokens": 1304960,
+    "total_tokens_observed": 1562198,
+    "partial": true,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "7671b97b25462b64c0853716bd3fb20c3f68cf473fa5848b23279f561b70e112",
+      "started_unique": 51,
+      "finished_unique": 50,
+      "unmatched_started": 1,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  }
+}

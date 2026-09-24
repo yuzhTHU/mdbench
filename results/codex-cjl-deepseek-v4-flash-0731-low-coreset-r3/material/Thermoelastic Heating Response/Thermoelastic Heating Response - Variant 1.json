@@ -1,0 +1,298 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 902.0420566089451,
+  "evaluation_seconds": 14.409377055009827,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Variant 1",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 115.1912913047064,
+        "mse": 184240.4914423063,
+        "rmse": 429.23244453594873,
+        "mape": 0.08173438084383007,
+        "r2": 0.9600735924104137,
+        "nrmse": 0.17909696318237545,
+        "max_absolute_error": 7391.510995747412,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 125.49973457709422,
+        "mse": 174587.94406810508,
+        "rmse": 417.83722197538253,
+        "mape": 0.08636510812141925,
+        "r2": 0.9647756760204054,
+        "nrmse": 0.16816026400289705,
+        "max_absolute_error": 6833.225950966585,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 749.2105242035051,
+        "mse": 1334193.832724896,
+        "rmse": 1155.0730854473652,
+        "mape": 1.9850496022200537,
+        "r2": -0.3446942940061015,
+        "nrmse": 0.8482812896558329,
+        "max_absolute_error": 7624.941036362434,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "v": "1/(conditioning_temperature - 220)",
+      "A": "conditioning_cooling_rate**(-1207/1000 - 71207/(125*(conditioning_temperature - 220)))*frame_modulus**(106/125)*temperature_step**(473/500)*exp(-7961/1000)*exp(-710863/(500*(conditioning_temperature - 220)))/length_scale**(893/1000)",
+      "tau1": "conditioning_cooling_rate**(4009/500 - 8225227/(1000*(conditioning_temperature - 220)))*frame_modulus**(82/125)*exp(4257/250)*exp(-396969/(100*(conditioning_temperature - 220)))/(length_scale**(16/125)*temperature_step**(53/500))",
+      "B": "conditioning_cooling_rate**(-459/500 - 154561/(1000*(conditioning_temperature - 220)))*frame_modulus**(781/1000)*length_scale**(91/1000)*temperature_step**(51/50)*exp(-7/4)*exp(-534899/(500*(conditioning_temperature - 220)))",
+      "tau2": "conditioning_cooling_rate**(3/1000 - 2123/(125*(conditioning_temperature - 220)))*length_scale**(2001/1000)*temperature_step**(23/1000)*exp(7359/500)*exp(-70161/(1000*(conditioning_temperature - 220)))/frame_modulus**(1/50)",
+      "stress": "conditioning_cooling_rate**(-1207/1000 - 71207/(125*(conditioning_temperature - 220)))*frame_modulus**(106/125)*temperature_step**(473/500)*exp(-7961/1000)*exp(-710863/(500*(conditioning_temperature - 220)))/(length_scale**(893/1000)*(conditioning_cooling_rate**(4009/500 - 8225227/(1000*(conditioning_temperature - 220)))*frame_modulus**(82/125)*laplace_rate*exp(4257/250)*exp(-396969/(100*(conditioning_temperature - 220)))/(length_scale**(16/125)*temperature_step**(53/500)) + 1)) + conditioning_cooling_rate**(-459/500 - 154561/(1000*(conditioning_temperature - 220)))*frame_modulus**(781/1000)*length_scale**(91/1000)*temperature_step**(51/50)*exp(-7/4)*exp(-534899/(500*(conditioning_temperature - 220)))/(conditioning_cooling_rate**(3/1000 - 2123/(125*(conditioning_temperature - 220)))*laplace_rate*length_scale**(2001/1000)*temperature_step**(23/1000)*exp(7359/500)*exp(-70161/(1000*(conditioning_temperature - 220)))/frame_modulus**(1/50) + 1)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_slow_thermal_fraction",
+        "ok": true,
+        "reply": "prepared_slow_thermal_fraction = B/(A + B)",
+        "expression": "conditioning_cooling_rate**((289*conditioning_temperature + 351515)/(1000*(conditioning_temperature - 220)))*frame_modulus**(781/1000)*length_scale**(123/125)*temperature_step**(51/50)*exp(7961/1000 + 43991/(125*(conditioning_temperature - 220)))/(conditioning_cooling_rate**(289*conditioning_temperature/(1000*(conditioning_temperature - 220)) + 70303/(200*(conditioning_temperature - 220)))*frame_modulus**(781/1000)*length_scale**(123/125)*temperature_step**(51/50)*exp(7961/1000 + 43991/(125*(conditioning_temperature - 220))) + frame_modulus**(106/125)*temperature_step**(473/500)*exp(7/4))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.738712279132505,
+            "mse": 0.6207901429363355,
+            "rmse": 0.7879023689114886,
+            "mape": 664131367314567.9,
+            "r2": -6.006175268087723,
+            "nrmse": 2.172039844679175,
+            "max_absolute_error": 0.9999405182937177,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.7324838827973422,
+            "mse": 0.6144864883999266,
+            "rmse": 0.783891885657663,
+            "mape": 591920499172623.5,
+            "r2": -5.515229256078793,
+            "nrmse": 2.084170346950156,
+            "max_absolute_error": 0.9999020439354354,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5539356088043413,
+            "mse": 0.38203015238243576,
+            "rmse": 0.6180858778377287,
+            "mape": 3.7285702276949664,
+            "r2": -3.35931635577467,
+            "nrmse": 1.2495068163269785,
+            "max_absolute_error": 0.9396972513345841,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 1
+  },
+  "total_seconds": 916.8309649240691,
+  "ok": true,
+  "source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r3-t014/performance.json",
+    "file_sha256": "bae7eb6a1f327f439c4fc74e5eb24633d7429c78820744cf9c99a4ec68a3828b",
+    "bytes": 6264,
+    "hostname": "g28"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-24T07:27:35.705629+00:00",
+      "update_message": "Imported archived native performance verbatim at the JSON-field level; added provenance, recorded submission and usage only. No rescoring, outcome-based selection or cross-attempt merging."
+    }
+  ],
+  "experiment_provenance": {
+    "experiment_name": "codex-cjl-deepseek-v4-flash-0731-low-r3-continue-20260923",
+    "batch": "continue-current-20260923",
+    "batch_path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923",
+    "setup_signature": "1cf8dd0cad630cf427fa256ce8b653ffea554d4b351c89b771ae0b5b5425b399",
+    "job": {
+      "id": "g4-r3-t014",
+      "group": 4,
+      "replicate": 3,
+      "task_index": 14,
+      "task_name": "Thermoelastic Heating Response - Variant 1",
+      "task_group": "Thermoelastic Heating Response",
+      "domain": "material",
+      "core": true,
+      "probe_count": 1,
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1.yaml",
+      "task_sha256": "1e7ec166fd041d442f722da9f4c6c0a4ff040191f9b75382879b573ef5d8a6fa",
+      "seed": 2,
+      "host": "g28",
+      "model_key": "deepseek",
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "model_id": "deepseek/deepseek-v4-flash-0731",
+      "reasoning_effort": "low",
+      "submission_filename": "working_model.txt",
+      "attempt": 1
+    },
+    "protocol": "discovery_and_evaluation",
+    "discovery_model_calls": null,
+    "actual_provider": "openrouter",
+    "actual_upstream_model": "deepseek/deepseek-v4-flash-0731",
+    "args_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r3-t014/args.json",
+      "file_sha256": "2dc5f88307ff8ee74133e6a7fb8579f12753ad28f885c4dc8807511c8af55e2a",
+      "bytes": 3609
+    },
+    "terminal_source": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/jobs/g4-r3-t014/terminal.json",
+      "file_sha256": "06e20acee82ca13a43a5ee4aa6a4fb836705dfc8f0da115f0dfd371f65682681",
+      "bytes": 1597
+    },
+    "terminal_status": "terminal",
+    "selected_in_integrated_view_20260924": true,
+    "selection_basis": "original_main",
+    "integrated_view_source_sha256": "f842d6e9217d60a2c673360a6d29c98712c485d7e5a55b2c5a6059eb67457164",
+    "native_fields_unchanged": true,
+    "posthoc_not_an_original_deadline_submission": false,
+    "raw_performance_keys": [
+      "algorithm",
+      "agent_seconds",
+      "evaluation_seconds",
+      "evaluation",
+      "total_seconds",
+      "ok"
+    ]
+  },
+  "recorded_run_parameters": {
+    "seed": 2,
+    "feedback_port": 0,
+    "codex_tool_path": "/home/test/test06/mdbench-runtime-numpy235-20260923-a1Cx0t/bin:/home/test/test06/.nvm/versions/node/v20.20.2/bin:/home/test/test06/.cargo/bin:/home/test/test06/xyn/scripts:/home/test/test06/unison_env:/home/test/test06/local/bin:/home/test/test06/cuda-12.4/bin:/home/test1267/test-6/miniconda3/bin:/home/test1267/test-6/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/test/test06/.local/go/bin"
+  },
+  "submission": "v = 1/(conditioning_temperature - 220)\nA = exp(-7.961) * temperature_step^0.946 * frame_modulus^0.848 * length_scale^(-0.893) * conditioning_cooling_rate^(-1.207 - 569.656*v) * exp(-1421.726*v)\ntau1 = exp(17.028) * temperature_step^(-0.106) * frame_modulus^0.656 * length_scale^(-0.128) * conditioning_cooling_rate^(8.018 - 8225.227*v) * exp(-3969.690*v)\nB = exp(-1.750) * temperature_step^1.020 * frame_modulus^0.781 * length_scale^0.091 * conditioning_cooling_rate^(-0.918 - 154.561*v) * exp(-1069.798*v)\ntau2 = exp(14.718) * temperature_step^0.023 * frame_modulus^(-0.020) * length_scale^2.001 * conditioning_cooling_rate^(0.003 - 16.984*v) * exp(-70.161*v)\nstress = A/(1 + laplace_rate*tau1) + B/(1 + laplace_rate*tau2)\n",
+  "submission_source": {
+    "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r3-t014/working_model.txt",
+    "file_sha256": "92509ec6ef7c3268f321225f039a2ee2b3e571ded56f495ee8c7cfe7ec3252ec",
+    "bytes": 724,
+    "hostname": "g28",
+    "role": "normalized_equations_written_by_runner_before_evaluation"
+  },
+  "submission_evidence": {
+    "frozen_submission/working_model.txt": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r3-t014/frozen_submission/working_model.txt",
+      "file_sha256": "92509ec6ef7c3268f321225f039a2ee2b3e571ded56f495ee8c7cfe7ec3252ec",
+      "bytes": 724,
+      "hostname": "g28"
+    },
+    "frozen_submission/metadata.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r3-t014/frozen_submission/metadata.json",
+      "file_sha256": "0b83109174fa1121e999271fd9a42b3d5939e00b5fafe8110a4f66f10baac718",
+      "bytes": 337,
+      "hostname": "g28"
+    },
+    "saved_checkpoint/model.json": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r3-t014/saved_checkpoint/model.json",
+      "file_sha256": "14e7d7844b710c605e8fb599fd45d7c31ca00cba496bbc149a82216d39671a22",
+      "bytes": 1344,
+      "hostname": "g28"
+    }
+  },
+  "submission_evidence_metadata": {
+    "frozen_submission/metadata.json": {
+      "state": "present",
+      "bytes": 724,
+      "sha256": "92509ec6ef7c3268f321225f039a2ee2b3e571ded56f495ee8c7cfe7ec3252ec",
+      "source_mtime_ns": 1790109195762120000,
+      "source_ctime_ns": 1790109195762120000,
+      "captured_monotonic": 1269032.820264234,
+      "captured_wall_ns": 1790109374439188769,
+      "submission_filename": "working_model.txt"
+    }
+  },
+  "cost_accounting": {
+    "provider": "openrouter",
+    "ledger": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r3-t014/openrouter/usage.jsonl",
+      "file_sha256": "d302da383db24982ffd717a7eb88a10a7e0e6e9a5558c187e4f552129e3b0500",
+      "bytes": 46170
+    },
+    "snapshot": {
+      "path": "/home/test/test06/mdbench-runs/fullplan-20260923-FYKggc/continue-current-20260923/runs/g4-r3-t014/openrouter/usage.json",
+      "file_sha256": "8d2b6424b33a6f0d5f7e82fe2645a4cd91aba8bca6a50548fc60b04768e7c72f",
+      "bytes": 496
+    },
+    "event_counts": {
+      "request_started": 45,
+      "response_started": 45,
+      "request_finished": 45
+    },
+    "invalid_json_lines": 0,
+    "finished_requests_deduplicated": 45,
+    "request_ids_deduplicated_only_within_job": true,
+    "provider_reported_usd": 0.069372784,
+    "pricing_estimate_usd": 0.0,
+    "uncertain_upper_bound_usd": 0.0,
+    "reserved_inflight_usd": 0,
+    "currency": "USD",
+    "provider_reported_cny": null,
+    "pricing_estimate_cny": null,
+    "unknown_cost_requests": null,
+    "snapshot_inflight": 0,
+    "tokens": {
+      "input_tokens": 2040902,
+      "output_tokens": 53165,
+      "cached_tokens": 1928704
+    },
+    "requests_without_explicit_token_usage": 0,
+    "cost_sources": {
+      "provider": 45
+    },
+    "complete_for_this_attempt": true,
+    "scope": "this attempt only",
+    "reserved_note": "Archived ledger remainder, not proof of a live request or paid amount."
+  },
+  "cost_in_USD": 0.069372784,
+  "token_usage": {
+    "input_tokens": 2040902,
+    "output_tokens": 53165,
+    "cached_tokens": 1928704,
+    "total_tokens_observed": 2094067,
+    "partial": false,
+    "scope": "this attempt only",
+    "raw_usage_completeness_audit": {
+      "ledger_sha256": "d302da383db24982ffd717a7eb88a10a7e0e6e9a5558c187e4f552129e3b0500",
+      "started_unique": 45,
+      "finished_unique": 45,
+      "unmatched_started": 0,
+      "unmatched_finished": 0,
+      "finished_without_raw_token_counts": 0,
+      "invalid_json_lines": 0
+    },
+    "note": "input + output; cached is a subset, not added again; absent usage is not free/zero usage."
+  },
+  "used_token": 2094067
+}
