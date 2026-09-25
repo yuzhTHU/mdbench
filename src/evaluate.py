@@ -12,7 +12,7 @@ from .scoring import (accuracy_metrics, symbolic_equivalent, score_expression,
 from .synthetic_data import evaluate_expression
 from .validate_problem import (ValidationError, task_from_dict, validate_task, solve_model,
                                expand_expression, parse_equation, parse_expression,
-                               split_equation, symbols_for)
+                               split_equation, symbols_for, _substitute)
 
 
 def load_answer(path: str | Path):
@@ -61,7 +61,11 @@ def expand_probe_reply(formula: str, probe_name: str, sources, solution) -> sp.E
     symbols = symbols_for(sources)
     expression = parse_expression(right, symbols)
     # Never use true internal states to repair a submitted probe expression.
-    expression = sp.simplify(expression.subs({sp.Symbol(n, real=True): e for n, e in solution.items()}))
+    # solve_model has already expanded every submitted internal variable into
+    # sources.  Substitution is sufficient here; a second general simplify can
+    # spend unbounded time on large rational/exponential probe expressions.
+    expression = _substitute(
+        expression, {sp.Symbol(n, real=True): e for n, e in solution.items()})
     allowed = {symbols[v.name] for v in sources}
     if expression.free_symbols - allowed:
         raise ValidationError('Probe expression cannot be expanded into input and auxiliary variables using the submitted model.')

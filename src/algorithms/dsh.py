@@ -40,6 +40,7 @@ _OPENROUTER_URL = "https://openrouter.ai/api/v1"
 _DEEPSEEK_URL = "https://api.deepseek.com"
 _DEFAULT_OPENROUTER_MODEL = "deepseek/deepseek-v4-flash-0731"
 _DEFAULT_DEEPSEEK_MODEL = "deepseek-flash"
+_WORKING_MODEL_FILE = "working_model.txt"
 _gateway_lock = threading.RLock()
 _gateways: dict[str, dict[str, Any]] = {}
 
@@ -63,6 +64,13 @@ def update_parser(parser):
     parser.add_argument("--dsh-budget-usd", type=float, default=None,
                         help="Optional positive hard budget. Default: accounting only, no limit.")
     parser.add_argument("--dsh-max-output-tokens", type=int, default=16000)
+    parser.add_argument("--dsh-reasoning-effort",
+                        choices=("minimal", "low", "medium", "high", "xhigh", "max"),
+                        default="low",
+                        help="OpenRouter reasoning effort (default: low).")
+    parser.add_argument("--dsh-feedback-evaluations", type=int,
+                        default=0,
+                        help="Feedback-evaluation count stated in the prompt; use 0 for a time-based prompt.")
     return parser
 
 
@@ -77,6 +85,19 @@ def _dsh_prefix(args) -> list[str]:
            for token in command[1:]):
         raise ValueError("--dsh-command may not override the benchmark profile or patches.")
     return command
+
+
+def _command_environment(command: list[str], environment: dict[str, str]) -> dict[str, str]:
+    """Make an absolute DSH launcher use the Node runtime installed beside it."""
+    executable = Path(command[0])
+    if executable.parent == Path('.'):
+        return environment
+    result = dict(environment)
+    # Do not resolve the launcher symlink: NVM installs ``bin/dsh`` as a link
+    # into ``lib/node_modules``, while the matching ``node`` lives beside the
+    # symlink in ``bin``.
+    result['PATH'] = str(executable.absolute().parent) + os.pathsep + result.get('PATH', '')
+    return result
 
 
 def _credential(name: str, env_file: Path | None) -> str | None:
@@ -173,6 +194,7 @@ def _normalise_usage(usage: dict[str, Any]) -> dict[str, Any]:
 def start_chat_gateway(account: UsageAccounting, key: str, model: str, parallel: int,
                        *, upstream_base_url: str, local_token: str,
                        max_output_tokens: int, openrouter: bool,
+                       reasoning_effort: str | None = None,
                        retry_attempts: int = 4):
     """Proxy OpenAI Chat Completions while persisting tokens and charges."""
     slots = threading.BoundedSemaphore(parallel)
@@ -216,6 +238,8 @@ def start_chat_gateway(account: UsageAccounting, key: str, model: str, parallel:
                 body["stream_options"] = {"include_usage": True}
             if openrouter:
                 body["usage"] = {"include": True}
+                if reasoning_effort is not None:
+                    body["reasoning"] = {"effort": reasoning_effort}
 
             slots.acquire()
             request_id = account.begin("dsh", size, body["max_tokens"])
@@ -398,7 +422,8 @@ def _ensure_gateway(args, save: Path) -> dict[str, Any]:
         server = start_chat_gateway(account, key, model,
             max(1, int(getattr(args, "probe_workers", 1))), upstream_base_url=upstream,
             local_token=local_token, max_output_tokens=maximum,
-            openrouter=source == "openrouter")
+            openrouter=source == "openrouter",
+            reasoning_effort=getattr(args, "dsh_reasoning_effort", None))
         runtime = {"provider": "mdbench-gateway", "backend": source, "model": model,
                    "base_url": f"http://127.0.0.1:{server.server_port}/api/v1",
                    "local_key": local_key, "local_token": local_token,
@@ -482,7 +507,9 @@ def _run_headless(args, prompt: str, output: Path, runtime: dict[str, Any],
         blocked = _blocked_command_directory(root)
         patch = _write_dsh_home(home, runtime, probe=probe)
         env = _safe_environment(runtime["local_key"], runtime["local_token"], home, blocked)
-        command = [*_dsh_prefix(args), "--profile", "headless", "--patch", str(patch), prompt]
+        prefix = _dsh_prefix(args)
+        env = _command_environment(prefix, env)
+        command = [*prefix, "--profile", "headless", "--patch", str(patch), prompt]
         status = _invoke(command, workspace, env, timeout, audit / "stdout.txt",
                          audit / "stderr.txt", audit / "process.json")
         (audit / "status.json").write_text(json.dumps(status, indent=2) + "\n")
@@ -503,6 +530,19 @@ def _run_headless(args, prompt: str, output: Path, runtime: dict[str, Any],
 
 
 def _prompt(args, feedback_server_url: str) -> str:
+    feedback_evaluations = int(getattr(
+        args, "dsh_feedback_evaluations", 0))
+    if feedback_evaluations < 0:
+        raise ValueError("--dsh-feedback-evaluations must be nonnegative.")
+    if feedback_evaluations:
+        budget_instruction = (
+            f"You may perform at most {feedback_evaluations} feedback evaluations "
+            "before post to the URL. Use this limited feedback budget to iteratively "
+            "refine your mechanistic model and maximize the feedback score.")
+    else:
+        budget_instruction = (
+            f"You will have {args.timeout} seconds to iteratively refine your "
+            "mechanistic model and maximize the feedback score.")
     return f'''# Objective
 Reconstruct the scientific mechanism that generated the observations in
 problem.json and train.npy and maxmimize the feedback score provided by {feedback_server_url}.
@@ -519,8 +559,7 @@ of the observations. Upon completion of the run, you will be asked several quest
 regarding your proposed mechanistic model to verify your understanding of the underlying
 mechanisms that generated the data.
 
-You will have {args.timeout} seconds to iteratively refine your mechanistic model and
-maximize the feedback score.
+{budget_instruction}
 
 # Provided data
 - Only observed variables are provided.
@@ -545,26 +584,32 @@ maximize the feedback score.
 # Investigation
 Inspect the metadata and data, formulate candidate mechanisms, test their
 observable consequences using the provided URL, and refine the best mechanism.
-Write a valid initial submission.txt immediately, then keep it updated while
-improving it within {args.timeout} seconds so it survives a time-limit interruption.
+Before doing any extended analysis, create {_WORKING_MODEL_FILE} with your best
+initial equations, even if they are only a rough baseline.
+This is a live working checkpoint, not a final deliverable: overwrite it whenever you find a better model.
+Do not wait until you are confident or until the end of the run to create it.
+Keep it valid throughout the {args.timeout}-second investigation so useful work
+survives a time-limit interruption.
 
 # Get Feedback
-The provided URL give an objective accuracy feedback that you have to maximize. To
-use this URL, you should keep the environment-provided HTTP proxy enabled and POST
-three multipart file fields to the URL, including problem (problem.json), train_data
-(train.npy), and submission (submission.txt). For example, you can use Python:
+The provided URL gives objective accuracy feedback that you have to maximize. Use
+it early and repeatedly rather than relying only on your own fit diagnostics. Keep
+the environment-provided HTTP proxy enabled and POST three multipart file fields:
+problem, train_data, and the API field named submission. The last field must upload
+your live {_WORKING_MODEL_FILE}; "submission" is only the fixed protocol field name
+and does not mean that you should wait until the end. For example, use Python:
 session.post({feedback_server_url}, files={{
     "problem": open("problem.json", "rb"),
     "train_data": open("train.npy", "rb"),
-    "submission": open("submission.txt", "rb")
+    "submission": open("{_WORKING_MODEL_FILE}", "rb")
 }}).json()
 Do not set trust_env=False or override it, because the sandbox's controlled route
 to the feedback endpoint is required.
 
-submission.txt must contain only equations, with one equality per line and no
-Markdown or prose. Do not use any filename other than submission.txt to submit
-your answers. Upon completion of the run, ensure that the submission.txt file
-represents the mechanism model that maximizes URL feedback.
+{_WORKING_MODEL_FILE} must contain only equations, with one equality per line and
+no Markdown or prose. Do not store the working equations under any other filename.
+Upon completion of the run, leave the model that achieved the best URL feedback in
+{_WORKING_MODEL_FILE}.
 
 # Boundaries
 Do NOT modify problem.json or train.npy. Do NOT use external reference answers,
@@ -599,14 +644,16 @@ def run(args, problem_file: Path, train_data_npy_file: Path,
         blocked = _blocked_command_directory(runtime_root)
         patch = _write_dsh_home(home, runtime, probe=False)
         env = _safe_environment(runtime["local_key"], runtime["local_token"], home, blocked)
-        status = _invoke([*_dsh_prefix(args), "--profile", "headless", "--patch", str(patch), prompt],
+        prefix = _dsh_prefix(args)
+        env = _command_environment(prefix, env)
+        status = _invoke([*prefix, "--profile", "headless", "--patch", str(patch), prompt],
                          workspace, env, args.timeout, audit / "stdout.txt",
                          audit / "stderr.txt", audit / "process.json")
         (audit / "status.json").write_text(json.dumps(status, indent=2) + "\n")
         final = clean_ansi((audit / "stdout.txt").read_text()).strip()
         (audit / "last_message.txt").write_text(final + "\n")
-        submission_path = workspace / "submission.txt"
-        submission = submission_path.read_text() if submission_path.is_file() else final
+        working_model_path = workspace / _WORKING_MODEL_FILE
+        submission = working_model_path.read_text() if working_model_path.is_file() else final
         from ..scoring import submission_formulas
         formulas = submission_formulas(clean_ansi(submission))
         sessions = sorted(path for path in home.rglob("*.jsonl*") if path.is_file())

@@ -20,10 +20,24 @@ def test_dsh_defaults_and_command_protection():
     assert args.dsh_provider == "openrouter"
     assert args.dsh_model == "deepseek/deepseek-v4-flash-0731"
     assert args.dsh_budget_usd is None
+    assert args.dsh_reasoning_effort == "low"
+    assert args.dsh_feedback_evaluations == 0
     assert dsh._dsh_prefix(SimpleNamespace(dsh_command="custom-dsh --version")) == [
         "custom-dsh", "--version"]
     with pytest.raises(ValueError, match="profile"):
         dsh._dsh_prefix(SimpleNamespace(dsh_command="dsh --profile web"))
+
+
+def test_absolute_dsh_launcher_adds_its_node_runtime_to_path(tmp_path):
+    node_bin = tmp_path / 'node-bin'
+    implementation = tmp_path / 'lib' / 'dsh.js'
+    node_bin.mkdir()
+    implementation.parent.mkdir()
+    implementation.write_text('#!/usr/bin/env node\n')
+    launcher = node_bin / 'dsh'
+    launcher.symlink_to(implementation)
+    environment = dsh._command_environment([str(launcher)], {'PATH': '/usr/bin'})
+    assert environment['PATH'].split(os.pathsep) == [str(node_bin), '/usr/bin']
 
 
 def test_prompt_matches_codex_benchmark_contract():
@@ -33,16 +47,26 @@ def test_prompt_matches_codex_benchmark_contract():
         "phenomenological model can fit the observable input-target relation directly",
         "You will have 321 seconds",
         "Do not leave free symbolic parameters.",
-        "Write a valid initial submission.txt immediately",
+        "create working_model.txt with your best",
+        "This is a live working checkpoint, not a final deliverable",
+        "Do not wait until you are confident or until the end",
         '"problem": open("problem.json", "rb")',
         '"train_data": open("train.npy", "rb")',
-        '"submission": open("submission.txt", "rb")',
+        '"submission": open("working_model.txt", "rb")',
+        '"submission" is only the fixed protocol field name',
         "Do not set trust_env=False",
-        "Do not use any filename other than submission.txt",
+        "Do not store the working equations under any other filename",
         "Do NOT inspect files outside this workspace except the",
     ]
     assert all(text in prompt for text in required)
     assert prompt.count("http://127.0.0.1:8123/evaluate") == 2
+
+
+def test_prompt_can_use_feedback_budget_wording():
+    args = SimpleNamespace(timeout=321, dsh_feedback_evaluations=10)
+    prompt = dsh._prompt(args, "http://127.0.0.1:8123/evaluate")
+    assert "You may perform at most 10 feedback evaluations before post" in prompt
+    assert "You will have 321 seconds" not in prompt
 
 
 def test_isolated_home_selects_gateway_and_disables_probe_tools(tmp_path):

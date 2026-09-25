@@ -75,6 +75,29 @@ def test_symbolic_equivalence_quickly_rejects_decimal_approximation():
     assert not symbolic_equivalent(predicted, truth)
     assert symbolic_equivalent((x + 1) ** 2, x**2 + 2*x + 1)
 
+
+def test_symbolic_equivalence_avoids_exact_substitution_of_fractional_powers():
+    x, y = sp.symbols('x y', positive=True)
+    predicted = (
+        sp.Rational('1.2035875824774804') ** y * x + 1
+    ) ** sp.Rational('1.345950453867467')
+    assert not symbolic_equivalent(predicted, sp.S.Zero)
+
+
+def test_symbolic_equivalence_exact_proof_has_a_hard_timeout(monkeypatch):
+    # A zero timeout exercises the same termination path without making the
+    # test suite wait for the production 30-second limit.
+    x = sp.Symbol('x', real=True)
+    assert not validator._is_zero(x)  # Sanity check independent of scoring.
+    from src import scoring
+    assert scoring.SYMBOLIC_EQUIVALENCE_TIMEOUT_SECONDS == 30
+    assert not scoring._simplify_is_zero_with_timeout(x - x, timeout=0)
+    def timeout(*args, **kwargs):
+        raise scoring.subprocess.TimeoutExpired(args[0], kwargs['timeout'])
+    monkeypatch.setattr(scoring.subprocess, 'run', timeout)
+    assert not scoring._simplify_is_zero_with_timeout(x - x, timeout=0.01)
+
+
 def test_no_untrusted_code_execution():
     for text in ('__import__("os").system("touch /tmp/unsafe")', 'x.__class__', 'x[0]',
                  '[x for x in range(4)]', 'float("nan")', 'sin(x,y)', '2**100000', 'True'):

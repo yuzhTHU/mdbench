@@ -1,12 +1,36 @@
 """Shared objective scoring; no LLM judgments or graph similarity metrics."""
 from __future__ import annotations
+from functools import lru_cache
 import json
+import pickle
 from pathlib import Path
+import subprocess
+import sys
 import numpy as np
 import sympy as sp
 from .core import VariableSpec
 from .validate_problem import ValidationError, NAME, parse_equation, solve_model
 from .synthetic_data import evaluate_expression
+
+
+SYMBOLIC_EQUIVALENCE_TIMEOUT_SECONDS = 30.0
+
+
+@lru_cache(maxsize=128)
+def _simplify_is_zero_with_timeout(
+        expression: sp.Expr, timeout: float = SYMBOLIC_EQUIVALENCE_TIMEOUT_SECONDS) -> bool:
+    """Return SymPy's exact zero proof, terminating it after ``timeout`` seconds."""
+    if timeout <= 0:
+        return False
+    try:
+        completed = subprocess.run(
+            [sys.executable, '-m', 'src._symbolic_equivalence_worker'],
+            input=pickle.dumps(expression, protocol=pickle.HIGHEST_PROTOCOL),
+            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+            timeout=timeout, check=False)
+        return completed.returncode == 0 and completed.stdout == b'1'
+    except (OSError, pickle.PickleError, subprocess.TimeoutExpired):
+        return False
 
 
 def submission_formulas(text: str) -> list[str]:
@@ -89,14 +113,14 @@ def symbolic_equivalent(predicted: sp.Expr, truth: sp.Expr) -> bool:
         substitutions = {symbol: sp.Rational(index + offset + 2)
                          for index, symbol in enumerate(symbols)}
         try:
-            value = sp.N(difference.subs(substitutions), 50)
+            value = difference.evalf(50, subs=substitutions)
             if value.is_number and value.is_finite:
                 numeric = complex(value)
                 if abs(numeric) > 1e-30:
                     return False
         except (TypeError, ValueError, OverflowError):
             continue
-    return bool(sp.simplify(difference) == 0)
+    return _simplify_is_zero_with_timeout(difference)
 
 
 def score_expression(expression, reference, data, columns):
