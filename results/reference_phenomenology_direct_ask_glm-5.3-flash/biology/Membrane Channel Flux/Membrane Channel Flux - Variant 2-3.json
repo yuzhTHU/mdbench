@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.03603013604879379,
+  "evaluation_seconds": 332.8614992238581,
+  "evaluation": {
+    "task_name": "Membrane Channel Flux - Variant 2-3",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.5964287103951163e-17,
+        "mse": 2.4843051835137053e-33,
+        "rmse": 4.984280473161302e-17,
+        "mape": 2.1413374596653e-16,
+        "r2": 1.0,
+        "nrmse": 2.7283947384019546e-16,
+        "max_absolute_error": 2.220446049250313e-16,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.641184576075318e-17,
+        "mse": 2.6621287026914092e-33,
+        "rmse": 5.159582059325551e-17,
+        "mape": 2.087180282063615e-16,
+        "r2": 1.0,
+        "nrmse": 2.7589839751309933e-16,
+        "max_absolute_error": 2.7755575615628914e-16,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.4946614638241403e-17,
+        "mse": 3.7350069841454506e-34,
+        "rmse": 1.9326166159239785e-17,
+        "mape": 1.7231586876695012e-15,
+        "r2": 1.0,
+        "nrmse": 4.452808875846013e-16,
+        "max_absolute_error": 6.938893903907228e-17,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "current_density": "5818387071441689809*voltage*(outside + 100)*(2000*inside*exp(482426660600*voltage/12471693927) - outside*(3*outside + 2000))/((17*outside + 1500)*(9353770445250000000*outside + 6235846963500000000000)*(exp(482426660600*voltage/12471693927) - 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "inactivated",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "local_inside",
+        "ok": true,
+        "reply": "local_inside = inside*(1 + 0.15*(exp(96485.33212*voltage/(8.314462618*300)) - 1))",
+        "expression": "inside*(3*exp(482426660600*voltage/12471693927)/20 + 17/20)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.235920019004235,
+            "mse": 34.54630446050275,
+            "rmse": 5.877610437967351,
+            "mape": 0.6614513093971409,
+            "r2": -6.406723117220502,
+            "nrmse": 0.7165979151513264,
+            "max_absolute_error": 14.252347084961873,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.074097648854047,
+            "mse": 33.1784763791915,
+            "rmse": 5.760076074080229,
+            "mape": 0.6363295229115576,
+            "r2": -5.974153091970898,
+            "nrmse": 0.6973608205009613,
+            "max_absolute_error": 14.845473224446089,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 35.10163988070185,
+            "mse": 1373.1567708198518,
+            "rmse": 37.056130003278156,
+            "mape": 2.60648868540199,
+            "r2": -744.179237349936,
+            "nrmse": 2.741850536705798,
+            "max_absolute_error": 67.12181076609299,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 333.3659731000662,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_glm-5.3-flash_full_20260925/runs/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_2-3/performance.json",
+    "file_sha256": "54e111c5c66e1b43fabe38b06341810ea5c22939fc0968e94904bfd5c15a5db9"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T15:08:32.505066+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "current_density = 5818387071441689809*voltage*(outside + 100)*(2000*inside*exp(482426660600*voltage/12471693927) - outside*(3*outside + 2000))/(3117923481750000000*(3*outside + 2000)*(17*outside + 1500)*(exp(482426660600*voltage/12471693927) - 1))"
+}

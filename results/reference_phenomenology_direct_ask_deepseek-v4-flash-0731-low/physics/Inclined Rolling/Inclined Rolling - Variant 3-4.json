@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.035839494317770004,
+  "evaluation_seconds": 338.98004353418946,
+  "evaluation": {
+    "task_name": "Inclined Rolling - Variant 3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.8551826741486366e-16,
+        "mse": 7.946541024937286e-32,
+        "rmse": 2.8189609832236567e-16,
+        "mape": 9.835621932860654e-17,
+        "r2": 1.0,
+        "nrmse": 1.4111648524137978e-16,
+        "max_absolute_error": 8.881784197001252e-16,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.8696155734687635e-16,
+        "mse": 8.10308061081708e-32,
+        "rmse": 2.846591050856635e-16,
+        "mape": 1.0186644985441274e-16,
+        "r2": 1.0,
+        "nrmse": 1.45957311907073e-16,
+        "max_absolute_error": 1.3322676295501878e-15,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.8768988019910466e-16,
+        "mse": 3.054863855468368e-31,
+        "rmse": 5.527082282242927e-16,
+        "mape": 1.0263801559896458e-16,
+        "r2": 1.0,
+        "nrmse": 1.4613430476561637e-16,
+        "max_absolute_error": 1.7763568394002505e-15,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "acceleration": "(981*sin(angle) + 956)*sin(angle)/(164*sin(angle) + 150)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "rotor_inertia",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "resist_torque",
+        "ok": true,
+        "reply": "resist_torque = (981*sin(angle)^2 + 956*sin(angle) - 9.81*sin(angle)*(164*sin(angle) + 150))/(10*(164*sin(angle) + 150))",
+        "expression": "(-981*(164*sin(angle) + 150)*sin(angle)/100 + 981*sin(angle)**2 + 956*sin(angle))/(1640*sin(angle) + 1500)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.11187045727111276,
+            "mse": 0.01416533442071569,
+            "rmse": 0.11901821045838192,
+            "mape": 19.373477242048057,
+            "r2": -5229.218579426089,
+            "nrmse": 20.2803052048581,
+            "max_absolute_error": 0.17925508803345805,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.10874129237306279,
+            "mse": 0.01349410635471772,
+            "rmse": 0.11616413540640554,
+            "mape": 19.24502673050023,
+            "r2": -4894.698756652679,
+            "nrmse": 20.199102670234186,
+            "max_absolute_error": 0.17926249383420018,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.2265615745938865,
+            "mse": 0.05204477858309093,
+            "rmse": 0.2281332474302922,
+            "mape": 24.054860850984774,
+            "r2": -108493.08335082678,
+            "nrmse": 24.236471042306263,
+            "max_absolute_error": 0.26914065807598764,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 339.39746606349945,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/physics/Inclined_Rolling/Inclined_Rolling_-_Variant_3-4/performance.json",
+    "file_sha256": "6594391aa34904308761f332b181b39a5236d311244b554d0055123188a2b4a3"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T14:40:38.305207+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "acceleration = (981*sin(angle) + 956)*sin(angle)/(2*(82*sin(angle) + 75))"
+}

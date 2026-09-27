@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.030780324712395668,
+  "evaluation_seconds": 887.1334152910858,
+  "evaluation": {
+    "task_name": "Terminal Settling - Variant 2-3",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 9.94469619635752e-22,
+        "mse": 3.3158028730300977e-42,
+        "rmse": 1.820934615253963e-21,
+        "mape": 2.616194455652915e-16,
+        "r2": 1.0,
+        "nrmse": 3.089793902753362e-16,
+        "max_absolute_error": 1.3552527156068805e-20,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 9.323450469105694e-22,
+        "mse": 2.7093790515565864e-42,
+        "rmse": 1.6460191528522949e-21,
+        "mape": 2.707932363884507e-16,
+        "r2": 1.0,
+        "nrmse": 2.9788073159659673e-16,
+        "max_absolute_error": 6.776263578034403e-21,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.1475744319969802e-21,
+        "mse": 1.6543303675085635e-41,
+        "rmse": 4.067346023525123e-21,
+        "mape": 2.3968102514146903e-16,
+        "r2": 1.0,
+        "nrmse": 2.933098099279542e-16,
+        "max_absolute_error": 1.3552527156068805e-20,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "speed": "109*radius**2*(-fluid_density + particle_density*(13000*radius + 1))/(50*viscosity*(13000*radius + 1)*(16000*radius + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "displacement",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "local_viscosity",
+        "ok": true,
+        "reply": "local_viscosity = viscosity*(1 + 0.16*radius)",
+        "expression": "viscosity*(4*radius/25 + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0027010738760079142,
+            "mse": 1.0464139159626002e-05,
+            "rmse": 0.00323483216869531,
+            "mape": 0.08236787559579102,
+            "r2": 0.9363227709928797,
+            "nrmse": 0.0933463297637193,
+            "max_absolute_error": 0.009465891754825276,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.002742190474287991,
+            "mse": 1.0828675841789381e-05,
+            "rmse": 0.003290695343204743,
+            "mape": 0.08063024200411678,
+            "r2": 0.9309234977269994,
+            "nrmse": 0.09260367924716176,
+            "max_absolute_error": 0.00934119342743387,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.016193222688881258,
+            "mse": 0.00027227828300072413,
+            "rmse": 0.01650085703836998,
+            "mape": 0.19995862285324728,
+            "r2": -1.2689365079828319,
+            "nrmse": 0.20257667941433882,
+            "max_absolute_error": 0.024869947719084698,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 887.4329022821039,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/physics/Terminal_Settling/Terminal_Settling_-_Variant_2-3/performance.json",
+    "file_sha256": "ac3de416380b33ce388479e93a59df57d35eb3636043833378a6a9070cd32e2d"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T15:15:55.665458+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "speed = 109*radius**2*(-fluid_density + particle_density*(13000*radius + 1))/(50*viscosity*(13000*radius + 1)*(16000*radius + 1))"
+}

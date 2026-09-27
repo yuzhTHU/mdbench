@@ -1,0 +1,198 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.1049584317952,
+  "evaluation_seconds": 711.2835326921195,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Variant 1-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 32.524239796547434,
+        "mse": 5389.664035105616,
+        "rmse": 73.41433126512572,
+        "mape": 0.06493345816925347,
+        "r2": 0.9988973705113667,
+        "nrmse": 0.029813167084490732,
+        "max_absolute_error": 702.5174793585848,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 35.68705127556389,
+        "mse": 6889.483183237251,
+        "rmse": 83.00291069135619,
+        "mape": 0.06370659599611386,
+        "r2": 0.9986858366732985,
+        "nrmse": 0.03251837973165941,
+        "max_absolute_error": 1078.376833907114,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 204.47152120673172,
+        "mse": 97978.45338604669,
+        "rmse": 313.0151008913894,
+        "mape": 0.26179372460535383,
+        "r2": 0.8916731674942828,
+        "nrmse": 0.23906853343601106,
+        "max_absolute_error": 1556.1042270794233,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "stress": "345006467*frame_modulus*temperature_step*(-Abs(1 - 235162021*(conditioning_temperature - 2995031561/10000000)**(39133493/10000000)/(50000000000000000*conditioning_cooling_rate**(195479607/100000000))) + 1 + 235162021*(conditioning_temperature - 2995031561/10000000)**(39133493/10000000)/(50000000000000000*conditioning_cooling_rate**(195479607/100000000)))/(20000*(frame_modulus + 1827729000)*(143350517*laplace_rate*length_scale**2/100 + 1)**(21038201/25000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_slow_thermal_fraction",
+        "ok": false,
+        "error": "Invalid mathematical expression: '(1+(((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-500+abs((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-500))/19000)^2)-abs(1-(((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-500+abs((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-500))/19000)^2))/2'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "prepared_adhesive_fraction",
+        "ok": true,
+        "reply": "prepared_adhesive_fraction = 1-exp(-(((((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-1600)+abs((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-1600))/2)/10400)^2)",
+        "expression": "1 - exp(-(Abs(1600 - (conditioning_temperature - 300)**2/(2*conditioning_cooling_rate))/20800 - 1/13 + (conditioning_temperature - 300)**2/(41600*conditioning_cooling_rate))**2)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.025222562700120854,
+            "mse": 0.004689035490500068,
+            "rmse": 0.06847653240709599,
+            "mape": 0.050193106606564536,
+            "r2": 0.9255153409217844,
+            "nrmse": 0.23981396120829715,
+            "max_absolute_error": 0.36535614595134813,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.028474264021671095,
+            "mse": 0.005772136654004843,
+            "rmse": 0.07597457899853637,
+            "mape": 0.05378560014275024,
+            "r2": 0.9151023424441099,
+            "nrmse": 0.2547998376401791,
+            "max_absolute_error": 0.3637333808154718,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.048816082200087124,
+            "mse": 0.008966258187628924,
+            "rmse": 0.09469032784624269,
+            "mape": 0.10480564985283441,
+            "r2": 0.8581835568896806,
+            "nrmse": 0.2676805944246201,
+            "max_absolute_error": 0.36342837241096904,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "prepared_eigenstrain_fraction",
+        "ok": false,
+        "error": "Invalid mathematical expression: '((((conditioning_temperature-300)^2-2200+abs((conditioning_temperature-300)^2-2200))/(21600*conditioning_cooling_rate))^2+1-abs(((conditioning_temperature-300)^2-2200+abs((conditioning_temperature-300)^2-2200))/(21600*conditioning_cooling_rate))^2-1))/2'",
+        "error_type": "ValidationError"
+      },
+      {
+        "probe": "prepared_slow_strain_fraction",
+        "ok": true,
+        "reply": "prepared_slow_strain_fraction = (1+(((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-2800+abs((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-2800))/(2*11700))^2-abs(1-(((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-2800+abs((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-2800))/(2*11700))^2))/2",
+        "expression": "(Abs(2800 - (conditioning_temperature - 300)**2/(2*conditioning_cooling_rate))/23400 - 14/117 + (conditioning_temperature - 300)**2/(46800*conditioning_cooling_rate))**2/2 - Abs((Abs(2800 - (conditioning_temperature - 300)**2/(2*conditioning_cooling_rate))/23400 - 14/117 + (conditioning_temperature - 300)**2/(46800*conditioning_cooling_rate))**2 - 1)/2 + 1/2",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.8068082492287756e-17,
+            "mse": 3.587337431807398e-33,
+            "rmse": 5.98943856451287e-17,
+            "mape": 3.3679116461066546e-14,
+            "r2": 1.0,
+            "nrmse": 2.737351343320236e-16,
+            "max_absolute_error": 4.440892098500626e-16,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.723516602407883e-17,
+            "mse": 3.392735525699287e-33,
+            "rmse": 5.824719328602269e-17,
+            "mape": 2.6088206257891277e-13,
+            "r2": 1.0,
+            "nrmse": 2.636016047484254e-16,
+            "max_absolute_error": 4.440892098500626e-16,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.656638599293489e-17,
+            "mse": 4.676164340862787e-33,
+            "rmse": 6.838248562945622e-17,
+            "mape": 1.3819702425601702e-11,
+            "r2": 1.0,
+            "nrmse": 3.1589658435610514e-16,
+            "max_absolute_error": 3.885780586188048e-16,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 1611.5477129165083,
+  "ok": false,
+  "submission": "stress = temperature_step*frame_modulus/(frame_modulus+1827729000)*34500.6467*(4.70324042e-9*(conditioning_temperature-299.5031561)^3.9133493/conditioning_cooling_rate^1.95479607+1-abs(4.70324042e-9*(conditioning_temperature-299.5031561)^3.9133493/conditioning_cooling_rate^1.95479607-1))/(2*(1+1433505.17*laplace_rate*length_scale^2)^0.84152804)\n",
+  "used_token": 0,
+  "usage_details": {
+    "input_tokens": 0,
+    "cached_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0
+  },
+  "source": {
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/codex_p_only_gpt_20260926/runs/gpt/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-3-4-5/performance.json",
+    "synced_at": "2026-09-26T02:44:17.647029+00:00"
+  },
+  "run_metadata": {
+    "objective": "phenomenology",
+    "split": "core_set",
+    "seed": 0,
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "task_index": 67
+  }
+}

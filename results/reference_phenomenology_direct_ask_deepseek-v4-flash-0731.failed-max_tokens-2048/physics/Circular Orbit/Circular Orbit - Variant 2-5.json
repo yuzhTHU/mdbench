@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.03684917278587818,
+  "evaluation_seconds": 320.12561193853617,
+  "evaluation": {
+    "task_name": "Circular Orbit - Variant 2-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.6502182483673094e-06,
+        "mse": 8.304771981215708e-11,
+        "rmse": 9.113052167751322e-06,
+        "mape": 2.16367186726059e-16,
+        "r2": 1.0,
+        "nrmse": 3.1120716363903434e-16,
+        "max_absolute_error": 9.1552734375e-05,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.445655107498169e-06,
+        "mse": 7.380243483012805e-11,
+        "rmse": 8.590834350057511e-06,
+        "mape": 2.159754504232139e-16,
+        "r2": 1.0,
+        "nrmse": 2.831162360334181e-16,
+        "max_absolute_error": 7.62939453125e-05,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 6.3991546630859375e-06,
+        "mse": 7.855487638153136e-11,
+        "rmse": 8.863118885670629e-06,
+        "mape": 2.0158198589621674e-16,
+        "r2": 1.0,
+        "nrmse": 2.6100139180798404e-16,
+        "max_absolute_error": 4.57763671875e-05,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "period_squared": "9869604401089357120529513782849*radius**3*(117*central_mass + 500000000000000000000000000)*(radius + 50000000)**2/(33371500000000000000*central_mass*(central_mass + 5000000000000000000000000)*(7*radius**2 + 50*(radius + 50000000)**2))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "extra_accel",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "reservoir_inertia",
+        "ok": true,
+        "reply": "reservoir_inertia = (central_mass / 5e24) * ((central_mass + 5e24) / (1.17*central_mass + 5e24)) * (1 + 0.14 * (radius/(radius + 5e7))^2)",
+        "expression": "central_mass*(central_mass + 5000000000000000000000000)*(7*radius**2/(50*(radius + 50000000)**2) + 1)/(5000000000000000000000000*(117*central_mass/100 + 5000000000000000000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5685548098706128,
+            "mse": 0.4336157280669998,
+            "rmse": 0.6584950478682431,
+            "mape": 8.364841557131484,
+            "r2": -858.0416739543159,
+            "nrmse": 9.87472130149417,
+            "max_absolute_error": 1.3931452993709668,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5636051586432079,
+            "mse": 0.4309041159297989,
+            "rmse": 0.6564328723714244,
+            "mape": 8.334389093862047,
+            "r2": -824.076158362514,
+            "nrmse": 9.897711600213949,
+            "max_absolute_error": 1.4062823530667985,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.334421672664197,
+            "mse": 5.8248104413355435,
+            "rmse": 2.413464406477863,
+            "mape": 18.979817500173287,
+            "r2": -72313.75162852003,
+            "nrmse": 19.840451557016063,
+            "max_absolute_error": 3.5984569512761366,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 320.36038583517075,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_constants_20260925/runs/physics/Circular_Orbit/Circular_Orbit_-_Variant_2-5/performance.json",
+    "file_sha256": "23eafd8cdca369cd57bf4977c57caa75ead036cbd231f038772dc4cfcf23541f"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T09:32:07.586867+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "period_squared = 9869604401089357120529513782849*radius**3*(117*central_mass + 500000000000000000000000000)*(radius + 50000000)**2/(33371500000000000000*central_mass*(central_mass + 5000000000000000000000000)*(7*radius**2 + 50*(radius + 50000000)**2))"
+}

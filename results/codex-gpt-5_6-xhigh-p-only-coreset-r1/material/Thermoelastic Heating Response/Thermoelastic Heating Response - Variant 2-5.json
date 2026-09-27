@@ -1,0 +1,186 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.0952284485102,
+  "evaluation_seconds": 345.6087736990303,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Variant 2-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 17.77836425175317,
+        "mse": 1752.4034514453235,
+        "rmse": 41.86171820942523,
+        "mape": 0.03983177167612702,
+        "r2": 0.999637926571765,
+        "nrmse": 0.01704129504021092,
+        "max_absolute_error": 526.1389858145612,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 18.805879141755344,
+        "mse": 1733.1808142831,
+        "rmse": 41.63148825448233,
+        "mape": 0.039925201679714376,
+        "r2": 0.9996665265397426,
+        "nrmse": 0.01632627440645641,
+        "max_absolute_error": 468.94846190388125,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 44.610799642383206,
+        "mse": 2868.3915927780167,
+        "rmse": 53.557367306263444,
+        "mape": 0.07246460308675345,
+        "r2": 0.9979946654072924,
+        "nrmse": 0.033506445362813594,
+        "max_absolute_error": 190.14452117362998,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "stress": "frame_modulus**(50143163/50000000)*temperature_step**(50512671/50000000)*(-Abs(148987333/5000 - 207484583*(conditioning_temperature - 60564279/200000)**(48202743/12500000)/(1000000000000*conditioning_cooling_rate**(195223711/100000000))) + 148987333/5000 + 207484583*(conditioning_temperature - 60564279/200000)**(48202743/12500000)/(1000000000000*conditioning_cooling_rate**(195223711/100000000)))/(2*(frame_modulus + 1716709150)**(50143163/50000000)*(54038018*laplace_rate**(2039557/2000000)*length_scale**(1072817/500000)/25 + 1)**(91808327/100000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_anelastic_fraction",
+        "ok": true,
+        "reply": "prepared_anelastic_fraction = ((1+abs(((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-1000)/10000)-abs(((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-1000)/10000-1))/2)^2",
+        "expression": "(Abs(1/10 - (conditioning_temperature - 300)**2/(20000*conditioning_cooling_rate))/2 - Abs(11/10 - (conditioning_temperature - 300)**2/(20000*conditioning_cooling_rate))/2 + 1/2)**2",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.37859923885767e-17,
+            "mse": 7.603548842053963e-33,
+            "rmse": 8.719833050038265e-17,
+            "mape": 2.590535680480794e-15,
+            "r2": 1.0,
+            "nrmse": 2.703684841514549e-16,
+            "max_absolute_error": 6.661338147750939e-16,
+            "symbolically_equivalent": true
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.498731925945365e-17,
+            "mse": 8.075611990820888e-33,
+            "rmse": 8.986440892155742e-17,
+            "mape": 1.2093299519250404e-15,
+            "r2": 1.0,
+            "nrmse": 2.6750035863572905e-16,
+            "max_absolute_error": 6.661338147750939e-16,
+            "symbolically_equivalent": true
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 7.506148480551645e-17,
+            "mse": 1.3384647371570125e-32,
+            "rmse": 1.1569203676818093e-16,
+            "mape": 3.0114425158123764e-16,
+            "r2": 1.0,
+            "nrmse": 2.731903502666771e-16,
+            "max_absolute_error": 6.661338147750939e-16,
+            "symbolically_equivalent": true
+          }
+        }
+      },
+      {
+        "probe": "prepared_slow_strain_fraction",
+        "ok": true,
+        "reply": "prepared_slow_strain_fraction = (1+((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-2800+abs((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-2800))^2/547560000-abs(1-((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-2800+abs((conditioning_temperature-300)^2/(2*conditioning_cooling_rate)-2800))^2/547560000))/2",
+        "expression": "(Abs(2800 - (conditioning_temperature - 300)**2/(2*conditioning_cooling_rate)) - 2800 + (conditioning_temperature - 300)**2/(2*conditioning_cooling_rate))**2/1095120000 - Abs((Abs(2800 - (conditioning_temperature - 300)**2/(2*conditioning_cooling_rate)) - 2800 + (conditioning_temperature - 300)**2/(2*conditioning_cooling_rate))**2/547560000 - 1)/2 + 1/2",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.7263170799434517e-17,
+            "mse": 3.442507499989478e-33,
+            "rmse": 5.867288556044843e-17,
+            "mape": 3.3671910181526386e-14,
+            "r2": 1.0,
+            "nrmse": 2.681525160921832e-16,
+            "max_absolute_error": 4.440892098500626e-16,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.6686993405670157e-17,
+            "mse": 2.9990754450665365e-33,
+            "rmse": 5.4763815106934766e-17,
+            "mape": 2.6087971530822934e-13,
+            "r2": 1.0,
+            "nrmse": 2.4783734168008685e-16,
+            "max_absolute_error": 3.3306690738754696e-16,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.5602747102029777e-17,
+            "mse": 4.39353412152396e-33,
+            "rmse": 6.628373949562563e-17,
+            "mape": 1.3819715516902968e-11,
+            "r2": 1.0,
+            "nrmse": 3.0620131327894383e-16,
+            "max_absolute_error": 3.3306690738754696e-16,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 1246.1139696128666,
+  "ok": true,
+  "submission": "stress = temperature_step^1.01025342*(frame_modulus/(frame_modulus+1716709150))^1.00286326*(1+2161520.72*laplace_rate^1.0197785*length_scale^2.145634)^(-0.91808327)*(29797.4666+0.000207484583*(conditioning_temperature-302.821395)^3.85621944*conditioning_cooling_rate^(-1.95223711)-abs(29797.4666-0.000207484583*(conditioning_temperature-302.821395)^3.85621944*conditioning_cooling_rate^(-1.95223711)))/2\n",
+  "used_token": 0,
+  "usage_details": {
+    "input_tokens": 0,
+    "cached_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0
+  },
+  "source": {
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/codex_p_only_gpt_20260926/runs/gpt/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_2-5/performance.json",
+    "synced_at": "2026-09-26T02:28:31.642821+00:00"
+  },
+  "run_metadata": {
+    "objective": "phenomenology",
+    "split": "core_set",
+    "seed": 0,
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "task_index": 64
+  }
+}

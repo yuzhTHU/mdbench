@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.035225000232458115,
+  "evaluation_seconds": 155.10602651163936,
+  "evaluation": {
+    "task_name": "Membrane Channel Flux - Variant 1-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.888073031253157e-17,
+        "mse": 6.211846294377981e-34,
+        "rmse": 2.4923575775514196e-17,
+        "mape": 2.144195634416453e-16,
+        "r2": 1.0,
+        "nrmse": 2.5695240573606454e-16,
+        "max_absolute_error": 8.326672684688674e-17,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.778785452266618e-17,
+        "mse": 6.022744047963459e-34,
+        "rmse": 2.4541279607965553e-17,
+        "mape": 2.0283696694498142e-16,
+        "r2": 1.0,
+        "nrmse": 2.596333466637964e-16,
+        "max_absolute_error": 1.1102230246251565e-16,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.9853503606739876e-17,
+        "mse": 6.439706448289555e-34,
+        "rmse": 2.5376576696413476e-17,
+        "mape": 1.0839260646894994e-15,
+        "r2": 1.0,
+        "nrmse": 3.6695229764567323e-16,
+        "max_absolute_error": 8.326672684688674e-17,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "current_density": "5818387071441689809*voltage**3*(400*inside*exp(482426660600*voltage/12471693927) - 400*outside + (325*voltage**2 + 4)*(2*inside*exp(482426660600*voltage/12471693927) - 5*outside))/((625*voltage**2 + 2)*(810660105255000000000*voltage**2 + 9977355141600000000)*(exp(482426660600*voltage/12471693927) - 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "open_state",
+        "ok": true,
+        "reply": "open_state = 1 / (1 + exp( - ( (482426660600/12471693927)*voltage - ln(outside/inside) - 0.5 ) / 2 ))",
+        "expression": "1/(1 + sqrt(outside)*exp(1/4 - 241213330300*voltage/12471693927)/sqrt(inside))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.07864014297960532,
+            "mse": 0.009028148670000258,
+            "rmse": 0.09501657050220376,
+            "mape": 0.8012146911016581,
+            "r2": 0.39337619087913667,
+            "nrmse": 0.3637393651942056,
+            "max_absolute_error": 0.22493834196599455,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08537786648829365,
+            "mse": 0.010305260398411488,
+            "rmse": 0.10151482846565564,
+            "mape": 0.9287893449707961,
+            "r2": 0.33706845992162193,
+            "nrmse": 0.4035809753303876,
+            "max_absolute_error": 0.21993369541594754,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.10729833175841338,
+            "mse": 0.01229622224864552,
+            "rmse": 0.11088833233774201,
+            "mape": 0.18688847021859242,
+            "r2": -1.8465314520564893,
+            "nrmse": 0.1944120749297756,
+            "max_absolute_error": 0.16971658027937248,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "secondary_current",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one secondary_current equation; received: 'current_density = 5818387071441689809*voltage**3*(400*inside*exp(482426660600*voltage/12471693927) - 400*outside + (325*voltage**2 + 4)*(2*inside*exp(482426660600*voltage/12471693927) - 5*outside))/(2494338785400000000*(325*voltage**2 + 4)*(625*voltage**2 + 2)*(exp(482426660600*voltage/12471693927) - 1))'",
+        "error_type": "ValueError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 155.18707375973463,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/biology/Membrane_Channel_Flux/Membrane_Channel_Flux_-_Variant_1-4-5/performance.json",
+    "file_sha256": "63647ed627c68919456713d13fc4f2568d117e804e0200a18f4e4c0e6655f50d"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T20:15:23.312867+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "current_density = 5818387071441689809*voltage**3*(400*inside*exp(482426660600*voltage/12471693927) - 400*outside + (325*voltage**2 + 4)*(2*inside*exp(482426660600*voltage/12471693927) - 5*outside))/(2494338785400000000*(325*voltage**2 + 4)*(625*voltage**2 + 2)*(exp(482426660600*voltage/12471693927) - 1))"
+}

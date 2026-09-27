@@ -1,0 +1,178 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.031834300607442856,
+  "evaluation_seconds": 364.4851178638637,
+  "evaluation": {
+    "task_name": "Competitive Inhibition Pulse Reaction - Variant 1-2",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 4.606376925405699e-21,
+        "mse": 1.1474284725555272e-40,
+        "rmse": 1.0711808776091586e-20,
+        "mape": 1.290963103666487e-16,
+        "r2": 1.0,
+        "nrmse": 1.7938278961460783e-16,
+        "max_absolute_error": 1.0842021724855044e-19,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 4.869380655528159e-21,
+        "mse": 1.0482048824781069e-40,
+        "rmse": 1.0238187742360006e-20,
+        "mape": 1.2772253812440998e-16,
+        "r2": 1.0,
+        "nrmse": 1.7375923878741996e-16,
+        "max_absolute_error": 8.131516293641283e-20,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 4.312414141061094e-20,
+        "mse": 4.596182911715144e-39,
+        "rmse": 6.77951540430077e-20,
+        "mape": 1.3673584863870835e-16,
+        "r2": 1.0,
+        "nrmse": 1.9434337815259443e-16,
+        "max_absolute_error": 4.336808689942018e-19,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "response": "14*enzyme_total*substrate*(100*laplace_rate + 61)*(14*substrate + 95)/(10*inhibitor*(9*inhibitor*(100*laplace_rate + 28*substrate + 263) + 4600*laplace_rate + 1288*substrate + 12098) + 2000*laplace_rate*(25*laplace_rate + 42*substrate + 81) + 51240*substrate + 80215)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "free_enzyme",
+        "ok": true,
+        "reply": "free_enzyme = 14*enzyme_total*substrate*(100*laplace_rate + 61)*(14*substrate + 95)/(5*(2*inhibitor*(9*inhibitor*(100*laplace_rate + 28*substrate + 263) + 4600*laplace_rate + 1288*substrate + 12098) + 400*laplace_rate*(25*laplace_rate + 42*substrate + 81) + 10248*substrate + 16043))",
+        "expression": "14*enzyme_total*substrate*(100*laplace_rate + 61)*(14*substrate + 95)/(10*inhibitor*(9*inhibitor*(100*laplace_rate + 28*substrate + 263) + 4600*laplace_rate + 1288*substrate + 12098) + 2000*laplace_rate*(25*laplace_rate + 42*substrate + 81) + 51240*substrate + 80215)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.010188466200807e-05,
+            "mse": 1.35574610473201e-08,
+            "rmse": 0.00011643651080017857,
+            "mape": 0.6978172925718376,
+            "r2": -1.2045125351201191,
+            "nrmse": 0.793062181091164,
+            "max_absolute_error": 0.0003434393741502484,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 8.897318431203723e-05,
+            "mse": 1.3031112972711431e-08,
+            "rmse": 0.0001141539003832608,
+            "mape": 0.6930977406510207,
+            "r2": -1.2693007264487757,
+            "nrmse": 0.7900033703531958,
+            "max_absolute_error": 0.0003352391840812999,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00020565176068765265,
+            "mse": 6.080357862770681e-08,
+            "rmse": 0.00024658381663788647,
+            "mape": 0.45178254304106996,
+            "r2": -2.2473955655640028,
+            "nrmse": 0.5310080051412843,
+            "max_absolute_error": 0.0006248958493529168,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "inhibitor_complex",
+        "ok": true,
+        "reply": "inhibitor_complex = enzyme_total * (0.92*inhibitor*((laplace_rate + 2.63 + 0.18*inhibitor)*(laplace_rate + 0.61) - 0.1098*inhibitor) + 0.252*substrate*inhibitor*(laplace_rate + 0.61)) / ( (laplace_rate + 1.4*substrate + 0.92*inhibitor)*(laplace_rate + 0.61)^2 - 3.682*substrate*(laplace_rate + 0.61)^2 - 0.5612*inhibitor*(laplace_rate + 2.63 + 0.18*inhibitor)*(laplace_rate + 0.61) - 0.1098*(laplace_rate + 1.4*substrate + 0.92*inhibitor)*inhibitor*(laplace_rate + 0.61) + 0.06162*inhibitor^2 )",
+        "expression": "enzyme_total*(63*inhibitor*substrate*(laplace_rate + 61/100)/250 + 23*inhibitor*(-549*inhibitor/5000 + (laplace_rate + 61/100)*(9*inhibitor/50 + laplace_rate + 263/100))/25)/(3081*inhibitor**2/50000 - inhibitor*(laplace_rate + 61/100)*(12627*inhibitor/125000 + 549*laplace_rate/5000 + 3843*substrate/25000) - 1403*inhibitor*(laplace_rate + 61/100)*(9*inhibitor/50 + laplace_rate + 263/100)/2500 - 1841*substrate*(laplace_rate + 61/100)**2/500 + (laplace_rate + 61/100)**2*(23*inhibitor/25 + laplace_rate + 7*substrate/5))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0004193525043923048,
+            "mse": 4.895996408679991e-06,
+            "rmse": 0.002212689858222338,
+            "mape": 21.285761976955847,
+            "r2": -3351.047973683274,
+            "nrmse": 45.57395487187659,
+            "max_absolute_error": 0.04399103458988067,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00043399710157425843,
+            "mse": 4.448832968799502e-06,
+            "rmse": 0.0021092256799118254,
+            "mape": 17.41140296124307,
+            "r2": -3284.5750555333775,
+            "nrmse": 43.36198826580281,
+            "max_absolute_error": 0.05219255340616066,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0021726715094948163,
+            "mse": 0.0003592239284673229,
+            "rmse": 0.01895320364654279,
+            "mape": 18.329402795728683,
+            "r2": -93897.44824029536,
+            "nrmse": 154.2592573340237,
+            "max_absolute_error": 0.35297641449110534,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 364.8856627494097,
+  "ok": true,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/chemistry/Competitive_Inhibition_Pulse_Reaction/Competitive_Inhibition_Pulse_Reaction_-_Variant_1-2/performance.json",
+    "file_sha256": "923cfc69c8e5ecc89a0600c0b354506ee94b2f7dc68ef865f59c9db03c5e8cc9"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T17:00:32.550257+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "response = 14*enzyme_total*substrate*(100*laplace_rate + 61)*(14*substrate + 95)/(5*(2*inhibitor*(9*inhibitor*(100*laplace_rate + 28*substrate + 263) + 4600*laplace_rate + 1288*substrate + 12098) + 400*laplace_rate*(25*laplace_rate + 42*substrate + 81) + 10248*substrate + 16043))"
+}

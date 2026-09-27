@@ -1,0 +1,178 @@
+{
+  "algorithm": "direct_ask_codex",
+  "agent_seconds": 0.19650575146079063,
+  "evaluation_seconds": 155.97057674080133,
+  "evaluation": {
+    "task_name": "Composite Heat Transport - Variant 1-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.105871529551223e-13,
+        "mse": 1.8273712201003495e-24,
+        "rmse": 1.3518029516539566e-12,
+        "mape": 1.3441311693517782e-16,
+        "r2": 1.0,
+        "nrmse": 1.7179341029471592e-16,
+        "max_absolute_error": 7.275957614183426e-12,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.623146641184576e-13,
+        "mse": 2.2847633247509605e-24,
+        "rmse": 1.5115433585415142e-12,
+        "mape": 1.3742549270380958e-16,
+        "r2": 1.0,
+        "nrmse": 1.8707883440846583e-16,
+        "max_absolute_error": 1.4551915228366852e-11,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.2823875294998287e-12,
+        "mse": 3.0655313501215205e-24,
+        "rmse": 1.7508658858180773e-12,
+        "mape": 1.5139236402882397e-16,
+        "r2": 1.0,
+        "nrmse": 2.0291648650977953e-16,
+        "max_absolute_error": 5.4569682106375694e-12,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "heat_flux": "delta_temp*(-3*fraction*(fraction - 1)*(fraction*(delta_temp + 500)*(3*fraction + 25) - 50000*fraction + 50000) + 60000*fraction - 5000000*length**2*(fraction - 1)**2 - 200*length**2*(fraction - 1)*(fraction*(delta_temp + 500)*(3*fraction + 25) - 50000*fraction + 50000) + 500000)/(10*length*(fraction*(delta_temp + 500)*(3*fraction + 25) - 50000*fraction + 50000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "ka",
+        "ok": true,
+        "reply": "ka = 2000/(delta_temp + 500)",
+        "expression": "2000/(delta_temp + 500)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 0.0,
+            "mse": 0.0,
+            "rmse": 0.0,
+            "mape": 0.0,
+            "r2": 1.0,
+            "nrmse": 0.0,
+            "max_absolute_error": 0.0,
+            "symbolically_equivalent": true
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 0.0,
+            "mse": 0.0,
+            "rmse": 0.0,
+            "mape": 0.0,
+            "r2": 1.0,
+            "nrmse": 0.0,
+            "max_absolute_error": 0.0,
+            "symbolically_equivalent": true
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 0.0,
+            "mse": 0.0,
+            "rmse": 0.0,
+            "mape": 0.0,
+            "r2": 1.0,
+            "nrmse": 0.0,
+            "max_absolute_error": 0.0,
+            "symbolically_equivalent": true
+          }
+        }
+      },
+      {
+        "probe": "source_flux",
+        "ok": true,
+        "reply": "source_flux = 10*length*(1 - fraction)*delta_temp*(1 + fraction*(delta_temp + 500)*(3*fraction + 25)/(fraction*(delta_temp + 500)*(3*fraction + 25) - 50000*fraction + 50000))",
+        "expression": "10*delta_temp*length*(1 - fraction)*(fraction*(delta_temp + 500)*(3*fraction + 25)/(fraction*(delta_temp + 500)*(3*fraction + 25) - 50000*fraction + 50000) + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.8239993985993367,
+            "mse": 1.0069876342041948,
+            "rmse": 1.0034877349545408,
+            "mape": 0.41934730646997787,
+            "r2": 0.3915688628879609,
+            "nrmse": 0.43101819166187805,
+            "max_absolute_error": 3.140124058002879,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.7903632722550126,
+            "mse": 0.9510106633666378,
+            "rmse": 0.975197756030354,
+            "mape": 0.4185630135272533,
+            "r2": 0.4230665496291004,
+            "nrmse": 0.4309730878148207,
+            "max_absolute_error": 3.2611173382508043,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.6946521043947746,
+            "mse": 3.29150372204975,
+            "rmse": 1.814250181769248,
+            "mape": 0.28855587126634885,
+            "r2": -0.0784989253202153,
+            "nrmse": 0.3016616321687984,
+            "max_absolute_error": 4.027163621561765,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 156.3190124593675,
+  "ok": true,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/direct_ask_codex_gpt-5_6-sol-medium_reference-p-constants_full-orders2to5-missing-watchdog-v2_20260925/runs/material/Composite_Heat_Transport/Composite_Heat_Transport_-_Variant_1-3-4-5/performance.json",
+    "file_sha256": "df91dda99ea18e2a31b30306bc89728bbc7c496c0689769b5f786ba7ddcb7a96"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T11:37:18.942136+00:00",
+      "update_message": "Imported from exact-P Codex run with numerical constants disclosed."
+    }
+  ],
+  "submission": "heat_flux = delta_temp*(-3*fraction*(fraction - 1)*(fraction*(delta_temp + 500)*(3*fraction + 25) - 50000*fraction + 50000) + 60000*fraction - 5000000*length**2*(fraction - 1)**2 - 200*length**2*(fraction - 1)*(fraction*(delta_temp + 500)*(3*fraction + 25) - 50000*fraction + 50000) + 500000)/(10*length*(fraction*(delta_temp + 500)*(3*fraction + 25) - 50000*fraction + 50000))"
+}

@@ -1,0 +1,90 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.06368392147123814,
+  "evaluation_seconds": 18.257274044677615,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Original",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.9982549776264025e-13,
+        "mse": 6.976665213607802e-25,
+        "rmse": 8.35264342205975e-13,
+        "mape": 9.688984692754245e-16,
+        "r2": 1.0,
+        "nrmse": 3.2309681548948345e-16,
+        "max_absolute_error": 1.0913936421275139e-11,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.2621163062462875e-13,
+        "mse": 7.648717303211418e-25,
+        "rmse": 8.745694542580033e-13,
+        "mape": 9.366286290849555e-16,
+        "r2": 1.0,
+        "nrmse": 3.260483444867434e-16,
+        "max_absolute_error": 7.275957614183426e-12,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.640199170400592e-13,
+        "mse": 2.342062773027104e-25,
+        "rmse": 4.83948630851158e-13,
+        "mape": 2.837947396487669e-16,
+        "r2": 1.0,
+        "nrmse": 2.9942527418318806e-16,
+        "max_absolute_error": 4.547473508864641e-12,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "stress": "13*frame_modulus*temperature_step*(18000*conditioning_cooling_rate + (conditioning_temperature - 300)**2 - Abs(18000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))**2/(36000*conditioning_cooling_rate**2*(frame_modulus + 2000000000)*(10000000*laplace_rate*length_scale**2 + 13))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_expansion_fraction",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one prepared_expansion_fraction equation; received: 'prepared_expansion_fraction = min(1, (18000*conditioning_cooling_rate + (conditioning_temperature - 300)**2 - Abs(18000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))/2)'",
+        "error_type": "ValueError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 1
+  },
+  "total_seconds": 18.56193801946938,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_glm-5.3-flash_full_20260925/runs/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Original/performance.json",
+    "file_sha256": "36d6814df05035fd5aaf9a4d0e9d6d47fa77e748ccf09905ae0884a8498507d3"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T15:37:37.826187+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "stress = 13*frame_modulus*temperature_step*(18000*conditioning_cooling_rate + (conditioning_temperature - 300)**2 - Abs(18000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))**2/(36000*conditioning_cooling_rate**2*(frame_modulus + 2000000000)*(10000000*laplace_rate*length_scale**2 + 13))"
+}

@@ -1,0 +1,178 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.040219344198703766,
+  "evaluation_seconds": 244.05319236032665,
+  "evaluation": {
+    "task_name": "Population Resource Balance - Variant 2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 6.180763244628906e-06,
+        "mse": 1.1152496881550178e-10,
+        "rmse": 1.0560538282469402e-05,
+        "mape": 1.5083459003117158e-16,
+        "r2": 1.0,
+        "nrmse": 1.8158929523869142e-16,
+        "max_absolute_error": 6.103515625e-05,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 6.2255859375e-06,
+        "mse": 1.2613224953383906e-10,
+        "rmse": 1.123086147781367e-05,
+        "mape": 1.4559177882300776e-16,
+        "r2": 1.0,
+        "nrmse": 1.9149628056376466e-16,
+        "max_absolute_error": 9.1552734375e-05,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.52130126953125e-05,
+        "mse": 4.799803718924523e-10,
+        "rmse": 2.1908454347407812e-05,
+        "mape": 1.3802671169667545e-16,
+        "r2": 1.0,
+        "nrmse": 1.8766307957741788e-16,
+        "max_absolute_error": 9.1552734375e-05,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "population": "1000000000000000*dilution*(2500*dilution + 1)*(10*feed*((10*feed + 100)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1) + (feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality))/(((10*feed + 100)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1)*(25000000*dilution**2 + 25000000*dilution*mortality + 20000*dilution + 10000000000000000*maintenance_load + 10000*mortality + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "active_fraction",
+        "ok": true,
+        "reply": "active_fraction = 1/(1 + 0.25*(feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality)/(10*feed*(10*(feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1)))",
+        "expression": "1/(1 + (feed/4 + 5/2)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality)/(10*feed*((10*feed + 100)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1)))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08823648198475022,
+            "mse": 0.010426252758327927,
+            "rmse": 0.10210902388294546,
+            "mape": 0.10036375092254296,
+            "r2": -2.954984387373023,
+            "nrmse": 0.11178571370217365,
+            "max_absolute_error": 0.19982009559874903,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08868334977988622,
+            "mse": 0.010387039873514468,
+            "rmse": 0.10191682821553302,
+            "mape": 0.10074122188608627,
+            "r2": -3.1243262596849197,
+            "nrmse": 0.11163701195347943,
+            "max_absolute_error": 0.19998778631102043,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.26440854728488455,
+            "mse": 0.07135828182769596,
+            "rmse": 0.26712970974359246,
+            "mape": 0.36299865502949863,
+            "r2": -48.39614394194074,
+            "nrmse": 0.3625541432244176,
+            "max_absolute_error": 0.33356767090363193,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "birth_max",
+        "ok": true,
+        "reply": "birth_max = 1",
+        "expression": "1",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9905973053849741,
+            "mse": 0.9812830987425604,
+            "rmse": 0.9905973444051627,
+            "mape": 105.4455173010626,
+            "r2": -12693394.40642473,
+            "nrmse": 105.3064656364628,
+            "max_absolute_error": 0.9910710403003125,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9906014609696572,
+            "mse": 0.981291331122455,
+            "rmse": 0.9906014996568777,
+            "mape": 105.49186998633027,
+            "r2": -12802695.929961747,
+            "nrmse": 105.35382120069674,
+            "max_absolute_error": 0.9910712015047319,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.9913828188613791,
+            "mse": 0.9828399222476542,
+            "rmse": 0.9913828333432319,
+            "mape": 115.09202872642014,
+            "r2": -34228452.631568566,
+            "nrmse": 115.0249940345645,
+            "max_absolute_error": 0.9916656899095121,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 244.27275422029197,
+  "ok": true,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_glm-5.3-flash_full_20260925/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_2-3-4/performance.json",
+    "file_sha256": "c2f1861d6d1518fa84358bf84c240c3097b37df9bfc9789894c276fd6dfaef5d"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T15:21:20.789137+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "population = 1000000000000000*dilution*(2500*dilution + 1)*(10*feed*(10*(feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1) + (feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality))/((10*(feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1)*(25000000*dilution**2 + 25000000*dilution*mortality + 20000*dilution + 10000000000000000*maintenance_load + 10000*mortality + 1))"
+}

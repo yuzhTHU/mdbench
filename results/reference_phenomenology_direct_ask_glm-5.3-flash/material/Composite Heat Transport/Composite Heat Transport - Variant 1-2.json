@@ -1,0 +1,178 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.04567703232169151,
+  "evaluation_seconds": 5.7142398953437805,
+  "evaluation": {
+    "task_name": "Composite Heat Transport - Variant 1-2",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 5.314859663485549e-13,
+        "mse": 8.412814570576425e-25,
+        "rmse": 9.172139647092398e-13,
+        "mape": 1.0065536704980299e-16,
+        "r2": 1.0,
+        "nrmse": 1.3773313297935286e-16,
+        "max_absolute_error": 5.4569682106375694e-12,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 5.223910193308256e-13,
+        "mse": 8.456500046676883e-25,
+        "rmse": 9.19592303506118e-13,
+        "mape": 9.357430060007961e-17,
+        "r2": 1.0,
+        "nrmse": 1.351806822100267e-16,
+        "max_absolute_error": 3.637978807091713e-12,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 7.494236342608928e-13,
+        "mse": 1.2101652361650796e-24,
+        "rmse": 1.100075104783796e-12,
+        "mape": 9.917343956368942e-17,
+        "r2": 1.0,
+        "nrmse": 1.416182905432739e-16,
+        "max_absolute_error": 3.637978807091713e-12,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "heat_flux": "100000*delta_temp/(50*fraction*length*(delta_temp + 500) + 3*fraction - 100000*length*(fraction - 1) + 20)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "ka",
+        "ok": true,
+        "reply": "ka = 4 + 1*(100000*delta_temp/(50*fraction*length*(delta_temp + 500) + 3*fraction - 100000*length*(fraction - 1) + 20))/100000",
+        "expression": "delta_temp/(50*fraction*length*(delta_temp + 500) + 3*fraction - 100000*length*(fraction - 1) + 20) + 4",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.22592743507009233,
+            "mse": 0.062313159158407606,
+            "rmse": 0.24962603862259164,
+            "mape": 0.059578134790756285,
+            "r2": -9.76643118369981,
+            "nrmse": 0.06520546864763317,
+            "max_absolute_error": 0.5455065025294741,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.22575012098496958,
+            "mse": 0.06147801615317014,
+            "rmse": 0.24794760767785226,
+            "mape": 0.05946121007957452,
+            "r2": -10.495144590471847,
+            "nrmse": 0.06473767741782499,
+            "max_absolute_error": 0.5363428157052419,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5035788984855709,
+            "mse": 0.2611279462082051,
+            "rmse": 0.5110067966360184,
+            "mape": 0.14152801208396215,
+            "r2": -49.23362296258574,
+            "nrmse": 0.14303614517231195,
+            "max_absolute_error": 0.671558794552944,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "interface_resistance",
+        "ok": true,
+        "reply": "interface_resistance = (delta_temp - 100)/(100000*delta_temp/(50*fraction*length*(delta_temp + 500) + 3*fraction - 100000*length*(fraction - 1) + 20))",
+        "expression": "(delta_temp - 100)*(50*fraction*length*(delta_temp + 500) + 3*fraction - 100000*length*(fraction - 1) + 20)/(100000*delta_temp)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.026516496816852773,
+            "mse": 0.0012947492021402707,
+            "rmse": 0.0359826236139094,
+            "mape": 125.35465450063211,
+            "r2": -109850038.17018047,
+            "nrmse": 169.7546848000973,
+            "max_absolute_error": 0.17258521338468696,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.024439699183720028,
+            "mse": 0.0010726474162339515,
+            "rmse": 0.032751296405393655,
+            "mape": 115.51068311306172,
+            "r2": -89494731.22956304,
+            "nrmse": 154.45187102765462,
+            "max_absolute_error": 0.15669015706100395,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.006142096917382308,
+            "mse": 4.652875640512703e-05,
+            "rmse": 0.006821199044532203,
+            "mape": 27.797990869926448,
+            "r2": -16003792.421124723,
+            "nrmse": 30.853467607572608,
+            "max_absolute_error": 0.01591044598160477,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 6.029245942831039,
+  "ok": true,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_glm-5.3-flash_full_20260925/runs/material/Composite_Heat_Transport/Composite_Heat_Transport_-_Variant_1-2/performance.json",
+    "file_sha256": "c6b6b2e3f9d539084f528a315bb56f3f68a076df79021a9c633eefe0940360c1"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T15:22:07.006442+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "heat_flux = 100000*delta_temp/(50*fraction*length*(delta_temp + 500) + 3*fraction - 100000*length*(fraction - 1) + 20)"
+}

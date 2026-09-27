@@ -1,0 +1,184 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.037445735186338425,
+  "evaluation_seconds": 788.2117939982563,
+  "evaluation": {
+    "task_name": "Grain Boundary Electrical Response - Variant 1-2-3",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.221201497349285e-17,
+        "mse": 1.28282341735745e-32,
+        "rmse": 1.1326179485411002e-16,
+        "mape": 1.2467102848177716e-16,
+        "r2": 1.0,
+        "nrmse": 1.6799567167376645e-16,
+        "max_absolute_error": 3.3306690738754696e-16,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.426592756904938e-17,
+        "mse": 1.3521568953553905e-32,
+        "rmse": 1.1628228133965167e-16,
+        "mape": 1.2584748449756517e-16,
+        "r2": 1.0,
+        "nrmse": 1.728198343996903e-16,
+        "max_absolute_error": 5.551115123125783e-16,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.1601830607332885e-16,
+        "mse": 2.565030537132696e-32,
+        "rmse": 1.601571271324725e-16,
+        "mape": 1.295395519470759e-16,
+        "r2": 1.0,
+        "nrmse": 1.7538071657580492e-16,
+        "max_absolute_error": 6.661338147750939e-16,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "conductivity": "(600 - 66/(500000*grain_size + 1))*(2500000*grain_size + 7)/(7500000000000000000*grain_size/(11*laplace_rate + 1200000000000/temperature) + 15000000000000/(17*laplace_rate + 11696000*laplace_rate/(laplace_rate + 1600000) + 67500000000000/temperature**2) + 10000000000000/(17*laplace_rate + 41625000000000/temperature**2)) + (1309*laplace_rate + 17820000000000000/temperature**2)/(2500000000000000000*grain_size + 5000000000000)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "space_charge_impedance",
+        "ok": true,
+        "reply": "space_charge_impedance = 600000*grain_size/(11*laplace_rate + 1200000000000/temperature) + 1.11/(17*laplace_rate + 11696000*laplace_rate/(laplace_rate + 1600000) + 67500000000000/temperature**2) + 1.2/(17*laplace_rate + 41625000000000/temperature**2)",
+        "expression": "600000*grain_size/(11*laplace_rate + 1200000000000/temperature) + 111/(100*(17*laplace_rate + 11696000*laplace_rate/(laplace_rate + 1600000) + 67500000000000/temperature**2)) + 6/(5*(17*laplace_rate + 41625000000000/temperature**2))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.1514975141197654e-05,
+            "mse": 1.4732438663487037e-10,
+            "rmse": 1.2137725760407935e-05,
+            "mape": 0.9986389977879867,
+            "r2": -8.991043969552365,
+            "nrmse": 0.9988029895214171,
+            "max_absolute_error": 2.0241821300400534e-05,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.1599364090590602e-05,
+            "mse": 1.482460868720318e-10,
+            "rmse": 1.2175634967919816e-05,
+            "mape": 0.9986300974722495,
+            "r2": -9.809431281133042,
+            "nrmse": 0.9987967649342061,
+            "max_absolute_error": 2.024880233535454e-05,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.897548020073146e-06,
+            "mse": 1.054505390350829e-11,
+            "rmse": 3.2473148759410893e-06,
+            "mape": 0.9772728534534099,
+            "r2": -3.8381252276287947,
+            "nrmse": 0.9830717489807613,
+            "max_absolute_error": 6.444578360209315e-06,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "boundary_polarization",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "fast_path_conductivity",
+        "ok": true,
+        "reply": "fast_path_conductivity = (1309*laplace_rate + 17820000000000000/temperature**2) / (5000000000000*(500000*grain_size + 1))",
+        "expression": "(1309*laplace_rate + 17820000000000000/temperature**2)/(2500000000000000000*grain_size + 5000000000000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 1.6929816923361153e-19,
+            "mse": 7.430593665135385e-38,
+            "rmse": 2.725911529220159e-19,
+            "mape": 1.058426772708905e-16,
+            "r2": 1.0,
+            "nrmse": 1.4054512402611382e-16,
+            "max_absolute_error": 1.734723475976807e-18,
+            "symbolically_equivalent": true
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 1.5981140022436335e-19,
+            "mse": 7.222825038627545e-38,
+            "rmse": 2.6875314023518956e-19,
+            "mape": 1.0052948802049837e-16,
+            "r2": 1.0,
+            "nrmse": 1.3823640134766106e-16,
+            "max_absolute_error": 1.734723475976807e-18,
+            "symbolically_equivalent": true
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 3.8706017557732507e-20,
+            "mse": 3.532360524220974e-39,
+            "rmse": 5.943366490652393e-20,
+            "mape": 1.1395360185649438e-16,
+            "r2": 1.0,
+            "nrmse": 1.5839910819411832e-16,
+            "max_absolute_error": 4.336808689942018e-19,
+            "symbolically_equivalent": true
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 788.3118437640369,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/material/Grain_Boundary_Electrical_Response/Grain_Boundary_Electrical_Response_-_Variant_1-2-3/performance.json",
+    "file_sha256": "87583046462635e2caa6e797b605a7197d9b51efe7fdfdd294df48f0ae1b0e10"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-26T05:57:31.763080+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "conductivity = (600 - 66/(500000*grain_size + 1))*(2500000*grain_size + 7)/(5000000000000*(1500000*grain_size/(11*laplace_rate + 1200000000000/temperature) + 3/(17*laplace_rate + 11696000*laplace_rate/(laplace_rate + 1600000) + 67500000000000/temperature**2) + 2/(17*laplace_rate + 41625000000000/temperature**2))) + (1309*laplace_rate + 17820000000000000/temperature**2)/(5000000000000*(500000*grain_size + 1))"
+}

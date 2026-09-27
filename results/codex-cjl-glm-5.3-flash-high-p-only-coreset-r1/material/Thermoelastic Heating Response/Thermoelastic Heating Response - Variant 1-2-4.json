@@ -1,0 +1,165 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 900.2878765203059,
+  "evaluation_seconds": 385.5360459834337,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Variant 1-2-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1032.2736328629423,
+        "mse": 5030662.034763093,
+        "rmse": 2242.913737699935,
+        "mape": 80.0265784261396,
+        "r2": -0.05347688647004323,
+        "nrmse": 0.9207308237213433,
+        "max_absolute_error": 16417.446134329668,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1062.9862343526406,
+        "mse": 5454840.503535883,
+        "rmse": 2335.5599978454593,
+        "mape": 81.88573527739787,
+        "r2": -0.0680082366985042,
+        "nrmse": 0.9258252430980657,
+        "max_absolute_error": 22347.682400195805,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 20024.332597463585,
+        "mse": 1206839697.698381,
+        "rmse": 34739.59841014834,
+        "mape": 53.301972750252894,
+        "r2": -1230.4465562725743,
+        "nrmse": 25.635480497248885,
+        "max_absolute_error": 274845.60177873424,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "stress": "exp(-conditioning_cooling_rate/25 - conditioning_temperature/1000 + frame_modulus/2000000000 + 1000*length_scale + 2*temperature_step/5 + 5)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_slow_thermal_fraction",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 1, 'timed_out': True, 'elapsed_seconds': 120.10038615576923}; see /mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/codex_p_only_core_20260926/runs/glm/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-2-4/probe/000-prepared_slow_thermal_fraction",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "prepared_anelastic_fraction",
+        "ok": true,
+        "reply": "prepared_anelastic_fraction = (0.62*exp(5 + 0.4*temperature_step + 0.5*frame_modulus/1e9 + 1000*length_scale - 0.001*conditioning_temperature - 0.04*conditioning_cooling_rate))/(2000000000.0*1.8e-05*temperature_step)",
+        "expression": "31*exp(-conditioning_cooling_rate/25 - conditioning_temperature/1000 + frame_modulus/2000000000 + 1000*length_scale + 2*temperature_step/5 + 5)/(1800000*temperature_step)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.16730064697991426,
+            "mse": 0.1003353576039135,
+            "rmse": 0.3167575691343673,
+            "mape": 14986644652260.932,
+            "r2": -0.33195188274826326,
+            "nrmse": 0.9821433887427781,
+            "max_absolute_error": 0.9963949056156348,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1760375711107618,
+            "mse": 0.10920233156006996,
+            "rmse": 0.3304577606292065,
+            "mape": 13526024873668.898,
+            "r2": -0.34865225396019284,
+            "nrmse": 0.9836771925961793,
+            "max_absolute_error": 0.9971107559280563,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.2590950205586745,
+            "mse": 0.13388891666765654,
+            "rmse": 0.3659083446269797,
+            "mape": 0.9083910844077219,
+            "r2": -0.7292516363988539,
+            "nrmse": 0.8640407034621206,
+            "max_absolute_error": 0.9873168325210686,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "prepared_eigenstrain_fraction",
+        "ok": false,
+        "error": "Codex probe failed: {'returncode': 1, 'timed_out': True, 'elapsed_seconds': 120.07229459658265}; see /mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/codex_p_only_core_20260926/runs/glm/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-2-4/probe/002-prepared_eigenstrain_fraction",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 3
+  },
+  "total_seconds": 1286.1394452415407,
+  "ok": false,
+  "submission": "stress = exp(5 + 0.4*temperature_step + 0.5*frame_modulus/1e9 + 1000*length_scale - 0.001*conditioning_temperature - 0.04*conditioning_cooling_rate)\n",
+  "used_token": 1439931,
+  "cost_in_USD": 0.052277180000000006,
+  "usage_details": {
+    "time": "2026-09-26T03:23:52.105441+00:00",
+    "charged_usd": 0.052277180000000006,
+    "provider_reported_usd": 0.052277180000000006,
+    "estimated_or_uncertain_usd": 0.0,
+    "reserved_inflight_usd": 0.015228080000000001,
+    "budget_usd": null,
+    "input_tokens": 1404694,
+    "output_tokens": 35237,
+    "cached_tokens": 1046792,
+    "request_count": 42,
+    "inflight": 1,
+    "task_cost_usd": {
+      "single-task": 0.052277180000000006
+    },
+    "controller_seconds": 1285.9916121717542,
+    "stopped": false,
+    "stop_reason": null
+  },
+  "source": {
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/codex_p_only_core_20260926/runs/glm/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_1-2-4/performance.json",
+    "synced_at": "2026-09-26T03:23:52.490019+00:00"
+  },
+  "run_metadata": {
+    "objective": "phenomenology",
+    "split": "core_set",
+    "seed": 0,
+    "model": "z-ai/glm-5.3-flash",
+    "reasoning_effort": "high",
+    "task_index": 66
+  }
+}

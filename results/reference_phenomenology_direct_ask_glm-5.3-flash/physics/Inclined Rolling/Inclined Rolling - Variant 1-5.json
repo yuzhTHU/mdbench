@@ -1,0 +1,178 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.03246586583554745,
+  "evaluation_seconds": 105.71172100864351,
+  "evaluation": {
+    "task_name": "Inclined Rolling - Variant 1-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.9395596240201486e-16,
+        "mse": 8.784705736734611e-32,
+        "rmse": 2.963900426251633e-16,
+        "mape": 1.0066687631875901e-16,
+        "r2": 1.0,
+        "nrmse": 1.4552971655180755e-16,
+        "max_absolute_error": 1.3322676295501878e-15,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.794120407794253e-16,
+        "mse": 7.213146902114627e-32,
+        "rmse": 2.6857302362885645e-16,
+        "mape": 9.608721825213739e-17,
+        "r2": 1.0,
+        "nrmse": 1.3504557190639997e-16,
+        "max_absolute_error": 8.881784197001252e-16,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.6060043839825087e-16,
+        "mse": 2.6821270777514403e-31,
+        "rmse": 5.17892563931115e-16,
+        "mape": 9.616450519860966e-17,
+        "r2": 1.0,
+        "nrmse": 1.36799543520625e-16,
+        "max_absolute_error": 1.7763568394002505e-15,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "acceleration": "(1962 - 80*sin(angle))*sin(angle)/(19*sin(angle)**2 + 300)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "body_inertia",
+        "ok": true,
+        "reply": "body_inertia = 0.19*sin(angle)**2 + 3",
+        "expression": "19*sin(angle)**2/100 + 3",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.0142358887158096,
+            "mse": 9.085765706498758,
+            "rmse": 3.0142603912898367,
+            "mape": 591.4698025182761,
+            "r2": -2435830022.216062,
+            "nrmse": 591.3759924890752,
+            "max_absolute_error": 3.038421198631284,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.0133287046409265,
+            "mse": 9.08029760766545,
+            "rmse": 3.013353216545556,
+            "mape": 591.8211821338078,
+            "r2": -2434170004.960052,
+            "nrmse": 591.727202834383,
+            "max_absolute_error": 3.038424754594075,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.0650021436605703,
+            "mse": 9.394496099089235,
+            "rmse": 3.065044224654717,
+            "mape": 572.793176826474,
+            "r2": -1442214614.3152223,
+            "nrmse": 572.6509155315342,
+            "max_absolute_error": 3.0921547208416613,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "upward_force",
+        "ok": true,
+        "reply": "upward_force = 2*0.4*sin(angle)/0.1**2",
+        "expression": "80*sin(angle)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 23.96269111508993,
+            "mse": 648.810773424338,
+            "rmse": 25.47176423855124,
+            "mape": 790.7002944109099,
+            "r2": -981138.4226017013,
+            "nrmse": 529.0817175789741,
+            "max_absolute_error": 38.24816656764238,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 23.297283180623058,
+            "mse": 618.24075839216,
+            "rmse": 24.864447679209768,
+            "mape": 816.7120438190428,
+            "r2": -934835.552132919,
+            "nrmse": 534.3457240923603,
+            "max_absolute_error": 38.24972893320768,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 48.20327302597385,
+            "mse": 2355.132383988669,
+            "rmse": 48.529706201343,
+            "mape": 334.6086144512598,
+            "r2": -2039382.7480754664,
+            "nrmse": 319.3543223795899,
+            "max_absolute_error": 57.14445943383291,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 106.14102630503476,
+  "ok": true,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_glm-5.3-flash_full_20260925/runs/physics/Inclined_Rolling/Inclined_Rolling_-_Variant_1-5/performance.json",
+    "file_sha256": "b18c008c614ecf3c83aad55d4a928ba1311a19f0a62d115b67a29a9e45365f23"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T11:02:58.482855+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "acceleration = 2*(981 - 40*sin(angle))*sin(angle)/(19*sin(angle)**2 + 300)"
+}

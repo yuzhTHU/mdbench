@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.05581311881542206,
+  "evaluation_seconds": 485.3628426901996,
+  "evaluation": {
+    "task_name": "Population Resource Balance - Variant 2-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.908748626708984e-06,
+        "mse": 2.4677069632161874e-10,
+        "rmse": 1.5708936829767275e-05,
+        "mape": 1.664219470718243e-16,
+        "r2": 1.0,
+        "nrmse": 2.0922791902881863e-16,
+        "max_absolute_error": 0.0001220703125,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 8.561611175537109e-06,
+        "mse": 2.3856432562752163e-10,
+        "rmse": 1.544552769016072e-05,
+        "mape": 1.6329393022823202e-16,
+        "r2": 1.0,
+        "nrmse": 2.0344938534643285e-16,
+        "max_absolute_error": 0.0001220703125,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.53961181640625e-05,
+        "mse": 4.548346623778343e-10,
+        "rmse": 2.132685308192079e-05,
+        "mape": 1.604170298620973e-16,
+        "r2": 1.0,
+        "nrmse": 2.1153100388867788e-16,
+        "max_absolute_error": 9.1552734375e-05,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "population": "100000000000*dilution*(2500*dilution + 1)*(100*feed*((10*feed + 100)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1) + (feed + 10)*(feed**2 + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality))/((feed**2 + 10)*((10*feed + 100)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1)*(2500*dilution**2 + 2500*dilution*mortality + dilution + 1000000000000*maintenance_load + mortality))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "active_fraction",
+        "ok": true,
+        "reply": "active_fraction = 100000000000*dilution*(2500*dilution + 1)*(100*feed*(10*(feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1) + (feed + 10)*(feed**2 + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality))/((feed**2 + 10)*(10*(feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1)*(2500*dilution**2 + 2500*dilution*mortality + dilution + 1000000000000*maintenance_load + mortality))",
+        "expression": "100000000000*dilution*(2500*dilution + 1)*(100*feed*((10*feed + 100)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1) + (feed + 10)*(feed**2 + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality))/((feed**2 + 10)*((10*feed + 100)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1)*(2500*dilution**2 + 2500*dilution*mortality + dilution + 1000000000000*maintenance_load + mortality))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 54876774146.735565,
+            "mse": 5.637081519715178e+21,
+            "rmse": 75080500262.81909,
+            "mape": 62386819791.28525,
+            "r2": -2.1383108502731075e+24,
+            "nrmse": 82195745173.48097,
+            "max_absolute_error": 433484162060.4314,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 55310351996.41169,
+            "mse": 5.763585452701595e+21,
+            "rmse": 75918281412.98772,
+            "mape": 62854511730.873856,
+            "r2": -2.2885159893462765e+24,
+            "nrmse": 83158887869.48744,
+            "max_absolute_error": 372184930194.6468,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 96012735806.65742,
+            "mse": 1.0164955771621784e+22,
+            "rmse": 100821405324.57274,
+            "mape": 132262884776.64558,
+            "r2": -7.036458916862674e+24,
+            "nrmse": 136836963066.43777,
+            "max_absolute_error": 197229455420.57336,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "usable_feed",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 485.51116756908596,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_2-4-5/performance.json",
+    "file_sha256": "78cba894a326dcad11a5672b88fb8c0ab74b000a893e83c64f3971abfb3f0981"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-26T05:39:30.767795+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "population = 100000000000*dilution*(2500*dilution + 1)*(100*feed*(10*(feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1) + (feed + 10)*(feed**2 + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality))/((feed**2 + 10)*(10*(feed + 10)*(2500*dilution**2 + 2500*dilution*mortality + dilution + mortality) - 1)*(2500*dilution**2 + 2500*dilution*mortality + dilution + 1000000000000*maintenance_load + mortality))"
+}

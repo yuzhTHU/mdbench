@@ -1,0 +1,178 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.03324400819838047,
+  "evaluation_seconds": 381.4283052869141,
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 1-2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.863457305129046e-16,
+        "mse": 1.267826471714405e-31,
+        "rmse": 3.560655096628154e-16,
+        "mape": 2.0418430787986126e-16,
+        "r2": 1.0,
+        "nrmse": 2.453697908732183e-16,
+        "max_absolute_error": 2.6645352591003757e-15,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.8728768536036e-16,
+        "mse": 1.283717229407578e-31,
+        "rmse": 3.582899983822571e-16,
+        "mape": 2.0360738013378063e-16,
+        "r2": 1.0,
+        "nrmse": 2.4558823819578373e-16,
+        "max_absolute_error": 1.7763568394002505e-15,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.421951528219779e-16,
+        "mse": 1.179747646733845e-31,
+        "rmse": 3.434745473443185e-16,
+        "mape": 1.8679811241448385e-16,
+        "r2": 1.0,
+        "nrmse": 2.4301321780179165e-16,
+        "max_absolute_error": 1.5543122344752192e-15,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "activity": "20*substrate*(10*substrate + 1)*(22680*substrate*(10*substrate + 1)**2*(100*substrate + 1) + (10*substrate + 1)**2*(162000*substrate + 1620) + (840*substrate + 7)*(1000*regulator + 30*substrate + 3)**2)/(160000000*regulator**3*(100*substrate + 1) + 200*substrate*(10*substrate + 1)*(120*substrate + 1)*(1000*regulator + 30*substrate + 3)**2 + 27*(10*substrate + 1)**3*(100*substrate + 1)*(1400*substrate**2 + 100*substrate + 1) + (60*substrate + 6)*(100*substrate + 1)*(1000*regulator + 30*substrate + 3)**2)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "t3",
+        "ok": true,
+        "reply": "t3 = (160000000*regulator^3*(100*substrate+1))/(160000000*regulator^3*(100*substrate+1)+200*substrate*(10*substrate+1)*(120*substrate+1)*(1000*regulator+30*substrate+3)^2+27*(10*substrate+1)^3*(100*substrate+1)*(1400*substrate^2+100*substrate+1)+6*(10*substrate+1)*(100*substrate+1)*(1000*regulator+30*substrate+3)^2)",
+        "expression": "160000000*regulator**3*(100*substrate + 1)/(160000000*regulator**3*(100*substrate + 1) + 200*substrate*(10*substrate + 1)*(120*substrate + 1)*(1000*regulator + 30*substrate + 3)**2 + 27*(10*substrate + 1)**3*(100*substrate + 1)*(1400*substrate**2 + 100*substrate + 1) + (60*substrate + 6)*(100*substrate + 1)*(1000*regulator + 30*substrate + 3)**2)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 4.3058338675894465e-19,
+            "mse": 3.5226410229088734e-36,
+            "rmse": 1.876870006928789e-18,
+            "mape": 9.334407407293378e-17,
+            "r2": 1.0,
+            "nrmse": 1.7077429317261518e-16,
+            "max_absolute_error": 2.7755575615628914e-17,
+            "symbolically_equivalent": true
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 4.1089231019430615e-19,
+            "mse": 2.8988213084350645e-36,
+            "rmse": 1.7025925256605189e-18,
+            "mape": 9.581812714691347e-17,
+            "r2": 1.0,
+            "nrmse": 1.497854535070581e-16,
+            "max_absolute_error": 1.3877787807814457e-17,
+            "symbolically_equivalent": true
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 3.82506526452886e-18,
+            "mse": 5.233413697318502e-35,
+            "rmse": 7.234233682511578e-18,
+            "mape": 8.078358497988832e-17,
+            "r2": 1.0,
+            "nrmse": 1.267821379094833e-16,
+            "max_absolute_error": 5.551115123125783e-17,
+            "symbolically_equivalent": true
+          }
+        }
+      },
+      {
+        "probe": "local_regulator",
+        "ok": true,
+        "reply": "local_regulator = regulator/(1+100*substrate)",
+        "expression": "regulator/(100*substrate + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00016216168251524215,
+            "mse": 1.393353270621322e-07,
+            "rmse": 0.0003732764753666271,
+            "mape": 0.19302078136364784,
+            "r2": 0.9199830956938699,
+            "nrmse": 0.23574007922218446,
+            "max_absolute_error": 0.002561463876713579,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0001672174654106812,
+            "mse": 1.6231147418836957e-07,
+            "rmse": 0.0004028789820633109,
+            "mape": 0.19256531517978195,
+            "r2": 0.9089797346806883,
+            "nrmse": 0.2526963920122434,
+            "max_absolute_error": 0.0028892807303389,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.005910334800659897,
+            "mse": 3.90166877985179e-05,
+            "rmse": 0.006246333948686854,
+            "mape": 0.6944151066822773,
+            "r2": -3.2886182326099878,
+            "nrmse": 0.6881531361440169,
+            "max_absolute_error": 0.010373772588534946,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 381.5624035708606,
+  "ok": true,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/biology/Allosteric_Regulation/Allosteric_Regulation_-_Variant_1-2-3-4/performance.json",
+    "file_sha256": "06d18b751953b56fabd1e900cad1e4be41d3001182796d1bbd3e0b418a889b29"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T18:29:29.733937+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "activity = 20*substrate*(10*substrate + 1)*(22680*substrate*(10*substrate + 1)**2*(100*substrate + 1) + (10*substrate + 1)**2*(162000*substrate + 1620) + (840*substrate + 7)*(1000*regulator + 30*substrate + 3)**2)/(160000000*regulator**3*(100*substrate + 1) + 200*substrate*(10*substrate + 1)*(120*substrate + 1)*(1000*regulator + 30*substrate + 3)**2 + 27*(10*substrate + 1)**3*(100*substrate + 1)*(1400*substrate**2 + 100*substrate + 1) + 6*(10*substrate + 1)*(100*substrate + 1)*(1000*regulator + 30*substrate + 3)**2)"
+}

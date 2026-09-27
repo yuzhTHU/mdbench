@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.036806873977184296,
+  "evaluation_seconds": 441.0479312930256,
+  "evaluation": {
+    "task_name": "Population Resource Balance - Variant 1-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.2891769409179688e-05,
+        "mse": 5.230276656220667e-10,
+        "rmse": 2.2869798110653857e-05,
+        "mape": 1.6480314535466694e-16,
+        "r2": 1.0,
+        "nrmse": 2.317681284140059e-16,
+        "max_absolute_error": 0.00018310546875,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 1.1939048767089844e-05,
+        "mse": 4.252879080013372e-10,
+        "rmse": 2.0622509740604734e-05,
+        "mape": 1.6532195754715444e-16,
+        "r2": 1.0,
+        "nrmse": 2.1518173773401816e-16,
+        "max_absolute_error": 0.00018310546875,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.4027099609375e-05,
+        "mse": 2.0903535187244415e-09,
+        "rmse": 4.572038406142758e-05,
+        "mape": 1.5680221623428076e-16,
+        "r2": 1.0,
+        "nrmse": 2.0428351806726097e-16,
+        "max_absolute_error": 0.00018310546875,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "population": "1000000000000*dilution*(feed + 1)*(1000*feed*(13*feed*mortality + (feed + 1)*(100*dilution + 100*mortality - 1)) + (feed**2 + 10)*(13*feed*mortality + (100*dilution + 100*mortality)*(feed + 1)))/((feed**2 + 10)*(13*feed*mortality + (100*dilution + 100*mortality)*(feed + 1))*(13*feed*mortality + (feed + 1)*(100*dilution + 100*mortality - 1)))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "extra_death",
+        "ok": true,
+        "reply": "extra_death = 0.13*feed*mortality + (dilution + mortality)*(feed + 1)",
+        "expression": "13*feed*mortality/100 + (dilution + mortality)*(feed + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0005791280991373483,
+            "mse": 3.9155831253379546e-07,
+            "rmse": 0.0006257462045700281,
+            "mape": 43.61407199877807,
+            "r2": -6614.854216392531,
+            "nrmse": 37.59413983895609,
+            "max_absolute_error": 0.0012675162098464722,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0005670266952014011,
+            "mse": 3.765881724592283e-07,
+            "rmse": 0.0006136678030166063,
+            "mape": 44.78215408203151,
+            "r2": -6331.929152796088,
+            "nrmse": 37.89782418343559,
+            "max_absolute_error": 0.0012152074017642359,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.002163925874213617,
+            "mse": 4.780176061582029e-06,
+            "rmse": 0.0021863613748833994,
+            "mape": 41.69269985743084,
+            "r2": -89997.60566334348,
+            "nrmse": 41.670024879838515,
+            "max_absolute_error": 0.003083512938485649,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "usable_feed",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 441.4552110154182,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/biology/Population_Resource_Balance/Population_Resource_Balance_-_Variant_1-5/performance.json",
+    "file_sha256": "d4c6ebafe05f5b34df872dbb71303f416601d2c29bf3469d92e4ddc6f47a2b61"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-26T05:38:10.700092+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "population = 1000000000000*dilution*(feed + 1)*(1000*feed*(13*feed*mortality + (feed + 1)*(100*dilution + 100*mortality - 1)) + (feed**2 + 10)*(13*feed*mortality + 100*(dilution + mortality)*(feed + 1)))/((feed**2 + 10)*(13*feed*mortality + 100*(dilution + mortality)*(feed + 1))*(13*feed*mortality + (feed + 1)*(100*dilution + 100*mortality - 1)))"
+}

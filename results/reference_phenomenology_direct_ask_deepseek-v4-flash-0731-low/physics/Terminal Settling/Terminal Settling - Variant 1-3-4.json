@@ -1,0 +1,178 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.03521239757537842,
+  "evaluation_seconds": 736.5266480892897,
+  "evaluation": {
+    "task_name": "Terminal Settling - Variant 1-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 7.129105740125022e-22,
+        "mse": 1.8389064585026533e-42,
+        "rmse": 1.3560628519735555e-21,
+        "mape": 2.1913532282418984e-16,
+        "r2": 1.0,
+        "nrmse": 2.660190723068787e-16,
+        "max_absolute_error": 1.3552527156068805e-20,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 6.986698325867893e-22,
+        "mse": 1.897482135609895e-42,
+        "rmse": 1.3774912470175246e-21,
+        "mape": 2.266027702012851e-16,
+        "r2": 1.0,
+        "nrmse": 2.8750688588660203e-16,
+        "max_absolute_error": 1.3552527156068805e-20,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.3276465390548175e-21,
+        "mse": 9.64990174472642e-42,
+        "rmse": 3.106429098615711e-21,
+        "mape": 2.062873721317474e-16,
+        "r2": 1.0,
+        "nrmse": 2.623633329133309e-16,
+        "max_absolute_error": 1.0164395367051604e-20,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "speed": "-1027300797723862311*radius**2*(10000*fluid_density*radius + (fluid_density - particle_density)*(100000*radius + 1))/(50000000000000000000*radius + 471238898038468950*viscosity*(16000*radius + 1)*(100000*radius + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "surface_friction",
+        "ok": true,
+        "reply": "surface_friction = ((4/3)*3.141592653589793*9.81*(particle_density - fluid_density)*radius*(50000000000000000000*radius + 471238898038468950*viscosity*(16000*radius+1)*(100000*radius+1)))/(1027300797723862311*((particle_density - fluid_density)*(100000*radius+1) - 10000*fluid_density*radius)) - 6*viscosity*radius",
+        "expression": "-6*radius*viscosity + radius*(-1027300797723862311*fluid_density/25000000000000000 + 1027300797723862311*particle_density/25000000000000000)*(50000000000000000000*radius + 471238898038468950*viscosity*(16000*radius + 1)*(100000*radius + 1))/(-10273007977238623110000*fluid_density*radius + 1027300797723862311*(-fluid_density + particle_density)*(100000*radius + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.663728957556511e-06,
+            "mse": 1.0804642573972966e-11,
+            "rmse": 3.2870416142745996e-06,
+            "mape": 71.44789100078147,
+            "r2": -9238.488730244688,
+            "nrmse": 57.73569043320054,
+            "max_absolute_error": 1.0389713929418164e-05,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.700734242208987e-06,
+            "mse": 1.1183627989684707e-11,
+            "rmse": 3.3441931746962087e-06,
+            "mape": 75.12693488609094,
+            "r2": -9544.833609471008,
+            "nrmse": 59.91252383935775,
+            "max_absolute_error": 1.0517241884924782e-05,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.8911734576649734e-05,
+            "mse": 3.762235963125424e-10,
+            "rmse": 1.9396484122452256e-05,
+            "mape": 98.7011332736188,
+            "r2": -258408.08036528408,
+            "nrmse": 98.99798340900222,
+            "max_absolute_error": 3.0865458861721396e-05,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "lift",
+        "ok": true,
+        "reply": "lift = (particle_density - fluid_density) * (4/3) * 3.141592653589793 * radius^3 * 9.81 + 1027300797723862311 * radius^2 * (10000*fluid_density*radius + (fluid_density - particle_density)*(100000*radius + 1))",
+        "expression": "981*radius**3*(-3141592653589793*fluid_density/750000000000000 + 3141592653589793*particle_density/750000000000000)/100 + 1027300797723862311*radius**2*(10000*fluid_density*radius + (fluid_density - particle_density)*(100000*radius + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 81760949733.70015,
+            "mse": 1.4782290654510788e+22,
+            "rmse": 121582443858.11131,
+            "mape": 3.524473595037291e+23,
+            "r2": -2.0471142598093198e+46,
+            "nrmse": 1.1754633493792218e+23,
+            "max_absolute_error": 477685866710.07336,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 79073237598.36292,
+            "mse": 1.4641065277370371e+22,
+            "rmse": 121000269740.89922,
+            "mape": 3.699128285593796e+23,
+            "r2": -2.0997711533601663e+46,
+            "nrmse": 1.1999105149689188e+23,
+            "max_absolute_error": 494341416292.3053,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1128080193678.182,
+            "mse": 1.4660992781737718e+24,
+            "rmse": 1210825866164.814,
+            "mape": 1.0123272866979697e+23,
+            "r2": -4.686656009767527e+46,
+            "nrmse": 9.274706780489695e+22,
+            "max_absolute_error": 2504750507510.614,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 736.8310417756438,
+  "ok": true,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/physics/Terminal_Settling/Terminal_Settling_-_Variant_1-3-4/performance.json",
+    "file_sha256": "59c559e0b95ddf35ea14dfeac3c1fd05a256bbbefc2a2f06da43465e19dfbd4a"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T15:02:43.154960+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "speed = -1027300797723862311*radius**2*(10000*fluid_density*radius + (fluid_density - particle_density)*(100000*radius + 1))/(50000000000000000000*radius + 471238898038468950*viscosity*(16000*radius + 1)*(100000*radius + 1))"
+}

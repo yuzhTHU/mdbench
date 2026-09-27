@@ -1,0 +1,178 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.03283463604748249,
+  "evaluation_seconds": 841.4749537277967,
+  "evaluation": {
+    "task_name": "Hall Response - Variant 1-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 4.28819848553863e-17,
+        "mse": 7.47871138909551e-33,
+        "rmse": 8.647954318274068e-17,
+        "mape": 4.0546497444023695e-16,
+        "r2": 1.0,
+        "nrmse": 2.7859516116532866e-16,
+        "max_absolute_error": 8.881784197001252e-16,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.694899339832039e-17,
+        "mse": 5.1074247741418406e-33,
+        "rmse": 7.14662491959795e-17,
+        "mape": 6.300675453103917e-16,
+        "r2": 1.0,
+        "nrmse": 2.551651184860501e-16,
+        "max_absolute_error": 8.881784197001252e-16,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.5724522569769574e-17,
+        "mse": 3.215785865330689e-33,
+        "rmse": 5.670789949672522e-17,
+        "mape": 1.5805499157430325e-15,
+        "r2": 1.0,
+        "nrmse": 2.4264975934236414e-16,
+        "max_absolute_error": 3.3306690738754696e-16,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "hall_voltage": "5000*current*(6250*contact_offset - magnetic)*(125*current*(23*density + 1000000000000000000000000) + 23*density + 1000000000000000000000000)/(801088317*density*thickness*(125*current*(20*current + 1) + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "mobile",
+        "ok": true,
+        "reply": "mobile = density^0.23",
+        "expression": "density**(23/100)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.7979173456747535e+21,
+            "mse": 9.849225867052478e+42,
+            "rmse": 3.138347633238306e+21,
+            "mape": 1.0,
+            "r2": -3.873720583497291,
+            "nrmse": 1.0,
+            "max_absolute_error": 6.024812286069316e+21,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.8929100768249627e+21,
+            "mse": 1.0450594563118842e+43,
+            "rmse": 3.2327379360410333e+21,
+            "mape": 1.0,
+            "r2": -4.020303599874624,
+            "nrmse": 1.0,
+            "max_absolute_error": 6.01931215969767e+21,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.364159148024969e+21,
+            "mse": 9.246454677587045e+43,
+            "rmse": 9.615848728836704e+21,
+            "mape": 1.0,
+            "r2": -18.355911132772356,
+            "nrmse": 1.0,
+            "max_absolute_error": 1.3673835556492255e+22,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "bypass_conductivity",
+        "ok": true,
+        "reply": "bypass_conductivity = 0.16 * (current / density) + 2 * (magnetic / current) + 1",
+        "expression": "4*current/(25*density) + 1 + 2*magnetic/current",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 332.3565215345685,
+            "mse": 405108.7925930003,
+            "rmse": 636.4815728620903,
+            "mape": 1278.1269036278995,
+            "r2": -291435.44829744735,
+            "nrmse": 363.7518587364192,
+            "max_absolute_error": 5700.956705351754,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 331.45798523923435,
+            "mse": 355911.6309055417,
+            "rmse": 596.5832975415434,
+            "mape": 1256.5749155173055,
+            "r2": -255303.2451190459,
+            "nrmse": 331.121690740981,
+            "max_absolute_error": 4193.325674641143,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1898.511543772964,
+            "mse": 4994283.930481791,
+            "rmse": 2234.7894599898646,
+            "mape": 138.10051464950809,
+            "r2": -159799.079616935,
+            "nrmse": 130.13427933991363,
+            "max_absolute_error": 5924.331124969445,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 841.9318335484713,
+  "ok": true,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_deepseek-v4-flash-0731-low_full_20260925/runs/physics/Hall_Response/Hall_Response_-_Variant_1-5/performance.json",
+    "file_sha256": "8c938a26cf288f14ea69447682f21b244381dee25a653255dde5f8dcfd5f567e"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T14:01:32.829129+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "hall_voltage = 5000*current*(6250*contact_offset - magnetic)*(125*current*(23*density + 1000000000000000000000000) + 23*density + 1000000000000000000000000)/(801088317*density*thickness*(125*current*(20*current + 1) + 1))"
+}

@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.07686624862253666,
+  "evaluation_seconds": 39.55070373415947,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Variant 3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.1250972989949057e-13,
+        "mse": 7.203581846769661e-25,
+        "rmse": 8.48739173525628e-13,
+        "mape": 9.71429125079354e-16,
+        "r2": 1.0,
+        "nrmse": 3.1478394592701484e-16,
+        "max_absolute_error": 1.0913936421275139e-11,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.013915853000704e-13,
+        "mse": 6.270958967787242e-25,
+        "rmse": 7.918938671177623e-13,
+        "mape": 8.175393507143953e-16,
+        "r2": 1.0,
+        "nrmse": 2.838060429853279e-16,
+        "max_absolute_error": 1.0913936421275139e-11,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.0366464898179403e-13,
+        "mse": 3.0481317796120846e-25,
+        "rmse": 5.520988842238394e-13,
+        "mape": 3.06097469705682e-16,
+        "r2": 1.0,
+        "nrmse": 3.523989600761461e-16,
+        "max_absolute_error": 3.637978807091713e-12,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "stress": "2197*frame_modulus*temperature_step*(conditioning_cooling_rate**2*(6220800000000*laplace_rate + 2923776000000) + 329*(21600*conditioning_cooling_rate + Abs(4400*conditioning_cooling_rate - (conditioning_temperature - 300)**2) - Abs(26000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))**2)*(18000*conditioning_cooling_rate + (conditioning_temperature - 300)**2 - Abs(18000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))**2/(4374000*conditioning_cooling_rate**2*(100*laplace_rate + 47)*(10000000*laplace_rate*length_scale**2 + 13)*(86528000000*conditioning_cooling_rate**2*frame_modulus + 173056000000000000000*conditioning_cooling_rate**2 + 7*frame_modulus*(20800*conditioning_cooling_rate + Abs(3200*conditioning_cooling_rate - (conditioning_temperature - 300)**2) - Abs(24000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))**2))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_adhesive_fraction",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one prepared_adhesive_fraction equation; received: 'prepared_adhesive_fraction = min(1, (18000*conditioning_cooling_rate + (conditioning_temperature - 300)**2 - Abs(18000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))/(2*(conditioning_temperature - 300)**2))'",
+        "error_type": "ValueError"
+      },
+      {
+        "probe": "prepared_eigenstrain_fraction",
+        "ok": true,
+        "reply": "prepared_eigenstrain_fraction = 1 - exp(-2*temperature_step)",
+        "expression": "1 - exp(-2*temperature_step)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.622608492167004,
+            "mse": 0.4483405545607901,
+            "rmse": 0.6695823732452865,
+            "mape": 1352090731971512.8,
+            "r2": -8.758545514685698,
+            "nrmse": 2.825365758548381,
+            "max_absolute_error": 0.9815805510736691,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.6143075165786824,
+            "mse": 0.4397402960689552,
+            "rmse": 0.6631291699729059,
+            "mape": 1298138672620003.8,
+            "r2": -7.698497608745042,
+            "nrmse": 2.6522725280712325,
+            "max_absolute_error": 0.9812482693092852,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.8098971127789935,
+            "mse": 0.7025207187477536,
+            "rmse": 0.8381650903895685,
+            "mape": 80.11302464863559,
+            "r2": -14.055530844642812,
+            "nrmse": 2.9398274071434627,
+            "max_absolute_error": 0.9998239942711867,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 39.67902728356421,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_glm-5.3-flash_full_20260925/runs/material/Thermoelastic_Heating_Response/Thermoelastic_Heating_Response_-_Variant_3-4/performance.json",
+    "file_sha256": "514fd30d90e373c6bb45a8601e0e2cb484784b4cdd7da499b56f9f0ed30a5c82"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T15:55:24.947663+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "stress = 2197*frame_modulus*temperature_step*(conditioning_cooling_rate**2*(6220800000000*laplace_rate + 2923776000000) + 329*(21600*conditioning_cooling_rate + Abs(4400*conditioning_cooling_rate - (conditioning_temperature - 300)**2) - Abs(26000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))**2)*(18000*conditioning_cooling_rate + (conditioning_temperature - 300)**2 - Abs(18000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))**2/(4374000*conditioning_cooling_rate**2*(100*laplace_rate + 47)*(10000000*laplace_rate*length_scale**2 + 13)*(86528000000*conditioning_cooling_rate**2*frame_modulus + 173056000000000000000*conditioning_cooling_rate**2 + 7*frame_modulus*(20800*conditioning_cooling_rate + Abs(3200*conditioning_cooling_rate - (conditioning_temperature - 300)**2) - Abs(24000*conditioning_cooling_rate - (conditioning_temperature - 300)**2))**2))"
+}

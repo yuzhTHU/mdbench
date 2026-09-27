@@ -1,0 +1,137 @@
+{
+  "algorithm": "pysr_and_llm_direct",
+  "agent_seconds": 0.03244517184793949,
+  "evaluation_seconds": 279.8166812155396,
+  "evaluation": {
+    "task_name": "Hall Response - Variant 1-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 4.28819848553863e-17,
+        "mse": 7.47871138909551e-33,
+        "rmse": 8.647954318274068e-17,
+        "mape": 4.0546497444023695e-16,
+        "r2": 1.0,
+        "nrmse": 2.7859516116532866e-16,
+        "max_absolute_error": 8.881784197001252e-16,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.694899339832039e-17,
+        "mse": 5.1074247741418406e-33,
+        "rmse": 7.14662491959795e-17,
+        "mape": 6.300675453103917e-16,
+        "r2": 1.0,
+        "nrmse": 2.551651184860501e-16,
+        "max_absolute_error": 8.881784197001252e-16,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 3.5724522569769574e-17,
+        "mse": 3.215785865330689e-33,
+        "rmse": 5.670789949672522e-17,
+        "mape": 1.5805499157430325e-15,
+        "r2": 1.0,
+        "nrmse": 2.4264975934236414e-16,
+        "max_absolute_error": 3.3306690738754696e-16,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "hall_voltage": "5000*current*(6250*contact_offset - magnetic)*(125*current*(23*density + 1000000000000000000000000) + 23*density + 1000000000000000000000000)/(801088317*density*thickness*(125*current*(20*current + 1) + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "mobile",
+        "ok": true,
+        "reply": "mobile = (1e22 * density * (2500*current^2 + 125*current + 1)) / ((0.23*density + 1e22) * (125*current + 1))",
+        "expression": "10000000000000000000000*density*(2500*current**2 + 125*current + 1)/((125*current + 1)*(23*density/100 + 10000000000000000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.0087233998478975e+20,
+            "mse": 1.8636333150885309e+40,
+            "rmse": 1.3651495577732614e+20,
+            "mape": 0.03590735840660987,
+            "r2": 0.9907781300069257,
+            "nrmse": 0.0434989911033097,
+            "max_absolute_error": 4.4436913497839554e+20,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.061764486817149e+20,
+            "mse": 1.9759054416312105e+40,
+            "rmse": 1.4056690370180353e+20,
+            "mape": 0.03615783545783994,
+            "r2": 0.9905080566069988,
+            "nrmse": 0.04348230709784924,
+            "max_absolute_error": 4.698269508691852e+20,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.2668324397350065e+21,
+            "mse": 1.795101643878094e+42,
+            "rmse": 1.3398140333188385e+21,
+            "mape": 0.13541351673871066,
+            "r2": 0.6242254020081865,
+            "nrmse": 0.13933393412283068,
+            "max_absolute_error": 2.580448282816415e+21,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "bypass_conductivity",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 280.3025770355016,
+  "ok": false,
+  "source": {
+    "hostname": "SIM1",
+    "path": "/mnt/mergerfs/yuzihan/MergedWorkSpace/45-MechanismDiscoveryBench/MechanismDiscoveryBench/logs/reference_phenomenology_llm_direct_full_constants_20260925/runs/physics/Hall_Response/Hall_Response_-_Variant_1-5/performance.json",
+    "file_sha256": "2b57f4b65f4f5810a4ff1a6be29b008452f6da08ecd12a5ed0bf3730cc446bbd"
+  },
+  "update": [
+    {
+      "updated_at": "2026-09-25T09:40:35.901475+00:00",
+      "update_message": "Rerun after disclosing task numerical constants in mechanism probes."
+    }
+  ],
+  "submission": "hall_voltage = 5000*current*(6250*contact_offset - magnetic)*(125*current*(23*density + 1000000000000000000000000) + 23*density + 1000000000000000000000000)/(801088317*density*thickness*(125*current*(20*current + 1) + 1))"
+}
