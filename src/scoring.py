@@ -14,6 +14,69 @@ from .synthetic_data import evaluate_expression
 
 
 SYMBOLIC_EQUIVALENCE_TIMEOUT_SECONDS = 30.0
+SYMBOLIC_DECIMAL_RELATIVE_TOLERANCE = sp.Rational(1, 10**14)
+SYMBOLIC_DECIMAL_MAX_MANTISSA_DENOMINATOR = 10**9
+
+
+def _decimal_order(value: sp.Rational) -> int:
+    """Return floor(log10(abs(value))) without converting to binary float."""
+    numerator, denominator = abs(int(value.p)), int(value.q)
+    order = len(str(numerator)) - len(str(denominator))
+    scale = sp.Integer(10) ** order
+    if abs(value) < scale:
+        order -= 1
+    return order
+
+
+def _normalize_numeric_atom(value: sp.Expr) -> sp.Expr:
+    """Remove insignificant decimal tails while retaining meaningful digits.
+
+    Agent answers commonly contain artifacts such as
+    ``0.10000000000000002``.  SymPy correctly treats those literals as
+    different exact rationals, but SA is intended to compare mathematical
+    formulas rather than binary floating-point serialization artifacts.  We
+    therefore seek a simpler representation of the mantissa and accept it
+    only within a tight relative tolerance.
+    """
+    if isinstance(value, sp.Float):
+        value = sp.Rational(str(value))
+    if not isinstance(value, sp.Rational) or value == 0:
+        return value
+
+    def limited_mantissa(rational: sp.Rational) -> sp.Rational:
+        order = _decimal_order(rational)
+        scale = sp.Integer(10) ** order
+        mantissa = rational / scale
+        return mantissa.limit_denominator(
+            SYMBOLIC_DECIMAL_MAX_MANTISSA_DENOMINATOR) * scale
+
+    # A literal used as a denominator has already become its reciprocal by the
+    # time we see the expression, so consider simplifications in both forms.
+    candidates = (limited_mantissa(value), 1 / limited_mantissa(1 / value))
+    valid = [candidate for candidate in candidates
+             if abs(candidate - value)
+             <= SYMBOLIC_DECIMAL_RELATIVE_TOLERANCE * abs(value)]
+    if not valid:
+        return value
+
+    def complexity(rational: sp.Rational) -> tuple[int, int]:
+        numerator = str(abs(int(rational.p)))
+        denominator = str(int(rational.q))
+        significant_digits = (len(numerator.rstrip('0'))
+                              + len(denominator.rstrip('0')))
+        return significant_digits, len(numerator) + len(denominator)
+
+    candidate = min(valid, key=complexity)
+    return candidate if complexity(candidate) < complexity(value) else value
+
+
+def _normalize_numeric_constants(expression: sp.Expr) -> sp.Expr:
+    replacements = {
+        atom: normalized
+        for atom in expression.atoms(sp.Rational, sp.Float)
+        if (normalized := _normalize_numeric_atom(atom)) != atom
+    }
+    return expression.xreplace(replacements)
 
 
 @lru_cache(maxsize=128)
@@ -99,10 +162,7 @@ def accuracy_metrics(predicted, truth) -> dict:
     return report | scores | {'numerically_equivalent': bool(np.allclose(predicted, truth, rtol=1e-6, atol=0))}
 
 
-def symbolic_equivalent(predicted: sp.Expr, truth: sp.Expr) -> bool:
-    # Normalize independently parsed symbol objects while retaining task assumptions.
-    canonical = {str(s): s for s in truth.free_symbols}
-    predicted = predicted.xreplace({s: canonical.get(str(s), s) for s in predicted.free_symbols})
+def _difference_is_zero(predicted: sp.Expr, truth: sp.Expr) -> bool:
     difference = predicted - truth
     # A high-precision counterexample is enough to prove non-equivalence and
     # avoids pathological simplify() calls for decimal approximations of exact
@@ -121,6 +181,23 @@ def symbolic_equivalent(predicted: sp.Expr, truth: sp.Expr) -> bool:
         except (TypeError, ValueError, OverflowError):
             continue
     return _simplify_is_zero_with_timeout(difference)
+
+
+def symbolic_equivalent(predicted: sp.Expr, truth: sp.Expr) -> bool:
+    # Normalize independently parsed symbol objects while retaining task assumptions.
+    canonical = {str(s): s for s in truth.free_symbols}
+    predicted = predicted.xreplace({s: canonical.get(str(s), s) for s in predicted.free_symbols})
+
+    # Never let the approximate decimal cleanup invalidate an identity that is
+    # already exact.  Only formulas that fail the original exact comparison get
+    # a second chance after insignificant machine tails have been removed.
+    if _difference_is_zero(predicted, truth):
+        return True
+    normalized_predicted = _normalize_numeric_constants(predicted)
+    normalized_truth = _normalize_numeric_constants(truth)
+    if normalized_predicted == predicted and normalized_truth == truth:
+        return False
+    return _difference_is_zero(normalized_predicted, normalized_truth)
 
 
 def score_expression(expression, reference, data, columns):

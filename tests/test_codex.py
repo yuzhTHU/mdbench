@@ -124,6 +124,8 @@ def test_codex_defaults_to_long_run_and_unlimited_accounting():
     args = parser.parse_args([])
     assert args.timeout == 900
     assert args.openrouter_budget_usd is None
+    assert args.codex_objective == 'mechanism'
+    assert parser.parse_args(['--codex-objective', 'phenomenology']).codex_objective == 'phenomenology'
 
 
 def test_real_cli_checkpoint_and_independent_probe_recovery(demo, tmp_path, monkeypatch):

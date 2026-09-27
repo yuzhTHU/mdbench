@@ -54,6 +54,10 @@ def update_parser(parser):
     parser.add_argument('--codex_provider_base_url', default=None, help=argparse.SUPPRESS)
     parser.add_argument('--codex_provider_env_key', default=None, help=argparse.SUPPRESS)
     parser.add_argument('--codex_reasoning_effort', default=None)
+    parser.add_argument(
+        '--codex-objective', choices=('mechanism', 'phenomenology'),
+        default='mechanism',
+        help='Search for a latent mechanism (default) or a direct observable phenomenological equation.')
     parser.add_argument('--codex_blocked_tools', default=None)
     parser.add_argument('--codex_tool_path', default=None)
     parser.add_argument('--openrouter_gateway', action='store_true',
@@ -176,8 +180,10 @@ def run(args, problem_file: Path, train_data_npy_file: Path,
                              copy_auth=getattr(args, '_codex_copy_auth', True),
                              isolated_config=getattr(args, '_codex_isolated_config', None))
         env['PATH'] = str(blocked_bin) + os.pathsep + env.get('PATH', '')
-        prompt = f'''# Objective
-Reconstruct the scientific mechanism that generated the observations in
+        objective = getattr(args, 'codex_objective', 'mechanism')
+        if objective == 'mechanism':
+            model_label = 'mechanistic model'
+            objective_text = '''Reconstruct the scientific mechanism that generated the observations in
 problem.json and train.npy and maxmimize the feedback score provided by {feedback_server_url}.
 
 The primary goal is a mechanism model, not merely a phenomenological model. A
@@ -190,9 +196,50 @@ perfectly accurate direct fit is insufficient.
 Please ensure that your mechanistic model fully describes the underlying mechanisms
 of the observations. Upon completion of the run, you will be asked several questions
 regarding your proposed mechanistic model to verify your understanding of the underlying
-mechanisms that generated the data.
+mechanisms that generated the data.'''.format(feedback_server_url=feedback_server_url)
+            model_requirements = '''- Submit a self-contained system of algebraic equations involving the supplied
+  inputs, the target, and scientifically meaningful unobserved internal variables.
+- The equations must jointly and uniquely solve the target and every introduced
+  internal variables as explicit expressions of the supplied inputs.
+- Do not leave free symbolic parameters. Estimate necessary constants and define
+  each one numerically as an equation in your model (for example, k = 1.2345).
+- Use only ordinary algebra, powers (^ or **), sqrt, exp, log, trigonometric
+  functions, and abs. Do not use differential equations.
+- Prefer the smallest scientifically coherent mechanism that explains the data.
+  Use variable meanings, units, scaling, and numerical behavior to distinguish
+  causal/mechanistic hypotheses from curve fits.'''
+            investigation = '''Inspect the metadata and data, formulate candidate mechanisms, test their
+observable consequences using the provided URL, and refine the best mechanism.'''
+        elif objective == 'phenomenology':
+            model_label = 'phenomenological expression'
+            objective_text = '''Recover the phenomenological equation that directly maps the observed inputs to
+the observed target in problem.json and train.npy, and maximize the feedback score
+provided by {feedback_server_url}.
 
-You will have {args.timeout} seconds to iteratively refine your mechanistic model and
+The sole goal is an accurate symbolic expression for the observable input-target
+relation. Do not reconstruct, introduce, or optimize for an underlying mechanism,
+unobserved internal components, latent states, or latent activities. The submitted
+model will be judged as a direct phenomenological fit.'''.format(
+                feedback_server_url=feedback_server_url)
+            model_requirements = '''- Submit exactly one algebraic equation with the supplied target alone on the
+  left-hand side and an explicit expression of only the supplied observed inputs
+  and numerical constants on the right-hand side.
+- Do not introduce auxiliary equations, named constants, unobserved internal
+  variables, latent states, or mechanistic intermediates.
+- Estimate all necessary numerical constants and write them directly in the target
+  expression. Do not leave free symbolic parameters.
+- Use only ordinary algebra, powers (^ or **), sqrt, exp, log, trigonometric
+  functions, and abs. Do not use differential equations.
+- Prefer the smallest accurate phenomenological expression that explains the data.
+  Use variable meanings, units, scaling, and numerical behavior to guide the fit.'''
+            investigation = '''Inspect the metadata and data, formulate candidate direct input-target expressions,
+test them using the provided URL, and refine the best phenomenological expression.'''
+        else:
+            raise ValueError(f'Unsupported Codex objective: {objective}')
+        prompt = f'''# Objective
+{objective_text}
+
+You will have {args.timeout} seconds to iteratively refine your {model_label} and
 maximize the feedback score.
 
 # Provided data
@@ -207,21 +254,10 @@ maximize the feedback score.
 }
 
 # Model requirements
-- Submit a self-contained system of algebraic equations involving the supplied
-  inputs, the target, and scientifically meaningful unobserved internal variables.
-- The equations must jointly and uniquely solve the target and every introduced
-  internal variables as explicit expressions of the supplied inputs.
-- Do not leave free symbolic parameters. Estimate necessary constants and define
-  each one numerically as an equation in your model (for example, k = 1.2345).
-- Use only ordinary algebra, powers (^ or **), sqrt, exp, log, trigonometric
-  functions, and abs. Do not use differential equations.
-- Prefer the smallest scientifically coherent mechanism that explains the data.
-  Use variable meanings, units, scaling, and numerical behavior to distinguish
-  causal/mechanistic hypotheses from curve fits.
+{model_requirements}
 
 # Investigation
-Inspect the metadata and data, formulate candidate mechanisms, test their
-observable consequences using the provided URL, and refine the best mechanism.
+{investigation}
 Write a valid initial submission.txt immediately, then keep it updated while
 improving it within {args.timeout} seconds so it survives a time-limit interruption.
 
@@ -241,7 +277,7 @@ to the feedback endpoint is required.
 submission.txt must contain only equations, with one equality per line and no
 Markdown or prose. Do not use any filename other than submission.txt to submit
 your answers. Upon completion of the run, ensure that the submission.txt file
-represents the mechanism model that maximizes URL feedback.
+represents the {model_label} that maximizes URL feedback.
 
 # Boundaries
 Do NOT modify problem.json or train.npy. Do NOT use external reference answers,
@@ -258,7 +294,8 @@ provided Python environment.
                          prompt, workspace, env, events, errors, args.timeout,
                          stdout=stdout, process_log=process_log)
         model = {'algorithm': 'codex', 'events': str(events),
-                 'session': str(checkpoint), 'codex_model': _selected_model(args), **status}
+                 'session': str(checkpoint), 'codex_model': _selected_model(args),
+                 'codex_objective': objective, **status}
         model['codex_profile'] = _selected_profile(args)
         model['codex_command'] = getattr(args, 'codex_command', None)
         submission = None

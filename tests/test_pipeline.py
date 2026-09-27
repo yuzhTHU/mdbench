@@ -11,7 +11,7 @@ from src.export_problems import export_task, public_problem
 from src.synthetic_data import generate_synthetic_data
 from src.scoring import accuracy_metrics, feedback
 from src.feedback_server import create_server, FeedbackCache
-from src.evaluate import evaluate
+from src.evaluate import evaluate, format_probe
 from src.validate_problem import task_from_dict, validate_task
 
 
@@ -118,6 +118,25 @@ def test_independent_probe_restores_and_scoring(simple_raw, tmp_path):
     assert result['mechanism_recovery']['ood_test']['numerically_equivalent'] == 1
 
 
+def test_probe_prompt_discloses_named_numerical_constants(simple_raw):
+    raw = deepcopy(simple_raw)
+    raw['variables'].append({
+        'name': 'coefficient', 'description': 'Known coefficient.',
+        'role': 'internal', 'unit': '1'})
+    raw['mechanism_model'].insert(0, {
+        'formula': 'coefficient = 2.5',
+        'role': 'auxiliary/regime constraints',
+        'description': 'Known coefficient.'})
+    task = task_from_dict(raw)
+
+    prompt = format_probe(task, task.mechanism_probes[0], ['y=(2*x+3)*x'])
+
+    assert 'Frozen submitted phenomenal model:' in prompt
+    assert 'Known named numerical constants for this task:\ncoefficient = 2.5' in prompt
+    assert 'h: 2, 3' in prompt
+    assert 'h = 2*x + 3' not in prompt
+
+
 def test_each_of_multiple_probes_gets_a_fresh_ask(simple_raw, tmp_path):
     raw = deepcopy(simple_raw)
     raw['mechanism_model'] = [
@@ -175,3 +194,20 @@ def test_bad_probe_does_not_use_ground_truth_to_repair(simple_raw, tmp_path):
     assert result['phenomenal']['train']['symbolically_equivalent']
     assert not result['mechanism_probes'][0]['ok']
     assert result['mechanism_recovery']['train']['numerically_equivalent'] == 0
+
+
+def test_mechanism_recovery_requires_every_probe(simple_raw, tmp_path):
+    raw = deepcopy(simple_raw)
+    raw['mechanism_probes'].append({
+        'probe': 'q', 'description': 'Second hidden response.', 'answer': '2*x+3'})
+    task = task_from_dict(raw)
+    paths = export_task(task, tmp_path / 'task', train_samples=4,
+                        id_test_samples=4, ood_test_samples=4)
+    replies = {'h': 'h=2*x+3', 'q': 'q=0'}
+    args = SimpleNamespace(save_path=tmp_path / 'result', algorithm='codex', probe_workers=2)
+    result = evaluate(
+        args, paths['answer'], ['y=(2*x+3)*x'],
+        lambda: lambda question, probe_name, *args, **kwargs: replies[probe_name])
+    assert sum(item['scores']['ood_test']['symbolically_equivalent']
+               for item in result['mechanism_probes']) == 1
+    assert result['mechanism_recovery']['ood_test']['symbolically_equivalent'] == 0

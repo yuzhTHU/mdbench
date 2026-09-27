@@ -76,6 +76,45 @@ def test_symbolic_equivalence_quickly_rejects_decimal_approximation():
     assert symbolic_equivalent((x + 1) ** 2, x**2 + 2*x + 1)
 
 
+def test_symbolic_equivalence_ignores_machine_precision_decimal_tails():
+    x = sp.Symbol('x', positive=True)
+    assert symbolic_equivalent(
+        sp.Rational('0.1000000000000000') * x,
+        sp.Rational('0.1') * x,
+    )
+    assert symbolic_equivalent(
+        sp.Rational('0.10000000000000002') * x,
+        sp.Rational('0.1') * x,
+    )
+    assert symbolic_equivalent(
+        sp.exp(-x / sp.Rational('1.3806490000000001e-23')),
+        sp.exp(-x / sp.Rational('1.380649e-23')),
+    )
+    assert not symbolic_equivalent(
+        sp.Rational('0.101') * x,
+        sp.Rational('0.1') * x,
+    )
+
+
+def test_decimal_cleanup_does_not_invalidate_an_exact_identity():
+    radius, central_mass = sp.symbols('radius central_mass', positive=True)
+    predicted = (
+        sp.Integer('9869604401089357120529513782849') * radius**3
+        / (sp.Integer('16685750000000000000')
+           * (7 * central_mass * radius**2
+              / (50 * (radius + 50000000)**2) + central_mass))
+    )
+    truth = (
+        sp.Integer('9869604401089357120529513782849') * radius
+        / (sp.Integer('250000000000000000000000000000')
+           * (sp.Rational(467201, 50000000000000000) * central_mass
+              / (radius + 50000000)**2
+              + sp.Rational(66743, 1000000000000000)
+              * central_mass / radius**2))
+    )
+    assert symbolic_equivalent(predicted, truth)
+
+
 def test_symbolic_equivalence_avoids_exact_substitution_of_fractional_powers():
     x, y = sp.symbols('x y', positive=True)
     predicted = (

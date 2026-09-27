@@ -47,9 +47,15 @@ def update_parser(parser):
         default=None,
         help="Credential file containing OPENROUTER_API_KEY (default: repository .env).",
     )
-    parser.add_argument("--pysr-llm-max-output-tokens", type=int, default=2048)
-    parser.add_argument("--pysr-llm-request-timeout", type=float, default=180)
+    parser.add_argument("--pysr-llm-max-output-tokens", type=int, default=8192)
+    parser.add_argument("--pysr-llm-request-timeout", type=float, default=600)
     parser.add_argument("--pysr-llm-retries", type=int, default=4)
+    parser.add_argument(
+        "--pysr-llm-reasoning-effort",
+        choices=("minimal", "low", "medium", "high"),
+        default="minimal",
+        help="OpenRouter reasoning effort for each direct mechanism-probe request.",
+    )
     return parser
 
 
@@ -93,6 +99,8 @@ def run(args, problem_file: Path, train_data_npy_file: Path,
         "algorithm": "pysr_and_llm_direct",
         "formula": formulas,
         "probe_model": getattr(args, "pysr_llm_model", _DEFAULT_MODEL),
+        "probe_reasoning_effort": getattr(
+            args, "pysr_llm_reasoning_effort", "minimal"),
     })
     return formulas, checkpoint
 
@@ -140,12 +148,25 @@ class DirectProbeConversation:
         del probe_description
         output = Path(output_dir).resolve()
         output.mkdir(parents=True, exist_ok=True)
+
+        # A batch may be interrupted after an expensive probe request has
+        # completed but before the task-level performance file is written.
+        # Treat the already parsed formula as a durable checkpoint so recovery
+        # runs only ask for probes that are genuinely missing.
+        cached_formula = output / "formula.txt"
+        if cached_formula.is_file():
+            formula = _extract_formula(cached_formula.read_text(), probe_name)
+            (output / "cache-reused.txt").write_text("formula.txt\n")
+            return formula
+
         (output / "prompt.txt").write_text(prompt)
 
         model = getattr(self.args, "pysr_llm_model", _DEFAULT_MODEL)
         maximum = int(getattr(self.args, "pysr_llm_max_output_tokens", 2048))
         timeout = float(getattr(self.args, "pysr_llm_request_timeout", 180))
         retries = int(getattr(self.args, "pysr_llm_retries", 4))
+        reasoning_effort = getattr(
+            self.args, "pysr_llm_reasoning_effort", "minimal")
         if maximum < 1 or timeout <= 0 or retries < 1:
             raise ValueError("LLM token limit, request timeout, and retry count must be positive.")
         body = {
@@ -163,9 +184,7 @@ class DirectProbeConversation:
             ],
             "temperature": 0,
             "max_tokens": maximum,
-            # These probes require only one equation.  Keeping reasoning minimal
-            # prevents reasoning-only responses from exhausting the output cap.
-            "reasoning": {"effort": "minimal"},
+            "reasoning": {"effort": reasoning_effort},
             "usage": {"include": True},
         }
         atomic_json(output / "request.json", body)

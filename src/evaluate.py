@@ -1,5 +1,6 @@
 """Objective phenomenal and independent mechanism-probe evaluation."""
 from __future__ import annotations
+import ast
 from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
@@ -10,9 +11,9 @@ from .core import Task
 from .scoring import (accuracy_metrics, symbolic_equivalent, score_expression,
                       validate_data)
 from .synthetic_data import evaluate_expression
-from .validate_problem import (ValidationError, task_from_dict, validate_task, solve_model,
+from .validate_problem import (NAME, ValidationError, task_from_dict, validate_task, solve_model,
                                expand_expression, parse_equation, parse_expression,
-                               split_equation, symbols_for, _substitute)
+                               split_equation, symbols_for, expression_tree, _substitute)
 
 
 def load_answer(path: str | Path):
@@ -30,6 +31,59 @@ def load_answer(path: str | Path):
     return task, arrays, columns
 
 
+def numerical_constant_equations(task: Task) -> list[str]:
+    """Return named mechanism equations whose right-hand sides are numeric.
+
+    This is deliberately a syntactic disclosure rule for probe prompts, not a
+    distinct equation type in the task model.  Equations such as ``a = 1.2``
+    continue to be loaded, validated, and solved exactly like every other
+    mechanism equation.
+    """
+    equations = []
+    for item in task.mechanism_model:
+        left, right = split_equation(item.formula_str)
+        if NAME.fullmatch(left) and not parse_expression(right).free_symbols:
+            equations.append(item.formula_str)
+    return equations
+
+
+def _numeric_literals(expression: str) -> list[str]:
+    """Collect numeric literal values without interpreting equation structure."""
+    values = []
+
+    def visit(node):
+        if (isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.UAdd, ast.USub))
+                and isinstance(node.operand, ast.Constant)
+                and type(node.operand.value) in (int, float)):
+            sign = '-' if isinstance(node.op, ast.USub) else '+'
+            values.append(sign + str(node.operand.value))
+            return
+        if isinstance(node, ast.Constant) and type(node.value) in (int, float):
+            values.append(str(node.value))
+            return
+        for child in ast.iter_child_nodes(node):
+            visit(child)
+
+    visit(expression_tree(expression))
+    return list(dict.fromkeys(values))
+
+
+def numerical_literal_context(task: Task) -> list[str]:
+    """List embedded numeric values, labelled only by their equation's LHS."""
+    direct = set(numerical_constant_equations(task))
+    context = []
+    for item in task.mechanism_model:
+        if item.formula_str in direct:
+            continue
+        left, right = split_equation(item.formula_str)
+        if not NAME.fullmatch(left):
+            continue
+        values = _numeric_literals(right)
+        if values:
+            context.append(f'{left}: {", ".join(values)}')
+    return context
+
+
 def format_probe(task: Task, probe, submission: list[str]) -> str:
     source_names = [v.name for v in task.by_role('input', 'auxiliary')]
     submitted_names = set().union(*(map(str, parse_equation(formula).free_symbols)
@@ -37,21 +91,34 @@ def format_probe(task: Task, probe, submission: list[str]) -> str:
     internal_names = sorted(submitted_names - set(source_names) - {task.target.name})
     variables = ', '.join([*source_names, *internal_names])
     submitted_model = '\n'.join(submission)
-    return f'''Frozen submitted mechanism model:
+    constants = numerical_constant_equations(task)
+    known_constants = ('\n'.join(constants) if constants else '(none)')
+    literal_context = numerical_literal_context(task)
+    known_literals = ('\n'.join(literal_context) if literal_context else '(none)')
+    return f'''Frozen submitted phenomenal model:
 {submitted_model}
 
-Using only the mechanism model you submitted above,
+Known named numerical constants for this task:
+{known_constants}
+
+Additional numerical constant values, labelled by the mechanism quantity in
+whose defining equation they appear (the equation itself is not disclosed):
+{known_literals}
+
+Using the phenomenal model and known numerical constants above,
 derive {probe.probe} ({probe.description}) as a function of the variables: {variables}.
 
 Return exactly one equation in the form:
 {probe.probe} = <expression>
 
-The right-hand side may contain only the given variables (including internal
-variables already defined in the frozen submitted mechanism model), numeric literals,
-and mathematical operators/functions supported by the benchmark.
+The right-hand side may contain only the given variables, numeric literals,
+and mathematical operators/functions supported by the benchmark. Substitute
+the displayed value of a known numerical constant directly; do not leave its
+name in the answer unless that name is one of the given variables.
 Do not introduce new variables, additional equations, or prose.
-Do not modify, replace, or extend your previously submitted mechanism model.
-Do not use any tools. Answer directly from the frozen submitted model.
+Do not modify, replace, or extend the frozen submitted phenomenal model.
+Do not use any tools. Answer directly from the frozen phenomenal model and the
+known numerical constants.
 '''
 
 
@@ -116,7 +183,9 @@ def evaluate(args, answer_file: str | Path, submission: list[str],
         probes = list(executor.map(ask_probe, enumerate(task.mechanism_probes)))
     rates = {}
     for split in arrays:
-        rates[split] = {metric: (sum(bool(p.get('scores', {}).get(split, {}).get(metric, False)) for p in probes) / len(probes)
+        rates[split] = {metric: (int(all(bool(
+                                    p.get('scores', {}).get(split, {}).get(metric, False))
+                                    for p in probes))
                                 if probes else None)
                         for metric in ('symbolically_equivalent', 'numerically_equivalent')}
     return {'task_name': task.task_name, 'phenomenal': phenomenal,
