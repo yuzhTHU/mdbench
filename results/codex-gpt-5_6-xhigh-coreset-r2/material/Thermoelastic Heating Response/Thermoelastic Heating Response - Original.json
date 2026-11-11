@@ -1,0 +1,279 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.3861699000008,
+  "evaluation_seconds": 9.391230400000495,
+  "evaluation": {
+    "task_name": "Thermoelastic Heating Response - Original",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 68.08693356121736,
+        "mse": 17520.124958147742,
+        "rmse": 132.3636088891042,
+        "mape": 4.916435351074281,
+        "r2": 0.9967583581420224,
+        "nrmse": 0.0512008694227473,
+        "max_absolute_error": 1614.3789194799956,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 75.35352484991772,
+        "mse": 20216.960047009834,
+        "rmse": 142.18635675411983,
+        "mape": 4.234037548571845,
+        "r2": 0.9965171488850101,
+        "nrmse": 0.05300851293464668,
+        "max_absolute_error": 1383.1241742591283,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 894.751560814766,
+        "mse": 1212650.9010112009,
+        "rmse": 1101.2042957649596,
+        "mape": 1.3346533838208519,
+        "r2": 0.17583152175205974,
+        "nrmse": 0.6813293336757842,
+        "max_absolute_error": 3337.571069883555,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "reference_temperature": "5769924767794879/20000000000000",
+      "baseline_thermal_expansion": "4717645133741731/20000000000000000000000",
+      "active_thermal_expansion_increment": "18847896056926047/1000000000000000000000",
+      "bar_modulus": "9414032685936923/5000000",
+      "conditioning_rate_prefactor": "870688408540587/5000000000000000",
+      "conditioning_activation_temperature": "516315578995923/400000000000",
+      "conditioning_avrami_exponent": "182623316913553/62500000000000",
+      "slow_mode_diffusivity": "1193821942857161/1000000000000000000000",
+      "fast_mode_diffusivity": "399999999692343/40000000000000000",
+      "slow_mode_weight": "973610172977853/1000000000000000",
+      "cooling_time": "(conditioning_temperature - 5769924767794879/20000000000000)/conditioning_cooling_rate",
+      "kinetic_exposure": "870688408540587*(conditioning_temperature - 5769924767794879/20000000000000)*exp(-516315578995923/(400000000000*conditioning_temperature))/(5000000000000000*conditioning_cooling_rate)",
+      "thermally_active_fraction": "1 - exp(-(870688408540587*(conditioning_temperature - 5769924767794879/20000000000000)*exp(-516315578995923/(400000000000*conditioning_temperature))/(5000000000000000*conditioning_cooling_rate))**(182623316913553/62500000000000))",
+      "effective_thermal_expansion": "18847896056926047*(1 - exp(-(870688408540587*(conditioning_temperature - 5769924767794879/20000000000000)*exp(-516315578995923/(400000000000*conditioning_temperature))/(5000000000000000*conditioning_cooling_rate))**(182623316913553/62500000000000)))/1000000000000000000000 + 4717645133741731/20000000000000000000000",
+      "slow_thermal_mode": "973610172977853/(1000000000000000*(1000000000000000000000*laplace_rate*length_scale**2/1193821942857161 + 1))",
+      "fast_thermal_mode": "26389827022147/(1000000000000000*(40000000000000000*laplace_rate*length_scale**2/399999999692343 + 1))",
+      "sampled_thermal_eigenstrain": "temperature_step*(18847896056926047*(1 - exp(-(870688408540587*(conditioning_temperature - 5769924767794879/20000000000000)*exp(-516315578995923/(400000000000*conditioning_temperature))/(5000000000000000*conditioning_cooling_rate))**(182623316913553/62500000000000)))/1000000000000000000000 + 4717645133741731/20000000000000000000000)*(973610172977853/(1000000000000000*(1000000000000000000000*laplace_rate*length_scale**2/1193821942857161 + 1)) + 26389827022147/(1000000000000000*(40000000000000000*laplace_rate*length_scale**2/399999999692343 + 1)))",
+      "effective_series_modulus": "9414032685936923*frame_modulus/(5000000*(frame_modulus + 9414032685936923/5000000))",
+      "stress": "(9414032685936923*frame_modulus/(5000000*(frame_modulus + 9414032685936923/5000000)))*(temperature_step*(18847896056926047*(1 - exp(-(870688408540587*(conditioning_temperature - 5769924767794879/20000000000000)*exp(-516315578995923/(400000000000*conditioning_temperature))/(5000000000000000*conditioning_cooling_rate))**(182623316913553/62500000000000)))/1000000000000000000000 + 4717645133741731/20000000000000000000000)*(973610172977853/(1000000000000000*(1000000000000000000000*laplace_rate*length_scale**2/1193821942857161 + 1)) + 26389827022147/(1000000000000000*(40000000000000000*laplace_rate*length_scale**2/399999999692343 + 1))))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "prepared_expansion_fraction",
+        "ok": true,
+        "reply": "prepared_expansion_fraction = thermally_active_fraction",
+        "expression": "1 - exp(-(870688408540587*(conditioning_temperature - 5769924767794879/20000000000000)*exp(-516315578995923/(400000000000*conditioning_temperature))/(5000000000000000*conditioning_cooling_rate))**(182623316913553/62500000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.018800619038040957,
+            "mse": 0.000854236422475123,
+            "rmse": 0.029227323217755043,
+            "mape": 0.34626348805830787,
+            "r2": 0.9917195356452345,
+            "nrmse": 0.07135961362438521,
+            "max_absolute_error": 0.14233464513598126,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.019668863464954542,
+            "mse": 0.0008913119589005864,
+            "rmse": 0.029854848164085283,
+            "mape": 0.3361508976331979,
+            "r2": 0.9918063333281825,
+            "nrmse": 0.0706127077229293,
+            "max_absolute_error": 0.14250183147689766,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.026813311151655108,
+            "mse": 0.0013748745329360884,
+            "rmse": 0.03707930059933828,
+            "mape": 0.08717490716228307,
+            "r2": 0.9852830381932153,
+            "nrmse": 0.06463195538948481,
+            "max_absolute_error": 0.13050522312901536,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 1
+  },
+  "total_seconds": 915.1351894999989,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\performance.json",
+    "file_sha256": "bccdf666350af7d1b04d17b51cade6eed96b5b21f0097870a257cb0e51e5c0e1",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\material\\Thermoelastic Heating Response\\Thermoelastic Heating Response - Original.yaml",
+      "file_sha256": "674dd7d46aa731557ddc9e69fc6260b91201e125527fa5e9eeda60b62dcd3941"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\args.json",
+      "file_sha256": "3094b8adaf5aedadbeba84fa18c34f0b4ed49054a6ba808707dc5e6b96be8d54"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\run_config.json",
+        "file_sha256": "f68f3ae1cf73099d7bdd07e96b05d634d91adcd30c0391269ee32f1ed1f62cf5"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\prompt.txt",
+        "file_sha256": "fc1779ed13b76bcfa3ae61be96599aca466bc5ae44c88038b2b733b17acb94a6"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\dataest\\problem.json",
+        "file_sha256": "2f1765bf949ec001a6ad11336071cc777dfd79555712710b7361bd00779739d8"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\dataest\\answer.json",
+        "file_sha256": "7e736bbf24699ea5ba672c31d00682f407b650dfb15883e43405815fe741ba10"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\dataest\\train.npy",
+        "file_sha256": "ab857c58fd30bed847eed8c0b2c9d613e9a1210e3a4150b1e839cb58acce558f"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\dataest\\id_test.npy",
+        "file_sha256": "b45fe2be69605d2a5684167f430e1f6d0e031735e077ffe3adca0c136467052e"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\dataest\\ood_test.npy",
+        "file_sha256": "fb7308031b1f80704cddb57487a395b3411299cbf0a12d2d207de88435dad55a"
+      },
+      {
+        "probe": "prepared_expansion_fraction",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\probe\\000-prepared_expansion_fraction\\prompt.txt",
+        "file_sha256": "26cb76db923d3a08c876dc15299c2f26636687c8962ce3ed098de8e240951ad3"
+      },
+      {
+        "probe": "prepared_expansion_fraction",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\probe\\000-prepared_expansion_fraction\\reply.txt",
+        "file_sha256": "b3544967bfa1b2ada5d042874ec21582a1337effbe5189d4b00a934e0e8f70b2"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\submission.txt",
+      "file_sha256": "59685579f5cd80361aaedb5bb0ea416071f6c8435f27bd9cb0a2f0ded8dd6b8c"
+    }
+  },
+  "submission": "reference_temperature = 288.49623838974395\nbaseline_thermal_expansion = 2.3588225668708655e-07\nactive_thermal_expansion_increment = 1.8847896056926047e-05\nbar_modulus = 1882806537.1873846\nconditioning_rate_prefactor = 0.17413768170811739\nconditioning_activation_temperature = 1290.7889474898075\nconditioning_avrami_exponent = 2.9219730706168479\nslow_mode_diffusivity = 1.193821942857161e-06\nfast_mode_diffusivity = 0.0099999999923085746\nslow_mode_weight = 0.97361017297785302\ncooling_time = (conditioning_temperature-reference_temperature)/conditioning_cooling_rate\nkinetic_exposure = conditioning_rate_prefactor*cooling_time*exp(-conditioning_activation_temperature/conditioning_temperature)\nthermally_active_fraction = 1-exp(-(kinetic_exposure^conditioning_avrami_exponent))\neffective_thermal_expansion = baseline_thermal_expansion+active_thermal_expansion_increment*thermally_active_fraction\nslow_thermal_mode = slow_mode_weight/(1+laplace_rate*length_scale^2/slow_mode_diffusivity)\nfast_thermal_mode = (1-slow_mode_weight)/(1+laplace_rate*length_scale^2/fast_mode_diffusivity)\nsampled_thermal_eigenstrain = effective_thermal_expansion*temperature_step*(slow_thermal_mode+fast_thermal_mode)\neffective_series_modulus = frame_modulus*bar_modulus/(frame_modulus+bar_modulus)\nstress = sampled_thermal_eigenstrain*effective_series_modulus\n",
+  "used_token": {
+    "input": 1756280,
+    "output": 37486,
+    "reason": 12432,
+    "cached": 1630976,
+    "total": 1793766
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "4a55047bbf7fdd96912019b08b618786b281af21a02f056c0fa76f364008ab70"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 1674499,
+          "output": 37473,
+          "cached": 1624448,
+          "reason": 12432
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "prepared_expansion_fraction",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Thermoelastic Heating Response - Original\\result\\probe\\000-prepared_expansion_fraction\\audit\\codex_events.jsonl",
+          "file_sha256": "2eaa94560b3e997c37e6e3aa360ec01e84fefd925d6b9f254fc734e6c93d3fde"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 81781,
+          "output": 13,
+          "cached": 6528,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-09T13:56:40.205826+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "7e2c7f89f220bb6b9456b846c7076864486ac91bc7eeb9a77b573b3149877de0"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": true,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

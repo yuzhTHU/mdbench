@@ -1,0 +1,352 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 905.2297001000043,
+  "evaluation_seconds": 29.054220200006966,
+  "evaluation": {
+    "task_name": "Membrane Channel Flux - Variant 1-2-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 6.92620600437456e-05,
+        "mse": 7.753574031678835e-09,
+        "rmse": 8.805438110439954e-05,
+        "mape": 0.0010308752399132719,
+        "r2": 0.9999891432701166,
+        "nrmse": 0.0010515390787684859,
+        "max_absolute_error": 0.00040648095594481015,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 7.06684467919684e-05,
+        "mse": 7.803655805248e-09,
+        "rmse": 8.833830316033923e-05,
+        "mape": 0.0010889953645365571,
+        "r2": 0.9999895862081729,
+        "nrmse": 0.0010827137291441098,
+        "max_absolute_error": 0.0003844885340750642,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.005730007608424724,
+        "mse": 6.1031415257497725e-05,
+        "rmse": 0.00781226057281103,
+        "mape": 0.233656737876855,
+        "r2": 0.9825658360465355,
+        "nrmse": 0.11886155816900787,
+        "max_absolute_error": 0.023108508303856384,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "thermal_voltage": "3161187182172957/125000000000000000",
+      "transmembrane_boltzmann_factor": "exp(-125000000000000000*voltage/3161187182172957)",
+      "outside_partition_coefficient": "1041821459853151/1000000000000000",
+      "electrochemical_concentration_drive": "inside - 1041821459853151*outside*exp(-125000000000000000*voltage/3161187182172957)/1000000000000000",
+      "constant_field_voltage_factor": "voltage/(1 - exp(-125000000000000000*voltage/3161187182172957))",
+      "inside_dissociation_concentration": "413642115731321/200000000000",
+      "outside_dissociation_concentration": "1091842909620459/250000000000",
+      "pore_partition_function": "200000000000*inside/413642115731321 + 250000000000*outside/1091842909620459 + 1",
+      "resting_reference_voltage": "-2275426163900523/2000000000000000000",
+      "activation_voltage": "voltage + 2275426163900523/2000000000000000000",
+      "half_activation_voltage": "56893855162287/1250000000000000",
+      "voltage_cooperativity": "274474152859151/125000000000000",
+      "open_probability": "(voltage + 2275426163900523/2000000000000000000)**(274474152859151/125000000000000)/((voltage + 2275426163900523/2000000000000000000)**(274474152859151/125000000000000) + (56893855162287/1250000000000000)**(274474152859151/125000000000000))",
+      "open_channel_electrodiffusive_scale": "11889026807634273/50000000000000000",
+      "current_density": "(voltage/(1 - exp(-125000000000000000*voltage/3161187182172957)))*(inside - 1041821459853151*outside*exp(-125000000000000000*voltage/3161187182172957)/1000000000000000)*(11889026807634273/50000000000000000)*((voltage + 2275426163900523/2000000000000000000)**(274474152859151/125000000000000)/((voltage + 2275426163900523/2000000000000000000)**(274474152859151/125000000000000) + (56893855162287/1250000000000000)**(274474152859151/125000000000000)))/(200000000000*inside/413642115731321 + 250000000000*outside/1091842909620459 + 1)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "open_state",
+        "ok": true,
+        "reply": "open_state = open_probability",
+        "expression": "(voltage + 2275426163900523/2000000000000000000)**(274474152859151/125000000000000)/((voltage + 2275426163900523/2000000000000000000)**(274474152859151/125000000000000) + (56893855162287/1250000000000000)**(274474152859151/125000000000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.09684449739994543,
+            "mse": 0.011160127590584979,
+            "rmse": 0.105641505056417,
+            "mape": 0.4873074204401871,
+            "r2": 0.15635847730058872,
+            "nrmse": 0.4347551455816158,
+            "max_absolute_error": 0.15302688435788087,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0921322307274163,
+            "mse": 0.010390511613046063,
+            "rmse": 0.1019338590118419,
+            "mape": 0.4931977681950126,
+            "r2": 0.2460253323021645,
+            "nrmse": 0.4358090073566974,
+            "max_absolute_error": 0.15304407880310678,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.15259823827267713,
+            "mse": 0.02331093206985586,
+            "rmse": 0.1526791802108456,
+            "mape": 0.28964656390607046,
+            "r2": -4.281130460944508,
+            "nrmse": 0.28205353296869573,
+            "max_absolute_error": 0.158678133348017,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "permeability",
+        "ok": true,
+        "reply": "permeability = open_probability * open_channel_electrodiffusive_scale / pore_partition_function",
+        "expression": "11889026807634273*((voltage + 2275426163900523/2000000000000000000)**(274474152859151/125000000000000)/((voltage + 2275426163900523/2000000000000000000)**(274474152859151/125000000000000) + (56893855162287/1250000000000000)**(274474152859151/125000000000000)))/(50000000000000000*(200000000000*inside/413642115731321 + 250000000000*outside/1091842909620459 + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.07147052678688812,
+            "mse": 0.006406385756267187,
+            "rmse": 0.08003990102609565,
+            "mape": 796953.3092127823,
+            "r2": -286327429646768.0,
+            "nrmse": 866564.1543813711,
+            "max_absolute_error": 0.13003020047446923,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.06767955765031308,
+            "mse": 0.005941137747773767,
+            "rmse": 0.07707877624725089,
+            "mape": 752959.1082986217,
+            "r2": -257196997507928.44,
+            "nrmse": 830388.0842828293,
+            "max_absolute_error": 0.12997436185262137,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.15628933129562148,
+            "mse": 0.024625481195310363,
+            "rmse": 0.15692508147300852,
+            "mape": 2128395.1515209093,
+            "r2": -973979967397831.8,
+            "nrmse": 2109665.435955572,
+            "max_absolute_error": 0.1773549146750618,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 934.5792159000011,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\performance.json",
+    "file_sha256": "c270cff9ef0019d037dedbc34e5550ab01cc1b4f838ba6aafc4ead64e6b7d0f0",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\biology\\Membrane Channel Flux\\Membrane Channel Flux - Variant 1-2-4.yaml",
+      "file_sha256": "9410c6380d4e9e79397449ab41ee370f2da299ff8cc1c45789e319f563f5dce0"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\args.json",
+      "file_sha256": "6b401c95967ee91d8c9975ac75fef35a191ba37daf56e60955f105942fc7b73c"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\run_config.json",
+        "file_sha256": "f68f3ae1cf73099d7bdd07e96b05d634d91adcd30c0391269ee32f1ed1f62cf5"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\prompt.txt",
+        "file_sha256": "f310cc1b2685a57eebf8b1e35ce9b34af465b713b868095b057078927e8f7491"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\dataest\\problem.json",
+        "file_sha256": "9becf018a773a13e5cc1c7dc9c21082fb3d70abffeb74f74f37d2f127709978f"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\dataest\\answer.json",
+        "file_sha256": "a63746b52bc1789cc797678804f09038e41bb3615ddc224da2c90e824acb8d05"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\dataest\\train.npy",
+        "file_sha256": "430a56739d691378c67e9f3afad266d8d360e3a4a7522a2e893599b995c01c61"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\dataest\\id_test.npy",
+        "file_sha256": "58134b7ddddd33fd356d8c92762bd79af26c2ea9c2ad27093887cbddeaa7162b"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\dataest\\ood_test.npy",
+        "file_sha256": "bb22e4f923cd224075a15574ec78c7b46afa0753b06e41ab53c90bb860cb58f1"
+      },
+      {
+        "probe": "open_state",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\probe\\000-open_state\\prompt.txt",
+        "file_sha256": "6138a9aa90e6a064291fbd417f86b41365c0fca612d12e8a131a7665323f5873"
+      },
+      {
+        "probe": "open_state",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\probe\\000-open_state\\reply.txt",
+        "file_sha256": "ee229e9bd8622c416cba6248dc25e4d643cb9bb00bbff6740d5039d9392e8030"
+      },
+      {
+        "probe": "permeability",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\probe\\001-permeability\\prompt.txt",
+        "file_sha256": "5634e2088c3a0b99350fad2b3694f2d10427cab9abcb7bfc678b3d1635914651"
+      },
+      {
+        "probe": "permeability",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\probe\\001-permeability\\reply.txt",
+        "file_sha256": "a3b12c335d63e39e6743a5f6db60f0e95ec4f2bc01f74d851d3b7cab83cae399"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\submission.txt",
+      "file_sha256": "098c9c320c06c88ed82dca558c6a86a6c004d8e4f2a8dbc2148a64ddc1c77d24"
+    }
+  },
+  "submission": "thermal_voltage = 0.025289497457383656\ntransmembrane_boltzmann_factor = exp(-voltage / thermal_voltage)\noutside_partition_coefficient = 1.041821459853151\nelectrochemical_concentration_drive = inside - outside_partition_coefficient * outside * transmembrane_boltzmann_factor\nconstant_field_voltage_factor = voltage / (1 - transmembrane_boltzmann_factor)\ninside_dissociation_concentration = 2068.2105786566049\noutside_dissociation_concentration = 4367.3716384818363\npore_partition_function = 1 + inside / inside_dissociation_concentration + outside / outside_dissociation_concentration\nresting_reference_voltage = -0.0011377130819502615\nactivation_voltage = voltage - resting_reference_voltage\nhalf_activation_voltage = 0.045515084129829603\nvoltage_cooperativity = 2.195793222873208\nopen_probability = activation_voltage ^ voltage_cooperativity / (half_activation_voltage ^ voltage_cooperativity + activation_voltage ^ voltage_cooperativity)\nopen_channel_electrodiffusive_scale = 0.23778053615268546\ncurrent_density = open_probability * open_channel_electrodiffusive_scale * constant_field_voltage_factor * electrochemical_concentration_drive / pore_partition_function\n",
+  "used_token": {
+    "input": 705703,
+    "output": 36274,
+    "reason": 13599,
+    "cached": 564608,
+    "total": 741977
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\saved_checkpoint\\codex.session.jsonl",
+          "file_sha256": "4c4ac0085f0b9bca04727877fbb78f40735a476d1e56a53e37357f6d74bcf971"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 577020,
+          "output": 36242,
+          "cached": 551552,
+          "reason": 13599
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "open_state",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\probe\\000-open_state\\audit\\codex_events.jsonl",
+          "file_sha256": "0af09a9a21fdd7546b88b8f1c8d54b91ed19f44d0fc479ac1be9a18a8c92adbf"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 64346,
+          "output": 9,
+          "cached": 6528,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "permeability",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Membrane Channel Flux - Variant 1-2-4\\result\\probe\\001-permeability\\audit\\codex_events.jsonl",
+          "file_sha256": "7ed065d48b31cf173ec4c2b65c8bb53081619da0ddd7b73978b4fe124d243bbe"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 64337,
+          "output": 23,
+          "cached": 6528,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-09T16:05:04.044768+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "7e2c7f89f220bb6b9456b846c7076864486ac91bc7eeb9a77b573b3149877de0"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": true,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

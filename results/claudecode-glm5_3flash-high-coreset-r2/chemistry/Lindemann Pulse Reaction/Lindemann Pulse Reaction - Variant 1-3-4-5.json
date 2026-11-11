@@ -1,0 +1,513 @@
+{
+  "algorithm": "claudecode",
+  "agent_seconds": 647.334159500002,
+  "evaluation_seconds": 71.11829520000174,
+  "evaluation": {
+    "task_name": "Lindemann Pulse Reaction - Variant 1-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.825743137130801e-06,
+        "mse": 1.1623843997468322e-11,
+        "rmse": 3.4093758955956033e-06,
+        "mape": 0.014866191738476635,
+        "r2": 0.9994173201458184,
+        "nrmse": 0.01659586401776283,
+        "max_absolute_error": 2.8749134875682568e-05,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.7853050096200774e-06,
+        "mse": 1.1049077123300814e-11,
+        "rmse": 3.3240152110513595e-06,
+        "mape": 0.015682778794539987,
+        "r2": 0.9994096845405832,
+        "nrmse": 0.016957250593007348,
+        "max_absolute_error": 2.7566993474522077e-05,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0004925821554452868,
+        "mse": 3.3296524369443747e-07,
+        "rmse": 0.000577031406159524,
+        "mape": 0.2558705986824893,
+        "r2": 0.5026665200969749,
+        "nrmse": 0.263897006002677,
+        "max_absolute_error": 0.0016426139737719687,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "channel_1_rate": "19537665597745373*collider**(11352472725966993/10000000000000000)/1000000000000000000",
+      "channel_1_window": "14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000))",
+      "channel_2_rate": "84688483380203*collider**(44199636719350593/100000000000000000)/312500000000000",
+      "channel_2_window": "8179271184171283/(5000000000000000*collider**(6310677892139607/10000000000000000))",
+      "channel_3_rate": "2037853202015251/(20000000000000000*collider**(3975108702394591/100000000000000000))",
+      "channel_3_window": "766623658051063*collider**(686272607614891/5000000000000000)/250000000000000",
+      "response": "dose*((2037853202015251/(20000000000000000*collider**(3975108702394591/100000000000000000)))*(1 - exp(-766623658051063*collider**(686272607614891/5000000000000000)/250000000000000*laplace_rate)) + (84688483380203*collider**(44199636719350593/100000000000000000)/312500000000000)*(1 - exp(-8179271184171283/(5000000000000000*collider**(6310677892139607/10000000000000000))*laplace_rate)) + (19537665597745373*collider**(11352472725966993/10000000000000000)/1000000000000000000)*(1 - exp(-14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000))*laplace_rate)))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "quench_flux",
+        "ok": true,
+        "reply": "quench_flux = channel_1_rate * (1 - exp(-laplace_rate * channel_1_window))",
+        "expression": "(19537665597745373*collider**(11352472725966993/10000000000000000)/1000000000000000000)*(1 - exp(-14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000))*laplace_rate))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.006366410135019089,
+            "mse": 6.854510740931174e-05,
+            "rmse": 0.008279197268413873,
+            "mape": 2464.4021485262083,
+            "r2": -37935.2389690859,
+            "nrmse": 176.70745544921715,
+            "max_absolute_error": 0.02527170634769367,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.006387593163507902,
+            "mse": 6.903991299689098e-05,
+            "rmse": 0.008309025995680298,
+            "mape": 2898.8550468435437,
+            "r2": -34093.926697786585,
+            "nrmse": 169.69912918961413,
+            "max_absolute_error": 0.024445268048438364,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.009285306872375668,
+            "mse": 0.0001613653845786216,
+            "rmse": 0.012702967550089294,
+            "mape": 3.0767622623220814,
+            "r2": -10.59697470904025,
+            "nrmse": 1.8835024489098784,
+            "max_absolute_error": 0.03952704854012478,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "caged_pool",
+        "ok": true,
+        "reply": "caged_pool = dose * (channel_1_rate * (channel_1_window * (1 - exp(-laplace_rate * channel_1_window)) - (1 - (1 + laplace_rate * channel_1_window) * exp(-laplace_rate * channel_1_window)) / laplace_rate) + channel_2_rate * (channel_2_window * (1 - exp(-laplace_rate * channel_2_window)) - (1 - (1 + laplace_rate * channel_2_window) * exp(-laplace_rate * channel_2_window)) / laplace_rate) + channel_3_rate * (channel_3_window * (1 - exp(-laplace_rate * channel_3_window)) - (1 - (1 + laplace_rate * channel_3_window) * exp(-laplace_rate * channel_3_window)) / laplace_rate))",
+        "expression": "dose*((2037853202015251/(20000000000000000*collider**(3975108702394591/100000000000000000)))*((766623658051063*collider**(686272607614891/5000000000000000)/250000000000000)*(1 - exp(-766623658051063*collider**(686272607614891/5000000000000000)/250000000000000*laplace_rate)) - (-((766623658051063*collider**(686272607614891/5000000000000000)/250000000000000)*laplace_rate + 1)*exp(-766623658051063*collider**(686272607614891/5000000000000000)/250000000000000*laplace_rate) + 1)/laplace_rate) + (84688483380203*collider**(44199636719350593/100000000000000000)/312500000000000)*((8179271184171283/(5000000000000000*collider**(6310677892139607/10000000000000000)))*(1 - exp(-8179271184171283/(5000000000000000*collider**(6310677892139607/10000000000000000))*laplace_rate)) - (-((8179271184171283/(5000000000000000*collider**(6310677892139607/10000000000000000)))*laplace_rate + 1)*exp(-8179271184171283/(5000000000000000*collider**(6310677892139607/10000000000000000))*laplace_rate) + 1)/laplace_rate) + (19537665597745373*collider**(11352472725966993/10000000000000000)/1000000000000000000)*((14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000)))*(1 - exp(-14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000))*laplace_rate)) - (-((14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000)))*laplace_rate + 1)*exp(-14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000))*laplace_rate) + 1)/laplace_rate))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.06424991210592988,
+            "mse": 0.03154597640175773,
+            "rmse": 0.17761187010376792,
+            "mape": 6477.958667461578,
+            "r2": -32629177.457732257,
+            "nrmse": 4086.1151140205106,
+            "max_absolute_error": 1.2624931333282128,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.060582282698072386,
+            "mse": 0.03258678511590097,
+            "rmse": 0.180518101906432,
+            "mape": 6712.24593425131,
+            "r2": -37847644.04405227,
+            "nrmse": 4401.7489565583655,
+            "max_absolute_error": 1.7009924527138587,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.002594532910573876,
+            "mse": 7.763596332042213e-06,
+            "rmse": 0.0027863230846479764,
+            "mape": 12.58346229686126,
+            "r2": -450.9087331828001,
+            "nrmse": 10.069108880782789,
+            "max_absolute_error": 0.00525920678595067,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "activation_flux",
+        "ok": true,
+        "reply": "activation_flux = dose * channel_1_rate * (1 - exp(-laplace_rate * channel_1_window))",
+        "expression": "(19537665597745373*collider**(11352472725966993/10000000000000000)/1000000000000000000)*dose*(1 - exp(-14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000))*laplace_rate))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00020354835069760207,
+            "mse": 1.3404072961704338e-07,
+            "rmse": 0.0003661157325451112,
+            "mape": 0.9564175488355344,
+            "r2": -0.3991276742601648,
+            "nrmse": 0.9808349777875169,
+            "max_absolute_error": 0.0026985111094561,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00019377472027126008,
+            "mse": 1.2847425541534447e-07,
+            "rmse": 0.00035843305569568284,
+            "mape": 0.9517111858243374,
+            "r2": -0.3720220519433146,
+            "nrmse": 0.9823128678411325,
+            "max_absolute_error": 0.0024534232503756197,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.019139833710599533,
+            "mse": 0.00046942302806480385,
+            "rmse": 0.021666172436884273,
+            "mape": 0.997121691827037,
+            "r2": -3.556601602001762,
+            "nrmse": 0.9983369504261956,
+            "max_absolute_error": 0.0696592330297075,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "direct_product_flux",
+        "ok": true,
+        "reply": "direct_product_flux = dose * channel_1_rate * (1 - exp(-laplace_rate * channel_1_window))",
+        "expression": "(19537665597745373*collider**(11352472725966993/10000000000000000)/1000000000000000000)*dose*(1 - exp(-14548180429178943/(5000000000000000*collider**(49796673390697/10000000000000))*laplace_rate))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.2852444476928694e-05,
+            "mse": 6.154016041477895e-09,
+            "rmse": 7.84475368732371e-05,
+            "mape": 0.843625342996801,
+            "r2": -0.7086807254473055,
+            "nrmse": 0.9404748419105564,
+            "max_absolute_error": 0.00032723860718475445,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.945021008463804e-05,
+            "mse": 5.8018385407091754e-09,
+            "rmse": 7.616980071333504e-05,
+            "mape": 0.8231498446602803,
+            "r2": -0.6282487942572834,
+            "nrmse": 0.9429645774655279,
+            "max_absolute_error": 0.00033309573684978913,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00044701963696477953,
+            "mse": 2.3662102805893442e-07,
+            "rmse": 0.00048643707512784675,
+            "mape": 0.9243590299795785,
+            "r2": -3.806233257425297,
+            "nrmse": 0.9048321972523745,
+            "max_absolute_error": 0.0010038460397372739,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 4
+  },
+  "total_seconds": 718.5738816000012,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\performance.json",
+    "file_sha256": "00a7111674a55972dc48492934147ce3c1aa0d5c575350c97bd0d382a3f3af7e",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\chemistry\\Lindemann Pulse Reaction\\Lindemann Pulse Reaction - Variant 1-3-4-5.yaml",
+      "file_sha256": "b1be353e910917bb5569d0afd2a61458283118d813a1a1002b594bdd1b2590ba"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\args.json",
+      "file_sha256": "00e07f4a165bd00c7b209c8361fba4014b0c35bcc1cc935d2dd49d8f00d56ff9"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\run_config.json",
+        "file_sha256": "ad97153e5e6953cea4f2f6e1a4c22aff22e1495e9f6865b53b3700c94aa00340"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "runtime_policy.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\runtime_policy.json",
+        "file_sha256": "372306fe11226bf1bc1c539d90b5084496b47d08c1963cb9056c63f348881609"
+      },
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\prompt.txt",
+        "file_sha256": "c6dd1f412b981e42bea684c4aa2e28b3954d3487ef30fc9acd4121ec1c3bc84c"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\dataest\\problem.json",
+        "file_sha256": "b4441ce2463ef7b70c28085da0780304a9602076dc03874429bb90c16c6fa5ca"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\dataest\\answer.json",
+        "file_sha256": "1d70ec36d23a753590b735ade7773c95a07a72de875901e34e0917445672cb1d"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\dataest\\train.npy",
+        "file_sha256": "d6cd7532b68b13ff42bcd20e56aac0c56b7fbfc06e10ab0b6dcc825bb2988ede"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "0ecd8876734d174797c5f486c130d67254b70faa618d333e2053e06fad3c4cbb"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "60f8b59c9bf4968ff2cfbacc27138ff5bfbe1354f35105136920ed1d658b9193"
+      },
+      {
+        "probe": "quench_flux",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\000-quench_flux\\prompt.txt",
+        "file_sha256": "d3dc9764452bc40f1b958b4f99a28d74cd8c8d83ba97707bef8d9b985a8e77be"
+      },
+      {
+        "probe": "quench_flux",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\000-quench_flux\\reply.txt",
+        "file_sha256": "ae3fe59683288b7902855ae5073b6f56cccfa01fda2a121e857f79007d43fdcd"
+      },
+      {
+        "probe": "caged_pool",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\001-caged_pool\\prompt.txt",
+        "file_sha256": "305415b9fd880fc76cb2c476e9fd240ca19f87bae6baa50096db090cb95778be"
+      },
+      {
+        "probe": "caged_pool",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\001-caged_pool\\reply.txt",
+        "file_sha256": "f4f23c00dba959ea736ee28684b7d80e27fe0069f34e0dca7c0237d37eee7537"
+      },
+      {
+        "probe": "activation_flux",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\002-activation_flux\\prompt.txt",
+        "file_sha256": "3528e9f8c6d0fa4f7079996b2994715177ebfde513beb9b4c0ce3c155252dd96"
+      },
+      {
+        "probe": "activation_flux",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\002-activation_flux\\reply.txt",
+        "file_sha256": "bf8fc7dc056cb2893284836d576851dd6fdab730a77b7549cacdf4b6c060b8d7"
+      },
+      {
+        "probe": "direct_product_flux",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\003-direct_product_flux\\prompt.txt",
+        "file_sha256": "d31cddd28f844696fde1affc739b612e5c0dd3855e06ef8d68c8deb38a75763c"
+      },
+      {
+        "probe": "direct_product_flux",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\003-direct_product_flux\\reply.txt",
+        "file_sha256": "3f334e02f3944906a5c3b56cb85c6fcff998356214da6b7c83520f26aed3efc9"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\submission.txt",
+      "file_sha256": "887ebc09686ad97c15fba94e37d880c5e4dc524e8f86e664bdd916faf3d6d686"
+    }
+  },
+  "submission": "channel_1_rate = 0.019537665597745373 * collider^1.1352472725966993\nchannel_1_window = 2.9096360858357886 * collider^-4.9796673390697004\nchannel_2_rate = 0.27100314681664961 * collider^0.44199636719350593\nchannel_2_window = 1.6358542368342566 * collider^-0.63106778921396067\nchannel_3_rate = 0.10189266010076255 * collider^-0.039751087023945912\nchannel_3_window = 3.0664946322042521 * collider^0.13725452152297821\nresponse = dose * (channel_1_rate * (1 - exp(-laplace_rate * channel_1_window)) + channel_2_rate * (1 - exp(-laplace_rate * channel_2_window)) + channel_3_rate * (1 - exp(-laplace_rate * channel_3_window)))\n",
+  "used_token": {
+    "input": 1535657,
+    "output": 67961,
+    "reason": null,
+    "cached": 0,
+    "total": 1603618
+  },
+  "cost_in_USD": 9.377309999999998,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": true,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\audit\\usage.json",
+          "file_sha256": "e0e0841cce311e1119d94bef09640ad8606069eaa234ab9a8bf75c9c0e28eb11"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 1221245,
+          "output": 64590,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": 7.720974999999999,
+        "cost_source": "claude_cli_estimate",
+        "request_id": "83ac5477233345479968c83d5bdb50fe",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "quench_flux",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\000-quench_flux\\audit\\usage.json",
+          "file_sha256": "c7ec046b77e3ff5d054af9b58f69c19dd6daae4112422014262ee35ce2caef9a"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 78612,
+          "output": 393,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": 0.4028849999999995,
+        "cost_source": "claude_cli_estimate",
+        "request_id": "d861173cce7e49499e9d52fcbf63ab20",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "caged_pool",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\001-caged_pool\\audit\\usage.json",
+          "file_sha256": "64c62fe475ea169c8b270e6dfe668a5737cc7f09ed95ca90a04978a9705263e3"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 78607,
+          "output": 2545,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": 0.4566599999999994,
+        "cost_source": "claude_cli_estimate",
+        "request_id": "51962d16cba4406498ff7211c5b1e4bc",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "activation_flux",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\002-activation_flux\\audit\\usage.json",
+          "file_sha256": "71f6fc217cc85421be46c8af834c22c800a4e050e07681c80210a962c4e97ce3"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 78581,
+          "output": 178,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": 0.39735499999999924,
+        "cost_source": "claude_cli_estimate",
+        "request_id": "c7f4e19a3ca149be8502a7aa82a85003",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "direct_product_flux",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Lindemann Pulse Reaction - Variant 1-3-4-5\\result\\probe\\003-direct_product_flux\\audit\\usage.json",
+          "file_sha256": "0aab3e505973dc96eeca508a891f44282911930cdf230c99e57e210121a1a45f"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 78612,
+          "output": 255,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": 0.39943500000000043,
+        "cost_source": "claude_cli_estimate",
+        "request_id": "5235cc4aee7944e8b138a30c5059805a",
+        "timed_out": false
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-09T17:50:34.298611+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "7e2c7f89f220bb6b9456b846c7076864486ac91bc7eeb9a77b573b3149877de0"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": true,
+    "discovery_runtime_policy": "mandatory-immediate-submission-v5",
+    "evaluation_runtime_policy": "mandatory-immediate-submission-v5",
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

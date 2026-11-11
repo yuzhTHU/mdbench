@@ -1,0 +1,361 @@
+{
+  "algorithm": "claudecode",
+  "agent_seconds": 900.6511221000037,
+  "evaluation_seconds": 40.78552969999873,
+  "evaluation": {
+    "task_name": "Vacancy Diffusion - Variant 1-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.897060863986137e-19,
+        "mse": 2.5546121972215318e-36,
+        "rmse": 1.5983154248212496e-18,
+        "mape": 1.2190237606092776e-05,
+        "r2": 0.9999999989951022,
+        "nrmse": 2.6108099728443265e-05,
+        "max_absolute_error": 1.7696423571953625e-17,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 6.636079690845105e-19,
+        "mse": 4.724274401923382e-36,
+        "rmse": 2.173539602106063e-18,
+        "mape": 1.2852198306354261e-05,
+        "r2": 0.9999999981365634,
+        "nrmse": 3.6235559236446344e-05,
+        "max_absolute_error": 3.3708529158090346e-17,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.263028720342973e-15,
+        "mse": 5.858198800683536e-29,
+        "rmse": 7.653887117460994e-15,
+        "mape": 0.002038259474675683,
+        "r2": 0.9999718280807168,
+        "nrmse": 0.003107651451436346,
+        "max_absolute_error": 3.0308226719613865e-14,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "nu0": "2256682852706297/2500",
+      "activation_energy": "64888153677/390625000000000000000000000000",
+      "activation_volume": "201/200000000000000000000000000000000",
+      "activation_volume_curvature": "-123/1000000000000000000000000000000000000000000",
+      "activation_enthalpy": "-123*pressure**2/1000000000000000000000000000000000000000000 + 201*pressure/200000000000000000000000000000000 + 64888153677/390625000000000000000000000000",
+      "t0": "1167/100",
+      "entropy_power": "-63/1000",
+      "entropy_pressure_coeff": "109/500000000000",
+      "oscillation_amplitude": "722458880338619/20000000000000000000",
+      "oscillation_frequency": "1089341366800589/50000000000000",
+      "oscillation_phase": "-5014867202990689/1000000000000000",
+      "k_B": "1380649/100000000000000000000000000000",
+      "diffusivity": "2256682852706297*spacing**2*exp(-109*pressure/500000000000)*exp(-100000000000000000000000000000*(-123*pressure**2/1000000000000000000000000000000000000000000 + 201*pressure/200000000000000000000000000000000 + 64888153677/390625000000000000000000000000)/(1380649*(temp - 1167/100)))*exp(722458880338619*sin(1089341366800589*log(temp)/50000000000000 - 5014867202990689/1000000000000000)/20000000000000000000)/(2500*temp**(63/1000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "mobile_vacancies",
+        "ok": true,
+        "reply": "mobile_vacancies = exp(-activation_enthalpy/(k_B*(temp - t0))) * temp^entropy_power * exp(-entropy_pressure_coeff*pressure)",
+        "expression": "exp(-109*pressure/500000000000)*exp(-100000000000000000000000000000*(-123*pressure**2/1000000000000000000000000000000000000000000 + 201*pressure/200000000000000000000000000000000 + 64888153677/390625000000000000000000000000)/(1380649*(temp - 1167/100)))/temp**(63/1000)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.791895548752642e-05,
+            "mse": 4.548491803924229e-09,
+            "rmse": 6.744250739647978e-05,
+            "mape": 0.9926279112068774,
+            "r2": -0.9526155416204989,
+            "nrmse": 0.9854406378807751,
+            "max_absolute_error": 0.00017221901924163044,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 4.444212872383205e-05,
+            "mse": 4.2263763869065094e-09,
+            "rmse": 6.501058672944361e-05,
+            "mape": 0.9930878007697177,
+            "r2": -0.8156858012417367,
+            "nrmse": 0.9853767158542504,
+            "max_absolute_error": 0.00017225338493611101,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.000476764398887211,
+            "mse": 2.728192456452526e-07,
+            "rmse": 0.0005223210178092134,
+            "mape": 0.9681155445679036,
+            "r2": -4.351623760954485,
+            "nrmse": 0.9605430091998451,
+            "max_absolute_error": 0.0009023889615123245,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "alternate_rate",
+        "ok": true,
+        "reply": "alternate_rate = nu0 * exp(-activation_enthalpy/(k_B*(temp - t0))) * temp^entropy_power * exp(-entropy_pressure_coeff*pressure) * exp(oscillation_amplitude*sin(oscillation_frequency*log(temp) + oscillation_phase))",
+        "expression": "2256682852706297*exp(-109*pressure/500000000000)*exp(-100000000000000000000000000000*(-123*pressure**2/1000000000000000000000000000000000000000000 + 201*pressure/200000000000000000000000000000000 + 64888153677/390625000000000000000000000000)/(1380649*(temp - 1167/100)))*exp(722458880338619*sin(1089341366800589*log(temp)/50000000000000 - 5014867202990689/1000000000000000)/20000000000000000000)/(2500*temp**(63/1000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1838066323.2235765,
+            "mse": 6.070753778721865e+18,
+            "rmse": 2463889968.8748,
+            "mape": 0.9998289129563489,
+            "r2": -1.2529137684296163,
+            "nrmse": 0.9996410134582805,
+            "max_absolute_error": 5891827484.843124,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1710565762.09065,
+            "mse": 5.637129367698981e+18,
+            "rmse": 2374263963.357693,
+            "mape": 0.9998406964466381,
+            "r2": -1.0774863943994117,
+            "nrmse": 0.9996393793650505,
+            "max_absolute_error": 5899756095.921882,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 14886151812.244741,
+            "mse": 2.5743418754071098e+20,
+            "rmse": 16044755764.445621,
+            "mape": 0.9990502097871917,
+            "r2": -6.15677788985238,
+            "nrmse": 0.9988058954828664,
+            "max_absolute_error": 26498311231.724724,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 941.6884323999984,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\performance.json",
+    "file_sha256": "0437e01a1e09184af2ccfafa13ed3cd19d3b3e534d1ecd9ebce45fb5a660bc17",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\material\\Vacancy Diffusion\\Vacancy Diffusion - Variant 1-3-5.yaml",
+      "file_sha256": "902a30a0707b435d804ad0c32ed99b799e76786949d711580c16efbba2f768ac"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\args.json",
+      "file_sha256": "fae719d6f972625014a07d8176f6eefcd79eeae8bcc02731cab7ba9b6e9ce92e"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\run_config.json",
+        "file_sha256": "ad97153e5e6953cea4f2f6e1a4c22aff22e1495e9f6865b53b3700c94aa00340"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "runtime_policy.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\runtime_policy.json",
+        "file_sha256": "372306fe11226bf1bc1c539d90b5084496b47d08c1963cb9056c63f348881609"
+      },
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\prompt.txt",
+        "file_sha256": "57556fb2e7ff1cc060ba9f5568cbd08acab05d704413012baea822d8d484c982"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\dataest\\problem.json",
+        "file_sha256": "4066dd24e1bec8afcc02f219b72c7aa537168b2157ba6f451d053a2a1a4dbb32"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\dataest\\answer.json",
+        "file_sha256": "0f0a03ccdba312d7f8089aa8a9297785cae8357ce55ec7c81ff8abe84950940c"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\dataest\\train.npy",
+        "file_sha256": "00ac92a45617e554a3e42ee7ee392270238f57c4e6c45744675105ce7069a2d0"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "19a15e2503569b4675c976fcbc6c41d7f89117f7ecc56dfc2ba5c589e77e72ac"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "19e1a3748357567e497b315c9a99ce1cb1cc4b5b19a1232357abad15a86febd1"
+      },
+      {
+        "probe": "mobile_vacancies",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\probe\\000-mobile_vacancies\\prompt.txt",
+        "file_sha256": "c1b788e2cb8bcbbabb314e13ec098663d86cd2d8ca52ed64d91e02b758b44ee0"
+      },
+      {
+        "probe": "mobile_vacancies",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\probe\\000-mobile_vacancies\\reply.txt",
+        "file_sha256": "1e68f686bd0bf75e6791b341b1b09d1a4e90290331ceea33abcd5641d8e0219c"
+      },
+      {
+        "probe": "alternate_rate",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\probe\\001-alternate_rate\\prompt.txt",
+        "file_sha256": "c1cadca7e89f7ce73e4ae2406dffa713558c27b56391977024b420ef9241ffb6"
+      },
+      {
+        "probe": "alternate_rate",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\probe\\001-alternate_rate\\reply.txt",
+        "file_sha256": "129230e514872b768afe7df59fdb2294b8f7691312a8ec34167b4e30ccbb0a19"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\submission.txt",
+      "file_sha256": "299119a57364e61c18613586b7896a711fcf5fa6aa024672b7367012abd88f52"
+    }
+  },
+  "submission": "activation_enthalpy = activation_energy + activation_volume*pressure + activation_volume_curvature*pressure^2\ndiffusivity = nu0 * spacing^2 * exp(-activation_enthalpy/(k_B*(temp - t0))) * temp^entropy_power * exp(-entropy_pressure_coeff*pressure) * exp(oscillation_amplitude*sin(oscillation_frequency*log(temp) + oscillation_phase))\nnu0 = 902673141082.5188\nactivation_energy = 1.6611367341311999e-19\nactivation_volume = 1.005e-30\nactivation_volume_curvature = -1.23e-40\nt0 = 11.67\nentropy_power = -0.063\nentropy_pressure_coeff = 2.18e-10\noscillation_amplitude = 3.6122944016930948e-05\noscillation_frequency = 21.786827336011779\noscillation_phase = -5.0148672029906889\nk_B = 1.380649e-23\n",
+  "used_token": {
+    "input": 4328759,
+    "output": 112597,
+    "reason": null,
+    "cached": 136495,
+    "total": 4441356
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\audit\\usage.json",
+          "file_sha256": "307d9e755c2dc7b9155336f297dbf43dbbf922a413231ab9a69d238e0b4211a5"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 4046603,
+          "output": 110751,
+          "reason": null,
+          "cached": 8448
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "dedd1b25d9174a72ac6483fa95f5dfb3",
+        "timed_out": true
+      },
+      {
+        "phase": "probe",
+        "probe": "mobile_vacancies",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\probe\\000-mobile_vacancies\\audit\\usage.json",
+          "file_sha256": "a3709c8666ad3152d22023dc3dd0748a484599572b19342cd3aa662caa14fe33"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 139938,
+          "output": 425,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "1b206208db334d5f9ca2722dcd3f0e7f",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "alternate_rate",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-glm5.3flash-coreset-1\\Vacancy Diffusion - Variant 1-3-5\\result\\probe\\001-alternate_rate\\audit\\usage.json",
+          "file_sha256": "27a4c1c03e9c5dc19f6d59e9bc10bf97a41d4052b42f783eb07b37434b959342"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 142218,
+          "output": 1421,
+          "reason": null,
+          "cached": 128047
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "46ed05a30a974001bc2820038cc376e8",
+        "timed_out": false
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-09T17:50:34.298611+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "7e2c7f89f220bb6b9456b846c7076864486ac91bc7eeb9a77b573b3149877de0"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": true,
+    "discovery_runtime_policy": "mandatory-immediate-submission-v5",
+    "evaluation_runtime_policy": "mandatory-immediate-submission-v5",
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

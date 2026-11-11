@@ -1,0 +1,353 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 467.39266730000054,
+  "evaluation_seconds": 30.423719299999902,
+  "evaluation": {
+    "task_name": "Hall Response - Variant 5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.748062194468659e-17,
+        "mse": 2.8452176842444126e-33,
+        "rmse": 5.334058196387074e-17,
+        "mape": 4.122006522805349e-16,
+        "r2": 1.0,
+        "nrmse": 1.784846136442118e-16,
+        "max_absolute_error": 4.440892098500626e-16,
+        "symbolically_equivalent": true
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.430390957930406e-17,
+        "mse": 2.2975443337669254e-33,
+        "rmse": 4.7932706305475025e-17,
+        "mape": 5.964982241228834e-16,
+        "r2": 1.0,
+        "nrmse": 1.7826390887829067e-16,
+        "max_absolute_error": 4.440892098500626e-16,
+        "symbolically_equivalent": true
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 2.3391011350071267e-17,
+        "mse": 1.5537921308830122e-33,
+        "rmse": 3.941817006004987e-17,
+        "mape": 1.3175718290425602e-15,
+        "r2": 1.0,
+        "nrmse": 2.0852052897086827e-16,
+        "max_absolute_error": 2.220446049250313e-16,
+        "symbolically_equivalent": true
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "electron_charge": "801088317/5000000000000000000000000000",
+      "sample_width": "1/500",
+      "electron_mobility": "2/25",
+      "heating_current_scale": "1/50",
+      "cooling_current_scale": "1/125",
+      "joule_heating_activity": "2500*current**2",
+      "carrier_cooling_activity": "125*current + 1",
+      "current_induced_carrier_fraction": "2500*current**2/(125*current + 1)",
+      "active_density": "density*(2500*current**2/(125*current + 1) + 1)",
+      "cross_section_area": "thickness/500",
+      "drift_velocity": "2500000000000000000000000000000*current/(801088317*density*thickness*(2500*current**2/(125*current + 1) + 1))",
+      "longitudinal_electric_field": "31250000000000000000000000000000*current/(801088317*density*thickness*(2500*current**2/(125*current + 1) + 1))",
+      "transverse_hall_electric_field": "-2500000000000000000000000000000*current*magnetic/(801088317*density*thickness*(2500*current**2/(125*current + 1) + 1))",
+      "transverse_hall_voltage": "-5000000000000000000000000000*current*magnetic/(801088317*density*thickness*(2500*current**2/(125*current + 1) + 1))",
+      "longitudinal_pickup_voltage": "31250000000000000000000000000000*contact_offset*current/(801088317*density*thickness*(2500*current**2/(125*current + 1) + 1))",
+      "hall_voltage": "31250000000000000000000000000000*contact_offset*current/(801088317*density*thickness*(2500*current**2/(125*current + 1) + 1)) - 5000000000000000000000000000*current*magnetic/(801088317*density*thickness*(2500*current**2/(125*current + 1) + 1))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "bypass_conductivity",
+        "ok": true,
+        "reply": "bypass_conductivity = electron_charge * electron_mobility * density * current_induced_carrier_fraction",
+        "expression": "801088317*current**2*density/(25000000000000000000000000*(125*current + 1))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 1.488809076022335e-16,
+            "mse": 8.174715575098563e-32,
+            "rmse": 2.859145952045569e-16,
+            "mape": 1.0221050552533967e-16,
+            "r2": 1.0,
+            "nrmse": 1.4748330212675478e-16,
+            "max_absolute_error": 1.7763568394002505e-15,
+            "symbolically_equivalent": true
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 1.4797885139472556e-16,
+            "mse": 8.49270586821634e-32,
+            "rmse": 2.9142247456598713e-16,
+            "mape": 9.790460068129132e-17,
+            "r2": 1.0,
+            "nrmse": 1.4577498133616387e-16,
+            "max_absolute_error": 1.7763568394002505e-15,
+            "symbolically_equivalent": true
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 2.5774937739697635e-15,
+            "mse": 1.4125343368887436e-29,
+            "rmse": 3.7583697754328855e-15,
+            "mape": 1.227066659267258e-16,
+            "r2": 1.0,
+            "nrmse": 1.656353774697005e-16,
+            "max_absolute_error": 1.4210854715202004e-14,
+            "symbolically_equivalent": true
+          }
+        }
+      },
+      {
+        "probe": "mobile",
+        "ok": true,
+        "reply": "mobile = active_density * cross_section_area * drift_velocity * electron_charge",
+        "expression": "current",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.0484572240411886e+21,
+            "mse": 1.2060625499062985e+43,
+            "rmse": 3.4728411278178255e+21,
+            "mape": 1.0,
+            "r2": -3.3578959721344557,
+            "nrmse": 1.0,
+            "max_absolute_error": 6.993971721453508e+21,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 3.1591705699654666e+21,
+            "mse": 1.2837159605160697e+43,
+            "rmse": 3.5828982130616964e+21,
+            "mape": 1.0,
+            "r2": -3.4935436479476927,
+            "nrmse": 1.0,
+            "max_absolute_error": 6.986560844558382e+21,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 1.2167730575000562e+22,
+            "mse": 1.6134195790866269e+44,
+            "rmse": 1.2702045422240573e+22,
+            "mape": 1.0,
+            "r2": -11.141663906688933,
+            "nrmse": 1.0,
+            "max_absolute_error": 1.9947191840398874e+22,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 498.10912519999965,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\performance.json",
+    "file_sha256": "3cb0c969d3c5529aee3b184ab55fd2c60a9d76b28407565934be75ecaffe73b2",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\physics\\Hall Response\\Hall Response - Variant 5.yaml",
+      "file_sha256": "9723f115f40ef2930e3fcc56a00cd7c3f8617a9e74031daa6647fdaac0dcfa4b"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\args.json",
+      "file_sha256": "0f34c70920e8ca5ac658c577faacd25d332942040675413b0a993d0f66e2dcc2"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\run_config.json",
+        "file_sha256": "f68f3ae1cf73099d7bdd07e96b05d634d91adcd30c0391269ee32f1ed1f62cf5"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\prompt.txt",
+        "file_sha256": "9dd9327cb84385ba84bf3e894b3788f7c3434b1956dd09b309e79210134fa507"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\dataest\\problem.json",
+        "file_sha256": "9b917af73de24ba9339da726d8444a706238b32e22a87a29706b18059809fb94"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\dataest\\answer.json",
+        "file_sha256": "781c03f8f21b96e12ff81053ca0c385f4ed02f9d2b6ccad29ff536a5f00c1c84"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\dataest\\train.npy",
+        "file_sha256": "f7f7ce279e0da818b0136102e006871b4fe8465e5d7d95332a8cf3ac446e0278"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\dataest\\id_test.npy",
+        "file_sha256": "9d0a106a628866adfad70d9d56f1e7f3e65c3585f0ca9452badba003ac47166f"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "425352d21e2904ba762ad4405ff24b4a08eae78274d777687d7271dd31ca45a8"
+      },
+      {
+        "probe": "bypass_conductivity",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\probe\\000-bypass_conductivity\\prompt.txt",
+        "file_sha256": "c3b39de895992227c749df9b078aa62eeab5a1beddeaa2a36282cbfe40d0ddc6"
+      },
+      {
+        "probe": "bypass_conductivity",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\probe\\000-bypass_conductivity\\reply.txt",
+        "file_sha256": "17ac0bc6ac2b4f953490ca06f87ccf22d600455a47c350f8ce856f7049323d35"
+      },
+      {
+        "probe": "mobile",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\probe\\001-mobile\\prompt.txt",
+        "file_sha256": "9b57a3c55be450e2d6ec3e9054aa77b412e583747f52192b60833f707e93fceb"
+      },
+      {
+        "probe": "mobile",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\probe\\001-mobile\\reply.txt",
+        "file_sha256": "31ba80adb592f9063191ea52eaf56ab495e87966795cbeb88d3e4fa676501876"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\submission.txt",
+      "file_sha256": "723ad7154fffff5d14c5abd710c26345b3442d52e58fc447d575d2a4931ce5e4"
+    }
+  },
+  "submission": "electron_charge = 1.6021766339999999e-19\nsample_width = 0.002\nelectron_mobility = 0.080000000000000002\nheating_current_scale = 0.02\ncooling_current_scale = 0.0080000000000000002\njoule_heating_activity = (current / heating_current_scale)^2\ncarrier_cooling_activity = 1 + current / cooling_current_scale\ncurrent_induced_carrier_fraction = joule_heating_activity / carrier_cooling_activity\nactive_density = density * (1 + current_induced_carrier_fraction)\ncross_section_area = sample_width * thickness\ndrift_velocity = current / (electron_charge * active_density * cross_section_area)\nlongitudinal_electric_field = drift_velocity / electron_mobility\ntransverse_hall_electric_field = -drift_velocity * magnetic\ntransverse_hall_voltage = transverse_hall_electric_field * sample_width\nlongitudinal_pickup_voltage = longitudinal_electric_field * contact_offset\nhall_voltage = transverse_hall_voltage + longitudinal_pickup_voltage\n",
+  "used_token": {
+    "input": 361919,
+    "output": 23751,
+    "reason": 13393,
+    "cached": 224896,
+    "total": 385670
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": true,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\audit\\codex.events.jsonl",
+          "file_sha256": "74150e682e14f7c0f3727ee6e292a7ed0921209fe6fe061dfda8c5adbd57268b"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 262667,
+          "output": 22965,
+          "cached": 218368,
+          "reason": 12653
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "bypass_conductivity",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\probe\\000-bypass_conductivity\\audit\\codex_events.jsonl",
+          "file_sha256": "398481a834242a0f8884e98a07435d588e67b7310fba6dca487acce64606f2cb"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 49638,
+          "output": 768,
+          "cached": 0,
+          "reason": 740
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "mobile",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-1\\Hall Response - Variant 5\\result\\probe\\001-mobile\\audit\\codex_events.jsonl",
+          "file_sha256": "10cb0719cab1750e220eab269f1b753d1c933cbcde980b4078cef1fe1da9d3f2"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 49614,
+          "output": 18,
+          "cached": 6528,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-09T13:56:40.205826+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "7e2c7f89f220bb6b9456b846c7076864486ac91bc7eeb9a77b573b3149877de0"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": true,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

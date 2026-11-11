@@ -1,0 +1,350 @@
+{
+  "algorithm": "codex",
+  "agent_seconds": 864.7141430000011,
+  "evaluation_seconds": 38.92353849999927,
+  "evaluation": {
+    "task_name": "Circular Orbit - Variant 1-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 0.21894237628579138,
+        "mse": 0.08134788873969799,
+        "rmse": 0.28521551279637297,
+        "mape": 5.716418433874257e-11,
+        "r2": 1.0,
+        "nrmse": 5.716412157112052e-11,
+        "max_absolute_error": 0.6570987701416016,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 0.2183498259484768,
+        "mse": 0.08287073397187704,
+        "rmse": 0.28787277393299465,
+        "mape": 5.716418550928926e-11,
+        "r2": 1.0,
+        "nrmse": 5.716410681489253e-11,
+        "max_absolute_error": 0.6684474945068359,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": true,
+        "mae": 0.6067381858825683,
+        "mse": 0.37941421355091187,
+        "rmse": 0.6159660814938692,
+        "mape": 5.7164140329171864e-11,
+        "r2": 1.0,
+        "nrmse": 5.716413415171036e-11,
+        "max_absolute_error": 0.8422012329101562,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "G": "6674300000000001/100000000000000000000000000",
+      "screening_coefficient": "23/5000000000",
+      "background_acceleration_scale": "1/2",
+      "background_length_scale": "50000000",
+      "newtonian_acceleration": "6674300000000001*central_mass/(100000000000000000000000000*radius**2)",
+      "background_field_activity": "radius/(radius + 50000000)",
+      "background_acceleration": "radius/(2*(radius + 50000000))",
+      "unscreened_radial_acceleration": "6674300000000001*central_mass/(100000000000000000000000000*radius**2) + radius/(2*(radius + 50000000))",
+      "screening_factor": "1/(23*radius/5000000000 + 1)",
+      "total_radial_acceleration": "(6674300000000001*central_mass/(100000000000000000000000000*radius**2) + radius/(2*(radius + 50000000)))/(23*radius/5000000000 + 1)",
+      "orbital_speed_squared": "radius*(6674300000000001*central_mass/(100000000000000000000000000*radius**2) + radius/(2*(radius + 50000000)))/(23*radius/5000000000 + 1)",
+      "orbital_circumference": "6283185307*radius/1000000000",
+      "period_squared": "39478417602100684249*radius*(23*radius/5000000000 + 1)/(1000000000000000000*(6674300000000001*central_mass/(100000000000000000000000000*radius**2) + radius/(2*(radius + 50000000))))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "inertia_ratio",
+        "ok": true,
+        "reply": "inertia_ratio = 1 / screening_factor",
+        "expression": "23*radius/5000000000 + 1",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 0.0,
+            "mse": 0.0,
+            "rmse": 0.0,
+            "mape": 0.0,
+            "r2": 1.0,
+            "nrmse": 0.0,
+            "max_absolute_error": 0.0,
+            "symbolically_equivalent": true
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 0.0,
+            "mse": 0.0,
+            "rmse": 0.0,
+            "mape": 0.0,
+            "r2": 1.0,
+            "nrmse": 0.0,
+            "max_absolute_error": 0.0,
+            "symbolically_equivalent": true
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": true,
+            "mae": 0.0,
+            "mse": 0.0,
+            "rmse": 0.0,
+            "mape": 0.0,
+            "r2": 1.0,
+            "nrmse": 0.0,
+            "max_absolute_error": 0.0,
+            "symbolically_equivalent": true
+          }
+        }
+      },
+      {
+        "probe": "trap_accel",
+        "ok": true,
+        "reply": "trap_accel = background_acceleration * screening_factor",
+        "expression": "radius/(2*(23*radius/5000000000 + 1)*(radius + 50000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.02583650434831498,
+            "mse": 0.0010266641592443055,
+            "rmse": 0.032041600447610376,
+            "mape": 0.12332777419433864,
+            "r2": 0.7234902690340634,
+            "nrmse": 0.16726876157499515,
+            "max_absolute_error": 0.07096051804587084,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.02569709980975726,
+            "mse": 0.0010454319002867693,
+            "rmse": 0.03233313935093172,
+            "mape": 0.12229104402728075,
+            "r2": 0.7390720088053121,
+            "nrmse": 0.16960672328402163,
+            "max_absolute_error": 0.07066911626286537,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.08738548899942435,
+            "mse": 0.007732397363299523,
+            "rmse": 0.08793405121623547,
+            "mape": 0.27849921809897465,
+            "r2": -52.39302202371485,
+            "nrmse": 0.2808380651596684,
+            "max_absolute_error": 0.10499350519153006,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.5,
+        "numerically_equivalent": 0.5
+      }
+    },
+    "probe_count": 2
+  },
+  "total_seconds": 904.0612812999971,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\performance.json",
+    "file_sha256": "a2a7260e2c973a9f7251df9d5175be63c28ded3eb6c80f05c2edd0f7ced51b07",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\physics\\Circular Orbit\\Circular Orbit - Variant 1-4.yaml",
+      "file_sha256": "1fa0e313dd2c67579dc435454dacfddc8f008f1bf3afb16c6755aeb1783b7fc3"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\args.json",
+      "file_sha256": "fcd084d7de66149f743217756dfe108a65bd44f707b9692aae0c88fca9cc95be"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\run_config.json",
+        "file_sha256": "f68f3ae1cf73099d7bdd07e96b05d634d91adcd30c0391269ee32f1ed1f62cf5"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\prompt.txt",
+        "file_sha256": "caea2757c07ac971a2ad55d4d28e73fb89285d4a03dc65508b73c51f4658b95a"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\dataest\\problem.json",
+        "file_sha256": "16152caaea6363cde297831c6144d3b16d425be61379ae0f848f8dfc62686b6c"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\dataest\\answer.json",
+        "file_sha256": "fc8783b62647204157a0ad81e76f1789b82763b9678d7fbec787df691dbbee49"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\dataest\\train.npy",
+        "file_sha256": "68344ce9508324373060a5173e765f818bc3d8459ce0529440a78663609e3292"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\dataest\\id_test.npy",
+        "file_sha256": "4508d793345bef4d486bdf181d8ccbb0b93ddf96a79141ffc5ac9b22dd7a0502"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\dataest\\ood_test.npy",
+        "file_sha256": "7e9394f8635f7d7e310f8f748da7e38fd3b4d8db4c0dabcb144f3dbdf9e042cb"
+      },
+      {
+        "probe": "inertia_ratio",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\probe\\000-inertia_ratio\\prompt.txt",
+        "file_sha256": "7dcfb42a228d3cc35e9af0592fdb0de039eec548a83809622e8abd6a1b9bfdcc"
+      },
+      {
+        "probe": "inertia_ratio",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\probe\\000-inertia_ratio\\reply.txt",
+        "file_sha256": "b9cc1027ac5ecf8e9a4ab9de444299a3e8023b532745d37841e8638707c999f0"
+      },
+      {
+        "probe": "trap_accel",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\probe\\001-trap_accel\\prompt.txt",
+        "file_sha256": "ad9bbfc95b092fd32aba382f454e4c631472123faafc2852f43130512999b253"
+      },
+      {
+        "probe": "trap_accel",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\probe\\001-trap_accel\\reply.txt",
+        "file_sha256": "0e18ea0341fe990175a3f1e92378a9d36d8c5d43d659096c2ce1c3138b6ac26e"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\submission.txt",
+      "file_sha256": "2bb941bf371b02b7614bf06cc82d6ac6bd8b59c6031f966852e5f37f24d3bba9"
+    }
+  },
+  "submission": "G = 6.6743000000000004e-11\nscreening_coefficient = 4.6000000000000002e-9\nbackground_acceleration_scale = 0.5\nbackground_length_scale = 50000000\nnewtonian_acceleration = G * central_mass / radius^2\nbackground_field_activity = radius / (radius + background_length_scale)\nbackground_acceleration = background_acceleration_scale * background_field_activity\nunscreened_radial_acceleration = newtonian_acceleration + background_acceleration\nscreening_factor = 1 / (1 + screening_coefficient * radius)\ntotal_radial_acceleration = screening_factor * unscreened_radial_acceleration\norbital_speed_squared = radius * total_radial_acceleration\norbital_circumference = 2 * pi * radius\nperiod_squared = orbital_circumference^2 / orbital_speed_squared\n",
+  "used_token": {
+    "input": 1103625,
+    "output": 35551,
+    "reason": 18325,
+    "cached": 939520,
+    "total": 1139176
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": true,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\audit\\codex.events.jsonl",
+          "file_sha256": "ae1b8ea0b65b535c879f21e869bc213138baf78820aa5550611748aff0f14e5c"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 963382,
+          "output": 35524,
+          "cached": 932864,
+          "reason": 18325
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "inertia_ratio",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\probe\\000-inertia_ratio\\audit\\codex_events.jsonl",
+          "file_sha256": "a9d2bed5c356280e9760b5a4b333d474df35a426a1d41ed0a3021cc0560cddbd"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 70123,
+          "output": 13,
+          "cached": 0,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      },
+      {
+        "phase": "probe",
+        "probe": "trap_accel",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\codex-gpt5.6sol-coreset-2\\Circular Orbit - Variant 1-4\\result\\probe\\001-trap_accel\\audit\\codex_events.jsonl",
+          "file_sha256": "c5ebc6bb54e3a003c8abdd9af9408119193aba0607823c7993b912cf4a8df2fa"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 70120,
+          "output": 14,
+          "cached": 6656,
+          "reason": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "not_recorded"
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-09T16:05:04.044768+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "7e2c7f89f220bb6b9456b846c7076864486ac91bc7eeb9a77b573b3149877de0"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": true,
+    "discovery_runtime_policy": null,
+    "evaluation_runtime_policy": null,
+    "partial_reevaluation": false,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}

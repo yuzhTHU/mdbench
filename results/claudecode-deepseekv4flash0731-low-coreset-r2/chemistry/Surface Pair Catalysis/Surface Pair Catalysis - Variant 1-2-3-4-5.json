@@ -1,0 +1,606 @@
+{
+  "algorithm": "claudecode",
+  "probe_only": true,
+  "discovery_rerun": false,
+  "original_agent_seconds": 900.4404331999976,
+  "evaluation": {
+    "task_name": "Surface Pair Catalysis - Variant 1-2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0017969153870710513,
+        "mse": 1.712430711180447e-05,
+        "rmse": 0.004138152620651451,
+        "mape": 0.02914929822883778,
+        "r2": 0.9955290509193748,
+        "nrmse": 0.05120454598571921,
+        "max_absolute_error": 0.03727428384805337,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0017633175423033547,
+        "mse": 1.8440849254284893e-05,
+        "rmse": 0.004294280993866714,
+        "mape": 0.030807229626394657,
+        "r2": 0.9951033559917294,
+        "nrmse": 0.05331668243981451,
+        "max_absolute_error": 0.03495319788248957,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.04922223485464231,
+        "mse": 0.0028944776039312565,
+        "rmse": 0.053800349477779945,
+        "mape": 0.48259821883132553,
+        "r2": 0.06276772436588007,
+        "nrmse": 0.42559531113145227,
+        "max_absolute_error": 0.1277218018870531,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "theta_a": "a_concentration/(a_concentration + 20758891/50000000)",
+      "theta_b": "b_concentration/(b_concentration + 88364769/100000000)",
+      "r0": "7227413*a_concentration*b_concentration/(10000000*(a_concentration + 20758891/50000000)*(b_concentration + 88364769/100000000))",
+      "growth_rate_a": "15931671*a_concentration/10000000 + 48137109/100000000",
+      "growth_rate_b": "8331549*b_concentration/5000000 + 2510141/2500000",
+      "response": "7227413*a_concentration*b_concentration*(laplace_rate/(15931671*a_concentration/10000000 + 8331549*b_concentration/5000000 + laplace_rate + 148542749/100000000) - laplace_rate/(8331549*b_concentration/5000000 + laplace_rate + 2510141/2500000) - laplace_rate/(15931671*a_concentration/10000000 + laplace_rate + 48137109/100000000) + 1)/(10000000*(a_concentration + 20758891/50000000)*(b_concentration + 88364769/100000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "product_cells",
+        "ok": true,
+        "reply": "product_cells = 1 - laplace_rate/(laplace_rate + growth_rate_a) - laplace_rate/(laplace_rate + growth_rate_b) + laplace_rate/(laplace_rate + growth_rate_a + growth_rate_b)",
+        "expression": "laplace_rate/(15931671*a_concentration/10000000 + 8331549*b_concentration/5000000 + laplace_rate + 148542749/100000000) - laplace_rate/(8331549*b_concentration/5000000 + laplace_rate + 2510141/2500000) - laplace_rate/(15931671*a_concentration/10000000 + laplace_rate + 48137109/100000000) + 1",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5483491548371664,
+            "mse": 0.38405712480943816,
+            "rmse": 0.619723426061528,
+            "mape": 79.68671812681688,
+            "r2": -624.5384146364345,
+            "nrmse": 19.508251432850066,
+            "max_absolute_error": 0.9566261079502282,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.5771754465203389,
+            "mse": 0.41772913882559953,
+            "rmse": 0.6463196877904924,
+            "mape": 77.8220748324546,
+            "r2": -686.0449900698818,
+            "nrmse": 20.33515167231395,
+            "max_absolute_error": 0.9535886575826944,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.12560673634653144,
+            "mse": 0.022457758145820222,
+            "rmse": 0.1498591276693556,
+            "mape": 18.362272407237498,
+            "r2": -156.2055392096984,
+            "nrmse": 9.093101803972667,
+            "max_absolute_error": 0.36280578680761144,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "immobile_a_cells",
+        "ok": true,
+        "reply": "immobile_a_cells = r0/theta_b*growth_rate_a/(laplace_rate + growth_rate_a)",
+        "expression": "7227413*a_concentration*(15931671*a_concentration/10000000 + 48137109/100000000)/(10000000*(a_concentration + 20758891/50000000)*(15931671*a_concentration/10000000 + laplace_rate + 48137109/100000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.15366742547531834,
+            "mse": 0.03461448439272475,
+            "rmse": 0.1860496825923784,
+            "mape": 5.996977251055931,
+            "r2": -12.606552210703114,
+            "nrmse": 2.6661451811898838,
+            "max_absolute_error": 0.44125899828380594,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.15810084918613326,
+            "mse": 0.03581516291339754,
+            "rmse": 0.18924894428608457,
+            "mape": 5.662871979664206,
+            "r2": -11.571235738418187,
+            "nrmse": 2.49989419483363,
+            "max_absolute_error": 0.4384990237528184,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.16820064770141124,
+            "mse": 0.03382085951406209,
+            "rmse": 0.1839044847578821,
+            "mape": 82.13313366740418,
+            "r2": -7694.2490432485965,
+            "nrmse": 53.467865144780426,
+            "max_absolute_error": 0.3720365350039202,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "a_cells",
+        "ok": true,
+        "reply": "a_cells = theta_a*growth_rate_a/(growth_rate_a + laplace_rate)",
+        "expression": "a_concentration*(15931671*a_concentration/10000000 + 48137109/100000000)/((a_concentration + 20758891/50000000)*(15931671*a_concentration/10000000 + laplace_rate + 48137109/100000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.12855821135686032,
+            "mse": 0.028678859569396267,
+            "rmse": 0.16934833795876553,
+            "mape": 1.0039048424215096,
+            "r2": -1.2393306448526626,
+            "nrmse": 0.8982683697624594,
+            "max_absolute_error": 0.5405588836461297,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.13342947457396315,
+            "mse": 0.029913289900706328,
+            "rmse": 0.17295458912878353,
+            "mape": 0.9750898177876696,
+            "r2": -1.2000171195092064,
+            "nrmse": 0.8750158809151432,
+            "max_absolute_error": 0.5463770765650965,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.1211492147171283,
+            "mse": 0.020189787282814703,
+            "rmse": 0.14209077127954053,
+            "mape": 1.0033866227376376,
+            "r2": -12.333537605253694,
+            "nrmse": 1.167201120302761,
+            "max_absolute_error": 0.3838996092568581,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "b_cells",
+        "ok": true,
+        "reply": "b_cells = r0*growth_rate_b/(laplace_rate + growth_rate_b)",
+        "expression": "7227413*a_concentration*b_concentration*(8331549*b_concentration/5000000 + 2510141/2500000)/(10000000*(a_concentration + 20758891/50000000)*(b_concentration + 88364769/100000000)*(8331549*b_concentration/5000000 + laplace_rate + 2510141/2500000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.09462837747622609,
+            "mse": 0.0214321202173549,
+            "rmse": 0.1463971318617783,
+            "mape": 0.6325109802810726,
+            "r2": -0.25721527629975016,
+            "nrmse": 0.760493089683191,
+            "max_absolute_error": 0.5441182706298253,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.09017900158397184,
+            "mse": 0.018878229884858554,
+            "rmse": 0.13739807089205638,
+            "mape": 0.6208342036828312,
+            "r2": -0.2517487058115748,
+            "nrmse": 0.7469930143115449,
+            "max_absolute_error": 0.5632969662183842,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.023115817166635112,
+            "mse": 0.0009633227906107397,
+            "rmse": 0.03103744175364232,
+            "mape": 0.17509854710533318,
+            "r2": 0.5518690572752405,
+            "nrmse": 0.2131906232296006,
+            "max_absolute_error": 0.14242858845587805,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "gas_surface_flux",
+        "ok": true,
+        "reply": "gas_surface_flux = r0",
+        "expression": "7227413*a_concentration*b_concentration/(10000000*(a_concentration + 20758891/50000000)*(b_concentration + 88364769/100000000))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.07372100159939757,
+            "mse": 0.009527532669317405,
+            "rmse": 0.09760908087528232,
+            "mape": 9.474381618442987,
+            "r2": -80.21728530458533,
+            "nrmse": 6.553079914603536,
+            "max_absolute_error": 0.2868062469911986,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.07262395415286398,
+            "mse": 0.009111790166794772,
+            "rmse": 0.09545569740353256,
+            "mape": 9.182763226223589,
+            "r2": -81.41595103840446,
+            "nrmse": 6.562540401002122,
+            "max_absolute_error": 0.2805373527818349,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.3717184385760843,
+            "mse": 0.13873255522268502,
+            "rmse": 0.3724681935718606,
+            "mape": 4.980048855495574,
+            "r2": -107.18752459278673,
+            "nrmse": 3.855943925468208,
+            "max_absolute_error": 0.4354165199115571,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0.0,
+        "numerically_equivalent": 0.0
+      }
+    },
+    "probe_count": 5
+  },
+  "evaluation_seconds": 109.59567239999888,
+  "total_seconds": 109.59567239999888,
+  "original_artifacts_unchanged": true,
+  "ok": true,
+  "source": {
+    "hostname": "DESKTOP-23O629H",
+    "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\performance.json",
+    "file_sha256": "7d4830b832642d015b902f7560ddbb71755528baa456e34be2921ddd9210ca33",
+    "experiment_dir": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1",
+    "task_definition_at_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\tasks\\chemistry\\Surface Pair Catalysis\\Surface Pair Catalysis - Variant 1-2-3-4-5.yaml",
+      "file_sha256": "cfb2d1d17ee1a56a17eff291f6edcae3234ce5bb06596b67f550e3325dcc153c"
+    },
+    "selection_rule": "Newest selected attempt, including errors; never select by score.",
+    "args": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\args.json",
+      "file_sha256": "760c01847b71d84c0803f2cd564ea54414f214792074ee295736d96a7e850f74"
+    },
+    "setup_sources": [
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\run_config.json",
+        "file_sha256": "80e44757000f3fcf1118c86ae0dec472f53cccec85a9a69f1804feb488fa442c"
+      },
+      {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\run_config.json",
+        "file_sha256": "cd62cb8ba1071e7ae043555a84bec97d9cb0b7f1e4aa331eaf19ccf2cff26738"
+      }
+    ],
+    "artifact_layers": [
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result",
+      "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result"
+    ],
+    "supplemental": [
+      {
+        "artifact": "evaluation_provenance.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\evaluation_provenance.json",
+        "file_sha256": "46822a74ff79877cbe3e8cb2e04af25dd39bc704bc6fc95a1c7ec37240dd1e70"
+      },
+      {
+        "artifact": "dataest/problem.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\dataest\\problem.json",
+        "file_sha256": "91046446cf6312ba53684f61f9fa26fdab29819eb0be476ed3d7e42e79f07b66"
+      },
+      {
+        "artifact": "dataest/answer.json",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\dataest\\answer.json",
+        "file_sha256": "13d30ee2c2f74afc9bc95d71c4fbabb1232c8794b2f451bae1b36a29a631bdf0"
+      },
+      {
+        "artifact": "dataest/train.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\dataest\\train.npy",
+        "file_sha256": "f69930a8e05b962b363346a2421f010263ce83a82e5bce6931704bb65fed323e"
+      },
+      {
+        "artifact": "dataest/id_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\dataest\\id_test.npy",
+        "file_sha256": "07e23193df52eba746c03c59adeb1829f1c57bd4fe643fb6b39f06ec8b096253"
+      },
+      {
+        "artifact": "dataest/ood_test.npy",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\dataest\\ood_test.npy",
+        "file_sha256": "5a013d9b9199133bf618c10da1884d99b8bd729e461c937f1b3a7cb7fc8990cf"
+      },
+      {
+        "probe": "product_cells",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\000-product_cells\\prompt.txt",
+        "file_sha256": "a131cfd0f4e463dbd869319ed64cf7f76e3c94400cde9918c9a6f139082911ca"
+      },
+      {
+        "probe": "product_cells",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\000-product_cells\\reply.txt",
+        "file_sha256": "fdd0f0c0cdbafa96ed71431ae472c4a070a6ddc9edd2033c624de8ddcf04c6e6"
+      },
+      {
+        "probe": "immobile_a_cells",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\001-immobile_a_cells\\prompt.txt",
+        "file_sha256": "cdeecfcdd294e3adaf0ece150fcef3087e891347e262af5bbfb19d6367dc1e1a"
+      },
+      {
+        "probe": "immobile_a_cells",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\001-immobile_a_cells\\reply.txt",
+        "file_sha256": "b50114dbff7dc89a03d46cf4c2a139093bd6fbcc6e2651d53ed9549ffec92c76"
+      },
+      {
+        "probe": "a_cells",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\002-a_cells\\prompt.txt",
+        "file_sha256": "cb500e1b324f97fb24c8728ed1dfe58f19adb41a19326a2a871c781b17fe27a3"
+      },
+      {
+        "probe": "a_cells",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\002-a_cells\\reply.txt",
+        "file_sha256": "b1add568c9eaa7e10c288f20c160fd64a565380511a5bda81676bc4cc8256359"
+      },
+      {
+        "probe": "b_cells",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\003-b_cells\\prompt.txt",
+        "file_sha256": "ede22347d32cd28e5f982619aeef71f3fbe02f709b9340561514dae21cf9e49c"
+      },
+      {
+        "probe": "b_cells",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\003-b_cells\\reply.txt",
+        "file_sha256": "cb2ac9a6fd5fff36194809aabbcca5dd3593cf5469c810c02391287c5368808a"
+      },
+      {
+        "probe": "gas_surface_flux",
+        "artifact": "prompt.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\004-gas_surface_flux\\prompt.txt",
+        "file_sha256": "12d710fd22bd5a4579c121d0c00f91daa41f21710361c0c625d88a862d2a3711"
+      },
+      {
+        "probe": "gas_surface_flux",
+        "artifact": "reply.txt",
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\004-gas_surface_flux\\reply.txt",
+        "file_sha256": "b198d79d0a19729962ede852ba53ac7cc3d9aa30acd6f3511728f0f296fe4b84"
+      }
+    ],
+    "submission": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\submission.txt",
+      "file_sha256": "240db168a44aa9eca2d45fe988c720b3ec2a4eb1a2834a147cd4bcd74afa72ee"
+    },
+    "previous_import": {
+      "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_import_history\\2026-11-10T153059.996185_0000\\claudecode-deepseekv4flash0731-coreset-1\\chemistry\\Surface Pair Catalysis\\Surface Pair Catalysis - Variant 1-2-3-4-5.json",
+      "file_sha256": "20cd06c70e9a39c62e549a3ac3aa7492f5c50589fb72920985b1224e5266595f"
+    }
+  },
+  "submission": "theta_a = a_concentration/(a_concentration + 0.41517782)\ntheta_b = b_concentration/(b_concentration + 0.88364769)\nr0 = 0.7227413*theta_a*theta_b\ngrowth_rate_a = 1.5931671*a_concentration + 0.48137109\ngrowth_rate_b = 1.6663098*b_concentration + 1.0040564\nresponse = r0*(1 - laplace_rate/(laplace_rate + growth_rate_a) - laplace_rate/(laplace_rate + growth_rate_b) + laplace_rate/(laplace_rate + growth_rate_a + growth_rate_b))\n",
+  "used_token": {
+    "input": 664143,
+    "output": 30908,
+    "reason": null,
+    "cached": 17664,
+    "total": 695051
+  },
+  "cost_in_USD": null,
+  "usage_details": {
+    "scope": "Selected discovery invocation plus each latest evaluated probe; excludes superseded failed attempts. Not the total spend of all retries.",
+    "complete": false,
+    "token_semantics": "input includes cached input; total=input+output; reason is a subset of output. null means unrecorded. Incomplete usage is a recorded lower bound.",
+    "cost_note": "Unknown costs remain null; no pricing estimates or zero-cost assumptions.",
+    "invocations": [
+      {
+        "phase": "discovery",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\audit\\usage.json",
+          "file_sha256": "5064c1eba55f57b01958335394c14e3ed4aa463b1b185bd99c99612104a8f9b2"
+        },
+        "available": true,
+        "complete": false,
+        "tokens": {
+          "input": 544854,
+          "output": 25378,
+          "reason": null,
+          "cached": 16128
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "4663a48026ab4442816c8e455dd66719",
+        "timed_out": true
+      },
+      {
+        "phase": "probe",
+        "probe": "product_cells",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\000-product_cells\\audit\\usage.json",
+          "file_sha256": "ad1da32e9f9afee7fdd71544a7186098fefdb4b40fb9c50716c47339583858ba"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 23855,
+          "output": 151,
+          "reason": null,
+          "cached": 768
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "9f87cced14ab4fa698c0e4cedc3fbd8a",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "immobile_a_cells",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\001-immobile_a_cells\\audit\\usage.json",
+          "file_sha256": "5807b0e6a6e7433bbf9312abd77e943efaa0ac8d8a0442e9b848c67f66ec0153"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 23863,
+          "output": 1506,
+          "reason": null,
+          "cached": 768
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "1acc9553726a413393547e1e3ad92e39",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "a_cells",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\002-a_cells\\audit\\usage.json",
+          "file_sha256": "6da5482d575acdcd6f7e058f5500b5aa0b53948a579652973fe8636e6d60f226"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 23855,
+          "output": 829,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "089a7eb71b03448fb934ce309324ef93",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "b_cells",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\_retries\\20261110T141921Z\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\003-b_cells\\audit\\usage.json",
+          "file_sha256": "034fdc3e41ee9738697c34e15dcf4044910bdc7443b2d7701aedc70213d92770"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 23855,
+          "output": 2770,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "b4d0691a74d04f3f96bd474f11d1947a",
+        "timed_out": false
+      },
+      {
+        "phase": "probe",
+        "probe": "gas_surface_flux",
+        "source": {
+          "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\results\\rebuttal\\_logs\\claudecode-deepseekv4flash0731-coreset-1\\Surface Pair Catalysis - Variant 1-2-3-4-5\\result\\probe\\004-gas_surface_flux\\audit\\usage.json",
+          "file_sha256": "739886e183a3bc4ffe1e18136e62a1d940e3308cf491a15718785a57e8b5d730"
+        },
+        "available": true,
+        "complete": true,
+        "tokens": {
+          "input": 23861,
+          "output": 274,
+          "reason": null,
+          "cached": 0
+        },
+        "cost_in_USD": null,
+        "cost_source": "unavailable",
+        "request_id": "bf442374a796490eacc7991bb950a337",
+        "timed_out": false
+      }
+    ]
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-10T09:38:50.377809+00:00",
+      "update_message": "Imported latest selected logs per results/README.md. Original performance fields and scores preserved; added provenance, submission and recorded usage. No model calls or rescoring.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "5cd7df7c8f6cdf4ab4ddcd4421555ae2be4987babe19c15ee829ad761d8280ca"
+      }
+    },
+    {
+      "updated_at": "2026-11-10T15:30:59.996185+00:00",
+      "update_message": "Updated from the newest actual repair attempt; previous imported document archived. No score-based selection.",
+      "generator": {
+        "path": "C:\\Users\\admin\\research\\iclr2026\\new0922\\mdbench\\mdbench-experiment\\import_results.py",
+        "file_sha256": "26dd561568b1cc4fead69e279625d0798b945b89ee1eb9c985857b06a707b7d5"
+      }
+    }
+  ],
+  "run_metadata": {
+    "seed": 0,
+    "core_set": true,
+    "discovery_runtime_policy": "mandatory-immediate-submission-v5",
+    "evaluation_runtime_policy": "mandatory-immediate-submission-v5",
+    "partial_reevaluation": true,
+    "timing_note": "Original performance timing semantics retained. Probe-only/evaluation-only total_seconds covers that retry, not all historical attempts."
+  }
+}
