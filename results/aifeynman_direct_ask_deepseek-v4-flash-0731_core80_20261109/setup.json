@@ -1,0 +1,1699 @@
+{
+  "schema_version": 1,
+  "experiment_name": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109",
+  "algorithm": "aifeynman",
+  "pipeline": "aifeynman + DeepSeek Direct-Ask",
+  "model": "deepseek/deepseek-v4-flash-0731",
+  "benchmark": {
+    "name": "MechBench",
+    "split": "core_set",
+    "task_count": 80,
+    "planned_probe_count": 165,
+    "domains": [
+      "physics",
+      "chemistry",
+      "biology",
+      "material"
+    ],
+    "samples_per_task": 1000,
+    "replicate": 1,
+    "attempt": 1
+  },
+  "configuration": {
+    "source_commit": "f133fd197f38135e748350670bf18b4acfb4491a",
+    "probe_model": "deepseek/deepseek-v4-flash-0731",
+    "probe_reasoning_effort": "minimal",
+    "probe_temperature": 0,
+    "probe_max_output_tokens": 2048,
+    "probe_request_timeout_seconds": 180,
+    "probe_transport_max_attempts": 4,
+    "probe_workers": 1,
+    "seed_rule": "20261109 + task_index; same seed for both algorithms, not claimed equal to historical PySR seeds",
+    "evaluation_watchdog_seconds": 2700
+  },
+  "symbolic_regression": {
+    "search_seconds": 900,
+    "repository": "https://github.com/SJ001/AI-Feynman",
+    "commit": "a05bc4a5be23d6eb3e1d0b2f7eb1ab5b78a920ad",
+    "bf_try_time": 10,
+    "nn_epochs": 500,
+    "polyfit_degree": 4,
+    "selection": "Lowest public training error among reconstructed original-coordinate Pareto candidates.",
+    "compatibility": "CUDA scalar metrics converted to Python numbers in adapter; upstream files unchanged."
+  },
+  "evaluation_environment": {
+    "numpy": "2.3.5",
+    "sympy": "1.13.1",
+    "python-flint": "0.9.0"
+  },
+  "source": {
+    "batch_path": "/home/test/test06/mdbench-runs/rebuttal-sr-core-20261109-jialin",
+    "manifest_sha256": "7bea043f0e419426a8fed2c3784275755bcc52ce10c7e2ed79f6747d20fbe1bb",
+    "code_commit": "f133fd197f38135e748350670bf18b4acfb4491a",
+    "code_files": [
+      {
+        "path": "src/algorithms/pysr_and_llm_direct.py",
+        "git_blob": "bc62f70b169bab6902c98fd89bad080d2c791c89",
+        "sha256": "0961b2f5b6c13a3bffb4c6eba267dc0531a246ae54318241cd049a975e7e9f7c"
+      },
+      {
+        "path": "src/evaluate.py",
+        "git_blob": "6af79b833ab89a8f8c475a9833bd9a6bb563f6df",
+        "sha256": "308f400aaf4b2b7ad5789676ce7ec80cf1919db5b7cbae5a30fb2b1630ac1e19"
+      },
+      {
+        "path": "src/scoring.py",
+        "git_blob": "e3dd90c8a3533efbb59aa0779f15531c9fa75ec9",
+        "sha256": "7753fb41c680bb7d86f029d8a54078415a027fb3d4073051d45eff631ad62cfc"
+      }
+    ]
+  },
+  "data_provenance": "Reuse frozen Core80 data; Thermoelastic 030/046/054/062/070/078 imported unchanged from collaborator; generating environment/time unknown. No regeneration.",
+  "result_selection": {
+    "policy": "One attempt per task; import every existing performance.json including invalid results. No placeholders for missing performance; terminal evidence in summary provenance.",
+    "planned": 80,
+    "imported": 75,
+    "missing": 5,
+    "strict_complete": 26,
+    "outcomes": {
+      "native_invalid": 49,
+      "completed": 26,
+      "evaluation_timeout": 5
+    }
+  },
+  "metrics": {
+    "P": "symbolic phenomenal task pass / all planned tasks",
+    "paper_task_SA_M": "all planned probes symbolically pass / all planned tasks",
+    "legacy_probe_M": "symbolically passing probes / all planned probes",
+    "missing_policy": "Zero contribution in aggregates only; native errors/nulls are preserved.",
+    "numeric_warning": "Native numerically_equivalent is not the paper Acc_0.1 metric."
+  },
+  "planned_runs": [
+    {
+      "task_index": 0,
+      "task_name": "Hall Response - Original",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Original.yaml",
+      "task_sha256": "5259396faedc21367db747aba9f77f19ca6b1c43b9f4a56000dc7f933889a85d",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "mobile"
+      ],
+      "job_id": "aifeynman-core-t000",
+      "seed": 20261109,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Original.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "4d1e71bd8b33fa57e5cfbc1624b10e8689ad64cd0d5d7abc4c4ceb5efaa045e4"
+    },
+    {
+      "task_index": 1,
+      "task_name": "Circular Orbit - Original",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Original.yaml",
+      "task_sha256": "0dd279768f9b1b44068333a16b1764b521eb614dd9bf2a9681c69cbf100b31d6",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "speed_squared"
+      ],
+      "job_id": "aifeynman-core-t001",
+      "seed": 20261110,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Original.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "9d75e67233a61f3e9810bc4bb0899767a5fb89b0927563f91362191f7eefcefa"
+    },
+    {
+      "task_index": 2,
+      "task_name": "Lindemann Pulse Reaction - Original",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Original.yaml",
+      "task_sha256": "d1da14aa76d5ff6efd286f0d939d39a72bdaf382fd574611508f7f8d167c9df6",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "activated_pool"
+      ],
+      "job_id": "aifeynman-core-t002",
+      "seed": 20261111,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Original.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "9e703f0b9091f0b6df96aec924285d7db65ae4588231130fdc17c99a871c1a2d"
+    },
+    {
+      "task_index": 3,
+      "task_name": "Surface Pair Catalysis - Original",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Original.yaml",
+      "task_sha256": "c46695a9bb49cbba66bf6346b9d33529c3c3d05750f5f1894c433767a79c9542",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "ab_cells"
+      ],
+      "job_id": "aifeynman-core-t003",
+      "seed": 20261112,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Original.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "e38b293513cb1a1de5cf49c74f113bb9ae300a50b36fa503f13c9a6341fb0c44"
+    },
+    {
+      "task_index": 4,
+      "task_name": "Allosteric Regulation - Original",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Original.yaml",
+      "task_sha256": "56f697272c0baa4acffda9fa4830fbd470af504bf33ae37fe69344fd5abeac6e",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "ts"
+      ],
+      "job_id": "aifeynman-core-t004",
+      "seed": 20261113,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Original.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "5c5c560ab99694ef0bbfe58bdd160db14be4427664e94ad5f00e3385e0b4fa84"
+    },
+    {
+      "task_index": 5,
+      "task_name": "Membrane Channel Flux - Original",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Original.yaml",
+      "task_sha256": "cb5b04044422b1cb7e0b6c1a0375e73ed022646f023d7cf1bea1e91dcb0f9569",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "mono_drive"
+      ],
+      "job_id": "aifeynman-core-t005",
+      "seed": 20261114,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Original.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "3d86959377763deaede516dc164c0fff1d393919bc2f833b19a84f58938e6bc8"
+    },
+    {
+      "task_index": 6,
+      "task_name": "Thermoelastic Heating Response - Original",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Original.yaml",
+      "task_sha256": "a5951629803005f431a05f22e9efc04fea83f9c95d8514b73faa55a7140a8887",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_expansion_fraction"
+      ],
+      "job_id": "aifeynman-core-t006",
+      "seed": 20261115,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Thermoelastic Heating Response/Thermoelastic Heating Response - Original.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "0892c9ba6d03247e1a5acbbec443d0ab35917631fbcd935543523811bdee64a4"
+    },
+    {
+      "task_index": 7,
+      "task_name": "Vacancy Diffusion - Original",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Original.yaml",
+      "task_sha256": "c2350c02f19ea786660f154b1e1ab052ec1001c668243d13c3048efdd70e6568",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "vacancies"
+      ],
+      "job_id": "aifeynman-core-t007",
+      "seed": 20261116,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Original.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "e430f069c91ad9d8fef35cdc59044ef090070e31c4fdc298257e59bba08cb44a"
+    },
+    {
+      "task_index": 8,
+      "task_name": "Hall Response - Variant 3",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 3.yaml",
+      "task_sha256": "dd4ac70ed1ec069e07b26a3b625d732869209f47014f9a0516e2ecddbb6467c4",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "hole_current"
+      ],
+      "job_id": "aifeynman-core-t008",
+      "seed": 20261117,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 3.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "04a5fdd24168d6a64e4e1ca97ae5cb22433488f1e52834d7c8ab005935829e47"
+    },
+    {
+      "task_index": 9,
+      "task_name": "Circular Orbit - Variant 2",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 2.yaml",
+      "task_sha256": "7831bea867f921d2fba28147cffbab658a664f26b2bd74689ff9478f44c15401",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "extra_accel"
+      ],
+      "job_id": "aifeynman-core-t009",
+      "seed": 20261118,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 2.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "b94896e4d77e43b1dcf91939efae87b8bcc27f2fca5e3226b3358336c0274b7c"
+    },
+    {
+      "task_index": 10,
+      "task_name": "Lindemann Pulse Reaction - Variant 2",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2.yaml",
+      "task_sha256": "58ef7f698776eec172aef4ee511a6cd61e625e0628d74358b7fd1364af80a9b2",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "secondary_pool"
+      ],
+      "job_id": "aifeynman-core-t010",
+      "seed": 20261119,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "ea41694e78239b69020d5e2c1ea82a1163587d1078533156bd21c654fcba7350"
+    },
+    {
+      "task_index": 11,
+      "task_name": "Surface Pair Catalysis - Variant 1",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1.yaml",
+      "task_sha256": "d02bc6fea5bd13db25673e6eaeeedb09fd1cc9bcaf7c4317def1ddae6fb99031",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "product_cells"
+      ],
+      "job_id": "aifeynman-core-t011",
+      "seed": 20261120,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "b406ec8f433b1d8e12739ff4e38f4f7c299d87c6c8b4e4a17a8c2ebf508577c0"
+    },
+    {
+      "task_index": 12,
+      "task_name": "Allosteric Regulation - Variant 1",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1.yaml",
+      "task_sha256": "290e0d6f6d771e2c8c9fc2f96c06acbd37a9ae5c6200ee614b13afb7c5fd8fcf",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "t3"
+      ],
+      "job_id": "aifeynman-core-t012",
+      "seed": 20261121,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 1.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "d4c9a3cbbe74f4f5414772ec4fd0f9a2f0b0ba13d6d599516c92161a2ce373be"
+    },
+    {
+      "task_index": 13,
+      "task_name": "Membrane Channel Flux - Variant 1",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1.yaml",
+      "task_sha256": "996bcfd0c05061f0cb89106ce6e6c9bb1a55dabfca62bf957b3861cc281ced0f",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "open_state"
+      ],
+      "job_id": "aifeynman-core-t013",
+      "seed": 20261122,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "c38553bc50d09664bfe7751d83f4f4d4ce5106653091e586f8db677716f92e15"
+    },
+    {
+      "task_index": 14,
+      "task_name": "Thermoelastic Heating Response - Variant 1",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1.yaml",
+      "task_sha256": "1e7ec166fd041d442f722da9f4c6c0a4ff040191f9b75382879b573ef5d8a6fa",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_slow_thermal_fraction"
+      ],
+      "job_id": "aifeynman-core-t014",
+      "seed": 20261123,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "bc64cacdc9a241be8264ee3c3b955c2acd6ebab057224382fa92ec86635990c3"
+    },
+    {
+      "task_index": 15,
+      "task_name": "Vacancy Diffusion - Variant 1",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1.yaml",
+      "task_sha256": "3d4bbac3f9e181fa8a1060e1ed884a556435f8fe250be9f8073e3b46b4f6844f",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "mobile_vacancies"
+      ],
+      "job_id": "aifeynman-core-t015",
+      "seed": 20261124,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 1.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "4c557957a8f90c42663a27e5875b972bba1cd37d1a00a0b34ea05fe9dd49b261"
+    },
+    {
+      "task_index": 16,
+      "task_name": "Hall Response - Variant 5",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 5.yaml",
+      "task_sha256": "aea8963f1ec5a467502c2d78afb941b622ea08f206cb6918e1febd8fc57be748",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "bypass_conductivity",
+        "mobile"
+      ],
+      "job_id": "aifeynman-core-t016",
+      "seed": 20261125,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "d12feda3abd61ca779ec365f31a2ee8c7384716a287197224af315773102cad0"
+    },
+    {
+      "task_index": 17,
+      "task_name": "Circular Orbit - Variant 3",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 3.yaml",
+      "task_sha256": "2f2034fa0bc2dc597c98dba3d99cc144af9cd39b46103f10868e9f93068fe464",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "angular_radius"
+      ],
+      "job_id": "aifeynman-core-t017",
+      "seed": 20261126,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 3.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "ba3cc173707a31d1b7c96efd4935de3a006ac320704d769e85cf8af45327271d"
+    },
+    {
+      "task_index": 18,
+      "task_name": "Lindemann Pulse Reaction - Variant 5",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 5.yaml",
+      "task_sha256": "f18c625c57480e20a4ce06765a1b31a181d12ea720028931aae3fbcb83346a10",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "direct_product_flux"
+      ],
+      "job_id": "aifeynman-core-t018",
+      "seed": 20261127,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "90ee1711f71d8384607ff1f0a8f379bca4e6e2da5aa3d0304f3bb1af73e3cfa8"
+    },
+    {
+      "task_index": 19,
+      "task_name": "Surface Pair Catalysis - Variant 5",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 5.yaml",
+      "task_sha256": "32908ee1f7f190367138509e8fafa5ac2b3b7966202d76169459941f925cb53f",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "gas_surface_flux"
+      ],
+      "job_id": "aifeynman-core-t019",
+      "seed": 20261128,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "8c33c285c52c5f52747f912a682946d86e90d7a9f6b9280ce3ed765d3a9ef5a5"
+    },
+    {
+      "task_index": 20,
+      "task_name": "Allosteric Regulation - Variant 4",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 4.yaml",
+      "task_sha256": "31442a78803c53f0e8966ca4304897887a522cc9ca9e08b5dba9d4c454a29bf0",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "local_regulator"
+      ],
+      "job_id": "aifeynman-core-t020",
+      "seed": 20261129,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 4.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "f743bdb9f52a6a04d7cc69f1776d06da3336bac1f4674514fde596a8001ed9d2"
+    },
+    {
+      "task_index": 21,
+      "task_name": "Membrane Channel Flux - Variant 5",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 5.yaml",
+      "task_sha256": "805b9a4a2371059ecde462f4cbe43556a6c080ff61ddd7571d888a92e8bc9c43",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "secondary_current"
+      ],
+      "job_id": "aifeynman-core-t021",
+      "seed": 20261130,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "ce90acd625574ab446549d7138e7cb372e3f5d5ffb0e235c4c612c8ac94b821d"
+    },
+    {
+      "task_index": 22,
+      "task_name": "Thermoelastic Heating Response - Variant 2",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2.yaml",
+      "task_sha256": "01224472dc9ebd76f1982105f62414d5cadf4a74286ee92e4c326a75dc2fed64",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_anelastic_fraction"
+      ],
+      "job_id": "aifeynman-core-t022",
+      "seed": 20261131,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "eab48e4f8006d46147957af0fdb25bcff46ec24d96960f0a558603629e3700f4"
+    },
+    {
+      "task_index": 23,
+      "task_name": "Vacancy Diffusion - Variant 5",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 5.yaml",
+      "task_sha256": "374ee51d4937f30e7456d5a7164a540753fa78738469d86dd8c5c21744fe6055",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "alternate_rate"
+      ],
+      "job_id": "aifeynman-core-t023",
+      "seed": 20261132,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "758d98e0aace9e29d767ad27772ba9d1c424175399c73a87f4fa5ed6c6afc96e"
+    },
+    {
+      "task_index": 24,
+      "task_name": "Hall Response - Variant 1-2",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 1-2.yaml",
+      "task_sha256": "a3783638457d2afa5c3fe263e462cfe2b8380980c4de0b59fa13fcfbb02adcad",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "mobile",
+        "deflection"
+      ],
+      "job_id": "aifeynman-core-t024",
+      "seed": 20261133,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 1-2.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "916719cfad67a81c2a625732f613d29deef3b5253af0085b8519b4b002429452"
+    },
+    {
+      "task_index": 25,
+      "task_name": "Circular Orbit - Variant 1-4",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 1-4.yaml",
+      "task_sha256": "06dd864eacd948341de6910da5a0c1b90e6998e3b15872ce2b43937de7460ba5",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "inertia_ratio",
+        "trap_accel"
+      ],
+      "job_id": "aifeynman-core-t025",
+      "seed": 20261134,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 1-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "5c673322ec53275fc05040dc09980f59d79d7fec5e1171caf3e44c27df590976"
+    },
+    {
+      "task_index": 26,
+      "task_name": "Lindemann Pulse Reaction - Variant 1-3",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3.yaml",
+      "task_sha256": "5e9567e8559dd5ec0b5d64e1011c6f65d4239dc179097f97d273c7586eccfd9a",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "quench_flux",
+        "caged_pool"
+      ],
+      "job_id": "aifeynman-core-t026",
+      "seed": 20261135,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "ef4626917f1d6a07d2a21bed52f35ee57681fd9422accf1f83f26822880e9b0f"
+    },
+    {
+      "task_index": 27,
+      "task_name": "Surface Pair Catalysis - Variant 2-3",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3.yaml",
+      "task_sha256": "99f12fe6f7b3eb988248b24ba8d27510cc2d972a242a52e407c29278992863ca",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "immobile_a_cells",
+        "a_cells"
+      ],
+      "job_id": "aifeynman-core-t027",
+      "seed": 20261136,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "2c21ae5725498a5f0ccafb8e3a76d256c2f0b6ead450d129d7df484734e0c6a7"
+    },
+    {
+      "task_index": 28,
+      "task_name": "Allosteric Regulation - Variant 2-3",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3.yaml",
+      "task_sha256": "36c4f5e59833435a51a0104f041811d75a35e44d34632e60b1f1e9a08e9c512a",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "ts",
+        "rs_extra"
+      ],
+      "job_id": "aifeynman-core-t028",
+      "seed": 20261137,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "1f9eef30d74b503d36e5c1b422605fb39c0f28d2360fdaddf81f6ec0f00e0d08"
+    },
+    {
+      "task_index": 29,
+      "task_name": "Membrane Channel Flux - Variant 2-3",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3.yaml",
+      "task_sha256": "8edcea20ed3da62c8ce1267a5d6ee9f7f02eb3de9b7387241dca8a09ed357d9b",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "inactivated",
+        "local_inside"
+      ],
+      "job_id": "aifeynman-core-t029",
+      "seed": 20261138,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "cd27d413e66deeb2dee6faf6a450d72418296e65f7d79a5811cfa06ada72264d"
+    },
+    {
+      "task_index": 30,
+      "task_name": "Thermoelastic Heating Response - Variant 3-4",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 3-4.yaml",
+      "task_sha256": "4a238fc30bee40e9b36c9e4f19ee4d8242d0d00946dfa9801a35bd198b1013ae",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_adhesive_fraction",
+        "prepared_eigenstrain_fraction"
+      ],
+      "job_id": "aifeynman-core-t030",
+      "seed": 20261139,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": null,
+      "outcome": "evaluation_timeout",
+      "strict_complete": false,
+      "source_terminal_sha256": "b970d9483cec60fddbf389e13507cc913b8606a918d0f5fc7044f3efff735826"
+    },
+    {
+      "task_index": 31,
+      "task_name": "Vacancy Diffusion - Variant 2-3",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3.yaml",
+      "task_sha256": "2ae3df506c8d73c697e20477001594451531acc89ad60d8f24d508f4f36fbdd9",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "barrier",
+        "jump_distance"
+      ],
+      "job_id": "aifeynman-core-t031",
+      "seed": 20261140,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "6ec33872dd5cc538a3ba3b97c1322d09fb1fed8661cf5660e8f0111d3638c94c"
+    },
+    {
+      "task_index": 32,
+      "task_name": "Hall Response - Variant 4-5",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 4-5.yaml",
+      "task_sha256": "ad1ad2a53f3f6373c4a9e37dd07b847a603880986a179c3b0b2c9869b200b287",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "electric_factor",
+        "bypass_conductivity",
+        "mobile"
+      ],
+      "job_id": "aifeynman-core-t032",
+      "seed": 20261141,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "48ab38c26c13465ad7ace07f09eff6b841466e16f47785c2252b5ac6eafd8fe9"
+    },
+    {
+      "task_index": 33,
+      "task_name": "Circular Orbit - Variant 3-5",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 3-5.yaml",
+      "task_sha256": "756aa9394632411b655cee6501edf54946b557eb10903325f6503e86aefb3c0b",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "angular_radius",
+        "reservoir_inertia"
+      ],
+      "job_id": "aifeynman-core-t033",
+      "seed": 20261142,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 3-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "354d066cd803b7fbe5d6b29fce2d58803bfdedc6a13b48f2172842b48635029b"
+    },
+    {
+      "task_index": 34,
+      "task_name": "Lindemann Pulse Reaction - Variant 4-5",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 4-5.yaml",
+      "task_sha256": "6cd1fcfe5eb1a0bd607d2113a89bbe20b71fe3cd6cc1810eee84be0827a39a2d",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "activation_flux",
+        "direct_product_flux"
+      ],
+      "job_id": "aifeynman-core-t034",
+      "seed": 20261143,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "afca3749cead034ad311fba9dfe0a90bbe3eb4cb1da491edc7c93b04140d68cd"
+    },
+    {
+      "task_index": 35,
+      "task_name": "Surface Pair Catalysis - Variant 4-5",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 4-5.yaml",
+      "task_sha256": "104822f12ce7a2c1e7c1de90d1c0f5888127996ce9a76aa84f73bffc6e7c198f",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "b_cells",
+        "gas_surface_flux"
+      ],
+      "job_id": "aifeynman-core-t035",
+      "seed": 20261144,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "4db4565ba0643e12a5835c8b857c38d8a9bbcd2b7d3acc838327f03b799c93e8"
+    },
+    {
+      "task_index": 36,
+      "task_name": "Allosteric Regulation - Variant 4-5",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 4-5.yaml",
+      "task_sha256": "d2e6e0d35dd27e15b8b878f52d5936630af459cc9808e08019e9b3d0fea9e8b6",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "local_regulator",
+        "inactive_flux"
+      ],
+      "job_id": "aifeynman-core-t036",
+      "seed": 20261145,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "4ece072d4bf6416c198aa7f82a86d951e7d04c29a5d615cd74bdd05a156da830"
+    },
+    {
+      "task_index": 37,
+      "task_name": "Membrane Channel Flux - Variant 4-5",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 4-5.yaml",
+      "task_sha256": "2ed90bb25c1b04a75eb6fb76def930a94a62355afdbd78fe01139f44ccca385e",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "permeability",
+        "secondary_current"
+      ],
+      "job_id": "aifeynman-core-t037",
+      "seed": 20261146,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "45c099c8cfd79dda6d3fda0a7714ad1015dc7fb048e9bf69693590ecef1cd3ed"
+    },
+    {
+      "task_index": 38,
+      "task_name": "Thermoelastic Heating Response - Variant 2-5",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2-5.yaml",
+      "task_sha256": "0c1d823febf5a5d59005f8ece80dbc69cd26f6117d739c8cafea6b90f1cb8758",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_anelastic_fraction",
+        "prepared_slow_strain_fraction"
+      ],
+      "job_id": "aifeynman-core-t038",
+      "seed": 20261147,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "c2fd0b2aa6199e1e67904dab80684f497a0b8591c86d242ae5a88e3f05f70765"
+    },
+    {
+      "task_index": 39,
+      "task_name": "Vacancy Diffusion - Variant 4-5",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 4-5.yaml",
+      "task_sha256": "7cb9d3a184268b4b6be731098a2d88174711e22155f54ef3d2b9b8b7154db137",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "return_prob",
+        "alternate_rate"
+      ],
+      "job_id": "aifeynman-core-t039",
+      "seed": 20261148,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "d5f14929cd6ac7350c4e95ab5d9be7cd6afb170d1c8a351bf93e690305edb532"
+    },
+    {
+      "task_index": 40,
+      "task_name": "Hall Response - Variant 1-3-4",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 1-3-4.yaml",
+      "task_sha256": "b2128087a68fb6a70aa37000f981f7773c503af1e67a7c0336116b5a1a115477",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "mobile",
+        "electric_factor"
+      ],
+      "job_id": "aifeynman-core-t040",
+      "seed": 20261149,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 1-3-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "f743ba0f33809e9363cd8b81ac2d962504a0327c545e527e3c432d072023f1a9"
+    },
+    {
+      "task_index": 41,
+      "task_name": "Circular Orbit - Variant 1-2-5",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 1-2-5.yaml",
+      "task_sha256": "0e1a93961c63c333c70271019daf4c91b0bb89d8ea04aa8b615a9ea3fd8beacc",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "inertia_ratio",
+        "reservoir_inertia"
+      ],
+      "job_id": "aifeynman-core-t041",
+      "seed": 20261150,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 1-2-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "6d17bbc8074115ad8c57172cac6d97902b5f9d0ff5686909ccc1c5c1f293e5ac"
+    },
+    {
+      "task_index": 42,
+      "task_name": "Lindemann Pulse Reaction - Variant 1-2-4",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-4.yaml",
+      "task_sha256": "8719579b7b08b3d4563cf6f8cd87566449c5cd049ec0d515a24c83cc35ffdb90",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "quench_flux",
+        "secondary_pool",
+        "activation_flux"
+      ],
+      "job_id": "aifeynman-core-t042",
+      "seed": 20261151,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "b7d08ecba19571ac0b551c1a2147e487da6cefa6df8feace945c2d3150e6ec2f"
+    },
+    {
+      "task_index": 43,
+      "task_name": "Surface Pair Catalysis - Variant 1-2-4",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-4.yaml",
+      "task_sha256": "eb68e0e77d12c018f5bc402ac0dd47e02a00ebb65673e58acb3f2e84167a95e6",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "product_cells",
+        "immobile_a_cells",
+        "b_cells"
+      ],
+      "job_id": "aifeynman-core-t043",
+      "seed": 20261152,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-4.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "abb9fd72f0f9874b8a9eb05d5e63d6726156bb3a521f7ed12852c374919678ee"
+    },
+    {
+      "task_index": 44,
+      "task_name": "Allosteric Regulation - Variant 1-2-5",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-5.yaml",
+      "task_sha256": "1a92afb5a93a6d690eef8f81023a42737a1e543848845bc169f838807ca44a86",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "t3",
+        "inactive_flux"
+      ],
+      "job_id": "aifeynman-core-t044",
+      "seed": 20261153,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "282a226ef65e4457b27261b5a2cc946c644feee0b6e83e67fd1511676ce85905"
+    },
+    {
+      "task_index": 45,
+      "task_name": "Membrane Channel Flux - Variant 1-2-4",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-4.yaml",
+      "task_sha256": "6e7a02309ed0868ccff88261c33db59051dcaa8afc15d983cebcbaf43ceef8b9",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "open_state",
+        "permeability"
+      ],
+      "job_id": "aifeynman-core-t045",
+      "seed": 20261154,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "4bf6c4b856e1a312ffb1889efe6e2bec999706b2dc47435097e32e1e7811a5e8"
+    },
+    {
+      "task_index": 46,
+      "task_name": "Thermoelastic Heating Response - Variant 1-3-5",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-3-5.yaml",
+      "task_sha256": "f109c54a8644e2d4d334527674682a8aacb54387ca5558d8712c9c49defd3e4a",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_slow_thermal_fraction",
+        "prepared_adhesive_fraction",
+        "prepared_slow_strain_fraction"
+      ],
+      "job_id": "aifeynman-core-t046",
+      "seed": 20261155,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-3-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "6e3db68fda86cbf0d78f706fb498a5aa99d5fd781b60cdd229643e0bd77ea21e"
+    },
+    {
+      "task_index": 47,
+      "task_name": "Vacancy Diffusion - Variant 1-2-4",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-4.yaml",
+      "task_sha256": "587a5bc21867e7b8a83b31af3dd0c707d1435115c76c0bf8a13c9c6a20df276f",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "mobile_vacancies",
+        "return_prob"
+      ],
+      "job_id": "aifeynman-core-t047",
+      "seed": 20261156,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-4.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "d72806503816333d77baa96cd87a90f89d33c3b273be488fce7e90673968aa67"
+    },
+    {
+      "task_index": 48,
+      "task_name": "Hall Response - Variant 2-3-5",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 2-3-5.yaml",
+      "task_sha256": "3cf751b032bc2661bfff94af61900ad0fe7c21770317cedf702c6f8ab7caa942",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "deflection",
+        "bypass_conductivity"
+      ],
+      "job_id": "aifeynman-core-t048",
+      "seed": 20261157,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 2-3-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "f5afbff076c6ca7891cd2176903eea5f6e2257d451667f7d7f1aa18e9ad550f5"
+    },
+    {
+      "task_index": 49,
+      "task_name": "Circular Orbit - Variant 2-3-4",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 2-3-4.yaml",
+      "task_sha256": "915c3908c444c188a93b7b6f66cce6cd27e4681f0dd70b69cdf68783ccf52c60",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "extra_accel",
+        "trap_accel"
+      ],
+      "job_id": "aifeynman-core-t049",
+      "seed": 20261158,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 2-3-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "9cd16770a6c0df2b06e3bfd7dc3df3479b9bf2fd6333d12b920e85ae073d8d0c"
+    },
+    {
+      "task_index": 50,
+      "task_name": "Lindemann Pulse Reaction - Variant 2-3-5",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2-3-5.yaml",
+      "task_sha256": "2e07181db1dffdc2527fa530669f361a1c46a36e303f0f419143548d0feb467b",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "secondary_pool",
+        "caged_pool",
+        "direct_product_flux"
+      ],
+      "job_id": "aifeynman-core-t050",
+      "seed": 20261159,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2-3-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "f048216a812a9b72eaa8fa439c6cd8cd55e0fc9fed8729b2e6ac7a8dfe6982d0"
+    },
+    {
+      "task_index": 51,
+      "task_name": "Surface Pair Catalysis - Variant 1-3-5",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-3-5.yaml",
+      "task_sha256": "db5346b672d238fff26febdf2939368f19b3a0d170af85d479681436e8fd3dbe",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "product_cells",
+        "a_cells",
+        "gas_surface_flux"
+      ],
+      "job_id": "aifeynman-core-t051",
+      "seed": 20261160,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-3-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "1012a1016a4713349f16df3859ec96a7f14c8e90fff458e24ff7aa6844a3ecdb"
+    },
+    {
+      "task_index": 52,
+      "task_name": "Allosteric Regulation - Variant 1-3-4",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-3-4.yaml",
+      "task_sha256": "3ab22eedeef968e5d53bb7fbcee52063559e2cec91477be7ee474cea816658cc",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "t3",
+        "local_regulator"
+      ],
+      "job_id": "aifeynman-core-t052",
+      "seed": 20261161,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 1-3-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "43e7bc3f1d999c4546189e47e9410440a41f421c1a9975da65d7f01a28fa546d"
+    },
+    {
+      "task_index": 53,
+      "task_name": "Membrane Channel Flux - Variant 1-3-5",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-3-5.yaml",
+      "task_sha256": "d10c38bff36d969a9dff79398a8b77ca5cf48e654c68319b0cf1e87585e6f792",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "open_state",
+        "secondary_current"
+      ],
+      "job_id": "aifeynman-core-t053",
+      "seed": 20261162,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-3-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "14bd93aae805449552337397d207eb568a5ad65e52f5ab803cb71182c2db1674"
+    },
+    {
+      "task_index": 54,
+      "task_name": "Thermoelastic Heating Response - Variant 1-2-4",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-2-4.yaml",
+      "task_sha256": "5e17a157607fcfa69cfcaccf0a1cd4271798547b6150bc71f6fbe13b5e11d5a0",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_slow_thermal_fraction",
+        "prepared_anelastic_fraction",
+        "prepared_eigenstrain_fraction"
+      ],
+      "job_id": "aifeynman-core-t054",
+      "seed": 20261163,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": null,
+      "outcome": "evaluation_timeout",
+      "strict_complete": false,
+      "source_terminal_sha256": "7c726ee68a99650405a300bab2514c64298dbf60477c54ecf34ef1a6d485e3ff"
+    },
+    {
+      "task_index": 55,
+      "task_name": "Vacancy Diffusion - Variant 1-3-5",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-3-5.yaml",
+      "task_sha256": "8b8d9199dde992251e57815cfe11202fedb8dcace304996a80bec5ce8e9ee827",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "mobile_vacancies",
+        "alternate_rate"
+      ],
+      "job_id": "aifeynman-core-t055",
+      "seed": 20261164,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-3-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "19b230afa9abad2653116eff1dfde27cd3bfde18f8517b04eb0331952661a201"
+    },
+    {
+      "task_index": 56,
+      "task_name": "Hall Response - Variant 1-2-3-4",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 1-2-3-4.yaml",
+      "task_sha256": "c91871089652880b2c3dad46afce8f82d9465a23f780d6c1a233627024300d65",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "mobile",
+        "electric_factor"
+      ],
+      "job_id": "aifeynman-core-t056",
+      "seed": 20261165,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 1-2-3-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "64c6a582da43e7cc5eaaaff6f0322115a63cd4aa13c18fc9a45e486706530702"
+    },
+    {
+      "task_index": 57,
+      "task_name": "Circular Orbit - Variant 1-2-4-5",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 1-2-4-5.yaml",
+      "task_sha256": "74d621db1d9682ece44a2896a1b6ce0e096cafc2dfff071804d4529d7782cd59",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "inertia_ratio",
+        "reservoir_inertia"
+      ],
+      "job_id": "aifeynman-core-t057",
+      "seed": 20261166,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 1-2-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "46bd3b86c7e48cda1bd02158d8ea19f27473625890e0601dd0266d438b1d3651"
+    },
+    {
+      "task_index": 58,
+      "task_name": "Lindemann Pulse Reaction - Variant 1-2-3-4",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4.yaml",
+      "task_sha256": "1b824edd4f3d852abbd56d0e44716f8e9ce9c23990ca41bc600fc0ef186b32c4",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "quench_flux",
+        "secondary_pool",
+        "caged_pool",
+        "activation_flux"
+      ],
+      "job_id": "aifeynman-core-t058",
+      "seed": 20261167,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "01a381133259d5401a9940624e423fb170f38dce0b9731d4f4c79993c23789e2"
+    },
+    {
+      "task_index": 59,
+      "task_name": "Surface Pair Catalysis - Variant 1-2-3-4",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4.yaml",
+      "task_sha256": "09c9665bbe8cef03f92fff5777613cdaa8848254ab4f5e6399222ebd9848bb8c",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "product_cells",
+        "immobile_a_cells",
+        "a_cells",
+        "b_cells"
+      ],
+      "job_id": "aifeynman-core-t059",
+      "seed": 20261168,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "dd6b12e6dfde86bf6f570ca87aab16eae3f170772e7fe111877d994ee3a23df0"
+    },
+    {
+      "task_index": 60,
+      "task_name": "Allosteric Regulation - Variant 1-2-3-5",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-5.yaml",
+      "task_sha256": "2a91194f8af3cca1df32ca660908c5efb7ea6ca6546d63737216e3876f300ff7",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "t3",
+        "inactive_flux"
+      ],
+      "job_id": "aifeynman-core-t060",
+      "seed": 20261169,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "256d17a13cb70da7f605455b10d3d62e2f597298e1c9c9b732035795bd0d5de9"
+    },
+    {
+      "task_index": 61,
+      "task_name": "Membrane Channel Flux - Variant 1-2-3-4",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4.yaml",
+      "task_sha256": "acdb9d62121d9274485fb51a9206edcec89a9b468578b75e96e6b59132491a67",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "open_state",
+        "permeability"
+      ],
+      "job_id": "aifeynman-core-t061",
+      "seed": 20261170,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "191798bf2ba75722ab170d8175116cbdae62860ba4ff6c564ef9f5334096d641"
+    },
+    {
+      "task_index": 62,
+      "task_name": "Thermoelastic Heating Response - Variant 1-3-4-5",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-3-4-5.yaml",
+      "task_sha256": "cd2393e33f2640b0e52ecf0e64482ffeb9b673b8eff215c67d98c992fd037526",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_slow_thermal_fraction",
+        "prepared_adhesive_fraction",
+        "prepared_eigenstrain_fraction",
+        "prepared_slow_strain_fraction"
+      ],
+      "job_id": "aifeynman-core-t062",
+      "seed": 20261171,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": null,
+      "outcome": "evaluation_timeout",
+      "strict_complete": false,
+      "source_terminal_sha256": "a601d32a0ed0e85ac553b519459676d493bd2c28b340774a20a2b01abe0dd354"
+    },
+    {
+      "task_index": 63,
+      "task_name": "Vacancy Diffusion - Variant 1-2-3-4",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4.yaml",
+      "task_sha256": "d0093e9409ff54892779e7fc10fa2291d4e4064dc2e50aea5d3a388e88996047",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "mobile_vacancies",
+        "return_prob"
+      ],
+      "job_id": "aifeynman-core-t063",
+      "seed": 20261172,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "489ae2511a8e51a244d89cc564705ee0dadcc12c6f551be115dffe5e82a4af3c"
+    },
+    {
+      "task_index": 64,
+      "task_name": "Hall Response - Variant 1-2-4-5",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 1-2-4-5.yaml",
+      "task_sha256": "9ebab58a820d50ed42675e9f34747d179108f633292cd03341e5e1f65a78f0a4",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "mobile",
+        "bypass_conductivity"
+      ],
+      "job_id": "aifeynman-core-t064",
+      "seed": 20261173,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 1-2-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "94cfbaa12202927f69e309f0c14d44d3137903140b18f3536184e50b1670f09d"
+    },
+    {
+      "task_index": 65,
+      "task_name": "Circular Orbit - Variant 1-3-4-5",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 1-3-4-5.yaml",
+      "task_sha256": "d40c6b00418052eccbf446389c1103aee64f1b559b7eb619365275645cf3d876",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "inertia_ratio",
+        "reservoir_inertia"
+      ],
+      "job_id": "aifeynman-core-t065",
+      "seed": 20261174,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 1-3-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "95b5f1617727cd9532daef7d01b591f12fad303e4a0ba9e70d49b9d4052b47e7"
+    },
+    {
+      "task_index": 66,
+      "task_name": "Lindemann Pulse Reaction - Variant 1-3-4-5",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3-4-5.yaml",
+      "task_sha256": "9047703b42e583ebc768c817570ec5ae166a310f0f4c2cbd9ee7fe5b83998203",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "quench_flux",
+        "caged_pool",
+        "activation_flux",
+        "direct_product_flux"
+      ],
+      "job_id": "aifeynman-core-t066",
+      "seed": 20261175,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "514b08621a865522614c09295d5d34baac0db1bd0b5eaae6135ba804bf24bf47"
+    },
+    {
+      "task_index": 67,
+      "task_name": "Surface Pair Catalysis - Variant 2-3-4-5",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3-4-5.yaml",
+      "task_sha256": "1977c13dc183621d28b9fd274cb11e22b68a86c618002b85188b975523561584",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "immobile_a_cells",
+        "a_cells",
+        "b_cells",
+        "gas_surface_flux"
+      ],
+      "job_id": "aifeynman-core-t067",
+      "seed": 20261176,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3-4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "8705669b9a21a98c8a79cb1ed2e2aaa6d4b926464e586bdd3af741835822a5a3"
+    },
+    {
+      "task_index": 68,
+      "task_name": "Allosteric Regulation - Variant 2-3-4-5",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3-4-5.yaml",
+      "task_sha256": "094696153d236a6e89b8a4dc213b9e3dbd65325d2ff301ae7dfb0d036d1d7fa0",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "ts",
+        "inactive_flux"
+      ],
+      "job_id": "aifeynman-core-t068",
+      "seed": 20261177,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3-4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "d73156fa31694ebcfd6874714393b62cf91df5e77641fa114ab7c491dc56bd85"
+    },
+    {
+      "task_index": 69,
+      "task_name": "Membrane Channel Flux - Variant 2-3-4-5",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3-4-5.yaml",
+      "task_sha256": "130a823b08d268633842604d132b66c50ee476d026ddec011cfd5ff8e47f30d0",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "inactivated",
+        "secondary_current"
+      ],
+      "job_id": "aifeynman-core-t069",
+      "seed": 20261178,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "69e9240dcfbee21463c9f994d02d0df6676d8369c234d7501c8d028817ee1c28"
+    },
+    {
+      "task_index": 70,
+      "task_name": "Thermoelastic Heating Response - Variant 2-3-4-5",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2-3-4-5.yaml",
+      "task_sha256": "8ca7afb2d5d2188d570d09791b5f22da03e9ab570c387ed690257f013c24e990",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_anelastic_fraction",
+        "prepared_adhesive_fraction",
+        "prepared_eigenstrain_fraction",
+        "prepared_slow_strain_fraction"
+      ],
+      "job_id": "aifeynman-core-t070",
+      "seed": 20261179,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": null,
+      "outcome": "evaluation_timeout",
+      "strict_complete": false,
+      "source_terminal_sha256": "7e7417f76c67e726033919de43183acaedb1fa23af9e673ba08b9638ea211e5a"
+    },
+    {
+      "task_index": 71,
+      "task_name": "Vacancy Diffusion - Variant 2-3-4-5",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3-4-5.yaml",
+      "task_sha256": "452b327ee77d15aac94a471a4c9fb302c9ca5be34fe19de092604c27aa46d379",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "barrier",
+        "alternate_rate"
+      ],
+      "job_id": "aifeynman-core-t071",
+      "seed": 20261180,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3-4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "6401cbb39b08fdd26332d110a1df4245ed8e9a338686a2a5716b7b0fe69028ff"
+    },
+    {
+      "task_index": 72,
+      "task_name": "Hall Response - Variant 1-2-3-4-5",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "c450d8af7499addf471da4d0cf1ddb832681e9e358e590ce5f28e90c3e6ab9c5",
+      "domain": "physics",
+      "task_group": "Hall Response",
+      "probe_names": [
+        "mobile",
+        "bypass_conductivity"
+      ],
+      "job_id": "aifeynman-core-t072",
+      "seed": 20261181,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Hall Response/Hall Response - Variant 1-2-3-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "f596f849be94bc93bbae60ff5764214a9cf51f4a690c85526fbd8261d8ce3e35"
+    },
+    {
+      "task_index": 73,
+      "task_name": "Circular Orbit - Variant 1-2-3-4-5",
+      "task_rel": "tasks/physics/Circular Orbit/Circular Orbit - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "cc4dd7cddacc88b6eaa57867c307366c0fd238c29b9351cde824bd92d4b28b5d",
+      "domain": "physics",
+      "task_group": "Circular Orbit",
+      "probe_names": [
+        "inertia_ratio",
+        "reservoir_inertia"
+      ],
+      "job_id": "aifeynman-core-t073",
+      "seed": 20261182,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "physics/Circular Orbit/Circular Orbit - Variant 1-2-3-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "14956e1f3ead66f388198d93957c456556bc15e7155b1da6cb682ed2abaea56d"
+    },
+    {
+      "task_index": 74,
+      "task_name": "Lindemann Pulse Reaction - Variant 1-2-3-4-5",
+      "task_rel": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "e025eb34c7522b95b2e6b22b606b3899824daada40eca718b65ca7de11b64f46",
+      "domain": "chemistry",
+      "task_group": "Lindemann Pulse Reaction",
+      "probe_names": [
+        "quench_flux",
+        "secondary_pool",
+        "caged_pool",
+        "activation_flux",
+        "direct_product_flux"
+      ],
+      "job_id": "aifeynman-core-t074",
+      "seed": 20261183,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "60eacda4e18ce1e8adc099f128750f6f06b85684f091ec42bead5a68cd5a516c"
+    },
+    {
+      "task_index": 75,
+      "task_name": "Surface Pair Catalysis - Variant 1-2-3-4-5",
+      "task_rel": "tasks/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "18c53ac021d211c4ea0b5c352ec586cd760c11b25b8ca12723ceb3d1a9e88e62",
+      "domain": "chemistry",
+      "task_group": "Surface Pair Catalysis",
+      "probe_names": [
+        "product_cells",
+        "immobile_a_cells",
+        "a_cells",
+        "b_cells",
+        "gas_surface_flux"
+      ],
+      "job_id": "aifeynman-core-t075",
+      "seed": 20261184,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "b96e43bf450e6d36473f8412482a8b16a0d1fa936a3e90740ceea0555f8372c0"
+    },
+    {
+      "task_index": 76,
+      "task_name": "Allosteric Regulation - Variant 1-2-3-4-5",
+      "task_rel": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "f3701a0f81c3ff00566c6dc75c58774b88a7b410b71e18d2e94cb9509e5a1e6e",
+      "domain": "biology",
+      "task_group": "Allosteric Regulation",
+      "probe_names": [
+        "t3",
+        "inactive_flux"
+      ],
+      "job_id": "aifeynman-core-t076",
+      "seed": 20261185,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "bb7688e4c2ee918c05a36e8e80dce72098efcdc9c7561499f7db25979dad0abc"
+    },
+    {
+      "task_index": 77,
+      "task_name": "Membrane Channel Flux - Variant 1-2-3-4-5",
+      "task_rel": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "0695d7053f557de61a6d2167fb45ec136c691f29a88733a5e2ac2e40213dc992",
+      "domain": "biology",
+      "task_group": "Membrane Channel Flux",
+      "probe_names": [
+        "open_state",
+        "secondary_current"
+      ],
+      "job_id": "aifeynman-core-t077",
+      "seed": 20261186,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4-5.json",
+      "outcome": "completed",
+      "strict_complete": true,
+      "source_terminal_sha256": "7e85786e6c58936579fe20d38250a47242e44aa7433838fc6fb61cb3c340952a"
+    },
+    {
+      "task_index": 78,
+      "task_name": "Thermoelastic Heating Response - Variant 1-2-3-4-5",
+      "task_rel": "tasks/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "13b1456089d3fd2a13be2d23345bce733229039932e545ff1c865348134468de",
+      "domain": "material",
+      "task_group": "Thermoelastic Heating Response",
+      "probe_names": [
+        "prepared_slow_thermal_fraction",
+        "prepared_anelastic_fraction",
+        "prepared_adhesive_fraction",
+        "prepared_eigenstrain_fraction",
+        "prepared_slow_strain_fraction"
+      ],
+      "job_id": "aifeynman-core-t078",
+      "seed": 20261187,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": null,
+      "outcome": "evaluation_timeout",
+      "strict_complete": false,
+      "source_terminal_sha256": "8e4bd3c711ae68984ef087ff078606f0a8fd1e85cd6994c052131850481f06a4"
+    },
+    {
+      "task_index": 79,
+      "task_name": "Vacancy Diffusion - Variant 1-2-3-4-5",
+      "task_rel": "tasks/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4-5.yaml",
+      "task_sha256": "01bf25234841aefc9e349f0c44c686b3cb1897a67db7edaa5dcc8c93f3f7b4ba",
+      "domain": "material",
+      "task_group": "Vacancy Diffusion",
+      "probe_names": [
+        "mobile_vacancies",
+        "alternate_rate"
+      ],
+      "job_id": "aifeynman-core-t079",
+      "seed": 20261188,
+      "replicate": 1,
+      "attempt": 1,
+      "result_path": "material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4-5.json",
+      "outcome": "native_invalid",
+      "strict_complete": false,
+      "source_terminal_sha256": "1e96950124e0d53df430b988ff5e3f1db2ec04a26b4d2173da9b8d011e9d429a"
+    }
+  ],
+  "updated_at": "2026-11-11T05:26:31.843001+00:00"
+}

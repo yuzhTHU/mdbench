@@ -1,0 +1,2997 @@
+{
+  "metric_definitions": {
+    "paper_task_SA_P": "Symbolically equivalent phenomenal tasks / all planned tasks.",
+    "paper_task_SA_M": "Tasks with every planned probe symbolically equivalent / all planned tasks; independent of P.",
+    "legacy_probe_M": "Symbolically equivalent individual probes / all planned probes (matches Legacy Core Excel).",
+    "missing_policy": "Missing/invalid/error observations contribute zero in derived policy metrics only. Native nulls and original errors are retained.",
+    "strict_complete": "Stored result with valid P and every unique planned probe, each with explicit boolean ID/OOD numerical and symbolic flags. False is a valid score.",
+    "symbolic_split_audit": "All available train/ID/OOD symbolic flags are explicit booleans and agree; absent flags remain null.",
+    "scope": "Three Core80 independent attempts, 20 tasks per domain, 8 original/16 single-variant/56 multiple-variant tasks. Not Full512."
+  },
+  "inputs": [
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/setup.json",
+      "sha256": "0800b902cec089c54a47a8c5764883ec92b1a779c943318ef34a983e0a852b9f"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Original.json",
+      "sha256": "4922c875b0273d4c1002809271bb53e57a78a0beabd37dd63e81bafaaaa09d22"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Original.json",
+      "sha256": "d845198438a16f7ba3b1a80ac539d8b040775d98172bf2ba74e1de4a3f12ef53"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Original.json",
+      "sha256": "deddef1988191912acbde69aa6674e4320d3f948f3ee1cccd0d59f40f02d55b6"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Original.json",
+      "sha256": "ad47a54186c34aca2007b97d4dcb71bd321bd08f060c4b5207a4ada2b6f3e426"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Original.json",
+      "sha256": "64a50cb16df015bbd41f80a0a2e68b8b6419b18e6bf8bac6407c81b564ec2c5d"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Original.json",
+      "sha256": "a4cfcc09ca9d46c636c3160829edd1421426cf23b706b7146de667815c72532c"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Original.json",
+      "sha256": "b7a33bdeac1f76442527bf2ad8a6279ec48c22f02790635d741c3099e57ede08"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Original.json",
+      "sha256": "80f00f7ee0e3a7616ea3aa75d01a50f213321c1642696bd56c329c1b6bb5e2ab"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 3.json",
+      "sha256": "5db3f1f556f34d1c3ee456740300caf1517e7b6a38c5734dbdddb8b399dbb912"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 2.json",
+      "sha256": "df0f7c9e3914d5cbe6f5288249f9a6b9bfd086e86aa0c516feb352617c658582"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2.json",
+      "sha256": "20c15179195e5554406675c75b2dd071b479be5a80059a095c5d303f3d36f7e7"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1.json",
+      "sha256": "af7a716557dc154420aed754fe9cdc0c1684ed51e04130683b119fe3a0883024"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1.json",
+      "sha256": "3701fe840850d986562f82cf50c14234524bc25ad9b8f4a61f21515dd0060080"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1.json",
+      "sha256": "1641c7d7025bc91b5b0e450cff0e0582c35a35066a1543dcfab3b383a9ca2df6"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1.json",
+      "sha256": "e763145aaaeb25ffe0d8d787c33302d43f94f023a74c8637f30bb11cdfbb031d"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1.json",
+      "sha256": "809d949b494238c74698eb3082409211eaab0db07f30d1c8b255f3233ff450e1"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 5.json",
+      "sha256": "1f2803863a854b56b3a71e78662c124a524d9bc626131abcb013e3a4b74c2af7"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 3.json",
+      "sha256": "709e69936bc39f8128a581802d2a901519fefe9aa5e8c31813d4dd212d29592a"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 5.json",
+      "sha256": "c0e43945f43c2ca285b0e8d94eb9117ccd22e351f5303ff92e2911b9985a7de1"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 5.json",
+      "sha256": "1f64732ee0cc271de74cf2184911459315d801b6f38d89217c23ee0b8f9f27fc"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 4.json",
+      "sha256": "1b630f34ca9dbf97f9eac275fc26ed938fea9157afbe00776c4e3d5b5c7bab90"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 5.json",
+      "sha256": "a74fadb428c6c77a7a98bd9e640e12689eab531803ef3f284ac21ce4d7b00bd6"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2.json",
+      "sha256": "c4c29b9ccbdc7b80286c6151fbcaca7875aad56071a549e26d13a1b372989998"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 5.json",
+      "sha256": "b64c4db4179268f955791da2091d7db0ab6d153790625151259da68afb5ac2ba"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2.json",
+      "sha256": "84f843d4e316d691cf6360d44d3f4759eabb9e44189f6194445cc81153f5cd6b"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-4.json",
+      "sha256": "2600ef60aabab6e202524069e9fcd2e87b2fbbc9b0baf16f8bb006b3768f49c9"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3.json",
+      "sha256": "47054e4ee5c184f82b0908ec1c8ed861ca6f7884ad909a1d04582f67f83fb756"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3.json",
+      "sha256": "ecddef94545f71a8a0058e8f0ed7e01200406df9743a990a35208d094aeffdd1"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3.json",
+      "sha256": "100d57ffaa620d973b1812d26384ae4a1bc7c8a326ee793a3219ab95a8713830"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3.json",
+      "sha256": "5c03c498e82a35af3431bf846f60a1b9d8e01e2b07eeb52b3f369bcfac476ce7"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3.json",
+      "sha256": "8098c5fbf7e99479c707df3582322243fe8d2e4a66a34c60371ebf24733bc0a8"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 4-5.json",
+      "sha256": "76c0a1257598389e283bccb40a469c352159a8d16bda91284e362d6cd6711bb7"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 3-5.json",
+      "sha256": "de158ddec01f6aab661724fde944a6256c7bd82f92403f8eaf1bcbac780e284f"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 4-5.json",
+      "sha256": "9ebed5736dda7b87c44476942f46d51ddf912b261013986ddb9b8418217beea6"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 4-5.json",
+      "sha256": "597cf423fa7c8984147a7f4cd557ae78c05d6eb6a7ef2aaee6304d4b672ee822"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 4-5.json",
+      "sha256": "25b06cb1b2cf2a0889524ae432d75d6cabb34cfef437287b7bd19bdc53bbf504"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 4-5.json",
+      "sha256": "a188a3487a5a17a8c9a0414ef14cfacb313d0117dd66a1be4c29a9538bdf8282"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2-5.json",
+      "sha256": "0799d01c393cd8353d8aba9e869b889efab8130c27f49ca88947ac6a8ed7ff81"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 4-5.json",
+      "sha256": "3a395258edd5c6da383618d79efda27dd55d4352eb4357ba38889c34312228aa"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-3-4.json",
+      "sha256": "3b7b2757228cac776876337465a13b960247c1f846d6c1e5bfcb5bda007eadbe"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-5.json",
+      "sha256": "18b73a16b859da59514fb0b454534b7544b7222a56a5c9282832b418c5af7f1b"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-4.json",
+      "sha256": "cdc010b06972b3cedb67aff7bc1192fa3851ced7e83c9600ff539814ca930124"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-4.json",
+      "sha256": "85c79d2da9f8c29c7bc9b26614603df1e008719fabdd6c43b9d6b717fc0811d7"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-5.json",
+      "sha256": "23a29eb518b006015d07cf27da725eb4d2ec2b031aa7c68a2ddbb8e26d4d321e"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-4.json",
+      "sha256": "db31cb016f94b9ec72c64eb68e7da6de3cc2c4cd519a854c8a55e7d50ae7b97d"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-3-5.json",
+      "sha256": "67bfe9aae18372f0a71e3b58487bbedb5d3d41253f748616a5f81c09c075089f"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-4.json",
+      "sha256": "e03e94c4c9d01e748fc0dff2eab7df324fbee040a39836770d0412b916701082"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 2-3-5.json",
+      "sha256": "1ae155db0e655ed3e280feb53c34515cefc2bc520d1ea97565f9f59f19c4dc29"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 2-3-4.json",
+      "sha256": "ce6940e9a3b9c80bbe5b0703b409feb9e2f0c8b8d011b141b88e1ff5bcfe8f9b"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2-3-5.json",
+      "sha256": "fb3a6990fb7874b0c1e5cc70744f9fd82e5e9a2ae1eed0228533d0046cee472a"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-3-5.json",
+      "sha256": "ab8f1e3298b07928cddc4247ccfbc15799700f8f83061be5f3fabcdb250b3c9e"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-3-4.json",
+      "sha256": "b5e89464ffc2e648e6603cebdc47d24ac3b67bdb2f9c09e4b3d0e8760c856c43"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-3-5.json",
+      "sha256": "acdc15d7f9484f707f28ce049098df9e8ba79de67a036b6b732300ca11ff2581"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-3-5.json",
+      "sha256": "7d09047ded97a4651b9f6c53a9020bf914d1f314f9bd0c4d2267cca71973f437"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-3-4.json",
+      "sha256": "38c7576ecfed9dc2915aacd6d9f1d5c9bec9b8cfda951507cd2aafa5ea285c02"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-4-5.json",
+      "sha256": "7b0e1bb352d0db12d080c2e41da31db8ba172ddb9922a792d8e06ad754e04ecd"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4.json",
+      "sha256": "7ef46a88e029d8d28550916501be4548570e8f9aebaa4b0841ddeedd7b295213"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4.json",
+      "sha256": "4e876cc736354188929d3c997acda4e4528c10c38b175176530bf5c66a181546"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-5.json",
+      "sha256": "16b11de7da4bf7b096e103565dc39c3dd336f38ab1213205899c468b484d98ea"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4.json",
+      "sha256": "27c3bf9f2f6ff63fe4d166890751237a04692178fc86173e7aa888dffe933558"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4.json",
+      "sha256": "e88ab213f250ea221c61e55cb103dc686d02cf69516297101eeede4e6674d0b7"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-4-5.json",
+      "sha256": "f9f90f7807ad3114481fa0abde4fec34d41b9012407527ea97e1d93df80766d5"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-3-4-5.json",
+      "sha256": "6a8bb3127aa91651385aa36888e23397ef57a8638a65a125c483c7d949df7662"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3-4-5.json",
+      "sha256": "dc0b02bf787b485926d8554e271c14a5457ae0d22f70540347d473ec74d1e2e6"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3-4-5.json",
+      "sha256": "db3721a67b7f8777762e1ede8a1ec5b053ca5eb5e9363b43e7a8c2bffbe3165d"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3-4-5.json",
+      "sha256": "47b2389e259306c71c7b941624ba3be73f587181aa1f676280abaa68f7c170ea"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3-4-5.json",
+      "sha256": "be9f5c4aa4ed6213bfc9a262b91134091b620a42761eee7136efb4dbe5ecc85c"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3-4-5.json",
+      "sha256": "e4e3ba85b86a8a10e0eae83db3d3f55017ce76104b174d3efaed7093bcd13a24"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-3-4-5.json",
+      "sha256": "cb13224075df4277a006e8341ae7d7b706c157e50fd45ea0b5d4d4599cf8455e"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-3-4-5.json",
+      "sha256": "7909e6aa480e918d7a0e0ff84f3c010cd2ce521957b880b0e68b4024aa4fe689"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4-5.json",
+      "sha256": "a6fc3a59e7bf2a6e74653c2ce79e88e09459bbf9821b72176d615d12405a7be7"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4-5.json",
+      "sha256": "cb9295e73a765b8b56e8d170bb4e32d4f37730482a29a36f88ac5f959a3fd641"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-4-5.json",
+      "sha256": "01eae81313eb6284d177b9cc5cfee80d2549230d44bd5afd37c4c5f726df317f"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4-5.json",
+      "sha256": "6e2e95f721ea3e0392ac7d96da80364fe2de24ae8212e491ca8322638cde62e9"
+    },
+    {
+      "path": "aifeynman_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4-5.json",
+      "sha256": "c6461d80e8646c3b19a765cf77ec664d6f50081957428b0f99c4f84e085fff17"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/setup.json",
+      "sha256": "1cedb9ec9ac98fb12edd9fe1e6bc95f270e51a914e5dfb5efb9173d2e1b862c1"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Original.json",
+      "sha256": "65afe1b7665ae30ba393a1c5ef2469d6979660824da7acf80b1aaa85c7421e02"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Original.json",
+      "sha256": "fe1d18ad2fea8259d53d3f9175fd8b3fea7fe02eda1eaef9b4a91b204932aca9"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Original.json",
+      "sha256": "7af0b9a66a97f69f401882a27bb908ccb10524e34f2cc6a01dde70ee5f482ce3"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Original.json",
+      "sha256": "8322aac42743ec323c0a00fa0a643e12284fa80a0074b5d671b0ce45f55cc8f6"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Original.json",
+      "sha256": "00c7f71c2dabfa276d4fd84302b035f347fa036d1d07687f6679e83afbd630d9"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Original.json",
+      "sha256": "2cc9ec80136320074fe2f41ca8c9dcb5eefd029230b92482d9fc5281ac401b46"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Original.json",
+      "sha256": "2b00488075c9ca8b7783406c692035ad50b0dbb8da79517e6024a4a98b1e1541"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Original.json",
+      "sha256": "c5ab09967c7bed4009a5a381099f31055ff9c80abd4fc4e67e77efa1449673a1"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 3.json",
+      "sha256": "8405504f43f790e6262df8551389e7d156993aee1fdcd01815a97ad8934155ef"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 2.json",
+      "sha256": "afb7813a7ef7d6314f265a0c9b23cc2b9eeac7c3cdb6d90b4621428a8e391396"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2.json",
+      "sha256": "77f0b872853b14709163a5a090c0e4a1a03d288d520c0728ca47f5be2143d0b9"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1.json",
+      "sha256": "94695b9dfe4a7286562f82879f3797adf4376e713309a4368815855faa74ab2b"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1.json",
+      "sha256": "ecf09bd16d295b2c6258a52af307508267efc5e865e390ed622feb8e9dcb9f35"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1.json",
+      "sha256": "4af180c5da7495e4f2d24fdcf975dd075a56ab026d203c4f3641a11804723c24"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1.json",
+      "sha256": "235b4b4ae089c4b68184d00bbf67b78727b7583e0ccb98d007600ee4ad9efc43"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1.json",
+      "sha256": "46d1a76906595298245e7f39ee2c7e7198b6fb63f56aec4d2f5b6ed23c882439"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 5.json",
+      "sha256": "9061e9dac6e8696159fe9405d4dfce86ac93f4d5f959afc9a2b1c31a7b80ddbd"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 3.json",
+      "sha256": "d9433467c81a34f6308cda61d630f9442d5f007ed5fb77e8b371781e70e85fcd"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 5.json",
+      "sha256": "e5a6e2355976f38d22606b3f00375b806a05cb0ebe6ecdf3129019b7a4c2acd8"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 5.json",
+      "sha256": "206be6bc94060ba5cd352f14141799cadeb2799a00da9816d23acdd741b31e16"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 4.json",
+      "sha256": "876510f051676645f4b2ee55822a1862c9b6721a645cfaa20eae89c0f74ceca5"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 5.json",
+      "sha256": "da86d41c4792e47d96b5b0a337c533a5c9c02eac838f2b362208b431e8a60f87"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2.json",
+      "sha256": "c1bf1f6c14803d6ca4af96741885e61ba3f921692b016e0caee09c09d1fe33a2"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 5.json",
+      "sha256": "34b8290bc5736b0fb0be1d3f1abccd04e9d7b05466cfa8ca349000db3dc828c6"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2.json",
+      "sha256": "5feaa58196dc657702bf5a14b88fae6530417fcbf94495f9b143401358c46f21"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-4.json",
+      "sha256": "623149347e286f3694b98649ae475867efb73cf902eac01135c899f35f186e6f"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3.json",
+      "sha256": "e9d4e85d46a53e7de86afbda8187462ca4f39e20b8b3562046e5c885e9e136d2"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3.json",
+      "sha256": "71ea8260c212da4b80b3c3b227500e90e0bfb97f9bbaaedeee8002aa3f73659c"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3.json",
+      "sha256": "144cb267424dd2a2c4d4e7f46075313d43ba39b4f94a703a51ccc0f0116e73d7"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3.json",
+      "sha256": "dbadbd8c6ae8e0e121e47fa87422e9caa252f15fd23e7e66169b5e501cb791aa"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3.json",
+      "sha256": "95cf25598a8e607c7c0f11d9b4896dbe7213c8a7c98ff0c7bdb006e317bb3dd3"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 4-5.json",
+      "sha256": "4adb530beb2582a5d85c29f725fa0c76cf3fea6067d46d20b5a56b4624861a7c"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 3-5.json",
+      "sha256": "a248383207fd59e6f90ed2ceb14da80658e88cd899a34f8d543e5e44242c8674"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 4-5.json",
+      "sha256": "31e99ccca41b98b148ff03f772a3946be6bf96ba02e72b63340677cd6b47cf05"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 4-5.json",
+      "sha256": "b8d46a82d6eedbda62d9cebcaf5d5b81ffef8e94531d1f1d9cac4b752abc4376"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 4-5.json",
+      "sha256": "8d460a3a7d0da6b5fa1745b0112927858d8f381ec80935cf1ffab853a8ca8c42"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 4-5.json",
+      "sha256": "afa853166242cfd6742f076fca577fa4e3695f202bb2fc128f539a9fe3336faa"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2-5.json",
+      "sha256": "4a5d44fd3d03bd80357ef8cc34cd36a0ef993bd1af58fec2843e09d63414e7e4"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 4-5.json",
+      "sha256": "9e84df59c196c63f643d18addcc34d0e933f777784e312e05a926fc41e744576"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-3-4.json",
+      "sha256": "a0b5ffe6760c35a74cc295572a216b1276302eaeb319c87c66d7a12f341224cf"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-5.json",
+      "sha256": "d010dc1f7d9a74c5727b38aec231c39741238acf38ad84d524548a878c67d4cf"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-4.json",
+      "sha256": "5ea30977040d323c6776e9152886bc4c1f2b122b2fa4f6be530274e97eb25bbc"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-4.json",
+      "sha256": "5d1ad0bfae4dc46a630c0d0c618c1dc27fea71672d4b9f7bfa0fd4b4579a1e9a"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-5.json",
+      "sha256": "bd1733d0b03b71f3ce2c1903c35a74a0c4e9f3f4464397b7608317102ff071c0"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-4.json",
+      "sha256": "18ad273e40ae2bb818d4b39860383859ab1259ca004435ec96b7e29e5e81ba10"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 1-3-5.json",
+      "sha256": "b7a61b3add6b95c0460cb2b790f1adea1bef3799c4cdb131873c4f96b03753cd"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-4.json",
+      "sha256": "7bb26e3df1f6db81e08dcc5c48873b9cbac4c0cf18182701b2bf4dd8d5b8d1c1"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 2-3-5.json",
+      "sha256": "a2119f0f489ffc11bcfbb88f0fd5e44bc56fce7fb17c9eb0f597ef95f09714bf"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 2-3-4.json",
+      "sha256": "b2ffb96fa382825eb425be647022c07be06096e8f74f9fbae8f7a9a549366d99"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2-3-5.json",
+      "sha256": "e3faf6da70ff6cf8c0fa61f6d1e6cf4a316c5cae7c3112cb2554fe386de357d8"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-3-5.json",
+      "sha256": "cedfa691d79931535d37ed9d5869abc2053f0a24a419088ca2d39a3fe5e1be1c"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-3-4.json",
+      "sha256": "58c4e3d836dc68e661d87f5a0ccef9745f2f4bd8faa170d62c8a8a596c91ff4e"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-3-5.json",
+      "sha256": "6b68726ce184cbb00f1fa22ae8d9d9d44fc8e6640662923b6072ee7b8e0307ee"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-3-5.json",
+      "sha256": "3c4bac8962c3adf31a0b4890d045440b617f3b5a7589a723158317e10c2a381f"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-3-4.json",
+      "sha256": "1af02973b2475bfc463db06a0804629a8e164b5b4005fbbc8823ea947f1b4241"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-4-5.json",
+      "sha256": "cb4a28f58d7f460c1ce9d7eb758d771cc7fadc4291ea3fc3461a730fda9b03c0"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4.json",
+      "sha256": "e10ba639dfd86e8c2dfd2944505519f856e691f747309d1cfeb65d8c79ccef0e"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4.json",
+      "sha256": "9af047ea101071b82f6268e468a33eef9ad9327fa1cfb8b13171867389f39045"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-5.json",
+      "sha256": "1302862b21c4177c1569be3418a7457f2e565c293313bac348b29b4b45a8cf9c"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4.json",
+      "sha256": "2371a6a8b6a056c0488292a9f66fa42e748b5e52cedafd5c0082efecf8c5d7c6"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4.json",
+      "sha256": "d47931b07bd5f5bf5dd192dffe9309feae90d59dcfddbdade0cd05051da84ddd"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-4-5.json",
+      "sha256": "07e5c91a938e9311783bd23c3b24b562a0d2a87f4e1bb00347584aa7c37494d7"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-3-4-5.json",
+      "sha256": "ed9ed3f797b298f527cfeba922ae051bfda0e7f2d8b071a6b0f9b0ba5cbe3213"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3-4-5.json",
+      "sha256": "24a704991e3f6026f6fa94554c9176d2ec5f333545d09c740356867a0a378446"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3-4-5.json",
+      "sha256": "cf63ae3c8f4df36a524fbdf6b4bf2eb956e96db26c0239da43e53464c2cef022"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3-4-5.json",
+      "sha256": "0fe9f3b21e6c79b054ed1c551a1887655933274464fa9c10db195ec7e74efb15"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3-4-5.json",
+      "sha256": "d31afb2fc229e9a7d73e48723c22c973b7b5aa25e888a22ebc916b94a397b275"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3-4-5.json",
+      "sha256": "518d69c92e8bc420fa0e432dc9c43f66b884375de4073e888a13ebf098a6a9df"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-3-4-5.json",
+      "sha256": "853640dd0a36972ee2e973d761cbc8d675607632eed04beb06c6abd1ad965371"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-3-4-5.json",
+      "sha256": "2ae0edbc531c27d95dcdab3c6c4c816b0d1bd87a414cf451133f21ffef82bec2"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4-5.json",
+      "sha256": "d01118bb0eac23922111e0589301d26052e00916d61e062ff94b96ecffcd3e8f"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4-5.json",
+      "sha256": "df9bc8c11539b04f71afcf1c7e8466602ec56a63d85c6cdf2d2741a739600f23"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-4-5.json",
+      "sha256": "aa54be77b72eb9e55d7a12fd645bcb275e62cadb4088ff898d6fd6bfde8289c3"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4-5.json",
+      "sha256": "8cdf2f045f18928c6d249a3112537eec4cad13f0db5c73207bc40155ab44d62e"
+    },
+    {
+      "path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4-5.json",
+      "sha256": "97d2d5904734a63ecfc520b6aad9e56fc010eeaf76931253fe02585fb46ea0fc"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/setup.json",
+      "sha256": "39db833009b409b1ae430ef3ff44ceac81d7f112fac9459cee3ba87ebc96349f"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Original.json",
+      "sha256": "dce8ad0518fad7b34a76b39177af9b50ac56516be10b06c4701853f883867ed2"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Original.json",
+      "sha256": "23f99493c3e83593c5aaa0288d57a09a948db08d5d29aee1efa2ae6723177840"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Original.json",
+      "sha256": "d9647c6a32f3223fdc2c8cf580d4ef5b1644d077a4728b56352a029e0c86b4e2"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Original.json",
+      "sha256": "e042a396da5b4fe2289edfe421e1c70091f6f1920d2cc2849f32765b2e1d0eac"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Original.json",
+      "sha256": "78a95d0f4ebef8029316b9d40e6d240766a1a94d9b1d3d0d7ed3d335b4c8ecbf"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Original.json",
+      "sha256": "3ef9ecd6acd0980aefbcfb2955bc41d5821fbba7aa8fdd82c42c82e05baa1e0c"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Original.json",
+      "sha256": "50af143e98410169ec38fd7ca041343a29d366478c9e3a244fdf18bf5e7d50ce"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 3.json",
+      "sha256": "cdb1c4abb6cc54b2939193c12771007d8a1b8105a52b0d6eab47dde329f9b4f1"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 2.json",
+      "sha256": "29df7b024dacfa61840eab877c4e1c67dbd432dedc6c6ee6e8ad17d7371197fa"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2.json",
+      "sha256": "dae7b7d4eb31c3bbc221fe0c8313727b22d8a3ff4b213860005626cfeee0f440"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1.json",
+      "sha256": "82ddc7ba4cc8b3d67a344d6ae61f84dffb3883e0f2eab9fcfd9bac3f71db94ae"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1.json",
+      "sha256": "ddfb06908a700c639f2bc3e4257a7106a835b3749eee6c30b243d67a6050a8d0"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1.json",
+      "sha256": "f924536a92957fce58ab9714fbb70fedee71a6dbab301561b7c7edc3db87b3f4"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1.json",
+      "sha256": "0becd0b287ae0992f041c6894ac19be974a6b583fb3014e836d35de29494af0d"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 5.json",
+      "sha256": "cb4e8477d35c7d859e3bc391164e2ab5cae8f032ad9095cc2363814da6206992"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 3.json",
+      "sha256": "90b18e3b535f3ea1ee3086e6df0adbaa0e50de02f0653472cc4914ca31b54812"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 5.json",
+      "sha256": "ac68ad3033bc5877af2728183e71298c56ca712fb72e8e1f7f36957e575eb9a4"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 5.json",
+      "sha256": "f59d4794b05ee897489b92c63953e77a16d1b469593dfd5412a3bc00ddfac51b"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 4.json",
+      "sha256": "5499c3a630da454273ef1946e19ed27f65672375b2a690cad80c78000fade58e"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 5.json",
+      "sha256": "a23b98dd1d6329a2142aeccfca267b2a5d72e930414a33182e2ecc7272aa9601"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Thermoelastic Heating Response/Thermoelastic Heating Response - Variant 2.json",
+      "sha256": "02f5a1f4fbc239074765fb0cefd7c356fb7e577c60582ccda1ebcad8c2752c49"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 5.json",
+      "sha256": "273b9ef2f2462490f4fb09a33326c5f4244211042c8fcf2c57a50652be134667"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2.json",
+      "sha256": "30c56f9882a578ad624335a40835c45185a40762ff78a19d4095a73a53490847"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-4.json",
+      "sha256": "8617d04cbcc5ebccecff5be1a769f98c7cb795dfb4a9f9dafb3a4f6cba389a2e"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3.json",
+      "sha256": "97d6d73339e96932273fe3800510297752da2330631765bc6a93fdd87d88e42c"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3.json",
+      "sha256": "1ad1bf7238886e417b73015c92c05a9c83d7d685f9dacb598795e68eff61bd3e"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3.json",
+      "sha256": "9bd93e471193302233a189dba9b577de9af66c02ee7c24dad51f57a1728f5cb6"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3.json",
+      "sha256": "aacd14ce39f0d0048a7fa649abb211649f3043dab30c4f2659a5e5e4eb1e092a"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 4-5.json",
+      "sha256": "891d028c5da72ea41990eb60124707300f2691e1071cd2fa5da29a060a48bce8"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 3-5.json",
+      "sha256": "6fd2ce638904736914a3e46ea7e75c4fefef1ab8b410d05d1aa91062457b3137"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 4-5.json",
+      "sha256": "4041b82cd724eacb74726e6201188b67aa96a325dc214ca84641f96ae2ec0292"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 4-5.json",
+      "sha256": "e68bc6631d552cd9a818e938c76b7c0ae34282c1f0dae6d2fd15dc3ae903b1e7"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 4-5.json",
+      "sha256": "4dfac70c48d1ecf2125443749b577bd88141383698f189cae9be9c8ca4be0ab7"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 4-5.json",
+      "sha256": "e1cc288a116a7064502ab26ac171b6ad1f81b24c12bca951532cf0c518be8061"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 4-5.json",
+      "sha256": "d42fcfc5fa4a9c46e0dda8f51d39ada53e09db3754936d826b21cf24841c237d"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 1-3-4.json",
+      "sha256": "6de824fa838979fab19079dbce0edaed85efd19d52d8bc9208a4df90c451f874"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-5.json",
+      "sha256": "4980c9b0f7b58bb780ce23f92842148abfd450c94ecbe0caaa4e30f481f2dbdb"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-4.json",
+      "sha256": "404eb90fb1f72795f6769a7edb89bcbe9949cfab25c5ab82373ecc29057049bc"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-4.json",
+      "sha256": "7d08135741c8a6617253927edcb9e632a3b59112d36a3571b1773d018b18d92a"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-5.json",
+      "sha256": "f1e56a36fe20485852506a5e9ade8036cd181034ef3b6e22ce7c42645b27420d"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-4.json",
+      "sha256": "7238457404420eaca33b7aeda38e7bf9a5c90e5c1aff291526ba1472702aa9af"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 2-3-5.json",
+      "sha256": "8b1fccb62f8d8efc44f0e562be3e4a55ba1598146a807d9e934336712a611265"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 2-3-4.json",
+      "sha256": "277e679878316b0a9157fa2b76f3454c0f4c9a71ca0eaccfd11a62336b5f2809"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 2-3-5.json",
+      "sha256": "9f3ff395a599e4a48db811ab6e2efa50e29aae60b76ca8da9a6fd20419bf3e23"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-3-5.json",
+      "sha256": "9f75ff1cc7579862c33fa632406bee73e1c33ae7cf75182c9bc3d910fd603cf1"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-3-4.json",
+      "sha256": "cb159112c0eb7ab9cb648934ea35311d57f346e9d265a98078f7b54f8c1bee18"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-3-5.json",
+      "sha256": "54aa303d9b9d0cf882e48f1dcdd5aef6af3ff06862a0f3dc6476c45e9f85432a"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-3-5.json",
+      "sha256": "5b3c4608f113b19fee883ff7af535613bb81cc6b7c29e3c0ef2471f82aab556a"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-3-4.json",
+      "sha256": "aa868e14447862ab77c4d2fd5a35b9bf6499e407a6af60582dec1d6365d13bf8"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-4-5.json",
+      "sha256": "f60ecce49dd19b29167567f16be1722d76e66ba0ea676aa4a0ebba70eda88303"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4.json",
+      "sha256": "f1a9f871beb4fc80786c54e96c939de866dae94065dc1b1f30ada97e218e840e"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4.json",
+      "sha256": "d59ffb129f4541a45056a646e8bf176669f381d8f8fe0c9013d67de7419955d2"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-5.json",
+      "sha256": "15508ca68a29ae61a7f5cde54eaed041f96603e10f33eabbd55bc3e477e5a800"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4.json",
+      "sha256": "d3236caf20cad5b286019cf4df907e591c7455fb2d59dc08a12f2d4f79defc18"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4.json",
+      "sha256": "1b1da1081849a7395b321043815c2db7b68ee24d46d2b8b99d1afbb170bba093"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-4-5.json",
+      "sha256": "95880e1dfa60e091ccf4f6dcbab672d636fdf4f4be84aee4fdb39dfa05c5399c"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-3-4-5.json",
+      "sha256": "a2b2c25287c7badb037774337b93e850bc1ce4a805f702f2648f38f957e99a9d"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-3-4-5.json",
+      "sha256": "41f3f637e56c5fb3655b60cce8f2fd0db6812808c0e5adfd7ddcbcedfa2e3c9d"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 2-3-4-5.json",
+      "sha256": "23bcc7be9e8ba45a2ecc33a786be264b6b4cc9799a7b15bcfc39588a49c58d13"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 2-3-4-5.json",
+      "sha256": "2e2f9c93272b3e7321e6aed58d2b6c78e57b64a30a6ac25256ad1032ffda4102"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3-4-5.json",
+      "sha256": "e412b2e321522ae20b8516d1f9057de266747054ad6f33d88599654c0ca514ee"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 2-3-4-5.json",
+      "sha256": "a3016c2bb486d7faaddcb0914d904ea3ec773558d526926825a99216f5d67174"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 1-2-3-4-5.json",
+      "sha256": "8bf37e3701a63f91e28371dd24e9ffabf0fdb4d73805b8cb7424c20c4aa4741a"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Circular Orbit/Circular Orbit - Variant 1-2-3-4-5.json",
+      "sha256": "222a79861eefa1e0c720ef77fa4ff64ecba4a06e56cd8fc426135da314ae582e"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4-5.json",
+      "sha256": "f1a81a53b15ebe1fce6d4f82bf125e96cc50bf102a80c12d0c9daa1a7e09f83f"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/chemistry/Surface Pair Catalysis/Surface Pair Catalysis - Variant 1-2-3-4-5.json",
+      "sha256": "b01d674d59df9572cb4e9b4f8da596513b1f8b7b17568d55e955358bed7d773f"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-4-5.json",
+      "sha256": "48f45878595b9c06075db5cd2514f9e5ddab070e43c6e05c7568edad3dcc442d"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 1-2-3-4-5.json",
+      "sha256": "6c4087c1494600340fb3869478150e30a89133fd390c86dfe6a033bea7052b2c"
+    },
+    {
+      "path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/material/Vacancy Diffusion/Vacancy Diffusion - Variant 1-2-3-4-5.json",
+      "sha256": "348f14c27e0248dfba1025b47e58a28e91bc82413a6ec157f1c7b536ae188d38"
+    }
+  ],
+  "core80": {
+    "aifeynman": {
+      "planned_tasks": 80,
+      "result_files": 75,
+      "missing_result_files": 5,
+      "strict_complete": 26,
+      "P_valid_native": 75,
+      "P_valid_probes_incomplete": 49,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 165,
+      "valid_native_probes": 81,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 49,
+        "completed": 26,
+        "evaluation_timeout": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 6,
+        "RuntimeError": 51,
+        "ValueError": 9
+      },
+      "runs_with_probe_error": 49,
+      "no_assistant_content_length_probes": 50,
+      "runs_with_no_assistant_content_length": 41
+    },
+    "e2esr": {
+      "planned_tasks": 80,
+      "result_files": 75,
+      "missing_result_files": 5,
+      "strict_complete": 27,
+      "P_valid_native": 75,
+      "P_valid_probes_incomplete": 48,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 1.25,
+      "planned_probes": 165,
+      "valid_native_probes": 85,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 0.6060606060606061,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 27,
+        "native_invalid": 48,
+        "evaluation_timeout": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 36,
+        "ValidationError": 1,
+        "ValueError": 25
+      },
+      "runs_with_probe_error": 48,
+      "no_assistant_content_length_probes": 36,
+      "runs_with_no_assistant_content_length": 30
+    },
+    "llmsr": {
+      "planned_tasks": 80,
+      "result_files": 69,
+      "missing_result_files": 11,
+      "strict_complete": 41,
+      "P_valid_native": 69,
+      "P_valid_probes_incomplete": 28,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 1.25,
+      "planned_probes": 165,
+      "valid_native_probes": 99,
+      "legacy_probe_M_pass_count": 2,
+      "legacy_probe_M_percent": 1.2121212121212122,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 41,
+        "discovery_driver_error": 9,
+        "native_invalid": 28,
+        "evaluation_timeout": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 22,
+        "ValueError": 13,
+        "ValidationError": 2
+      },
+      "runs_with_probe_error": 28,
+      "no_assistant_content_length_probes": 21,
+      "runs_with_no_assistant_content_length": 18
+    }
+  },
+  "breakdown": [
+    {
+      "algorithm": "aifeynman",
+      "domain": "all",
+      "stratum": "all",
+      "planned_tasks": 80,
+      "result_files": 75,
+      "missing_result_files": 5,
+      "strict_complete": 26,
+      "P_valid_native": 75,
+      "P_valid_probes_incomplete": 49,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 165,
+      "valid_native_probes": 81,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 49,
+        "completed": 26,
+        "evaluation_timeout": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 6,
+        "RuntimeError": 51,
+        "ValueError": 9
+      },
+      "runs_with_probe_error": 49,
+      "no_assistant_content_length_probes": 50,
+      "runs_with_no_assistant_content_length": 41
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "all",
+      "stratum": "original",
+      "planned_tasks": 8,
+      "result_files": 8,
+      "missing_result_files": 0,
+      "strict_complete": 5,
+      "P_valid_native": 8,
+      "P_valid_probes_incomplete": 3,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 8,
+      "valid_native_probes": 5,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 3,
+        "completed": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 1,
+        "RuntimeError": 2
+      },
+      "runs_with_probe_error": 3,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "all",
+      "stratum": "single_variant",
+      "planned_tasks": 16,
+      "result_files": 16,
+      "missing_result_files": 0,
+      "strict_complete": 5,
+      "P_valid_native": 16,
+      "P_valid_probes_incomplete": 11,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 17,
+      "valid_native_probes": 5,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 11,
+        "completed": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 10,
+        "ValidationError": 1,
+        "ValueError": 1
+      },
+      "runs_with_probe_error": 11,
+      "no_assistant_content_length_probes": 10,
+      "runs_with_no_assistant_content_length": 10
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "all",
+      "stratum": "multiple_variant",
+      "planned_tasks": 56,
+      "result_files": 51,
+      "missing_result_files": 5,
+      "strict_complete": 16,
+      "P_valid_native": 51,
+      "P_valid_probes_incomplete": 35,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 140,
+      "valid_native_probes": 71,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 35,
+        "completed": 16,
+        "evaluation_timeout": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 4,
+        "ValueError": 8,
+        "RuntimeError": 39
+      },
+      "runs_with_probe_error": 35,
+      "no_assistant_content_length_probes": 38,
+      "runs_with_no_assistant_content_length": 29
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "physics",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 20,
+      "missing_result_files": 0,
+      "strict_complete": 1,
+      "P_valid_native": 20,
+      "P_valid_probes_incomplete": 19,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 36,
+      "valid_native_probes": 10,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 19,
+        "completed": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 6,
+        "RuntimeError": 20
+      },
+      "runs_with_probe_error": 19,
+      "no_assistant_content_length_probes": 20,
+      "runs_with_no_assistant_content_length": 15
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "physics",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 1,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 1,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 1,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 1,
+        "completed": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 1
+      },
+      "runs_with_probe_error": 1,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "physics",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 0,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 4,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 5,
+      "valid_native_probes": 0,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 4
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 4,
+        "ValidationError": 1
+      },
+      "runs_with_probe_error": 4,
+      "no_assistant_content_length_probes": 4,
+      "runs_with_no_assistant_content_length": 4
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "physics",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 14,
+      "missing_result_files": 0,
+      "strict_complete": 0,
+      "P_valid_native": 14,
+      "P_valid_probes_incomplete": 14,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 29,
+      "valid_native_probes": 9,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 14
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 4,
+        "RuntimeError": 16
+      },
+      "runs_with_probe_error": 14,
+      "no_assistant_content_length_probes": 16,
+      "runs_with_no_assistant_content_length": 11
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "chemistry",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 20,
+      "missing_result_files": 0,
+      "strict_complete": 10,
+      "P_valid_native": 20,
+      "P_valid_probes_incomplete": 10,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 52,
+      "valid_native_probes": 35,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 10,
+        "native_invalid": 10
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 11,
+        "ValueError": 6
+      },
+      "runs_with_probe_error": 10,
+      "no_assistant_content_length_probes": 11,
+      "runs_with_no_assistant_content_length": 8
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "chemistry",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "chemistry",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 1,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 3,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 1,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 3,
+        "completed": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2,
+        "ValueError": 1
+      },
+      "runs_with_probe_error": 3,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "chemistry",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 14,
+      "missing_result_files": 0,
+      "strict_complete": 7,
+      "P_valid_native": 14,
+      "P_valid_probes_incomplete": 7,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 46,
+      "valid_native_probes": 32,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 7,
+        "completed": 7
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 5,
+        "RuntimeError": 9
+      },
+      "runs_with_probe_error": 7,
+      "no_assistant_content_length_probes": 9,
+      "runs_with_no_assistant_content_length": 6
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "biology",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 20,
+      "missing_result_files": 0,
+      "strict_complete": 11,
+      "P_valid_native": 20,
+      "P_valid_probes_incomplete": 9,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 34,
+      "valid_native_probes": 23,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 11,
+        "native_invalid": 9
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 10,
+        "ValueError": 1
+      },
+      "runs_with_probe_error": 9,
+      "no_assistant_content_length_probes": 9,
+      "runs_with_no_assistant_content_length": 8
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "biology",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "biology",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 2,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 2,
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2
+      },
+      "runs_with_probe_error": 2,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "biology",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 14,
+      "missing_result_files": 0,
+      "strict_complete": 7,
+      "P_valid_native": 14,
+      "P_valid_probes_incomplete": 7,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 28,
+      "valid_native_probes": 19,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 7,
+        "native_invalid": 7
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 8,
+        "ValueError": 1
+      },
+      "runs_with_probe_error": 7,
+      "no_assistant_content_length_probes": 7,
+      "runs_with_no_assistant_content_length": 6
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "material",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 15,
+      "missing_result_files": 5,
+      "strict_complete": 4,
+      "P_valid_native": 15,
+      "P_valid_probes_incomplete": 11,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 43,
+      "valid_native_probes": 13,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 11,
+        "completed": 4,
+        "evaluation_timeout": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 10,
+        "ValueError": 2
+      },
+      "runs_with_probe_error": 11,
+      "no_assistant_content_length_probes": 10,
+      "runs_with_no_assistant_content_length": 10
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "material",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 0,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 2,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 0,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2
+      },
+      "runs_with_probe_error": 2,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "material",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 2,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 2,
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2
+      },
+      "runs_with_probe_error": 2,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "aifeynman",
+      "domain": "material",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 9,
+      "missing_result_files": 5,
+      "strict_complete": 2,
+      "P_valid_native": 9,
+      "P_valid_probes_incomplete": 7,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 37,
+      "valid_native_probes": 11,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "evaluation_timeout": 5,
+        "native_invalid": 7,
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 6,
+        "ValueError": 2
+      },
+      "runs_with_probe_error": 7,
+      "no_assistant_content_length_probes": 6,
+      "runs_with_no_assistant_content_length": 6
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "all",
+      "stratum": "all",
+      "planned_tasks": 80,
+      "result_files": 75,
+      "missing_result_files": 5,
+      "strict_complete": 27,
+      "P_valid_native": 75,
+      "P_valid_probes_incomplete": 48,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 1.25,
+      "planned_probes": 165,
+      "valid_native_probes": 85,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 0.6060606060606061,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 27,
+        "native_invalid": 48,
+        "evaluation_timeout": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 36,
+        "ValidationError": 1,
+        "ValueError": 25
+      },
+      "runs_with_probe_error": 48,
+      "no_assistant_content_length_probes": 36,
+      "runs_with_no_assistant_content_length": 30
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "all",
+      "stratum": "original",
+      "planned_tasks": 8,
+      "result_files": 8,
+      "missing_result_files": 0,
+      "strict_complete": 6,
+      "P_valid_native": 8,
+      "P_valid_probes_incomplete": 2,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 12.5,
+      "planned_probes": 8,
+      "valid_native_probes": 6,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 12.5,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 6,
+        "native_invalid": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2
+      },
+      "runs_with_probe_error": 2,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "all",
+      "stratum": "single_variant",
+      "planned_tasks": 16,
+      "result_files": 16,
+      "missing_result_files": 0,
+      "strict_complete": 8,
+      "P_valid_native": 16,
+      "P_valid_probes_incomplete": 8,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 17,
+      "valid_native_probes": 8,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 8,
+        "completed": 8
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 1,
+        "ValueError": 6,
+        "RuntimeError": 2
+      },
+      "runs_with_probe_error": 8,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "all",
+      "stratum": "multiple_variant",
+      "planned_tasks": 56,
+      "result_files": 51,
+      "missing_result_files": 5,
+      "strict_complete": 13,
+      "P_valid_native": 51,
+      "P_valid_probes_incomplete": 38,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 140,
+      "valid_native_probes": 71,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 38,
+        "completed": 13,
+        "evaluation_timeout": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 19,
+        "RuntimeError": 32
+      },
+      "runs_with_probe_error": 38,
+      "no_assistant_content_length_probes": 32,
+      "runs_with_no_assistant_content_length": 26
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "physics",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 20,
+      "missing_result_files": 0,
+      "strict_complete": 6,
+      "P_valid_native": 20,
+      "P_valid_probes_incomplete": 14,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 5.0,
+      "planned_probes": 36,
+      "valid_native_probes": 16,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 2.7777777777777777,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 6,
+        "native_invalid": 14
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 1,
+        "ValueError": 5,
+        "RuntimeError": 14
+      },
+      "runs_with_probe_error": 14,
+      "no_assistant_content_length_probes": 14,
+      "runs_with_no_assistant_content_length": 11
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "physics",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 50.0,
+      "planned_probes": 2,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 50.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "physics",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 2,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 5,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 2,
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 1,
+        "ValueError": 2
+      },
+      "runs_with_probe_error": 2,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "physics",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 14,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 14,
+      "P_valid_probes_incomplete": 12,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 29,
+      "valid_native_probes": 12,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 12,
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 3,
+        "RuntimeError": 14
+      },
+      "runs_with_probe_error": 12,
+      "no_assistant_content_length_probes": 14,
+      "runs_with_no_assistant_content_length": 11
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "chemistry",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 20,
+      "missing_result_files": 0,
+      "strict_complete": 12,
+      "P_valid_native": 20,
+      "P_valid_probes_incomplete": 8,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 52,
+      "valid_native_probes": 42,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 12,
+        "native_invalid": 8
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 9,
+        "RuntimeError": 1
+      },
+      "runs_with_probe_error": 8,
+      "no_assistant_content_length_probes": 1,
+      "runs_with_no_assistant_content_length": 1
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "chemistry",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "chemistry",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 3,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 1,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 3,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 1,
+        "completed": 3
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 1
+      },
+      "runs_with_probe_error": 1,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "chemistry",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 14,
+      "missing_result_files": 0,
+      "strict_complete": 7,
+      "P_valid_native": 14,
+      "P_valid_probes_incomplete": 7,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 46,
+      "valid_native_probes": 37,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 7,
+        "native_invalid": 7
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 8,
+        "RuntimeError": 1
+      },
+      "runs_with_probe_error": 7,
+      "no_assistant_content_length_probes": 1,
+      "runs_with_no_assistant_content_length": 1
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "biology",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 20,
+      "missing_result_files": 0,
+      "strict_complete": 6,
+      "P_valid_native": 20,
+      "P_valid_probes_incomplete": 14,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 34,
+      "valid_native_probes": 17,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 14,
+        "completed": 6
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 10,
+        "ValueError": 7
+      },
+      "runs_with_probe_error": 14,
+      "no_assistant_content_length_probes": 10,
+      "runs_with_no_assistant_content_length": 9
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "biology",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 1,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 1,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 1,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 1,
+        "completed": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 1
+      },
+      "runs_with_probe_error": 1,
+      "no_assistant_content_length_probes": 1,
+      "runs_with_no_assistant_content_length": 1
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "biology",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 2,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 2,
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 2
+      },
+      "runs_with_probe_error": 2,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "biology",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 14,
+      "missing_result_files": 0,
+      "strict_complete": 3,
+      "P_valid_native": 14,
+      "P_valid_probes_incomplete": 11,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 28,
+      "valid_native_probes": 14,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 11,
+        "completed": 3
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 9,
+        "ValueError": 5
+      },
+      "runs_with_probe_error": 11,
+      "no_assistant_content_length_probes": 9,
+      "runs_with_no_assistant_content_length": 8
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "material",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 15,
+      "missing_result_files": 5,
+      "strict_complete": 3,
+      "P_valid_native": 15,
+      "P_valid_probes_incomplete": 12,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 43,
+      "valid_native_probes": 10,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 3,
+        "native_invalid": 12,
+        "evaluation_timeout": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 11,
+        "ValueError": 4
+      },
+      "runs_with_probe_error": 12,
+      "no_assistant_content_length_probes": 11,
+      "runs_with_no_assistant_content_length": 9
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "material",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 1,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 1,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 1,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 1,
+        "native_invalid": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 1
+      },
+      "runs_with_probe_error": 1,
+      "no_assistant_content_length_probes": 1,
+      "runs_with_no_assistant_content_length": 1
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "material",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 1,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 3,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 1,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 3,
+        "completed": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2,
+        "ValueError": 1
+      },
+      "runs_with_probe_error": 3,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "e2esr",
+      "domain": "material",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 9,
+      "missing_result_files": 5,
+      "strict_complete": 1,
+      "P_valid_native": 9,
+      "P_valid_probes_incomplete": 8,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 37,
+      "valid_native_probes": 8,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "evaluation_timeout": 5,
+        "native_invalid": 8,
+        "completed": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 3,
+        "RuntimeError": 8
+      },
+      "runs_with_probe_error": 8,
+      "no_assistant_content_length_probes": 8,
+      "runs_with_no_assistant_content_length": 6
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "all",
+      "stratum": "all",
+      "planned_tasks": 80,
+      "result_files": 69,
+      "missing_result_files": 11,
+      "strict_complete": 41,
+      "P_valid_native": 69,
+      "P_valid_probes_incomplete": 28,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 1.25,
+      "planned_probes": 165,
+      "valid_native_probes": 99,
+      "legacy_probe_M_pass_count": 2,
+      "legacy_probe_M_percent": 1.2121212121212122,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 41,
+        "discovery_driver_error": 9,
+        "native_invalid": 28,
+        "evaluation_timeout": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 22,
+        "ValueError": 13,
+        "ValidationError": 2
+      },
+      "runs_with_probe_error": 28,
+      "no_assistant_content_length_probes": 21,
+      "runs_with_no_assistant_content_length": 18
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "all",
+      "stratum": "original",
+      "planned_tasks": 8,
+      "result_files": 7,
+      "missing_result_files": 1,
+      "strict_complete": 6,
+      "P_valid_native": 7,
+      "P_valid_probes_incomplete": 1,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 12.5,
+      "planned_probes": 8,
+      "valid_native_probes": 6,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 12.5,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 6,
+        "discovery_driver_error": 1,
+        "native_invalid": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 1
+      },
+      "runs_with_probe_error": 1,
+      "no_assistant_content_length_probes": 1,
+      "runs_with_no_assistant_content_length": 1
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "all",
+      "stratum": "single_variant",
+      "planned_tasks": 16,
+      "result_files": 15,
+      "missing_result_files": 1,
+      "strict_complete": 11,
+      "P_valid_native": 15,
+      "P_valid_probes_incomplete": 4,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 17,
+      "valid_native_probes": 12,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 4,
+        "completed": 11,
+        "discovery_driver_error": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 2,
+        "RuntimeError": 2
+      },
+      "runs_with_probe_error": 4,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "all",
+      "stratum": "multiple_variant",
+      "planned_tasks": 56,
+      "result_files": 47,
+      "missing_result_files": 9,
+      "strict_complete": 24,
+      "P_valid_native": 47,
+      "P_valid_probes_incomplete": 23,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 140,
+      "valid_native_probes": 81,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 0.7142857142857143,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 23,
+        "completed": 24,
+        "discovery_driver_error": 7,
+        "evaluation_timeout": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 2,
+        "RuntimeError": 19,
+        "ValueError": 11
+      },
+      "runs_with_probe_error": 23,
+      "no_assistant_content_length_probes": 18,
+      "runs_with_no_assistant_content_length": 15
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "physics",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 20,
+      "missing_result_files": 0,
+      "strict_complete": 12,
+      "P_valid_native": 20,
+      "P_valid_probes_incomplete": 8,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 5.0,
+      "planned_probes": 36,
+      "valid_native_probes": 27,
+      "legacy_probe_M_pass_count": 2,
+      "legacy_probe_M_percent": 5.555555555555555,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 12,
+        "native_invalid": 8
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 3,
+        "RuntimeError": 5,
+        "ValidationError": 1
+      },
+      "runs_with_probe_error": 8,
+      "no_assistant_content_length_probes": 4,
+      "runs_with_no_assistant_content_length": 3
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "physics",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 1,
+      "paper_task_SA_M_percent": 50.0,
+      "planned_probes": 2,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 50.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "physics",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 1,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 3,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 5,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 3,
+        "completed": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValueError": 2,
+        "RuntimeError": 1
+      },
+      "runs_with_probe_error": 3,
+      "no_assistant_content_length_probes": 1,
+      "runs_with_no_assistant_content_length": 1
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "physics",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 14,
+      "missing_result_files": 0,
+      "strict_complete": 9,
+      "P_valid_native": 14,
+      "P_valid_probes_incomplete": 5,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 29,
+      "valid_native_probes": 23,
+      "legacy_probe_M_pass_count": 1,
+      "legacy_probe_M_percent": 3.4482758620689653,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 5,
+        "completed": 9
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "ValidationError": 1,
+        "RuntimeError": 4,
+        "ValueError": 1
+      },
+      "runs_with_probe_error": 5,
+      "no_assistant_content_length_probes": 3,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "chemistry",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 20,
+      "missing_result_files": 0,
+      "strict_complete": 15,
+      "P_valid_native": 20,
+      "P_valid_probes_incomplete": 5,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 52,
+      "valid_native_probes": 45,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 15,
+        "native_invalid": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2,
+        "ValueError": 5
+      },
+      "runs_with_probe_error": 5,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "chemistry",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "chemistry",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 4,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 4,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 4
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "chemistry",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 14,
+      "missing_result_files": 0,
+      "strict_complete": 9,
+      "P_valid_native": 14,
+      "P_valid_probes_incomplete": 5,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 46,
+      "valid_native_probes": 39,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 9,
+        "native_invalid": 5
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2,
+        "ValueError": 5
+      },
+      "runs_with_probe_error": 5,
+      "no_assistant_content_length_probes": 2,
+      "runs_with_no_assistant_content_length": 2
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "biology",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 18,
+      "missing_result_files": 2,
+      "strict_complete": 7,
+      "P_valid_native": 18,
+      "P_valid_probes_incomplete": 11,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 34,
+      "valid_native_probes": 15,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 7,
+        "native_invalid": 11,
+        "discovery_driver_error": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 11,
+        "ValueError": 3,
+        "ValidationError": 1
+      },
+      "runs_with_probe_error": 11,
+      "no_assistant_content_length_probes": 11,
+      "runs_with_no_assistant_content_length": 9
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "biology",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 2,
+      "missing_result_files": 0,
+      "strict_complete": 2,
+      "P_valid_native": 2,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 2,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "biology",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 4,
+      "missing_result_files": 0,
+      "strict_complete": 3,
+      "P_valid_native": 4,
+      "P_valid_probes_incomplete": 1,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 3,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "completed": 3,
+        "native_invalid": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 1
+      },
+      "runs_with_probe_error": 1,
+      "no_assistant_content_length_probes": 1,
+      "runs_with_no_assistant_content_length": 1
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "biology",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 12,
+      "missing_result_files": 2,
+      "strict_complete": 2,
+      "P_valid_native": 12,
+      "P_valid_probes_incomplete": 10,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 28,
+      "valid_native_probes": 10,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "native_invalid": 10,
+        "discovery_driver_error": 2,
+        "completed": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 10,
+        "ValueError": 3,
+        "ValidationError": 1
+      },
+      "runs_with_probe_error": 10,
+      "no_assistant_content_length_probes": 10,
+      "runs_with_no_assistant_content_length": 8
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "material",
+      "stratum": "all",
+      "planned_tasks": 20,
+      "result_files": 11,
+      "missing_result_files": 9,
+      "strict_complete": 7,
+      "P_valid_native": 11,
+      "P_valid_probes_incomplete": 4,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 43,
+      "valid_native_probes": 12,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "discovery_driver_error": 7,
+        "native_invalid": 4,
+        "completed": 7,
+        "evaluation_timeout": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 4,
+        "ValueError": 2
+      },
+      "runs_with_probe_error": 4,
+      "no_assistant_content_length_probes": 4,
+      "runs_with_no_assistant_content_length": 4
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "material",
+      "stratum": "original",
+      "planned_tasks": 2,
+      "result_files": 1,
+      "missing_result_files": 1,
+      "strict_complete": 0,
+      "P_valid_native": 1,
+      "P_valid_probes_incomplete": 1,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 2,
+      "valid_native_probes": 0,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "discovery_driver_error": 1,
+        "native_invalid": 1
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 1
+      },
+      "runs_with_probe_error": 1,
+      "no_assistant_content_length_probes": 1,
+      "runs_with_no_assistant_content_length": 1
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "material",
+      "stratum": "single_variant",
+      "planned_tasks": 4,
+      "result_files": 3,
+      "missing_result_files": 1,
+      "strict_complete": 3,
+      "P_valid_native": 3,
+      "P_valid_probes_incomplete": 0,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 4,
+      "valid_native_probes": 3,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "discovery_driver_error": 1,
+        "completed": 3
+      },
+      "P_error_records": {},
+      "probe_error_records": {},
+      "runs_with_probe_error": 0,
+      "no_assistant_content_length_probes": 0,
+      "runs_with_no_assistant_content_length": 0
+    },
+    {
+      "algorithm": "llmsr",
+      "domain": "material",
+      "stratum": "multiple_variant",
+      "planned_tasks": 14,
+      "result_files": 7,
+      "missing_result_files": 7,
+      "strict_complete": 4,
+      "P_valid_native": 7,
+      "P_valid_probes_incomplete": 3,
+      "paper_task_SA_P_pass_count": 0,
+      "paper_task_SA_P_percent": 0.0,
+      "paper_task_SA_M_pass_count": 0,
+      "paper_task_SA_M_percent": 0.0,
+      "planned_probes": 37,
+      "valid_native_probes": 9,
+      "legacy_probe_M_pass_count": 0,
+      "legacy_probe_M_percent": 0.0,
+      "one_minus_M_given_P": null,
+      "outcomes": {
+        "discovery_driver_error": 5,
+        "completed": 4,
+        "native_invalid": 3,
+        "evaluation_timeout": 2
+      },
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 3,
+        "ValueError": 2
+      },
+      "runs_with_probe_error": 3,
+      "no_assistant_content_length_probes": 3,
+      "runs_with_no_assistant_content_length": 3
+    }
+  ],
+  "positive_tasks_or_probes": [
+    {
+      "algorithm": "e2esr",
+      "experiment": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109",
+      "job_id": "e2esr-core-t000",
+      "task_index": 0,
+      "task_name": "Hall Response - Original",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Original.yaml",
+      "domain": "physics",
+      "stratum": "original",
+      "outcome": "completed",
+      "result_present": true,
+      "result_path": "e2esr_direct_ask_deepseek-v4-flash-0731_core80_20261109/physics/Hall Response/Hall Response - Original.json",
+      "strict_complete": true,
+      "P_valid_native": true,
+      "P_symbolic_native": false,
+      "probe_symbolic_native": {
+        "mobile": true
+      },
+      "M_all_probes_symbolic_native": true,
+      "paper_task_SA_P_pass_policy": false,
+      "paper_task_SA_M_pass_policy": true,
+      "planned_probe_count": 1,
+      "actual_probe_count": 1,
+      "valid_native_probe_count": 1,
+      "symbolic_pass_probe_count": 1,
+      "legacy_probe_M_percent_policy": 100.0,
+      "P_error_records": {},
+      "probe_error_records": {},
+      "no_assistant_content_length_probes": 0
+    },
+    {
+      "algorithm": "llmsr",
+      "experiment": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109",
+      "job_id": "llmsr-core-t000",
+      "task_index": 0,
+      "task_name": "Hall Response - Original",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Original.yaml",
+      "domain": "physics",
+      "stratum": "original",
+      "outcome": "completed",
+      "result_present": true,
+      "result_path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Original.json",
+      "strict_complete": true,
+      "P_valid_native": true,
+      "P_symbolic_native": false,
+      "probe_symbolic_native": {
+        "mobile": true
+      },
+      "M_all_probes_symbolic_native": true,
+      "paper_task_SA_P_pass_policy": false,
+      "paper_task_SA_M_pass_policy": true,
+      "planned_probe_count": 1,
+      "actual_probe_count": 1,
+      "valid_native_probe_count": 1,
+      "symbolic_pass_probe_count": 1,
+      "legacy_probe_M_percent_policy": 100.0,
+      "P_error_records": {},
+      "probe_error_records": {},
+      "no_assistant_content_length_probes": 0
+    },
+    {
+      "algorithm": "llmsr",
+      "experiment": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109",
+      "job_id": "llmsr-core-t032",
+      "task_index": 32,
+      "task_name": "Hall Response - Variant 4-5",
+      "task_rel": "tasks/physics/Hall Response/Hall Response - Variant 4-5.yaml",
+      "domain": "physics",
+      "stratum": "multiple_variant",
+      "outcome": "native_invalid",
+      "result_present": true,
+      "result_path": "llmsr_deepseek-v4-flash-0731_direct_ask_core80_20261109/physics/Hall Response/Hall Response - Variant 4-5.json",
+      "strict_complete": false,
+      "P_valid_native": true,
+      "P_symbolic_native": false,
+      "probe_symbolic_native": {
+        "electric_factor": null,
+        "bypass_conductivity": null,
+        "mobile": true
+      },
+      "M_all_probes_symbolic_native": null,
+      "paper_task_SA_P_pass_policy": false,
+      "paper_task_SA_M_pass_policy": false,
+      "planned_probe_count": 3,
+      "actual_probe_count": 3,
+      "valid_native_probe_count": 1,
+      "symbolic_pass_probe_count": 1,
+      "legacy_probe_M_percent_policy": 33.333333333333336,
+      "P_error_records": {},
+      "probe_error_records": {
+        "RuntimeError": 2
+      },
+      "no_assistant_content_length_probes": 2
+    }
+  ]
+}

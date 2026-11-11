@@ -1,0 +1,117 @@
+{
+  "algorithm": "llmsr",
+  "evaluation": {
+    "task_name": "Circular Orbit - Variant 2",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 14687290527.161978,
+        "mse": 7.885749143632628e+20,
+        "rmse": 28081576066.22646,
+        "mape": 0.9999999991167027,
+        "r2": -0.3765616402910932,
+        "nrmse": 0.9999999999796148,
+        "max_absolute_error": 157240883824.26382,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 15084165612.223019,
+        "mse": 8.483388083164888e+20,
+        "rmse": 29126256338.85153,
+        "mape": 0.9999999990486014,
+        "r2": -0.36651027067351327,
+        "nrmse": 0.9999999999804589,
+        "max_absolute_error": 170410412802.38565,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 28184904774.595985,
+        "mse": 9.244430280085954e+20,
+        "rmse": 30404654709.576878,
+        "mape": 0.9999999999565848,
+        "r2": -6.108138262109461,
+        "nrmse": 0.999999999967724,
+        "max_absolute_error": 65033476541.26887,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "period_squared": "1 + radius**3/central_mass"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "extra_accel",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one extra_accel equation; received: 'to a prompt, and we need to extract extra_accel from it. The model is period_squared = (radius^3 / central_mass) + 1. If we consider that the standard period squared is (4π^2 r^3)/(G M), then the given model has a coefficient of 1 instead of 4π^2/G, and an extra +1. So perhaps extra_accel is the acceleration that would give that +1 term.\\n\\nAlternatively, maybe extra_accel is defined as the derivative of period_squared with respect to radius, times some constant. But we have radial_derivative = 1,'",
+        "error_type": "ValueError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 1
+  },
+  "evaluation_seconds": 16.9972798419185,
+  "ok": false,
+  "submission": "period_squared = 1 + radius**3/central_mass\n",
+  "cost_in_USD": null,
+  "used_token": null,
+  "accounting": {
+    "provider_reported_usd": 0.0218185804,
+    "total_cost_usd": null,
+    "cost_complete": false,
+    "known_unknown_cost_requests": 1,
+    "unknown_cost_requests": 1,
+    "evaluation_usage_available": true,
+    "generation_usage_available": true,
+    "pricing_estimate_usd": null,
+    "uncertain_upper_bound_usd": null,
+    "reserved_inflight_usd": null,
+    "note": "Stored terminal/discovery usage only. Null means unavailable/not estimated, not free. No account-balance subtraction."
+  },
+  "run_status": {
+    "outcome": "native_invalid",
+    "strict_complete": false
+  },
+  "source": {
+    "hostname": "g30",
+    "path": "/home/test/test06/mdbench-runs/rebuttal-sr-core-20261109-jialin/llmsr-extension/jobs/llmsr-core-t009/evaluation/performance.json",
+    "file_sha256": "311aa79d361f5df3bd13380adefec1f4adacc094497faf8c40c14336e0c181a8",
+    "task_definition": "tasks/physics/Circular Orbit/Circular Orbit - Variant 2.yaml",
+    "task_definition_sha256": "7831bea867f921d2fba28147cffbab658a664f26b2bd74689ff9478f44c15401",
+    "manifest_job_id": "llmsr-core-t009",
+    "manifest_sha256": "fc23839c535578b4365ba0b0d1fd2939822667854016e302cf38b62e22a28d05",
+    "snapshot_collected_at_utc": "2026-11-09T17:13:12.217207+00:00",
+    "snapshot_sha256": "72cd2551fcb77638f3feea12e00caab4182c5df3e78f11873839293e923f3e25",
+    "submission_representation": "Normalized formulas from evaluation.submitted_solution; original frozen bytes not re-downloaded.",
+    "frozen_submission_sha256": "364252ffeeca3678983d5ca5de3a645424f6a252a1da61ef6671540424a2fd87",
+    "transformation": "Native performance fields preserved; only provenance, normalized submission, run status and stored usage added. No rescoring.",
+    "supplemental_records_repo_relative": "results/_summaries/rebuttal-sr-core80-20261109/provenance/llmsr.jsonl"
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-11T05:26:31.843001+00:00",
+      "update_message": "Import completed Core80 SR baseline from frozen snapshot; preserve native errors and missing values."
+    }
+  ]
+}

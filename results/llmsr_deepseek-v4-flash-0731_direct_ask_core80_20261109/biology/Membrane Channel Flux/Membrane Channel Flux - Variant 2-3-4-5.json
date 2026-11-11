@@ -1,0 +1,164 @@
+{
+  "algorithm": "llmsr",
+  "evaluation": {
+    "task_name": "Membrane Channel Flux - Variant 2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.00354400640054599,
+        "mse": 1.895257775976821e-05,
+        "rmse": 0.004353455841026553,
+        "mape": 0.030038727348770288,
+        "r2": 0.9967652473006813,
+        "nrmse": 0.02362065077137573,
+        "max_absolute_error": 0.012204475445273602,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0035639855619997536,
+        "mse": 1.9349492666254066e-05,
+        "rmse": 0.004398805822749405,
+        "mape": 0.02957211763689574,
+        "r2": 0.9966455837589795,
+        "nrmse": 0.023244356236217612,
+        "max_absolute_error": 0.013437176041574198,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.037024002162740335,
+        "mse": 0.0016066894594965317,
+        "rmse": 0.04008353102580325,
+        "mape": 7.536170452219313,
+        "r2": -0.39169079672663054,
+        "nrmse": 1.106882680678746,
+        "max_absolute_error": 0.07626292849647172,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "current_density": "3082025603221129*(inside - outside*exp(-1954608298879327*voltage/50000000000000))*(voltage + 50/1954608298879327)/(25000000000000000*(1000000000001/1000000000000 - exp(-1954608298879327*voltage/50000000000000)))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "inactivated",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "secondary_current",
+        "ok": true,
+        "reply": "secondary_current = ((0.12328102412884516 * ((voltage + (1e-12 / (abs(39.09216497758654) + 1e-06))) * (inside - (outside * exp(((-(abs(39.09216497758654) + 1e-06)) * voltage)))))) / ((1.0 - exp(((-(abs(39.09216497758654) + 1e-06)) * voltage))) + 1e-12)) * 0.1",
+        "expression": "3082025603221129*(inside - outside*exp(-1954608298879327*voltage/50000000000000))*(voltage + 50/1954608298879327)/(250000000000000000*(1000000000001/1000000000000 - exp(-1954608298879327*voltage/50000000000000)))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.007289003246446944,
+            "mse": 7.2118799961176e-05,
+            "rmse": 0.008492278843819014,
+            "mape": 0.6994713628164091,
+            "r2": -5.5216376191885885,
+            "nrmse": 0.8452678553229417,
+            "max_absolute_error": 0.019483787328089367,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.007595664025526211,
+            "mse": 7.62729163809512e-05,
+            "rmse": 0.008733436687865276,
+            "mape": 0.7166917167531439,
+            "r2": -6.079769508082113,
+            "nrmse": 0.8512682209586789,
+            "max_absolute_error": 0.01954807113790825,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.005680307306383224,
+            "mse": 4.182633112437959e-05,
+            "rmse": 0.0064673279740847835,
+            "mape": 5.158430279668866,
+            "r2": -12.519608854521008,
+            "nrmse": 1.7732890407439719,
+            "max_absolute_error": 0.012785087338776351,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 2
+  },
+  "evaluation_seconds": 282.4335989621468,
+  "ok": false,
+  "submission": "current_density = 3082025603221129*(inside - outside*exp(-1954608298879327*voltage/50000000000000))*(voltage + 50/1954608298879327)/(25000000000000000*(1000000000001/1000000000000 - exp(-1954608298879327*voltage/50000000000000)))\n",
+  "cost_in_USD": null,
+  "used_token": null,
+  "accounting": {
+    "provider_reported_usd": 0.0311186538,
+    "total_cost_usd": null,
+    "cost_complete": false,
+    "known_unknown_cost_requests": 1,
+    "unknown_cost_requests": 1,
+    "evaluation_usage_available": true,
+    "generation_usage_available": true,
+    "pricing_estimate_usd": null,
+    "uncertain_upper_bound_usd": null,
+    "reserved_inflight_usd": null,
+    "note": "Stored terminal/discovery usage only. Null means unavailable/not estimated, not free. No account-balance subtraction."
+  },
+  "run_status": {
+    "outcome": "native_invalid",
+    "strict_complete": false
+  },
+  "source": {
+    "hostname": "g30",
+    "path": "/home/test/test06/mdbench-runs/rebuttal-sr-core-20261109-jialin/llmsr-extension/jobs/llmsr-core-t069/evaluation/performance.json",
+    "file_sha256": "6f5338889759f90800ba92f3ba79778aa1e64ab796dd669cdd6a42a01255a119",
+    "task_definition": "tasks/biology/Membrane Channel Flux/Membrane Channel Flux - Variant 2-3-4-5.yaml",
+    "task_definition_sha256": "130a823b08d268633842604d132b66c50ee476d026ddec011cfd5ff8e47f30d0",
+    "manifest_job_id": "llmsr-core-t069",
+    "manifest_sha256": "fc23839c535578b4365ba0b0d1fd2939822667854016e302cf38b62e22a28d05",
+    "snapshot_collected_at_utc": "2026-11-09T17:13:12.217207+00:00",
+    "snapshot_sha256": "72cd2551fcb77638f3feea12e00caab4182c5df3e78f11873839293e923f3e25",
+    "submission_representation": "Normalized formulas from evaluation.submitted_solution; original frozen bytes not re-downloaded.",
+    "frozen_submission_sha256": "57814613cfb08d8947b5b3576df6e93b527c546aa9753cd6ca755f186af03b89",
+    "transformation": "Native performance fields preserved; only provenance, normalized submission, run status and stored usage added. No rescoring.",
+    "supplemental_records_repo_relative": "results/_summaries/rebuttal-sr-core80-20261109/provenance/llmsr.jsonl"
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-11T05:26:31.843001+00:00",
+      "update_message": "Import completed Core80 SR baseline from frozen snapshot; preserve native errors and missing values."
+    }
+  ]
+}

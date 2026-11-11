@@ -1,0 +1,264 @@
+{
+  "algorithm": "aifeynman",
+  "evaluation": {
+    "task_name": "Lindemann Pulse Reaction - Variant 1-2-3-4-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.28993513223336e-05,
+        "mse": 4.615507367692269e-10,
+        "rmse": 2.1483731909731766e-05,
+        "mape": 0.0911360609450201,
+        "r2": 0.9545671694791603,
+        "nrmse": 0.1367876246778267,
+        "max_absolute_error": 9.60818149302057e-05,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 1.1955632251749326e-05,
+        "mse": 4.178785245407792e-10,
+        "rmse": 2.04420773049311e-05,
+        "mape": 0.08774117067885491,
+        "r2": 0.9567127135034185,
+        "nrmse": 0.13637216244128375,
+        "max_absolute_error": 9.93379986438889e-05,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.0003278853959739616,
+        "mse": 1.3122218194192854e-07,
+        "rmse": 0.0003622460240526161,
+        "mape": 0.45423788702167983,
+        "r2": -0.44753965077860847,
+        "nrmse": 0.44760085304850983,
+        "max_absolute_error": 0.0008596604312982189,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "response": "atan(526083007983*dose/(4141592653589793/2000 + 500000000000/laplace_rate))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "quench_flux",
+        "ok": true,
+        "reply": "quench_flux = atan(526083007983*dose/(500000000000*(4.141592653589793 + 1/laplace_rate)))",
+        "expression": "atan(526083007983*dose/(4141592653589793/2000 + 500000000000/laplace_rate))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.942485179514276e-05,
+            "mse": 1.7131106124047913e-08,
+            "rmse": 0.00013088585150446136,
+            "mape": 47.835002829827225,
+            "r2": -8.481198006531473,
+            "nrmse": 2.793568630366553,
+            "max_absolute_error": 0.00046214765527948507,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.381774883618734e-05,
+            "mse": 1.6073837810689735e-08,
+            "rmse": 0.00012678264002098132,
+            "mape": 48.19856696888625,
+            "r2": -6.937963680983424,
+            "nrmse": 2.5893412319453586,
+            "max_absolute_error": 0.0004573852300141429,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.004539759515616468,
+            "mse": 3.29590751828145e-05,
+            "rmse": 0.005740999493364766,
+            "mape": 0.7514102650728405,
+            "r2": -1.3686961260407409,
+            "nrmse": 0.851233112444414,
+            "max_absolute_error": 0.022951197929181596,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "secondary_pool",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one secondary_pool equation; received: \". So collider is unused.\\n\\nMaybe collider is a variable that appears in the definition of the constant 4.141592653589793? No, that's pi+1.\\n\\nPerhaps the problem expects us to use the known constants to construct secondary_pool from the rates? But the model does not involve those rates. The known constants are for various rates, but they are not in the model. So they are irrelevant.\\n\\nGiven the instruction to answer directly from the frozen model, we should output secondary_pool = the argument of at\"",
+        "error_type": "ValueError"
+      },
+      {
+        "probe": "caged_pool",
+        "ok": false,
+        "error": "OpenRouter probe request failed: OpenRouter returned no assistant content (finish_reason=length)",
+        "error_type": "RuntimeError"
+      },
+      {
+        "probe": "activation_flux",
+        "ok": true,
+        "reply": "activation_flux = 526083007983*dose/(500000000000*(4.141592653589793 + 1/laplace_rate))",
+        "expression": "526083007983*dose/(4141592653589793/2000 + 500000000000/laplace_rate)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.000120700091118958,
+            "mse": 6.947157848430069e-08,
+            "rmse": 0.00026357461654017577,
+            "mape": 0.5192115862130356,
+            "r2": 0.2748502018034146,
+            "nrmse": 0.7061242666693718,
+            "max_absolute_error": 0.002291518095798934,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.00011526267651333723,
+            "mse": 6.939164281902835e-08,
+            "rmse": 0.0002634229352562687,
+            "mape": 0.5173719762544037,
+            "r2": 0.25894208251694917,
+            "nrmse": 0.7219304550035975,
+            "max_absolute_error": 0.0021105344972422503,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.01810338708158309,
+            "mse": 0.00042493966841903376,
+            "rmse": 0.020614064820384984,
+            "mape": 0.9371035821142942,
+            "r2": -3.12480994350571,
+            "nrmse": 0.9498577872313175,
+            "max_absolute_error": 0.06768279482716537,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "direct_product_flux",
+        "ok": true,
+        "reply": "direct_product_flux = atan(526083007983*dose/(500000000000*(4.141592653589793 + 1/laplace_rate)))",
+        "expression": "atan(526083007983*dose/(4141592653589793/2000 + 500000000000/laplace_rate))",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 6.109908316820293e-05,
+            "mse": 6.387574553417524e-09,
+            "rmse": 7.992230322893306e-05,
+            "mape": 1.8948996732086503,
+            "r2": -0.7735289359371103,
+            "nrmse": 0.9581552014286553,
+            "max_absolute_error": 0.00029006649256310257,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 5.790294348145188e-05,
+            "mse": 5.7956460851148956e-09,
+            "rmse": 7.612914084051452e-05,
+            "mape": 2.0128141921992215,
+            "r2": -0.6265109212909583,
+            "nrmse": 0.9424612176111635,
+            "max_absolute_error": 0.00028603932846567174,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.0005894263792496117,
+            "mse": 4.1086150985083436e-07,
+            "rmse": 0.0006409847968952418,
+            "mape": 1.3335951531702561,
+            "r2": -7.345396303278742,
+            "nrmse": 1.1923097803095197,
+            "max_absolute_error": 0.0013812179202228113,
+            "symbolically_equivalent": false
+          }
+        }
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 5
+  },
+  "evaluation_seconds": 176.25518865697086,
+  "ok": false,
+  "submission": "response = atan(526083007983*dose/(4141592653589793/2000 + 500000000000/laplace_rate))\n",
+  "cost_in_USD": 0.004592269,
+  "used_token": null,
+  "accounting": {
+    "provider_reported_usd": 0.004592269,
+    "total_cost_usd": 0.004592269,
+    "cost_complete": true,
+    "known_unknown_cost_requests": 0,
+    "unknown_cost_requests": 0,
+    "evaluation_usage_available": true,
+    "generation_usage_available": "not_applicable",
+    "pricing_estimate_usd": null,
+    "uncertain_upper_bound_usd": null,
+    "reserved_inflight_usd": null,
+    "note": "Stored terminal/discovery usage only. Null means unavailable/not estimated, not free. No account-balance subtraction."
+  },
+  "run_status": {
+    "outcome": "native_invalid",
+    "strict_complete": false
+  },
+  "source": {
+    "hostname": "g30",
+    "path": "/home/test/test06/mdbench-runs/rebuttal-sr-core-20261109-jialin/jobs/aifeynman-core-t074/evaluation/performance.json",
+    "file_sha256": "58a5a605b4b3f7eb8461cabf5d530eea98f38464688b36bc669eeadbe14df2c7",
+    "task_definition": "tasks/chemistry/Lindemann Pulse Reaction/Lindemann Pulse Reaction - Variant 1-2-3-4-5.yaml",
+    "task_definition_sha256": "e025eb34c7522b95b2e6b22b606b3899824daada40eca718b65ca7de11b64f46",
+    "manifest_job_id": "aifeynman-core-t074",
+    "manifest_sha256": "7bea043f0e419426a8fed2c3784275755bcc52ce10c7e2ed79f6747d20fbe1bb",
+    "snapshot_collected_at_utc": "2026-11-09T17:13:12.217207+00:00",
+    "snapshot_sha256": "72cd2551fcb77638f3feea12e00caab4182c5df3e78f11873839293e923f3e25",
+    "submission_representation": "Normalized formulas from evaluation.submitted_solution; original frozen bytes not re-downloaded.",
+    "frozen_submission_sha256": "e52431986e43e690a360cb5a41dc6425954df25ef33c713b774f8e294024d306",
+    "transformation": "Native performance fields preserved; only provenance, normalized submission, run status and stored usage added. No rescoring.",
+    "supplemental_records_repo_relative": "results/_summaries/rebuttal-sr-core80-20261109/provenance/aifeynman.jsonl"
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-11T05:26:31.843001+00:00",
+      "update_message": "Import completed Core80 SR baseline from frozen snapshot; preserve native errors and missing values."
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "algorithm": "llmsr",
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 1-2-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.006732868438136073,
+        "mse": 9.863702470891372e-05,
+        "rmse": 0.00993161742662864,
+        "mape": 0.025488527489573306,
+        "r2": 0.9998913678258015,
+        "nrmse": 0.007713631920805528,
+        "max_absolute_error": 0.08187684544358365,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.007048706526291822,
+        "mse": 0.00011564538983028458,
+        "rmse": 0.010753854649858561,
+        "mape": 0.027987276974177022,
+        "r2": 0.999875183299492,
+        "nrmse": 0.00832765097981681,
+        "max_absolute_error": 0.08998185499698363,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.37117046508286095,
+        "mse": 0.15695306749809243,
+        "rmse": 0.39617302722180925,
+        "mape": 1.1209852567763992,
+        "r2": -1.142733399935334,
+        "nrmse": 0.6751705097980517,
+        "max_absolute_error": 0.7160931611387256,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "activity": "7294660640190697*substrate*(1 - 2044428092213819*regulator/25000000000000)/(1000000000000000*(2928278877844193*regulator/10000000000000 + 1)*(substrate + 8764627965323681/500000000000000000)) - 234376970764477/50000000000000000"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "t3",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one t3 equation; received: 'to regulator, but the substrate modulates it.\\n\\nAlternatively, perhaps the phenomenal model is a simplified version of a more complex equation that includes t3. We need to invert the model to find t3. But the model gives activity, not t3. There is no direct relation.\\n\\nMaybe the constants labelled t3: 0.16, 3 indicate that t3 is a parameter that takes values 0.16 and 3? That seems odd. Possibly t3 is a variable that we need to express, and the constants 0.16 and 3 are the values of some other para'",
+        "error_type": "ValueError"
+      },
+      {
+        "probe": "inactive_flux",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one inactive_flux equation; received: 'factor. The constant -0.0046875 might be a baseline. Possibly the inactive flux is the baseline? But that is constant.\\n\\nAlternatively, maybe the inactive flux is the term that is independent of substrate, i.e., the constant term. But then it\\'s not a function of substrate and regulator. However, the instruction says \"as a function of the variables: substrate, regulator.\" So it must include them.\\n\\nPerhaps the inactive flux is the part of the activity that is not dependent on substrate, but the con'",
+        "error_type": "ValueError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 2
+  },
+  "evaluation_seconds": 88.46198682999238,
+  "ok": false,
+  "submission": "activity = 7294660640190697*substrate*(1 - 2044428092213819*regulator/25000000000000)/(1000000000000000*(2928278877844193*regulator/10000000000000 + 1)*(substrate + 8764627965323681/500000000000000000)) - 234376970764477/50000000000000000\n",
+  "cost_in_USD": null,
+  "used_token": null,
+  "accounting": {
+    "provider_reported_usd": 0.0233486702,
+    "total_cost_usd": null,
+    "cost_complete": false,
+    "known_unknown_cost_requests": 1,
+    "unknown_cost_requests": 1,
+    "evaluation_usage_available": true,
+    "generation_usage_available": true,
+    "pricing_estimate_usd": null,
+    "uncertain_upper_bound_usd": null,
+    "reserved_inflight_usd": null,
+    "note": "Stored terminal/discovery usage only. Null means unavailable/not estimated, not free. No account-balance subtraction."
+  },
+  "run_status": {
+    "outcome": "native_invalid",
+    "strict_complete": false
+  },
+  "source": {
+    "hostname": "g30",
+    "path": "/home/test/test06/mdbench-runs/rebuttal-sr-core-20261109-jialin/llmsr-extension/jobs/llmsr-core-t044/evaluation/performance.json",
+    "file_sha256": "1c99bf533451492381bdd6ef3263385cfa3b547d7abc60c05e74b5ffef28ee78",
+    "task_definition": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-5.yaml",
+    "task_definition_sha256": "1a92afb5a93a6d690eef8f81023a42737a1e543848845bc169f838807ca44a86",
+    "manifest_job_id": "llmsr-core-t044",
+    "manifest_sha256": "fc23839c535578b4365ba0b0d1fd2939822667854016e302cf38b62e22a28d05",
+    "snapshot_collected_at_utc": "2026-11-09T17:13:12.217207+00:00",
+    "snapshot_sha256": "72cd2551fcb77638f3feea12e00caab4182c5df3e78f11873839293e923f3e25",
+    "submission_representation": "Normalized formulas from evaluation.submitted_solution; original frozen bytes not re-downloaded.",
+    "frozen_submission_sha256": "0b55b8d315a22f4bb66b32c16c207d00c6d663bc5ad42490fe3dc29f28583278",
+    "transformation": "Native performance fields preserved; only provenance, normalized submission, run status and stored usage added. No rescoring.",
+    "supplemental_records_repo_relative": "results/_summaries/rebuttal-sr-core80-20261109/provenance/llmsr.jsonl"
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-11T05:26:31.843001+00:00",
+      "update_message": "Import completed Core80 SR baseline from frozen snapshot; preserve native errors and missing values."
+    }
+  ]
+}

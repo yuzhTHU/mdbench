@@ -1,0 +1,164 @@
+{
+  "algorithm": "llmsr",
+  "evaluation": {
+    "task_name": "Allosteric Regulation - Variant 1-2-3-5",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.008942282891927522,
+        "mse": 0.0002008392761574626,
+        "rmse": 0.014171777452298022,
+        "mape": 0.02329399212724352,
+        "r2": 0.9998276636050638,
+        "nrmse": 0.009888159033965564,
+        "max_absolute_error": 0.12342594864082246,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.009245271740079926,
+        "mse": 0.0002389926516289231,
+        "rmse": 0.015459387168608046,
+        "mape": 0.023114754222960072,
+        "r2": 0.99979882633837,
+        "nrmse": 0.01074418780959869,
+        "max_absolute_error": 0.12417065254626936,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.5758939966582425,
+        "mse": 0.37051719659919446,
+        "rmse": 0.6087012375535263,
+        "mape": 1.1974302995191315,
+        "r2": -1.3943207299091345,
+        "nrmse": 0.7412174273836253,
+        "max_absolute_error": 1.0645273586232247,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "activity": "10201187103539187*substrate*(1 - 1698481811303569*regulator/20000000000000)/(1000000000000000*(13895863348557893*regulator/50000000000000 + 1)*(substrate + 4998631651404259/200000000000000000))"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "t3",
+        "ok": true,
+        "reply": "t3 = (1 + (-84.92409056517845 * regulator)) / (1 + (277.91726697115786 * regulator))",
+        "expression": "(1 - 1698481811303569*regulator/20000000000000)/(13895863348557893*regulator/50000000000000 + 1)",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.8010705284512811,
+            "mse": 0.6997694120205569,
+            "rmse": 0.8365222125087635,
+            "mape": 31497585.781570543,
+            "r2": -6219.62914472468,
+            "nrmse": 72.97223720636815,
+            "max_absolute_error": 0.9963740301769297,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.8024737788377206,
+            "mse": 0.7025009420990257,
+            "rmse": 0.8381532927209829,
+            "mape": 34297795.50366392,
+            "r2": -5802.315043802421,
+            "nrmse": 70.80138937474655,
+            "max_absolute_error": 0.9963791475215894,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 0.10598299691237972,
+            "mse": 0.016151453580168833,
+            "rmse": 0.12708836917739103,
+            "mape": 1.6514674050087421,
+            "r2": -10.979640341846064,
+            "nrmse": 1.54734521851398,
+            "max_absolute_error": 0.2860816459455166,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "inactive_flux",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one inactive_flux equation; received: \"to substrate, and the regulation factor modulates it. The inactive conformation might have a different substrate affinity and rate. But the frozen model only has one substrate term.\\n\\nPerhaps the inactive_flux is simply the substrate term multiplied by a constant that represents the inactive rate. Given the constants, we have inactive_rate: 1, 0.18, 2. Possibly the inactive flux is the substrate term times 0.18? But we need to know which.\\n\\nLet's look at the other constants: r_empty:1, t_empty:2,1\"",
+        "error_type": "ValueError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 2
+  },
+  "evaluation_seconds": 250.42042654193938,
+  "ok": false,
+  "submission": "activity = 10201187103539187*substrate*(1 - 1698481811303569*regulator/20000000000000)/(1000000000000000*(13895863348557893*regulator/50000000000000 + 1)*(substrate + 4998631651404259/200000000000000000))\n",
+  "cost_in_USD": null,
+  "used_token": null,
+  "accounting": {
+    "provider_reported_usd": 0.035934736,
+    "total_cost_usd": null,
+    "cost_complete": false,
+    "known_unknown_cost_requests": 1,
+    "unknown_cost_requests": 1,
+    "evaluation_usage_available": true,
+    "generation_usage_available": true,
+    "pricing_estimate_usd": null,
+    "uncertain_upper_bound_usd": null,
+    "reserved_inflight_usd": null,
+    "note": "Stored terminal/discovery usage only. Null means unavailable/not estimated, not free. No account-balance subtraction."
+  },
+  "run_status": {
+    "outcome": "native_invalid",
+    "strict_complete": false
+  },
+  "source": {
+    "hostname": "g30",
+    "path": "/home/test/test06/mdbench-runs/rebuttal-sr-core-20261109-jialin/llmsr-extension/jobs/llmsr-core-t060/evaluation/performance.json",
+    "file_sha256": "6745bdf75992ed69cbc3ba4c99656da9474d7da9c55a58cc0f12aeea525c0944",
+    "task_definition": "tasks/biology/Allosteric Regulation/Allosteric Regulation - Variant 1-2-3-5.yaml",
+    "task_definition_sha256": "2a91194f8af3cca1df32ca660908c5efb7ea6ca6546d63737216e3876f300ff7",
+    "manifest_job_id": "llmsr-core-t060",
+    "manifest_sha256": "fc23839c535578b4365ba0b0d1fd2939822667854016e302cf38b62e22a28d05",
+    "snapshot_collected_at_utc": "2026-11-09T17:13:12.217207+00:00",
+    "snapshot_sha256": "72cd2551fcb77638f3feea12e00caab4182c5df3e78f11873839293e923f3e25",
+    "submission_representation": "Normalized formulas from evaluation.submitted_solution; original frozen bytes not re-downloaded.",
+    "frozen_submission_sha256": "c6591277c081968aa8cbf7d28c81e6f94e3bc37fd7b340a009f3186c395a2fee",
+    "transformation": "Native performance fields preserved; only provenance, normalized submission, run status and stored usage added. No rescoring.",
+    "supplemental_records_repo_relative": "results/_summaries/rebuttal-sr-core80-20261109/provenance/llmsr.jsonl"
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-11T05:26:31.843001+00:00",
+      "update_message": "Import completed Core80 SR baseline from frozen snapshot; preserve native errors and missing values."
+    }
+  ]
+}

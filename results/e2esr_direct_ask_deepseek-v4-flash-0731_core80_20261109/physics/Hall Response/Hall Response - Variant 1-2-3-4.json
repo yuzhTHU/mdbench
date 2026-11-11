@@ -1,0 +1,164 @@
+{
+  "algorithm": "e2esr",
+  "evaluation": {
+    "task_name": "Hall Response - Variant 1-2-3-4",
+    "phenomenal": {
+      "train": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.60625778270098e-05,
+        "mse": 7.834073854627505e-09,
+        "rmse": 8.851030366362723e-05,
+        "mape": 0.03534137257316613,
+        "r2": 0.9992727675909816,
+        "nrmse": 0.019676042945689812,
+        "max_absolute_error": 0.000985088836635623,
+        "symbolically_equivalent": false
+      },
+      "id_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 5.7254504527147265e-05,
+        "mse": 8.065925567715033e-09,
+        "rmse": 8.981049809301267e-05,
+        "mape": 0.03521512812412317,
+        "r2": 0.9992984323935787,
+        "nrmse": 0.019466667328377388,
+        "max_absolute_error": 0.0006448527828148399,
+        "symbolically_equivalent": false
+      },
+      "ood_test": {
+        "n_samples": 1000,
+        "finite_fraction": 1.0,
+        "numerically_equivalent": false,
+        "mae": 0.00021390058740419814,
+        "mse": 5.2338113435246194e-08,
+        "rmse": 0.0002287752465526946,
+        "mape": 0.17111557805538724,
+        "r2": 0.8980154788635526,
+        "nrmse": 0.13002598257190012,
+        "max_absolute_error": 0.00041372616242407755,
+        "symbolically_equivalent": false
+      },
+      "ok": true
+    },
+    "submitted_solution": {
+      "hall_voltage": "(68272294750026997403717461529/25033381905742105000000000000000000 - 9518614944810511*current/10013352762296842)*(8089217593071891/1000000000000000000 + 2149130515637563/(250000000000000000*(145500747262261*density/11118669398306732000000000000000000000 - 67295374211014878604160337/222373387966134640000000000000)*(5400106557085809000*thickness/611620964691037 + 18154870175225438376474981717/15290524117275925000000000000000)))*(1000000000000000000*magnetic/10377238448677899 - 417204431972396860878457937903/2594309612169474750000000000000)"
+    },
+    "mechanism_probes": [
+      {
+        "probe": "mobile",
+        "ok": true,
+        "reply": "mobile = (1.0 * (0.23 * (density / 1e22)))",
+        "expression": "23*density/1000000000000000000000000",
+        "scores": {
+          "train": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.900331278822283e+21,
+            "mse": 1.0439334357027251e+43,
+            "rmse": 3.23099587697466e+21,
+            "mape": 1.0,
+            "r2": -4.149091591991529,
+            "nrmse": 1.0,
+            "max_absolute_error": 6.024247797284793e+21,
+            "symbolically_equivalent": false
+          },
+          "id_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 2.834375224483256e+21,
+            "mse": 1.0079844523046284e+43,
+            "rmse": 3.174877087864392e+21,
+            "mape": 1.0,
+            "r2": -3.926221112920147,
+            "nrmse": 1.0,
+            "max_absolute_error": 6.021519226295893e+21,
+            "symbolically_equivalent": false
+          },
+          "ood_test": {
+            "n_samples": 1000,
+            "finite_fraction": 1.0,
+            "numerically_equivalent": false,
+            "mae": 9.513444754339492e+21,
+            "mse": 9.520707973440604e+43,
+            "rmse": 9.757411528392458e+21,
+            "mape": 1.0,
+            "r2": -19.25058381229983,
+            "nrmse": 1.0,
+            "max_absolute_error": 1.3653859298343035e+22,
+            "symbolically_equivalent": false
+          }
+        }
+      },
+      {
+        "probe": "electric_factor",
+        "ok": false,
+        "error": "LLM probe response must contain exactly one electric_factor equation; received: 'that depends on both thickness and density.\\n\\nNow, the known constants for holes: 0.12, 2. That suggests a function like 0.12 + 2 * something? Or maybe 0.12 * something? For electric_factor: 1, 0.18. That suggests a function like 1 + 0.18 * something. For mobile: 1, 0.23. For deflection: 1, 0.13, 2. So deflection has three constants.\\n\\nMaybe the model is a product of several factors, each being a function of a single variable. For example, mobile might be a function of magnetic, deflection of curr'",
+        "error_type": "ValueError"
+      }
+    ],
+    "mechanism_recovery": {
+      "train": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "id_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      },
+      "ood_test": {
+        "symbolically_equivalent": 0,
+        "numerically_equivalent": 0
+      }
+    },
+    "probe_count": 2
+  },
+  "evaluation_seconds": 85.23826238606125,
+  "ok": false,
+  "submission": "hall_voltage = (68272294750026997403717461529/25033381905742105000000000000000000 - 9518614944810511*current/10013352762296842)*(8089217593071891/1000000000000000000 + 2149130515637563/(250000000000000000*(145500747262261*density/11118669398306732000000000000000000000 - 67295374211014878604160337/222373387966134640000000000000)*(5400106557085809000*thickness/611620964691037 + 18154870175225438376474981717/15290524117275925000000000000000)))*(1000000000000000000*magnetic/10377238448677899 - 417204431972396860878457937903/2594309612169474750000000000000)\n",
+  "cost_in_USD": 0.0026806881999999997,
+  "used_token": null,
+  "accounting": {
+    "provider_reported_usd": 0.0026806881999999997,
+    "total_cost_usd": 0.0026806881999999997,
+    "cost_complete": true,
+    "known_unknown_cost_requests": 0,
+    "unknown_cost_requests": 0,
+    "evaluation_usage_available": true,
+    "generation_usage_available": "not_applicable",
+    "pricing_estimate_usd": null,
+    "uncertain_upper_bound_usd": null,
+    "reserved_inflight_usd": null,
+    "note": "Stored terminal/discovery usage only. Null means unavailable/not estimated, not free. No account-balance subtraction."
+  },
+  "run_status": {
+    "outcome": "native_invalid",
+    "strict_complete": false
+  },
+  "source": {
+    "hostname": "g30",
+    "path": "/home/test/test06/mdbench-runs/rebuttal-sr-core-20261109-jialin/jobs/e2esr-core-t056/evaluation/performance.json",
+    "file_sha256": "162f4a09c60a0d5c64f7a6a3edbee54d7bc31984c59cb03c7b6a1698fc1e3b3f",
+    "task_definition": "tasks/physics/Hall Response/Hall Response - Variant 1-2-3-4.yaml",
+    "task_definition_sha256": "c91871089652880b2c3dad46afce8f82d9465a23f780d6c1a233627024300d65",
+    "manifest_job_id": "e2esr-core-t056",
+    "manifest_sha256": "7bea043f0e419426a8fed2c3784275755bcc52ce10c7e2ed79f6747d20fbe1bb",
+    "snapshot_collected_at_utc": "2026-11-09T17:13:12.217207+00:00",
+    "snapshot_sha256": "72cd2551fcb77638f3feea12e00caab4182c5df3e78f11873839293e923f3e25",
+    "submission_representation": "Normalized formulas from evaluation.submitted_solution; original frozen bytes not re-downloaded.",
+    "frozen_submission_sha256": "0e4942a640d36fc96c31a168bb08ad468a56dd892f9de53f9f0a6c862f43d858",
+    "transformation": "Native performance fields preserved; only provenance, normalized submission, run status and stored usage added. No rescoring.",
+    "supplemental_records_repo_relative": "results/_summaries/rebuttal-sr-core80-20261109/provenance/e2esr.jsonl"
+  },
+  "update": [
+    {
+      "updated_at": "2026-11-11T05:26:31.843001+00:00",
+      "update_message": "Import completed Core80 SR baseline from frozen snapshot; preserve native errors and missing values."
+    }
+  ]
+}
